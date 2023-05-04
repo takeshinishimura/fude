@@ -22,9 +22,5 @@ files.
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path)
-\dontrun{
-# For those who want to use a mouse or trackpad
-d <- read_fude(file.choose())
-}
 
 }

@@ -6,7 +6,7 @@ Authors@R:
     person(given = "Takeshi",
            family = "Nishimura",
            email = "takenishi@gmail.com",
-           role = c("aut", "cre"),
+           role = c("aut", "cph", "cre"),
            comment = c(ORCID = "0000-0003-1761-4300"))
 Description: Provides utilities to facilitate handling of Fude Polygon data 
     downloadable from the Ministry of Agriculture, Forestry and Fisheries 
