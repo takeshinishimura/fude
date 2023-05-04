@@ -52,6 +52,9 @@ This function was inspired by [kokudosuuchi: Utilities for 'Kokudo Suuchi'](http
 library(fude)
 
 d <- read_fude("~/2022_382019.zip")
+
+# For those who want to specify the file with a mouse or trackpad
+# d <- read_fude(file.choose())
 ```
 
 You can change the local government code to the Japanese municipality name for easier handling.

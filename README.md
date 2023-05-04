@@ -47,13 +47,16 @@ library(fude)
 
 d <- read_fude("~/2022_382019.zip")
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpM3brru/file453d7645dfd1/2022_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpwbDdho/file61c26914eb4d/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 72045 features and 10 fields
 #> Geometry type: POLYGON
 #> Dimension:     XY
 #> Bounding box:  xmin: 132.4962 ymin: 33.70162 xmax: 132.8954 ymax: 34.01602
 #> Geodetic CRS:  WGS 84
+
+# For those who want to specify the file with a mouse or trackpad
+# d <- read_fude(file.choose())
 ```
 
 You can change the local government code to the Japanese municipality
