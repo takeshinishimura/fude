@@ -9,7 +9,7 @@
 #'   List of [sf::sf()] objects.
 #' @param japanese
 #'   Logical. If `FALSE`, rename the local government name in romaji
-#'   instead of Japanese.
+#'   instead of Japanese. Note that romanization may not be correct.
 #' @returns A list of [sf::sf()] objects.
 #' @seealso [read_fude()].
 #'

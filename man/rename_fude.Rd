@@ -10,7 +10,7 @@ rename_fude(data, japanese = TRUE)
 \item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
 
 \item{japanese}{Logical. If \code{FALSE}, rename the local government name in romaji
-instead of Japanese.}
+instead of Japanese. Note that romanization may not be correct.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.
