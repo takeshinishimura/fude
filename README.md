@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/takeshinishimura/fude/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/takeshinishimura/fude/actions/workflows/check-standard.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/fude)](https://CRAN.R-project.org/package=fude)
 <!-- badges: end -->
@@ -46,7 +47,7 @@ library(fude)
 
 d <- read_fude("~/2022_382019.zip")
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpSwKNVN/file1425474b56450/2022_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpM3brru/file453d7645dfd1/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 72045 features and 10 fields
 #> Geometry type: POLYGON

@@ -12,7 +12,8 @@ Description: Provides utilities to facilitate handling of Fude Polygon data
     downloadable from the Ministry of Agriculture, Forestry and Fisheries 
     website <https://open.fude.maff.go.jp>.
 License: MIT + file LICENSE
-URL: https://github.com/takeshinishimura/fude
+URL: https://github.com/takeshinishimura/fude,
+    https://takeshinishimura.github.io/fude/
 BugReports: https://github.com/takeshinishimura/fude/issues
 Encoding: UTF-8
 LazyData: true
