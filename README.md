@@ -17,26 +17,27 @@ suffix used when referring to land parcels.
 
 ## Get Data
 
-Download the Fude Polygon data from the following release site of MAFF.
+Download the Fude Polygon data from the following release site of MAFF
+(only Japanese is available).
 
-- <https://open.fude.maff.go.jp> (Only Japanese is available.)
+- <https://open.fude.maff.go.jp>
 
 ## Installation
 
-You can install the released version of fude from CRAN:
+You can install the released version of fude from CRAN with:
 
 ``` r
 install.packages("fude")
 ```
 
-Or the development version from GitHub:
+Or the development version from GitHub with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("takeshinishimura/fude")
 ```
 
-## Example
+## Usage
 
 You can let R read the downloaded ZIP file without unzipping it. This
 function was inspired by [kokudosuuchi: Utilities for ‘Kokudo
@@ -47,16 +48,20 @@ library(fude)
 
 d <- read_fude("~/2022_382019.zip")
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpwbDdho/file61c26914eb4d/2022_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpVE0cTR/file14e2664c1185a/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 72045 features and 10 fields
 #> Geometry type: POLYGON
 #> Dimension:     XY
 #> Bounding box:  xmin: 132.4962 ymin: 33.70162 xmax: 132.8954 ymax: 34.01602
 #> Geodetic CRS:  WGS 84
+```
 
-# For those who want to specify the file with a mouse or trackpad
-# d <- read_fude(file.choose())
+Those who wish to use a mouse or trackpad for file selection, which is
+especially common among R beginners, can do the following.
+
+``` r
+d <- read_fude(file.choose())
 ```
 
 You can change the local government code to the Japanese municipality

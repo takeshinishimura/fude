@@ -73,25 +73,24 @@
 <div class="section level2">
 <h2 id="get-data">Get Data<a class="anchor" aria-label="anchor" href="#get-data"></a>
 </h2>
-<p>Download the Fude Polygon data from the following release site of MAFF.</p>
+<p>Download the Fude Polygon data from the following release site of MAFF (only Japanese is available).</p>
 <ul>
-<li>
-<a href="https://open.fude.maff.go.jp" class="external-link uri">https://open.fude.maff.go.jp</a> (Only Japanese is available.)</li>
+<li><a href="https://open.fude.maff.go.jp" class="external-link uri">https://open.fude.maff.go.jp</a></li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the released version of fude from CRAN:</p>
+<p>You can install the released version of fude from CRAN with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"fude"</span><span class="op">)</span></span></code></pre></div>
-<p>Or the development version from GitHub:</p>
+<p>Or the development version from GitHub with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"takeshinishimura/fude"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <p>You can let R read the downloaded ZIP file without unzipping it. This function was inspired by <a href="https://CRAN.R-project.org/package=kokudosuuchi" class="external-link">kokudosuuchi: Utilities for ‘Kokudo Suuchi’</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -99,18 +98,18 @@
 <span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span><span class="st">"~/2022_382019.zip"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Reading layer `2022_382019' from data source </span></span>
-<span><span class="co">#&gt;   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpwbDdho/file61c26914eb4d/2022_382019.json' </span></span>
+<span><span class="co">#&gt;   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpVE0cTR/file14e2664c1185a/2022_382019.json' </span></span>
 <span><span class="co">#&gt;   using driver `GeoJSON'</span></span>
 <span><span class="co">#&gt; Simple feature collection with 72045 features and 10 fields</span></span>
 <span><span class="co">#&gt; Geometry type: POLYGON</span></span>
 <span><span class="co">#&gt; Dimension:     XY</span></span>
 <span><span class="co">#&gt; Bounding box:  xmin: 132.4962 ymin: 33.70162 xmax: 132.8954 ymax: 34.01602</span></span>
-<span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
-<span></span>
-<span><span class="co"># For those who want to specify the file with a mouse or trackpad</span></span>
-<span><span class="co"># d &lt;- read_fude(file.choose())</span></span></code></pre></div>
-<p>You can change the local government code to the Japanese municipality name for easier handling.</p>
+<span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span></code></pre></div>
+<p>Those who wish to use a mouse or trackpad for file selection, which is especially common among R beginners, can do the following.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.choose.html" class="external-link">file.choose</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>You can change the local government code to the Japanese municipality name for easier handling.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 2022_382019 -&gt; 2022_松山市</span></span></code></pre></div>
 </div>

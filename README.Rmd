@@ -24,26 +24,26 @@ The fude package provides utilities to facilitate handling of Fude Polygon data 
 
 ## Get Data
 
-Download the Fude Polygon data from the following release site of MAFF.
+Download the Fude Polygon data from the following release site of MAFF (only Japanese is available).
 
-* <https://open.fude.maff.go.jp> (Only Japanese is available.)
+- <https://open.fude.maff.go.jp>
 
 ## Installation
 
-You can install the released version of fude from CRAN:
+You can install the released version of fude from CRAN with:
 
 ``` r
 install.packages("fude")
 ```
 
-Or the development version from GitHub:
+Or the development version from GitHub with:
 
 ```{r eval = FALSE}
 # install.packages("devtools")
 devtools::install_github("takeshinishimura/fude")
 ```
 
-## Example
+## Usage
 
 You can let R read the downloaded ZIP file without unzipping it.
 This function was inspired by [kokudosuuchi: Utilities for 'Kokudo Suuchi'](https://CRAN.R-project.org/package=kokudosuuchi).
@@ -52,13 +52,16 @@ This function was inspired by [kokudosuuchi: Utilities for 'Kokudo Suuchi'](http
 library(fude)
 
 d <- read_fude("~/2022_382019.zip")
+```
 
-# For those who want to specify the file with a mouse or trackpad
-# d <- read_fude(file.choose())
+Those who wish to use a mouse or trackpad for file selection, which is especially common among R beginners, can do the following.
+
+```{r eval = FALSE}
+d <- read_fude(file.choose())
 ```
 
 You can change the local government code to the Japanese municipality name for easier handling.
 
-```{r example2}
+```{r}
 d <- rename_fude(d)
 ```
