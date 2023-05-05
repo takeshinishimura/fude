@@ -48,7 +48,7 @@ devtools::install_github("takeshinishimura/fude")
 You can let R read the downloaded ZIP file without unzipping it.
 This function was inspired by [kokudosuuchi: Utilities for 'Kokudo Suuchi'](https://CRAN.R-project.org/package=kokudosuuchi).
 
-```{r example}
+```{r usage}
 library(fude)
 
 d <- read_fude("~/2022_382019.zip")

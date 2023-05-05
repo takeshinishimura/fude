@@ -13,14 +13,12 @@ read_fude(path)
 A list of \code{\link[sf:sf]{sf::sf()}} objects.
 }
 \description{
-\code{read_fude()} reads Fude Polygon data as a list. The data can be
-downloaded from the MAFF website as a ZIP file, which contains one or more
-GeoJSON format files. The function should also work with the ZIP file you
-created, as long as you do not change the filenames of the original GeoJSON
-files.
+\code{read_fude()} reads Fude Polygon data as a list. The data can be downloaded
+from the MAFF website as a ZIP file, which contains one or more GeoJSON
+format files. The function should also work with the ZIP file you created,
+as long as you do not change the filenames of the original GeoJSON files.
 }
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path)
-
 }

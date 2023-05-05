@@ -20,7 +20,6 @@ order to understand what is included in the list returned by \code{\link[=read_f
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path)
 ls_fude(d)
-
 }
 \seealso{
 \code{\link[=read_fude]{read_fude()}}.

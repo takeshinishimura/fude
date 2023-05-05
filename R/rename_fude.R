@@ -4,7 +4,6 @@
 #' `rename_fude()` renames the local government code of the list returned by
 #' [read_fude()] to the corresponding Japanese name in order to make the data
 #' human-friendly.
-#'
 #' @param data
 #'   List of [sf::sf()] objects.
 #' @param japanese
@@ -12,12 +11,10 @@
 #'   instead of Japanese. Note that romanization may not be correct.
 #' @returns A list of [sf::sf()] objects.
 #' @seealso [read_fude()].
-#'
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
 #' d <- read_fude(path)
 #' d <- rename_fude(d)
-#'
 #' @export
 rename_fude <- function(data, japanese = TRUE) {
   old_names <- names(data)
@@ -39,6 +36,6 @@ rename_fude <- function(data, japanese = TRUE) {
   x <- data
   names(x) <- new_names
 
-  cat(paste(paste0(old_names, " -> ", new_names), collapse = "\n"), "\n")
+  message(paste(paste0(old_names, " -> ", new_names), collapse = "\n"), "\n")
   return(x)
 }

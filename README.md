@@ -48,7 +48,7 @@ library(fude)
 
 d <- read_fude("~/2022_382019.zip")
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpVE0cTR/file14e2664c1185a/2022_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpCfesbL/file879638a34e51/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 72045 features and 10 fields
 #> Geometry type: POLYGON

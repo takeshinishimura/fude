@@ -24,7 +24,6 @@ human-friendly.
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path)
 d <- rename_fude(d)
-
 }
 \seealso{
 \code{\link[=read_fude]{read_fude()}}.

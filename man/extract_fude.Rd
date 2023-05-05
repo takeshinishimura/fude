@@ -28,7 +28,6 @@ path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path)
 d2 <- extract_fude(d, year = 2022, city = '\u677e\u5c71\u5e02')
 d |> extract_fude(year = 2022)
-
 }
 \seealso{
 \code{\link[=read_fude]{read_fude()}}.
