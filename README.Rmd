@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 The fude package provides utilities to facilitate handling of Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word "fude" ("筆") is a Japanese counter suffix used when referring to land parcels.
 
-## Get Data
+## Obtaining Data
 
 Download the Fude Polygon data from the following release site of MAFF (only Japanese is available).
 
@@ -60,8 +60,14 @@ Those who wish to use a mouse or trackpad for file selection, which is especiall
 d <- read_fude(file.choose())
 ```
 
-You can change the local government code to the Japanese municipality name for easier handling.
+You can convert the local government codes to the Japanese municipality names for easier handling.
 
 ```{r}
-d <- rename_fude(d)
+d2 <- rename_fude(d)
+```
+
+It can also be converted to romaji instead of Japanese.
+
+```{r}
+d3 <- d |> rename_fude(japanese = FALSE)
 ```
