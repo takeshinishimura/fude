@@ -60,7 +60,7 @@ Those who wish to use a mouse or trackpad for file selection, which is especiall
 d <- read_fude(file.choose())
 ```
 
-You can convert the local government codes to the Japanese municipality names for easier handling.
+You can rename the local government codes to the Japanese municipality names for easier handling.
 
 ```{r}
 d2 <- rename_fude(d)

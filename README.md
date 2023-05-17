@@ -48,7 +48,7 @@ library(fude)
 
 d <- read_fude("~/2022_382019.zip")
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpEuOBcp/fileb6cf79abb4ac/2022_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpoVAJz5/fileb85137cafedb/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 72045 features and 10 fields
 #> Geometry type: POLYGON
@@ -64,7 +64,7 @@ especially common among R beginners, can do the following.
 d <- read_fude(file.choose())
 ```
 
-You can convert the local government codes to the Japanese municipality
+You can rename the local government codes to the Japanese municipality
 names for easier handling.
 
 ``` r
