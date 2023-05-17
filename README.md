@@ -48,7 +48,7 @@ library(fude)
 
 d <- read_fude("~/2022_382019.zip")
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmpj2Ozti/fileb527e31c1cf/2022_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpEuOBcp/fileb6cf79abb4ac/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 72045 features and 10 fields
 #> Geometry type: POLYGON
@@ -72,7 +72,7 @@ d2 <- rename_fude(d)
 #> 2022_382019 -> 2022_松山市
 ```
 
-It can also be converted to romaji instead of Japanese.
+It can also be renamed to romaji instead of Japanese.
 
 ``` r
 d3 <- d |> rename_fude(romaji = TRUE)
