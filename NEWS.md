@@ -1,5 +1,7 @@
 # fude (development version)
 
+* Improved accuracy of Roman renaming.
+
 # fude 0.1.1
 
 * Minor improvements.

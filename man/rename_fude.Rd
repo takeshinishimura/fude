@@ -4,13 +4,15 @@
 \alias{rename_fude}
 \title{Rename the Fude Polygon data}
 \usage{
-rename_fude(data, japanese = TRUE)
+rename_fude(data, romaji = FALSE, japanese = TRUE)
 }
 \arguments{
 \item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
 
-\item{japanese}{Logical. If \code{FALSE}, rename the local government name in romaji
+\item{romaji}{Logical. If \code{TRUE}, rename the local government name in romaji
 instead of Japanese. Note that romanization may not be correct.}
+
+\item{japanese}{Logical. It works in reverse of the argument \code{romaji}.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.

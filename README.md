@@ -12,8 +12,8 @@ status](https://www.r-pkg.org/badges/version/fude)](https://CRAN.R-project.org/p
 
 The fude package provides utilities to facilitate handling of Fude
 Polygon data downloadable from the Ministry of Agriculture, Forestry and
-Fisheries (MAFF) website. The word “fude” (“筆”) is a Japanese counter
-suffix used when referring to land parcels.
+Fisheries (MAFF) website. The word fude is a Japanese counter suffix
+used when referring to land parcels.
 
 ## Obtaining Data
 
@@ -48,7 +48,7 @@ library(fude)
 
 d <- read_fude("~/2022_382019.zip")
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmp4nfT0C/file166a41946ad4d/2022_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmpj2Ozti/fileb527e31c1cf/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 72045 features and 10 fields
 #> Geometry type: POLYGON
@@ -75,6 +75,6 @@ d2 <- rename_fude(d)
 It can also be converted to romaji instead of Japanese.
 
 ``` r
-d3 <- d |> rename_fude(japanese = FALSE)
-#> 2022_382019 -> 2022_Matsuyamashi
+d3 <- d |> rename_fude(romaji = TRUE)
+#> 2022_382019 -> 2022_Matsuyama
 ```

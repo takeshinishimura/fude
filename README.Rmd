@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/fude)](https://CRAN.R-project.org/package=fude)
 <!-- badges: end -->
 
-The fude package provides utilities to facilitate handling of Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word "fude" ("筆") is a Japanese counter suffix used when referring to land parcels.
+The fude package provides utilities to facilitate handling of Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word fude is a Japanese counter suffix used when referring to land parcels.
 
 ## Obtaining Data
 
@@ -69,5 +69,5 @@ d2 <- rename_fude(d)
 It can also be converted to romaji instead of Japanese.
 
 ```{r}
-d3 <- d |> rename_fude(japanese = FALSE)
+d3 <- d |> rename_fude(romaji = TRUE)
 ```

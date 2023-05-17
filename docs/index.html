@@ -69,7 +69,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The fude package provides utilities to facilitate handling of Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word “fude” (“筆”) is a Japanese counter suffix used when referring to land parcels.</p>
+<p>The fude package provides utilities to facilitate handling of Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word fude is a Japanese counter suffix used when referring to land parcels.</p>
 <div class="section level2">
 <h2 id="obtaining-data">Obtaining Data<a class="anchor" aria-label="anchor" href="#obtaining-data"></a>
 </h2>
@@ -98,7 +98,7 @@
 <span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span><span class="st">"~/2022_382019.zip"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Reading layer `2022_382019' from data source </span></span>
-<span><span class="co">#&gt;   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmp4nfT0C/file166a41946ad4d/2022_382019.json' </span></span>
+<span><span class="co">#&gt;   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmpj2Ozti/fileb527e31c1cf/2022_382019.json' </span></span>
 <span><span class="co">#&gt;   using driver `GeoJSON'</span></span>
 <span><span class="co">#&gt; Simple feature collection with 72045 features and 10 fields</span></span>
 <span><span class="co">#&gt; Geometry type: POLYGON</span></span>
@@ -114,13 +114,14 @@
 <span><span class="co">#&gt; 2022_382019 -&gt; 2022_松山市</span></span></code></pre></div>
 <p>It can also be converted to romaji instead of Japanese.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span>japanese <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2022_382019 -&gt; 2022_Matsuyamashi</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span>romaji <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2022_382019 -&gt; 2022_Matsuyama</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
+<li><a href="https://cloud.r-project.org/package=fude" class="external-link">View on CRAN</a></li>
 <li><a href="https://github.com/takeshinishimura/fude/" class="external-link">Browse source code</a></li>
 <li><a href="https://github.com/takeshinishimura/fude/issues" class="external-link">Report a bug</a></li>
 </ul>
