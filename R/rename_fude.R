@@ -10,7 +10,7 @@
 #'   Logical. If `TRUE`, rename the local government name in romaji
 #'   instead of Japanese. Note that romanization may not be correct.
 #' @param japanese
-#'   Logical. It works in reverse of the argument `romaji`.
+#'   Superseded. Logical. It works in reverse of the argument `romaji`.
 #' @returns A list of [sf::sf()] objects.
 #' @seealso [read_fude()].
 #' @examples
@@ -26,7 +26,7 @@ rename_fude <- function(data, romaji = FALSE, japanese = TRUE) {
   matching_cols <- sub(paste(unique_nen, collapse = "|"), "", old_names)
   matching_idx <- match(matching_cols, lg_code$"\u56e3\u4f53\u30b3\u30fc\u30c9")
 
-  if (romaji == FALSE && japanese == TRUE) {
+  if (romaji == FALSE) {
     new_names <- lg_code$"\u5e02\u533a\u753a\u6751\u540d\uff08\u6f22\u5b57\uff09"[matching_idx]
   } else {
     new_names <- lg_code$romaji[matching_idx]
