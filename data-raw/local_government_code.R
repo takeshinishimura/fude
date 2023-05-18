@@ -27,8 +27,9 @@ new_rows <- tibble::tibble(new_rows[, 1], rep(NA, nrow(new_rows)), new_rows[, 2]
 names(new_rows) <- names(lg_code1)
 
 lg_code <- rbind(lg_code1, new_rows)
-kanji <- sub("\uff7c$|\u304f$|\uff81\uff6e\uff73$|\uff7f\uff9d$", "", lg_code$"\u5e02\u533a\u753a\u6751\u540d\uff08\u30ab\u30ca\uff09")
-romaji <- stringi::stri_trans_general(kanji, "any-latin")
+kana <- sub("\uff7c$|\uff78$|\u304f$|\uff81\uff6e\uff73$|\uff7f\uff9d$", "",
+            lg_code$"\u5e02\u533a\u753a\u6751\u540d\uff08\u30ab\u30ca\uff09")
+romaji <- stringi::stri_trans_general(kana, "any-latin")
 lg_code$romaji <- paste0(toupper(substring(romaji, 1, 1)), substring(romaji, 2))
 
 file.remove(destfile)
