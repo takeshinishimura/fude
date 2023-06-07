@@ -45,10 +45,9 @@ Suuchi’](https://CRAN.R-project.org/package=kokudosuuchi).
 
 ``` r
 library(fude)
-
 d <- read_fude("~/2022_382019.zip")
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpoVAJz5/fileb85137cafedb/2022_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpNOFSq7/filecb53c1117d1/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 72045 features and 10 fields
 #> Geometry type: POLYGON
@@ -75,6 +74,6 @@ d2 <- rename_fude(d)
 It can also be renamed to romaji instead of Japanese.
 
 ``` r
-d3 <- d |> rename_fude(romaji = TRUE)
+d3 <- d |> rename_fude(suffix = FALSE, romaji = "title")
 #> 2022_382019 -> 2022_Matsuyama
 ```

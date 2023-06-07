@@ -57,7 +57,7 @@ human-friendly.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rename_fude</span><span class="op">(</span><span class="va">data</span>, romaji <span class="op">=</span> <span class="cn">FALSE</span>, japanese <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rename_fude</span><span class="op">(</span><span class="va">data</span>, suffix <span class="op">=</span> <span class="cn">TRUE</span>, romaji <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -66,13 +66,18 @@ human-friendly.</p>
 <dd><p>List of <code><a href="https://r-spatial.github.io/sf/reference/sf.html" class="external-link">sf::sf()</a></code> objects.</p></dd>
 
 
+<dt>suffix</dt>
+<dd><p>Logical. If <code>FALSE</code>, suffixes such as "SHI" and "KU" in local government
+names are removed.</p></dd>
+
+
 <dt>romaji</dt>
-<dd><p>Logical. If <code>TRUE</code>, rename the local government name in romaji
-instead of Japanese. Note that romanization may not be correct.</p></dd>
-
-
-<dt>japanese</dt>
-<dd><p>Superseded. Logical. It works in reverse of the argument <code>romaji</code>.</p></dd>
+<dd><p>If not <code>NULL</code>, rename the local government name in romaji instead of
+Japanese. Note that romanization may not be correct. Romanji format is
+uppercase unless specified.</p><ul><li><p><code>"title"</code>: Title case.</p></li>
+<li><p><code>"lower"</code>: Lower case.</p></li>
+<li><p><code>"upper"</code>: Upper case.</p></li>
+</ul></dd>
 
 </dl></div>
     <div class="section level2">
@@ -91,7 +96,7 @@ instead of Japanese. Note that romanization may not be correct.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"castle.zip"</span>, package <span class="op">=</span> <span class="st">"fude"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_fude.html">read_fude</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Reading layer `2021_382019' from data source </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpfirWIW/filedffe33ba0dd0/castle/2021_382019.json' </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpyqH7e8/file1f3054a7f2fc/castle/2021_382019.json' </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   using driver `GeoJSON'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 5 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POLYGON</span>
@@ -99,7 +104,7 @@ instead of Japanese. Note that romanization may not be correct.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Reading layer `2022_382019' from data source </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpfirWIW/filedffe33ba0dd0/castle/2022_382019.json' </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpyqH7e8/file1f3054a7f2fc/castle/2022_382019.json' </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   using driver `GeoJSON'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 5 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POLYGON</span>
@@ -107,17 +112,25 @@ instead of Japanese. Note that romanization may not be correct.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Reading layer `2022_382078' from data source </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpfirWIW/filedffe33ba0dd0/castle/2022_382078.json' </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpyqH7e8/file1f3054a7f2fc/castle/2022_382078.json' </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   using driver `GeoJSON'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 5 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POLYGON</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 132.541 ymin: 33.50931 xmax: 132.5415 ymax: 33.50966</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
-<span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">rename_fude</span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu">rename_fude</span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 2021_382019 -&gt; 2021_松山市</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 2022_382019 -&gt; 2022_松山市</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 2022_382078 -&gt; 2022_大洲市</span>
+<span class="r-in"><span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="fu">rename_fude</span><span class="op">(</span><span class="va">d</span>, suffix <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2021_382019 -&gt; 2021_松山</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022_382019 -&gt; 2022_松山</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022_382078 -&gt; 2022_大洲</span>
+<span class="r-in"><span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu">rename_fude</span><span class="op">(</span>suffix <span class="op">=</span> <span class="cn">FALSE</span>, romaji <span class="op">=</span> <span class="st">"upper"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2021_382019 -&gt; 2021_MATSUYAMA</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022_382019 -&gt; 2022_MATSUYAMA</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2022_382078 -&gt; 2022_OZU</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -95,10 +95,9 @@
 <p>You can let R read the downloaded ZIP file without unzipping it. This function was inspired by <a href="https://CRAN.R-project.org/package=kokudosuuchi" class="external-link">kokudosuuchi: Utilities for ‘Kokudo Suuchi’</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/takeshinishimura/fude" class="external-link">fude</a></span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span><span class="st">"~/2022_382019.zip"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Reading layer `2022_382019' from data source </span></span>
-<span><span class="co">#&gt;   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpoVAJz5/fileb85137cafedb/2022_382019.json' </span></span>
+<span><span class="co">#&gt;   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpNOFSq7/filecb53c1117d1/2022_382019.json' </span></span>
 <span><span class="co">#&gt;   using driver `GeoJSON'</span></span>
 <span><span class="co">#&gt; Simple feature collection with 72045 features and 10 fields</span></span>
 <span><span class="co">#&gt; Geometry type: POLYGON</span></span>
@@ -114,7 +113,7 @@
 <span><span class="co">#&gt; 2022_382019 -&gt; 2022_松山市</span></span></code></pre></div>
 <p>It can also be renamed to romaji instead of Japanese.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span>romaji <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span>suffix <span class="op">=</span> <span class="cn">FALSE</span>, romaji <span class="op">=</span> <span class="st">"title"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 2022_382019 -&gt; 2022_Matsuyama</span></span></code></pre></div>
 </div>
 </div>

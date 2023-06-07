@@ -4,15 +4,22 @@
 \alias{rename_fude}
 \title{Rename the Fude Polygon data}
 \usage{
-rename_fude(data, romaji = FALSE, japanese = TRUE)
+rename_fude(data, suffix = TRUE, romaji = NULL)
 }
 \arguments{
 \item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
 
-\item{romaji}{Logical. If \code{TRUE}, rename the local government name in romaji
-instead of Japanese. Note that romanization may not be correct.}
+\item{suffix}{Logical. If \code{FALSE}, suffixes such as "SHI" and "KU" in local government
+names are removed.}
 
-\item{japanese}{Superseded. Logical. It works in reverse of the argument \code{romaji}.}
+\item{romaji}{If not \code{NULL}, rename the local government name in romaji instead of
+Japanese. Note that romanization may not be correct. Romanji format is
+uppercase unless specified.
+\itemize{
+\item \code{"title"}: Title case.
+\item \code{"lower"}: Lower case.
+\item \code{"upper"}: Upper case.
+}}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.
@@ -25,7 +32,9 @@ human-friendly.
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path)
-d <- rename_fude(d)
+d2 <- rename_fude(d)
+d3 <- rename_fude(d, suffix = FALSE)
+d3 <- d |> rename_fude(suffix = FALSE, romaji = "upper")
 }
 \seealso{
 \code{\link[=read_fude]{read_fude()}}.
