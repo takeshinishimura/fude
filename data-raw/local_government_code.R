@@ -20,8 +20,23 @@ names(lg_code1) <- sub("\n", "", names(lg_code1))
 
 # Read the ordinance-designated city codes
 seirei <- readxl::read_excel(destfile, col_names = FALSE, sheet = 2)
-
 file.remove(destfile)
+
+# Add codes that have been deleted in recent years (can be found in the
+# following list of code revisions).
+# https://www.soumu.go.jp/main_content/000875488.xls
+seirei <- bind_rows(seirei,
+                    tibble::tribble(
+                      ~"...1", ~"...2", ~"...3",
+                      "221317", "\u6d5c\u677e\u5e02\u4e2d\u533a", "\u306f\u307e\u307e\u3064\u3057\u306a\u304b\u304f",
+                      "221325", "\u6d5c\u677e\u5e02\u6771\u533a", "\u306f\u307e\u307e\u3064\u3057\u3072\u304c\u3057\u304f",
+                      "221333", "\u6d5c\u677e\u5e02\u897f\u533a", "\u306f\u307e\u307e\u3064\u3057\u306b\u3057\u304f",
+                      "221341", "\u6d5c\u677e\u5e02\u5357\u533a", "\u306f\u307e\u307e\u3064\u3057\u307f\u306a\u307f\u304f",
+                      "221350", "\u6d5c\u677e\u5e02\u5317\u533a", "\u306f\u307e\u307e\u3064\u3057\u304d\u305f\u304f",
+                      "221368", "\u6d5c\u677e\u5e02\u6d5c\u5317\u533a", "\u306f\u307e\u307e\u3064\u3057\u306f\u307e\u304d\u305f\u304f",
+                      "221376", "\u6d5c\u677e\u5e02\u5929\u7adc\u533a", "\u306f\u307e\u307e\u3064\u3057\u3066\u3093\u308a\u3085\u3046\u304f"
+                    )
+)
 
 # Add designated city codes to the local government code
 new_rows <- seirei[!seirei$...1 %in% lg_code1$"\u56e3\u4f53\u30b3\u30fc\u30c9", ]

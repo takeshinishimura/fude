@@ -22,8 +22,8 @@
 #' path <- system.file("extdata", "castle.zip", package = "fude")
 #' d <- read_fude(path)
 #' d2 <- rename_fude(d)
-#' d3 <- rename_fude(d, suffix = FALSE)
-#' d3 <- d |> rename_fude(suffix = FALSE, romaji = "upper")
+#' d2 <- rename_fude(d, suffix = FALSE)
+#' d2 <- d |> rename_fude(romaji = "upper")
 #' @export
 rename_fude <- function(data, suffix = TRUE, romaji = NULL) {
   old_names <- names(data)
@@ -69,12 +69,13 @@ rename_fude <- function(data, suffix = TRUE, romaji = NULL) {
 
   }
 
+  nochange <- which(new_names == "NA")
   new_names <- paste0(nen, new_names)
-  new_names[grep("NA", new_names)] <- old_names[grep("NA", new_names)]
+  new_names[nochange] <- old_names[nochange]
 
   x <- data
   names(x) <- new_names
 
-  message(paste(paste0(old_names, " -> ", new_names), collapse = "\n"), "\n")
+  message(paste(paste0(old_names, " -> ", new_names), collapse = "\n"))
   return(x)
 }

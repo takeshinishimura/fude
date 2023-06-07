@@ -33,8 +33,8 @@ human-friendly.
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path)
 d2 <- rename_fude(d)
-d3 <- rename_fude(d, suffix = FALSE)
-d3 <- d |> rename_fude(suffix = FALSE, romaji = "upper")
+d2 <- rename_fude(d, suffix = FALSE)
+d2 <- d |> rename_fude(romaji = "upper")
 }
 \seealso{
 \code{\link[=read_fude]{read_fude()}}.
