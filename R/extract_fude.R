@@ -16,8 +16,8 @@
 #' @seealso [read_fude()].
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
-#' d <- read_fude(path)
-#' d2 <- extract_fude(d, year = 2022, city = '\u677e\u5c71\u5e02')
+#' d <- read_fude(path, quiet = TRUE)
+#' d2 <- extract_fude(d, year = 2022, city = "\u677e\u5c71\u5e02")
 #' d |> extract_fude(year = 2022)
 #' @export
 extract_fude <- function(data, year = NULL, city = NULL, list = TRUE) {

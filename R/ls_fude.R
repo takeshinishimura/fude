@@ -9,7 +9,7 @@
 #' @seealso [read_fude()].
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
-#' d <- read_fude(path)
+#' d <- read_fude(path, quiet = TRUE)
 #' ls_fude(d)
 #' @export
 ls_fude <- function(data) {

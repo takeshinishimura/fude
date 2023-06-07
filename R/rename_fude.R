@@ -19,7 +19,7 @@
 #' @seealso [read_fude()].
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
-#' d <- read_fude(path)
+#' d <- read_fude(path, quiet = TRUE)
 #' d2 <- rename_fude(d)
 #' d2 <- rename_fude(d, suffix = FALSE)
 #' d2 <- d |> rename_fude(romaji = "upper")
