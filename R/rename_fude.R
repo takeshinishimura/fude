@@ -12,7 +12,7 @@
 #' @param romaji
 #'   If not `NULL`, rename the local government name in romaji instead of
 #'   Japanese. Note that romanization may not be correct. Romanji format is
-#'   uppercase unless specified.
+#'   upper case unless specified.
 #'   - `"title"`: Title case.
 #'   - `"lower"`: Lower case.
 #'   - `"upper"`: Upper case.

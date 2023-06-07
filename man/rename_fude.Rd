@@ -14,7 +14,7 @@ names are removed.}
 
 \item{romaji}{If not \code{NULL}, rename the local government name in romaji instead of
 Japanese. Note that romanization may not be correct. Romanji format is
-uppercase unless specified.
+upper case unless specified.
 \itemize{
 \item \code{"title"}: Title case.
 \item \code{"lower"}: Lower case.
