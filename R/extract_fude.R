@@ -11,7 +11,7 @@
 #' @param city
 #'   Local government name (or code) to be extracted.
 #' @param list
-#'   Logical. If `FALSE`, the object to be extracted is no longer a list.
+#'   logical. If `FALSE`, the object to be extracted is no longer a list.
 #' @returns A list of [sf::sf()] object(s).
 #' @seealso [read_fude()].
 #' @examples

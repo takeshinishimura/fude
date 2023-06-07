@@ -14,7 +14,7 @@ specified, all objects for the most recent year are extracted.}
 
 \item{city}{Local government name (or code) to be extracted.}
 
-\item{list}{Logical. If \code{FALSE}, the object to be extracted is no longer a list.}
+\item{list}{logical. If \code{FALSE}, the object to be extracted is no longer a list.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} object(s).

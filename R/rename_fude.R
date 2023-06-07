@@ -7,12 +7,11 @@
 #' @param data
 #'   List of [sf::sf()] objects.
 #' @param suffix
-#'   Logical. If `FALSE`, suffixes such as "SHI" and "KU" in local government
+#'   logical. If `FALSE`, suffixes such as "SHI" and "KU" in local government
 #'   names are removed.
 #' @param romaji
 #'   If not `NULL`, rename the local government name in romaji instead of
-#'   Japanese. Note that romanization may not be correct. Romanji format is
-#'   upper case unless specified.
+#'   Japanese. Romanji format is upper case unless specified.
 #'   - `"title"`: Title case.
 #'   - `"lower"`: Lower case.
 #'   - `"upper"`: Upper case.
@@ -65,11 +64,11 @@ rename_fude <- function(data, suffix = TRUE, romaji = NULL) {
 
     new_names <- gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", new_names, ignore.case = TRUE)
     new_names <- sub("\u5e02(.*)(\u533a$)", "_\\1", new_names)
-    new_names <- sub("(\u5e02|\u753a|\u6751)$", "", new_names)
+    new_names <- sub("(\u5e02|\u533a|\u753a|\u6751)$", "", new_names)
 
   }
 
-  nochange <- which(new_names == "NA")
+  nochange <- is.na(new_names)
   new_names <- paste0(nen, new_names)
   new_names[nochange] <- old_names[nochange]
 

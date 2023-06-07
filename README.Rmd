@@ -48,9 +48,13 @@ devtools::install_github("takeshinishimura/fude")
 You can let R read the downloaded ZIP file without unzipping it.
 This function was inspired by [kokudosuuchi: Utilities for 'Kokudo Suuchi'](https://CRAN.R-project.org/package=kokudosuuchi).
 
-```{r usage}
+```{r echo = FALSE}
 library(fude)
-d <- read_fude("~/2022_382019.zip")
+d <- read_fude("~/2022_38.zip", quiet = TRUE)
+```
+```{r eval = FALSE}
+library(fude)
+d <- read_fude("~/2022_38.zip")
 ```
 
 Those who wish to use a mouse or trackpad for file selection, which is especially common among R beginners, can do the following.
@@ -68,5 +72,6 @@ d2 <- rename_fude(d)
 It can also be renamed to romaji instead of Japanese.
 
 ```{r}
-d3 <- d |> rename_fude(suffix = FALSE, romaji = "title")
+d3 <- d |> rename_fude(suffix = TRUE, romaji = "title")
+d3 <- d |> rename_fude(suffix = FALSE, romaji = "upper")
 ```

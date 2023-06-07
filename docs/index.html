@@ -95,26 +95,77 @@
 <p>You can let R read the downloaded ZIP file without unzipping it. This function was inspired by <a href="https://CRAN.R-project.org/package=kokudosuuchi" class="external-link">kokudosuuchi: Utilities for ‘Kokudo Suuchi’</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/takeshinishimura/fude" class="external-link">fude</a></span><span class="op">)</span></span>
-<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span><span class="st">"~/2022_382019.zip"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Reading layer `2022_382019' from data source </span></span>
-<span><span class="co">#&gt;   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpmzTpxf/file65925ccfdc0c/2022_382019.json' </span></span>
-<span><span class="co">#&gt;   using driver `GeoJSON'</span></span>
-<span><span class="co">#&gt; Simple feature collection with 72045 features and 10 fields</span></span>
-<span><span class="co">#&gt; Geometry type: POLYGON</span></span>
-<span><span class="co">#&gt; Dimension:     XY</span></span>
-<span><span class="co">#&gt; Bounding box:  xmin: 132.4962 ymin: 33.70162 xmax: 132.8954 ymax: 34.01602</span></span>
-<span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span></code></pre></div>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span><span class="st">"~/2022_38.zip"</span><span class="op">)</span></span></code></pre></div>
 <p>Those who wish to use a mouse or trackpad for file selection, which is especially common among R beginners, can do the following.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.choose.html" class="external-link">file.choose</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>You can rename the local government codes to the Japanese municipality names for easier handling.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2022_382019 -&gt; 2022_松山市</span></span></code></pre></div>
+<span><span class="co">#&gt; 2022_382019 -&gt; 2022_松山市</span></span>
+<span><span class="co">#&gt; 2022_382027 -&gt; 2022_今治市</span></span>
+<span><span class="co">#&gt; 2022_382035 -&gt; 2022_宇和島市</span></span>
+<span><span class="co">#&gt; 2022_382043 -&gt; 2022_八幡浜市</span></span>
+<span><span class="co">#&gt; 2022_382051 -&gt; 2022_新居浜市</span></span>
+<span><span class="co">#&gt; 2022_382060 -&gt; 2022_西条市</span></span>
+<span><span class="co">#&gt; 2022_382078 -&gt; 2022_大洲市</span></span>
+<span><span class="co">#&gt; 2022_382108 -&gt; 2022_伊予市</span></span>
+<span><span class="co">#&gt; 2022_382132 -&gt; 2022_四国中央市</span></span>
+<span><span class="co">#&gt; 2022_382141 -&gt; 2022_西予市</span></span>
+<span><span class="co">#&gt; 2022_382159 -&gt; 2022_東温市</span></span>
+<span><span class="co">#&gt; 2022_383562 -&gt; 2022_上島町</span></span>
+<span><span class="co">#&gt; 2022_383864 -&gt; 2022_久万高原町</span></span>
+<span><span class="co">#&gt; 2022_384011 -&gt; 2022_松前町</span></span>
+<span><span class="co">#&gt; 2022_384020 -&gt; 2022_砥部町</span></span>
+<span><span class="co">#&gt; 2022_384224 -&gt; 2022_内子町</span></span>
+<span><span class="co">#&gt; 2022_384429 -&gt; 2022_伊方町</span></span>
+<span><span class="co">#&gt; 2022_384844 -&gt; 2022_松野町</span></span>
+<span><span class="co">#&gt; 2022_384887 -&gt; 2022_鬼北町</span></span>
+<span><span class="co">#&gt; 2022_385069 -&gt; 2022_愛南町</span></span></code></pre></div>
 <p>It can also be renamed to romaji instead of Japanese.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span>suffix <span class="op">=</span> <span class="cn">FALSE</span>, romaji <span class="op">=</span> <span class="st">"title"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2022_382019 -&gt; 2022_Matsuyama</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span>suffix <span class="op">=</span> <span class="cn">TRUE</span>, romaji <span class="op">=</span> <span class="st">"title"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2022_382019 -&gt; 2022_Matsuyama-shi</span></span>
+<span><span class="co">#&gt; 2022_382027 -&gt; 2022_Imabari-shi</span></span>
+<span><span class="co">#&gt; 2022_382035 -&gt; 2022_Uwajima-shi</span></span>
+<span><span class="co">#&gt; 2022_382043 -&gt; 2022_Yawatahama-shi</span></span>
+<span><span class="co">#&gt; 2022_382051 -&gt; 2022_Niihama-shi</span></span>
+<span><span class="co">#&gt; 2022_382060 -&gt; 2022_Saijo-shi</span></span>
+<span><span class="co">#&gt; 2022_382078 -&gt; 2022_Ozu-shi</span></span>
+<span><span class="co">#&gt; 2022_382108 -&gt; 2022_Iyo-shi</span></span>
+<span><span class="co">#&gt; 2022_382132 -&gt; 2022_Shikokuchuo-shi</span></span>
+<span><span class="co">#&gt; 2022_382141 -&gt; 2022_Seiyo-shi</span></span>
+<span><span class="co">#&gt; 2022_382159 -&gt; 2022_Toon-shi</span></span>
+<span><span class="co">#&gt; 2022_383562 -&gt; 2022_Kamijima-cho</span></span>
+<span><span class="co">#&gt; 2022_383864 -&gt; 2022_Kumakogen-cho</span></span>
+<span><span class="co">#&gt; 2022_384011 -&gt; 2022_Matsumae-cho</span></span>
+<span><span class="co">#&gt; 2022_384020 -&gt; 2022_Tobe-cho</span></span>
+<span><span class="co">#&gt; 2022_384224 -&gt; 2022_Uchiko-cho</span></span>
+<span><span class="co">#&gt; 2022_384429 -&gt; 2022_Ikata-cho</span></span>
+<span><span class="co">#&gt; 2022_384844 -&gt; 2022_Matsuno-cho</span></span>
+<span><span class="co">#&gt; 2022_384887 -&gt; 2022_Kihoku-cho</span></span>
+<span><span class="co">#&gt; 2022_385069 -&gt; 2022_Ainan-cho</span></span>
+<span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span>suffix <span class="op">=</span> <span class="cn">FALSE</span>, romaji <span class="op">=</span> <span class="st">"upper"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2022_382019 -&gt; 2022_MATSUYAMA</span></span>
+<span><span class="co">#&gt; 2022_382027 -&gt; 2022_IMABARI</span></span>
+<span><span class="co">#&gt; 2022_382035 -&gt; 2022_UWAJIMA</span></span>
+<span><span class="co">#&gt; 2022_382043 -&gt; 2022_YAWATAHAMA</span></span>
+<span><span class="co">#&gt; 2022_382051 -&gt; 2022_NIIHAMA</span></span>
+<span><span class="co">#&gt; 2022_382060 -&gt; 2022_SAIJO</span></span>
+<span><span class="co">#&gt; 2022_382078 -&gt; 2022_OZU</span></span>
+<span><span class="co">#&gt; 2022_382108 -&gt; 2022_IYO</span></span>
+<span><span class="co">#&gt; 2022_382132 -&gt; 2022_SHIKOKUCHUO</span></span>
+<span><span class="co">#&gt; 2022_382141 -&gt; 2022_SEIYO</span></span>
+<span><span class="co">#&gt; 2022_382159 -&gt; 2022_TOON</span></span>
+<span><span class="co">#&gt; 2022_383562 -&gt; 2022_KAMIJIMA</span></span>
+<span><span class="co">#&gt; 2022_383864 -&gt; 2022_KUMAKOGEN</span></span>
+<span><span class="co">#&gt; 2022_384011 -&gt; 2022_MATSUMAE</span></span>
+<span><span class="co">#&gt; 2022_384020 -&gt; 2022_TOBE</span></span>
+<span><span class="co">#&gt; 2022_384224 -&gt; 2022_UCHIKO</span></span>
+<span><span class="co">#&gt; 2022_384429 -&gt; 2022_IKATA</span></span>
+<span><span class="co">#&gt; 2022_384844 -&gt; 2022_MATSUNO</span></span>
+<span><span class="co">#&gt; 2022_384887 -&gt; 2022_KIHOKU</span></span>
+<span><span class="co">#&gt; 2022_385069 -&gt; 2022_AINAN</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

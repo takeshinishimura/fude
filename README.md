@@ -45,15 +45,7 @@ Suuchi’](https://CRAN.R-project.org/package=kokudosuuchi).
 
 ``` r
 library(fude)
-d <- read_fude("~/2022_382019.zip")
-#> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpNOFSq7/filecb53c1117d1/2022_382019.json' 
-#>   using driver `GeoJSON'
-#> Simple feature collection with 72045 features and 10 fields
-#> Geometry type: POLYGON
-#> Dimension:     XY
-#> Bounding box:  xmin: 132.4962 ymin: 33.70162 xmax: 132.8954 ymax: 34.01602
-#> Geodetic CRS:  WGS 84
+d <- read_fude("~/2022_38.zip")
 ```
 
 Those who wish to use a mouse or trackpad for file selection, which is
@@ -69,11 +61,70 @@ names for easier handling.
 ``` r
 d2 <- rename_fude(d)
 #> 2022_382019 -> 2022_松山市
+#> 2022_382027 -> 2022_今治市
+#> 2022_382035 -> 2022_宇和島市
+#> 2022_382043 -> 2022_八幡浜市
+#> 2022_382051 -> 2022_新居浜市
+#> 2022_382060 -> 2022_西条市
+#> 2022_382078 -> 2022_大洲市
+#> 2022_382108 -> 2022_伊予市
+#> 2022_382132 -> 2022_四国中央市
+#> 2022_382141 -> 2022_西予市
+#> 2022_382159 -> 2022_東温市
+#> 2022_383562 -> 2022_上島町
+#> 2022_383864 -> 2022_久万高原町
+#> 2022_384011 -> 2022_松前町
+#> 2022_384020 -> 2022_砥部町
+#> 2022_384224 -> 2022_内子町
+#> 2022_384429 -> 2022_伊方町
+#> 2022_384844 -> 2022_松野町
+#> 2022_384887 -> 2022_鬼北町
+#> 2022_385069 -> 2022_愛南町
 ```
 
 It can also be renamed to romaji instead of Japanese.
 
 ``` r
-d3 <- d |> rename_fude(suffix = FALSE, romaji = "title")
-#> 2022_382019 -> 2022_Matsuyama
+d3 <- d |> rename_fude(suffix = TRUE, romaji = "title")
+#> 2022_382019 -> 2022_Matsuyama-shi
+#> 2022_382027 -> 2022_Imabari-shi
+#> 2022_382035 -> 2022_Uwajima-shi
+#> 2022_382043 -> 2022_Yawatahama-shi
+#> 2022_382051 -> 2022_Niihama-shi
+#> 2022_382060 -> 2022_Saijo-shi
+#> 2022_382078 -> 2022_Ozu-shi
+#> 2022_382108 -> 2022_Iyo-shi
+#> 2022_382132 -> 2022_Shikokuchuo-shi
+#> 2022_382141 -> 2022_Seiyo-shi
+#> 2022_382159 -> 2022_Toon-shi
+#> 2022_383562 -> 2022_Kamijima-cho
+#> 2022_383864 -> 2022_Kumakogen-cho
+#> 2022_384011 -> 2022_Matsumae-cho
+#> 2022_384020 -> 2022_Tobe-cho
+#> 2022_384224 -> 2022_Uchiko-cho
+#> 2022_384429 -> 2022_Ikata-cho
+#> 2022_384844 -> 2022_Matsuno-cho
+#> 2022_384887 -> 2022_Kihoku-cho
+#> 2022_385069 -> 2022_Ainan-cho
+d3 <- d |> rename_fude(suffix = FALSE, romaji = "upper")
+#> 2022_382019 -> 2022_MATSUYAMA
+#> 2022_382027 -> 2022_IMABARI
+#> 2022_382035 -> 2022_UWAJIMA
+#> 2022_382043 -> 2022_YAWATAHAMA
+#> 2022_382051 -> 2022_NIIHAMA
+#> 2022_382060 -> 2022_SAIJO
+#> 2022_382078 -> 2022_OZU
+#> 2022_382108 -> 2022_IYO
+#> 2022_382132 -> 2022_SHIKOKUCHUO
+#> 2022_382141 -> 2022_SEIYO
+#> 2022_382159 -> 2022_TOON
+#> 2022_383562 -> 2022_KAMIJIMA
+#> 2022_383864 -> 2022_KUMAKOGEN
+#> 2022_384011 -> 2022_MATSUMAE
+#> 2022_384020 -> 2022_TOBE
+#> 2022_384224 -> 2022_UCHIKO
+#> 2022_384429 -> 2022_IKATA
+#> 2022_384844 -> 2022_MATSUNO
+#> 2022_384887 -> 2022_KIHOKU
+#> 2022_385069 -> 2022_AINAN
 ```

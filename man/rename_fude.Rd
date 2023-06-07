@@ -9,12 +9,11 @@ rename_fude(data, suffix = TRUE, romaji = NULL)
 \arguments{
 \item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
 
-\item{suffix}{Logical. If \code{FALSE}, suffixes such as "SHI" and "KU" in local government
+\item{suffix}{logical. If \code{FALSE}, suffixes such as "SHI" and "KU" in local government
 names are removed.}
 
 \item{romaji}{If not \code{NULL}, rename the local government name in romaji instead of
-Japanese. Note that romanization may not be correct. Romanji format is
-upper case unless specified.
+Japanese. Romanji format is upper case unless specified.
 \itemize{
 \item \code{"title"}: Title case.
 \item \code{"lower"}: Lower case.

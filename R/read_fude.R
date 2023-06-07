@@ -7,12 +7,14 @@
 #' as long as you do not change the filenames of the original GeoJSON files.
 #' @param path
 #'   Path to the ZIP file containing one or more GeoJSON format files.
+#' @param quiet
+#'   logical. Suppress information about the data to be read.
 #' @returns A list of [sf::sf()] objects.
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
 #' d <- read_fude(path)
 #' @export
-read_fude <- function(path) {
+read_fude <- function(path, quiet = FALSE) {
   if (!grepl(".zip$", path)) {
     stop(path, " is not a ZIP file.")
   }
@@ -26,7 +28,7 @@ read_fude <- function(path) {
     stop("There is no GeoJSON format file in ", path, ".")
   }
 
-  x <- lapply(json_files, sf::st_read)
+  x <- lapply(json_files, sf::st_read, quiet = quiet)
   names(x) <- gsub("^.*/|.json", "", json_files)
 
   return(x)
