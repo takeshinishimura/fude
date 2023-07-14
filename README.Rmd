@@ -31,13 +31,11 @@ Download the Fude Polygon data from the following release site of MAFF (only Jap
 ## Installation
 
 You can install the released version of fude from CRAN with:
-
-``` r
+```r
 install.packages("fude")
 ```
 
 Or the development version from GitHub with:
-
 ```{r eval = FALSE}
 # install.packages("devtools")
 devtools::install_github("takeshinishimura/fude")
@@ -46,15 +44,13 @@ devtools::install_github("takeshinishimura/fude")
 ## Usage
 
 You can let R read the downloaded ZIP file without unzipping it.
-This function was inspired by [kokudosuuchi: Utilities for 'Kokudo Suuchi'](https://CRAN.R-project.org/package=kokudosuuchi).
-
-```{r echo = FALSE}
-library(fude)
-d <- read_fude("~/2022_38.zip", quiet = TRUE)
-```
 ```{r eval = FALSE}
 library(fude)
 d <- read_fude("~/2022_38.zip")
+```
+```{r echo = FALSE}
+library(fude)
+d <- read_fude("~/2022_38.zip", quiet = TRUE)
 ```
 
 Those who wish to use a mouse or trackpad for file selection, which is especially common among R beginners, can do the following.
@@ -70,8 +66,41 @@ d2 <- rename_fude(d)
 ```
 
 It can also be renamed to romaji instead of Japanese.
-
 ```{r}
 d3 <- d |> rename_fude(suffix = TRUE, romaji = "title")
-d3 <- d |> rename_fude(suffix = FALSE, romaji = "upper")
+```
+
+You can download the agricultural community boundary data corresponding to the Fude Polygon data you have from the MAFF website <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/index.html>.
+```{r eval = FALSE}
+b <- get_boundary(d2)
+```
+```{r echo = FALSE, warning = FALSE}
+b <- get_boundary(d2, quiet = TRUE)
+```
+
+You can draw a map combining Fude Polygons and agricultural community boundaries.
+```{r eval = FALSE}
+library(ggplot2)
+library(dplyr)
+
+db <- filter_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+
+ggplot() +
+  geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
+  geom_sf(data = db$boundary, fill = NA) +
+  guides(fill = guide_legend(title = "興居島の集落")) +
+  theme_void()
+```
+```{r gogoshima, echo = FALSE, warning = FALSE, message = FALSE}
+library(ggplot2)
+library(dplyr)
+
+db <- filter_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+
+ggplot() +
+  geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
+  geom_sf(data = db$boundary, fill = NA) +
+  guides(fill = guide_legend(title = "興居島の集落")) +
+  theme_void() +
+  theme(text = element_text(family = "HiraKakuProN-W3"))
 ```

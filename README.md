@@ -39,9 +39,7 @@ devtools::install_github("takeshinishimura/fude")
 
 ## Usage
 
-You can let R read the downloaded ZIP file without unzipping it. This
-function was inspired by [kokudosuuchi: Utilities for ‘Kokudo
-Suuchi’](https://CRAN.R-project.org/package=kokudosuuchi).
+You can let R read the downloaded ZIP file without unzipping it.
 
 ``` r
 library(fude)
@@ -106,25 +104,30 @@ d3 <- d |> rename_fude(suffix = TRUE, romaji = "title")
 #> 2022_384844 -> 2022_Matsuno-cho
 #> 2022_384887 -> 2022_Kihoku-cho
 #> 2022_385069 -> 2022_Ainan-cho
-d3 <- d |> rename_fude(suffix = FALSE, romaji = "upper")
-#> 2022_382019 -> 2022_MATSUYAMA
-#> 2022_382027 -> 2022_IMABARI
-#> 2022_382035 -> 2022_UWAJIMA
-#> 2022_382043 -> 2022_YAWATAHAMA
-#> 2022_382051 -> 2022_NIIHAMA
-#> 2022_382060 -> 2022_SAIJO
-#> 2022_382078 -> 2022_OZU
-#> 2022_382108 -> 2022_IYO
-#> 2022_382132 -> 2022_SHIKOKUCHUO
-#> 2022_382141 -> 2022_SEIYO
-#> 2022_382159 -> 2022_TOON
-#> 2022_383562 -> 2022_KAMIJIMA
-#> 2022_383864 -> 2022_KUMAKOGEN
-#> 2022_384011 -> 2022_MATSUMAE
-#> 2022_384020 -> 2022_TOBE
-#> 2022_384224 -> 2022_UCHIKO
-#> 2022_384429 -> 2022_IKATA
-#> 2022_384844 -> 2022_MATSUNO
-#> 2022_384887 -> 2022_KIHOKU
-#> 2022_385069 -> 2022_AINAN
 ```
+
+You can download the agricultural community boundary data corresponding
+to the Fude Polygon data you have from the MAFF website
+<https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/index.html>.
+
+``` r
+b <- get_boundary(d2)
+```
+
+You can draw a map combining Fude Polygons and agricultural community
+boundaries.
+
+``` r
+library(ggplot2)
+library(dplyr)
+
+db <- filter_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+
+ggplot() +
+  geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
+  geom_sf(data = db$boundary, fill = NA) +
+  guides(fill = guide_legend(title = "興居島の集落")) +
+  theme_void()
+```
+
+<img src="man/figures/README-gogoshima-1.png" width="100%" />

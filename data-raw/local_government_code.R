@@ -7,7 +7,7 @@ library(dplyr)
 # Download the latest Excel file containing the local government codes from
 # the website of the Ministry of Internal Affairs and Communications.
 # https://www.soumu.go.jp/denshijiti/code.html
-url <- "https://www.soumu.go.jp/main_content/000875486.xls"
+url <- "https://www.soumu.go.jp/main_content/000892308.xls"
 destfile <- file.path("./data-raw", sub(".*/", "", url))
 
 if (!file.exists(destfile)) {
@@ -19,40 +19,34 @@ lg_code1 <- readxl::read_excel(destfile, sheet = 1)
 names(lg_code1) <- sub("\n", "", names(lg_code1))
 
 # Read the ordinance-designated city codes
-seirei <- readxl::read_excel(destfile, col_names = FALSE, sheet = 2)
+seirei <- readxl::read_excel(destfile, sheet = 2)
+seirei <- seirei %>% select(-6)
 file.remove(destfile)
 
 # Add codes that have been deleted in recent years (can be found in the
 # following list of code revisions).
 # https://www.soumu.go.jp/main_content/000875488.xls
 seirei_add <- tibble::tribble(
-  ~"...1", ~"...2", ~"...3",
-  "221317", "\u6d5c\u677e\u5e02\u4e2d\u533a", "\u306f\u307e\u307e\u3064\u3057\u306a\u304b\u304f",
-  "221325", "\u6d5c\u677e\u5e02\u6771\u533a", "\u306f\u307e\u307e\u3064\u3057\u3072\u304c\u3057\u304f",
-  "221333", "\u6d5c\u677e\u5e02\u897f\u533a", "\u306f\u307e\u307e\u3064\u3057\u306b\u3057\u304f",
-  "221341", "\u6d5c\u677e\u5e02\u5357\u533a", "\u306f\u307e\u307e\u3064\u3057\u307f\u306a\u307f\u304f",
-  "221350", "\u6d5c\u677e\u5e02\u5317\u533a", "\u306f\u307e\u307e\u3064\u3057\u304d\u305f\u304f",
-  "221368", "\u6d5c\u677e\u5e02\u6d5c\u5317\u533a", "\u306f\u307e\u307e\u3064\u3057\u306f\u307e\u304d\u305f\u304f",
-  "221376", "\u6d5c\u677e\u5e02\u5929\u7adc\u533a", "\u306f\u307e\u307e\u3064\u3057\u3066\u3093\u308a\u3085\u3046\u304f"
+  ~"...1", ~"...2", ~"...3", ~"...4", ~"...5",
+  "221317", "\u9759\u5ca1\u770c", "\u6d5c\u677e\u5e02\u4e2d\u533a", "\uff7c\uff7d\uff9e\uff75\uff76\uff79\uff9d", "\uff8a\uff8f\uff8f\uff82\uff7c\uff85\uff76\uff78",
+  "221325", "\u9759\u5ca1\u770c", "\u6d5c\u677e\u5e02\u6771\u533a", "\uff7c\uff7d\uff9e\uff75\uff76\uff79\uff9d", "\uff8a\uff8f\uff8f\uff82\uff7c\uff8b\uff76\uff9e\uff7c\uff78",
+  "221333", "\u9759\u5ca1\u770c", "\u6d5c\u677e\u5e02\u897f\u533a", "\uff7c\uff7d\uff9e\uff75\uff76\uff79\uff9d", "\uff8a\uff8f\uff8f\uff82\uff7c\uff86\uff7c\uff78",
+  "221341", "\u9759\u5ca1\u770c", "\u6d5c\u677e\u5e02\u5357\u533a", "\uff7c\uff7d\uff9e\uff75\uff76\uff79\uff9d", "\uff8a\uff8f\uff8f\uff82\uff7c\uff90\uff85\uff90\uff78",
+  "221350", "\u9759\u5ca1\u770c", "\u6d5c\u677e\u5e02\u5317\u533a", "\uff7c\uff7d\uff9e\uff75\uff76\uff79\uff9d", "\uff8a\uff8f\uff8f\uff82\uff7c\uff77\uff80\uff78",
+  "221368", "\u9759\u5ca1\u770c", "\u6d5c\u677e\u5e02\u6d5c\u5317\u533a", "\uff7c\uff7d\uff9e\uff75\uff76\uff79\uff9d", "\uff8a\uff8f\uff8f\uff82\uff7c\uff8a\uff8f\uff77\uff80\uff78",
+  "221376", "\u9759\u5ca1\u770c", "\u6d5c\u677e\u5e02\u5929\u7adc\u533a", "\uff7c\uff7d\uff9e\uff75\uff76\uff79\uff9d", "\uff8a\uff8f\uff8f\uff82\uff7c\uff83\uff9d\uff98\uff6d\uff73\uff78"
 )
+names(seirei_add) <- names(seirei)
 seirei <- bind_rows(seirei, seirei_add)
 
 # Add designated city codes to the local government code
-new_rows <- seirei[!seirei$...1 %in% lg_code1$"\u56e3\u4f53\u30b3\u30fc\u30c9", ]
-new_rows <- tibble::tibble(new_rows[, 1],
-                           rep(NA, nrow(new_rows)),
-                           new_rows[, 2],
-                           rep(NA, nrow(new_rows)),
-                           new_rows[, 3],
-                           .name_repair = "unique")
-names(new_rows) <- names(lg_code1)
-
-lg_code <- rbind(lg_code1, new_rows)
+names(seirei) <- names(lg_code1)
+lg_code <- bind_rows(lg_code1, seirei)
 
 # Download the zip file of zip code data (romaji) from the website of Japan
 # Post Co.
 # https://www.post.japanpost.jp/zipcode/dl/roman-zip.html
-url <- "https://www.post.japanpost.jp/zipcode/dl/roman/ken_all_rome.zip"
+url <- "https://www.post.japanpost.jp/zipcode/dl/roman/KEN_ALL_ROME.zip"
 destfile <- file.path("./data-raw", sub(".*/", "", url))
 
 if (!file.exists(destfile)) {
@@ -62,7 +56,7 @@ exdir <- sub(".zip$", "", destfile)
 utils::unzip(destfile, exdir = exdir)
 
 ken_all_rome <- read_csv(list.files(exdir,
-                                    pattern = "\\.csv",
+                                    pattern = "\\.CSV",
                                     full.names = TRUE),
                          col_names = FALSE,
                          locale = readr::locale(encoding = "CP932"))
@@ -72,9 +66,9 @@ unlink(exdir, recursive = TRUE)
 
 kanji <- gsub("(市)(.*区$)", "\\1　\\2",
               lg_code$"\u5e02\u533a\u753a\u6751\u540d\uff08\u6f22\u5b57\uff09")
-ken_all_rome$X8 <- sub("^.+\u90e1　", "", ken_all_rome$X3)
+ken_all_rome$X8 <- sub("^.+\u90e1　", "", ken_all_rome$X3)# Gun
 ken_all_rome$X9 <- sub("^.+ GUN ", "", ken_all_rome$X6)
-ken_all_rome$X8 <- sub("^.+\u5cf6　", "", ken_all_rome$X8)
+ken_all_rome$X8 <- sub("^.+\u5cf6　", "", ken_all_rome$X8)# Shima
 ken_all_rome$X9 <- sub("MIYAKEJIMA ", "", ken_all_rome$X9)
 ken_all_rome$X9 <- sub("HACHIJOJIMA ", "", ken_all_rome$X9)
 
@@ -87,5 +81,10 @@ romaji[kanji %in% "\u6d5c\u677e\u5e02\u3000\u4e2d\u592e\u533a"] <- "HAMAMATSU SH
 romaji[kanji %in% "\u6d5c\u677e\u5e02\u3000\u6d5c\u540d\u533a"] <- "HAMAMATSU SHI HAMANA KU"
 
 lg_code$romaji <- gsub(" ", "-", sub(" SHI ", " SHI_", romaji))
+
+names(lg_code) <- c("dantai_code",
+                    "pref_kanji", "city_kanji",
+                    "pref_kana", "city_kana",
+                    "romaji")
 
 usethis::use_data(lg_code, internal = TRUE, overwrite = TRUE)

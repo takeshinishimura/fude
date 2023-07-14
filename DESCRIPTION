@@ -20,7 +20,10 @@ LazyData: true
 Depends:
     R (>= 3.3.0)
 Imports:
-    sf
+    sf,
+    dplyr,
+    magrittr,
+    glue
 Suggests: 
     testthat (>= 3.0.0)
 Roxygen: list(markdown = TRUE)
