@@ -92,7 +92,7 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>You can let R read the downloaded ZIP file without unzipping it. This function was inspired by <a href="https://CRAN.R-project.org/package=kokudosuuchi" class="external-link">kokudosuuchi: Utilities for ‘Kokudo Suuchi’</a>.</p>
+<p>You can let R read the downloaded ZIP file without unzipping it.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/takeshinishimura/fude" class="external-link">fude</a></span><span class="op">)</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span><span class="st">"~/2022_38.zip"</span><span class="op">)</span></span></code></pre></div>
@@ -144,28 +144,23 @@
 <span><span class="co">#&gt; 2022_384429 -&gt; 2022_Ikata-cho</span></span>
 <span><span class="co">#&gt; 2022_384844 -&gt; 2022_Matsuno-cho</span></span>
 <span><span class="co">#&gt; 2022_384887 -&gt; 2022_Kihoku-cho</span></span>
-<span><span class="co">#&gt; 2022_385069 -&gt; 2022_Ainan-cho</span></span>
-<span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span>suffix <span class="op">=</span> <span class="cn">FALSE</span>, romaji <span class="op">=</span> <span class="st">"upper"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2022_382019 -&gt; 2022_MATSUYAMA</span></span>
-<span><span class="co">#&gt; 2022_382027 -&gt; 2022_IMABARI</span></span>
-<span><span class="co">#&gt; 2022_382035 -&gt; 2022_UWAJIMA</span></span>
-<span><span class="co">#&gt; 2022_382043 -&gt; 2022_YAWATAHAMA</span></span>
-<span><span class="co">#&gt; 2022_382051 -&gt; 2022_NIIHAMA</span></span>
-<span><span class="co">#&gt; 2022_382060 -&gt; 2022_SAIJO</span></span>
-<span><span class="co">#&gt; 2022_382078 -&gt; 2022_OZU</span></span>
-<span><span class="co">#&gt; 2022_382108 -&gt; 2022_IYO</span></span>
-<span><span class="co">#&gt; 2022_382132 -&gt; 2022_SHIKOKUCHUO</span></span>
-<span><span class="co">#&gt; 2022_382141 -&gt; 2022_SEIYO</span></span>
-<span><span class="co">#&gt; 2022_382159 -&gt; 2022_TOON</span></span>
-<span><span class="co">#&gt; 2022_383562 -&gt; 2022_KAMIJIMA</span></span>
-<span><span class="co">#&gt; 2022_383864 -&gt; 2022_KUMAKOGEN</span></span>
-<span><span class="co">#&gt; 2022_384011 -&gt; 2022_MATSUMAE</span></span>
-<span><span class="co">#&gt; 2022_384020 -&gt; 2022_TOBE</span></span>
-<span><span class="co">#&gt; 2022_384224 -&gt; 2022_UCHIKO</span></span>
-<span><span class="co">#&gt; 2022_384429 -&gt; 2022_IKATA</span></span>
-<span><span class="co">#&gt; 2022_384844 -&gt; 2022_MATSUNO</span></span>
-<span><span class="co">#&gt; 2022_384887 -&gt; 2022_KIHOKU</span></span>
-<span><span class="co">#&gt; 2022_385069 -&gt; 2022_AINAN</span></span></code></pre></div>
+<span><span class="co">#&gt; 2022_385069 -&gt; 2022_Ainan-cho</span></span></code></pre></div>
+<p>You can download the agricultural community boundary data corresponding to the Fude Polygon data from the MAFF website <a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/index.html" class="external-link uri">https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/index.html</a>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span><span class="op">)</span></span></code></pre></div>
+<p>You can draw a map combining Fude Polygons and agricultural community boundaries.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/filter_fude.html">filter_fude</a></span><span class="op">(</span><span class="va">d2</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"松山市"</span>, community <span class="op">=</span> <span class="st">"由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">fude</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">RCOM_NAME</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">boundary</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"興居島の集落別耕地"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-gogoshima-1.png" width="100%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

@@ -107,7 +107,7 @@ d3 <- d |> rename_fude(suffix = TRUE, romaji = "title")
 ```
 
 You can download the agricultural community boundary data corresponding
-to the Fude Polygon data you have from the MAFF website
+to the Fude Polygon data from the MAFF website
 <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/index.html>.
 
 ``` r
