@@ -126,7 +126,7 @@ db <- filter_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ�
 ggplot() +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
   geom_sf(data = db$boundary, fill = NA) +
-  guides(fill = guide_legend(title = "興居島の集落")) +
+  guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void()
 ```
 
