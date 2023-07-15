@@ -12,9 +12,9 @@
 #'   A local government name in Japanese to be extracted. In the case of
 #'   overlapping local government names, the prefecture name must be included
 #'   (e.g., Fuchu-shi). Alternatively, it could be a local government code.
-#' @param former_village
-#'   String by regular expression. One or former village name in Japanese to be
-#'   extracted.
+#' @param old_village
+#'   String by regular expression. One or more old village name in Japanese to
+#'   be extracted.
 #' @param community
 #'   String by regular expression. One or more agricultural community name in
 #'   Japanese to be extracted.
@@ -29,7 +29,7 @@
 #' db <- combine_fude(d, b, "\u677e\u5c71\u5e02", "\u57ce\u6771", year = 2022)
 #' @importFrom magrittr %>%
 #' @export
-combine_fude <- function(data, boundary, city, former_village = "", community = "", year = NULL) {
+combine_fude <- function(data, boundary, city, old_village = "", community = "", year = NULL) {
   location_info <- find_pref_name(city)
   lg_code <- find_lg_code(location_info$pref, location_info$city)
 
@@ -58,7 +58,7 @@ combine_fude <- function(data, boundary, city, former_village = "", community = 
     dplyr::mutate(KCITY_NAME = dplyr::if_else(is.na(.data$KCITY_NAME), "", .data$KCITY_NAME)) %>%
     dplyr::mutate(RCOM_NAME = dplyr::if_else(is.na(.data$RCOM_NAME), "", .data$RCOM_NAME)) %>%
     dplyr::filter(.data$CITY_NAME == community_city &
-                  grepl(former_village, .data$KCITY_NAME) &
+                  grepl(old_village, .data$KCITY_NAME) &
                   grepl(community, .data$RCOM_NAME)) %>%
     dplyr::mutate(KCITY_NAME = factor(.data$KCITY_NAME, levels = unique(.data$KCITY_NAME))) %>%
     dplyr::mutate(RCOM_NAME = factor(.data$RCOM_NAME, levels = unique(.data$RCOM_NAME)))

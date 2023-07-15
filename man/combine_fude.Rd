@@ -8,7 +8,7 @@ combine_fude(
   data,
   boundary,
   city,
-  former_village = "",
+  old_village = "",
   community = "",
   year = NULL
 )
@@ -23,8 +23,8 @@ the MAFF.}
 overlapping local government names, the prefecture name must be included
 (e.g., Fuchu-shi). Alternatively, it could be a local government code.}
 
-\item{former_village}{String by regular expression. One or former village name in Japanese to be
-extracted.}
+\item{old_village}{String by regular expression. One or more old village name in Japanese to
+be extracted.}
 
 \item{community}{String by regular expression. One or more agricultural community name in
 Japanese to be extracted.}
