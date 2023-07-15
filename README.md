@@ -123,5 +123,6 @@ ggplot() +
 If you want to use `mapview()`, do the following.
 
 ``` r
+db <- combine_fude(d2, b, city = "宇和島市", old_village = "遊子")
 mapview::mapview(db$fude, zcol = "RCOM_NAME")
 ```
