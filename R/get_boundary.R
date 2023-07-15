@@ -1,4 +1,4 @@
-#' Get agricultural community boundary data
+#' Get the agricultural community boundary data
 #'
 #' @description
 #' `get_boundary()` downloads and reads one or more agricultural community

@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_boundary.R
 \name{get_boundary}
 \alias{get_boundary}
-\title{Get agricultural community boundary data}
+\title{Get the agricultural community boundary data}
 \usage{
 get_boundary(data, year = 2020, quiet = FALSE, to_wgs84 = TRUE)
 }

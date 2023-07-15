@@ -1,4 +1,4 @@
-#' Combine Fude Polygon data with agricultural community boundary data
+#' Combine the Fude Polygon data with the agricultural community boundary data
 #'
 #' @description
 #' `combine_fude()` uses the agricultural community boundary data to reduce the
@@ -47,8 +47,12 @@ combine_fude <- function(data, boundary, city, community, year = NULL) {
   x <- data[[data_no]]
 
   pref <- substr(lg_code, start = 1, stop = 2)
+  community_city <- dplyr::if_else(grepl("\u533a$", location_info$city),
+                                   sub(".*\u5e02", "", location_info$city),
+                                   location_info$city)
+
   y <- boundary[[pref]] %>%
-    dplyr::filter(.data$CITY_NAME == location_info$city &
+    dplyr::filter(.data$CITY_NAME == community_city &
                   grepl(community, .data$RCOM_NAME)) %>%
     dplyr::mutate(RCOM_NAME = factor(.data$RCOM_NAME, levels = .data$RCOM_NAME))
 
@@ -68,7 +72,7 @@ find_pref_name <- function(city) {
 
     matching_idx <- sapply(fude::pref_table$pref_kanji, function(x) grepl(paste0("^", x), city))
 
-    if (sum(matching_idx)) {
+    if (sum(matching_idx) == 1) {
 
       pref_kanji <- fude::pref_table$pref_kanji[matching_idx]
       city_kanji <- gsub(glue::glue("^{pref_kanji}|\\s|\u3000"), "", city)

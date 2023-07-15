@@ -2,7 +2,7 @@
 % Please edit documentation in R/combine_fude.R
 \name{combine_fude}
 \alias{combine_fude}
-\title{Combine Fude Polygon data with agricultural community boundary data}
+\title{Combine the Fude Polygon data with the agricultural community boundary data}
 \usage{
 combine_fude(data, boundary, city, community, year = NULL)
 }
