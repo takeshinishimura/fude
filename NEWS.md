@@ -1,4 +1,6 @@
-# fude (development version)
+# fude 0.3.0
+
+* Added the ability to combine with agricultural community boundary data.
 
 # fude 0.2.0
 
