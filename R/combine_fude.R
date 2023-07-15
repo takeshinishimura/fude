@@ -52,6 +52,7 @@ combine_fude <- function(data, boundary, city, community, year = NULL) {
                                    location_info$city)
 
   y <- boundary[[pref]] %>%
+    dplyr::mutate(RCOM_NAME = dplyr::if_else(is.na(.data$RCOM_NAME), "", .data$RCOM_NAME)) %>%
     dplyr::filter(.data$CITY_NAME == community_city &
                   grepl(community, .data$RCOM_NAME)) %>%
     dplyr::mutate(RCOM_NAME = factor(.data$RCOM_NAME, levels = .data$RCOM_NAME))
