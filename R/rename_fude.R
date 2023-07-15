@@ -15,6 +15,8 @@
 #'   - `"title"`: Title case.
 #'   - `"lower"`: Lower case.
 #'   - `"upper"`: Upper case.
+#' @param quiet
+#'   logical. Suppress information about the data to be read.
 #' @returns A list of [sf::sf()] objects.
 #' @seealso [read_fude()].
 #' @examples
@@ -24,7 +26,7 @@
 #' d2 <- rename_fude(d, suffix = FALSE)
 #' d2 <- d |> rename_fude(romaji = "upper")
 #' @export
-rename_fude <- function(data, suffix = TRUE, romaji = NULL) {
+rename_fude <- function(data, suffix = TRUE, romaji = NULL, quiet = FALSE) {
   old_names <- names(data)
   nen <- sub("(_.*)", "_", old_names)
   unique_nen <- unique(nen)
@@ -47,20 +49,23 @@ rename_fude <- function(data, suffix = TRUE, romaji = NULL) {
   x <- data
   names(x) <- new_names
 
-  message(paste(paste0(old_names, " -> ", new_names), collapse = "\n"))
+  if (quiet == FALSE) {
+    message(paste(paste0(old_names, " -> ", new_names), collapse = "\n"))
+  }
+
   return(x)
 }
 
 get_lg_name <- function(matching_codes, suffix, romaji) {
-  matching_idx <- match(matching_codes, lg_code$dantai_code)
+  matching_idx <- match(matching_codes, fude::lg_code_table$lg_code)
 
   if (is.null(romaji)) {
 
-    x <- lg_code$city_kanji[matching_idx]
+    x <- fude::lg_code_table$city_kanji[matching_idx]
 
   } else {
 
-    x <- lg_code$romaji[matching_idx]
+    x <- fude::lg_code_table$romaji[matching_idx]
 
     if (romaji == "lower") {
 

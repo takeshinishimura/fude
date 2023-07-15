@@ -9,6 +9,7 @@
 #'   Path to the ZIP file containing one or more GeoJSON format files.
 #' @param quiet
 #'   logical. Suppress information about the data to be read.
+#'
 #' @returns A list of [sf::sf()] objects.
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")

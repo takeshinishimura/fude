@@ -1,4 +1,4 @@
-# Create a local government code/name correspondence table
+# Local government code/name correspondence table
 
 library(readxl)
 library(readr)
@@ -15,8 +15,8 @@ if (!file.exists(destfile)) {
 }
 
 # Read the local government codes
-lg_code1 <- readxl::read_excel(destfile, sheet = 1)
-names(lg_code1) <- sub("\n", "", names(lg_code1))
+lg_code <- readxl::read_excel(destfile, sheet = 1)
+names(lg_code) <- sub("\n", "", names(lg_code))
 
 # Read the ordinance-designated city codes
 seirei <- readxl::read_excel(destfile, sheet = 2)
@@ -40,8 +40,8 @@ names(seirei_add) <- names(seirei)
 seirei <- bind_rows(seirei, seirei_add)
 
 # Add designated city codes to the local government code
-names(seirei) <- names(lg_code1)
-lg_code <- bind_rows(lg_code1, seirei)
+names(seirei) <- names(lg_code)
+lg_code_table <- bind_rows(lg_code, seirei)
 
 # Download the zip file of zip code data (romaji) from the website of Japan
 # Post Co.
@@ -65,7 +65,7 @@ file.remove(destfile)
 unlink(exdir, recursive = TRUE)
 
 kanji <- gsub("(市)(.*区$)", "\\1　\\2",
-              lg_code$"\u5e02\u533a\u753a\u6751\u540d\uff08\u6f22\u5b57\uff09")
+              lg_code_table$"\u5e02\u533a\u753a\u6751\u540d\uff08\u6f22\u5b57\uff09")
 ken_all_rome$X8 <- sub("^.+\u90e1　", "", ken_all_rome$X3)# Gun
 ken_all_rome$X9 <- sub("^.+ GUN ", "", ken_all_rome$X6)
 ken_all_rome$X8 <- sub("^.+\u5cf6　", "", ken_all_rome$X8)# Shima
@@ -80,11 +80,11 @@ for (i in seq_along(kanji)) {
 romaji[kanji %in% "\u6d5c\u677e\u5e02\u3000\u4e2d\u592e\u533a"] <- "HAMAMATSU SHI CHUO KU"
 romaji[kanji %in% "\u6d5c\u677e\u5e02\u3000\u6d5c\u540d\u533a"] <- "HAMAMATSU SHI HAMANA KU"
 
-lg_code$romaji <- gsub(" ", "-", sub(" SHI ", " SHI_", romaji))
+lg_code_table$romaji <- gsub(" ", "-", sub(" SHI ", " SHI_", romaji))
 
-names(lg_code) <- c("dantai_code",
-                    "pref_kanji", "city_kanji",
-                    "pref_kana", "city_kana",
-                    "romaji")
+names(lg_code_table) <- c("lg_code",
+                          "pref_kanji", "city_kanji",
+                          "pref_kana", "city_kana",
+                          "romaji")
 
-usethis::use_data(lg_code, internal = TRUE, overwrite = TRUE)
+usethis::use_data(lg_code_table, internal = FALSE, overwrite = TRUE)

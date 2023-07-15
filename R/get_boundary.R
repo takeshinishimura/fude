@@ -35,7 +35,7 @@ read_boundary <- function(pref_code, year, quiet, to_wgs84) {
                  year, year, year, pref_code)
 
   zipfile <- tempfile(fileext = ".zip")
-  download.file(url, zipfile)
+  utils::download.file(url, zipfile)
 
   exdir <- tempdir()
   utils::unzip(zipfile, exdir = exdir)
@@ -74,13 +74,13 @@ fude_to_pref_code <- function(data) {
 }
 
 get_pref_code <- function(input) {
-  if (input %in% pref_table$pref_code) {
+  if (input %in% fude::pref_table$pref_code) {
 
     return(input)
 
-  } else if (input %in% pref_table$pref_name) {
+  } else if (input %in% fude::pref_table$pref_name) {
 
-    return(pref_table$pref_code[pref_table$pref_name == input])
+    return(fude::pref_table$pref_code[fude::pref_table$pref_name == input])
 
   } else {
 

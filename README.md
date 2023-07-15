@@ -83,27 +83,15 @@ d2 <- rename_fude(d)
 It can also be renamed to romaji instead of Japanese.
 
 ``` r
-d3 <- d |> rename_fude(suffix = TRUE, romaji = "title")
-#> 2022_382019 -> 2022_Matsuyama-shi
-#> 2022_382027 -> 2022_Imabari-shi
-#> 2022_382035 -> 2022_Uwajima-shi
-#> 2022_382043 -> 2022_Yawatahama-shi
-#> 2022_382051 -> 2022_Niihama-shi
-#> 2022_382060 -> 2022_Saijo-shi
-#> 2022_382078 -> 2022_Ozu-shi
-#> 2022_382108 -> 2022_Iyo-shi
-#> 2022_382132 -> 2022_Shikokuchuo-shi
-#> 2022_382141 -> 2022_Seiyo-shi
-#> 2022_382159 -> 2022_Toon-shi
-#> 2022_383562 -> 2022_Kamijima-cho
-#> 2022_383864 -> 2022_Kumakogen-cho
-#> 2022_384011 -> 2022_Matsumae-cho
-#> 2022_384020 -> 2022_Tobe-cho
-#> 2022_384224 -> 2022_Uchiko-cho
-#> 2022_384429 -> 2022_Ikata-cho
-#> 2022_384844 -> 2022_Matsuno-cho
-#> 2022_384887 -> 2022_Kihoku-cho
-#> 2022_385069 -> 2022_Ainan-cho
+d3 <- d |> rename_fude(suffix = TRUE, romaji = "title", quiet = TRUE)
+names(d3)
+#>  [1] "2022_Matsuyama-shi"   "2022_Imabari-shi"     "2022_Uwajima-shi"    
+#>  [4] "2022_Yawatahama-shi"  "2022_Niihama-shi"     "2022_Saijo-shi"      
+#>  [7] "2022_Ozu-shi"         "2022_Iyo-shi"         "2022_Shikokuchuo-shi"
+#> [10] "2022_Seiyo-shi"       "2022_Toon-shi"        "2022_Kamijima-cho"   
+#> [13] "2022_Kumakogen-cho"   "2022_Matsumae-cho"    "2022_Tobe-cho"       
+#> [16] "2022_Uchiko-cho"      "2022_Ikata-cho"       "2022_Matsuno-cho"    
+#> [19] "2022_Kihoku-cho"      "2022_Ainan-cho"
 ```
 
 You can download the agricultural community boundary data corresponding
@@ -121,7 +109,7 @@ boundaries.
 library(ggplot2)
 library(dplyr)
 
-db <- filter_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+db <- combine_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +

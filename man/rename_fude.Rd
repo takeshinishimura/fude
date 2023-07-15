@@ -4,7 +4,7 @@
 \alias{rename_fude}
 \title{Rename the Fude Polygon data}
 \usage{
-rename_fude(data, suffix = TRUE, romaji = NULL)
+rename_fude(data, suffix = TRUE, romaji = NULL, quiet = FALSE)
 }
 \arguments{
 \item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
@@ -19,6 +19,8 @@ Japanese. Romanji format is upper case unless specified.
 \item \code{"lower"}: Lower case.
 \item \code{"upper"}: Upper case.
 }}
+
+\item{quiet}{logical. Suppress information about the data to be read.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.

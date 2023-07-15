@@ -67,7 +67,8 @@ d2 <- rename_fude(d)
 
 It can also be renamed to romaji instead of Japanese.
 ```{r}
-d3 <- d |> rename_fude(suffix = TRUE, romaji = "title")
+d3 <- d |> rename_fude(suffix = TRUE, romaji = "title", quiet = TRUE)
+names(d3)
 ```
 
 You can download the agricultural community boundary data corresponding to the Fude Polygon data from the MAFF website <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/index.html>.
@@ -83,7 +84,7 @@ You can draw a map combining Fude Polygons and agricultural community boundaries
 library(ggplot2)
 library(dplyr)
 
-db <- filter_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+db <- combine_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
@@ -95,7 +96,7 @@ ggplot() +
 library(ggplot2)
 library(dplyr)
 
-db <- filter_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+db <- combine_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
