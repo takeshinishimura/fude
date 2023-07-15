@@ -4,7 +4,14 @@
 \alias{combine_fude}
 \title{Combine the Fude Polygon data with the agricultural community boundary data}
 \usage{
-combine_fude(data, boundary, city, community, year = NULL)
+combine_fude(
+  data,
+  boundary,
+  city,
+  former_village = "",
+  community = "",
+  year = NULL
+)
 }
 \arguments{
 \item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
@@ -15,6 +22,9 @@ the MAFF.}
 \item{city}{A local government name in Japanese to be extracted. In the case of
 overlapping local government names, the prefecture name must be included
 (e.g., Fuchu-shi). Alternatively, it could be a local government code.}
+
+\item{former_village}{String by regular expression. One or former village name in Japanese to be
+extracted.}
 
 \item{community}{String by regular expression. One or more agricultural community name in
 Japanese to be extracted.}
