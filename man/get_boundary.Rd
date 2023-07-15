@@ -23,7 +23,9 @@ A list of \code{\link[sf:sf]{sf::sf()}} objects.
 boundary data provided by the MAFF.
 }
 \examples{
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path)
 b <- get_boundary(d)
+\dontshow{\}) # examplesIf}
 }

@@ -19,7 +19,7 @@
 #'   Year in the column name of the `data`, if there is more than one
 #'   applicable local government code.
 #' @returns A list of [sf::sf()] objects.
-#' @examples
+#' @examplesIf interactive()
 #' path <- system.file("extdata", "castle.zip", package = "fude")
 #' d <- read_fude(path)
 #' b <- get_boundary(d)
