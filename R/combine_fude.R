@@ -55,7 +55,7 @@ combine_fude <- function(data, boundary, city, community, year = NULL) {
     dplyr::mutate(RCOM_NAME = dplyr::if_else(is.na(.data$RCOM_NAME), "", .data$RCOM_NAME)) %>%
     dplyr::filter(.data$CITY_NAME == community_city &
                   grepl(community, .data$RCOM_NAME)) %>%
-    dplyr::mutate(RCOM_NAME = factor(.data$RCOM_NAME, levels = .data$RCOM_NAME))
+    dplyr::mutate(RCOM_NAME = factor(.data$RCOM_NAME, levels = unique(.data$RCOM_NAME)))
 
   z <- sf::st_intersection(x, y)
 
