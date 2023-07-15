@@ -92,7 +92,7 @@ ggplot() +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void()
 ```
-```{r gogoshima, echo = FALSE, warning = FALSE, message = FALSE}
+```{r gogoshima, echo = FALSE, warning = FALSE, message = FALSE, dpi = 150}
 library(ggplot2)
 library(dplyr)
 
@@ -104,4 +104,9 @@ ggplot() +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
   theme(text = element_text(family = "HiraKakuProN-W3"))
+```
+
+If you want to use `mapview()`, do the following.
+```{r eval = FALSE}
+mapview::mapview(db$fude, zcol = "RCOM_NAME")
 ```

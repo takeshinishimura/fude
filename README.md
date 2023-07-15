@@ -119,3 +119,9 @@ ggplot() +
 ```
 
 <img src="man/figures/README-gogoshima-1.png" width="100%" />
+
+If you want to use `mapview()`, do the following.
+
+``` r
+mapview::mapview(db$fude, zcol = "RCOM_NAME")
+```
