@@ -82,7 +82,6 @@ b <- get_boundary(d2, quiet = TRUE)
 You can draw a map combining Fude Polygons and agricultural community boundaries.
 ```{r eval = FALSE}
 library(ggplot2)
-library(dplyr)
 
 db <- combine_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
@@ -94,7 +93,6 @@ ggplot() +
 ```
 ```{r gogoshima, echo = FALSE, warning = FALSE, message = FALSE, dpi = 150}
 library(ggplot2)
-library(dplyr)
 
 db <- combine_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 

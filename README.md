@@ -107,7 +107,6 @@ boundaries.
 
 ``` r
 library(ggplot2)
-library(dplyr)
 
 db <- combine_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
