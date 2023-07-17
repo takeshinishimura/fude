@@ -119,6 +119,8 @@ ggplot() +
 
 <img src="man/figures/README-gogoshima-1.png" width="100%" />
 
+**出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
+
 If you want to use `mapview()`, do the following.
 
 ``` r
