@@ -23,6 +23,7 @@ Imports:
     sf,
     dplyr,
     magrittr,
+    forcats,
     glue
 Suggests: 
     testthat (>= 3.0.0)

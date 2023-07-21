@@ -60,8 +60,8 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
     dplyr::filter(.data$CITY_NAME == community_city &
                   grepl(old_village, .data$KCITY_NAME) &
                   grepl(community, .data$RCOM_NAME)) %>%
-    dplyr::mutate(KCITY_NAME = factor(.data$KCITY_NAME, levels = unique(.data$KCITY_NAME))) %>%
-    dplyr::mutate(RCOM_NAME = factor(.data$RCOM_NAME, levels = unique(.data$RCOM_NAME)))
+    dplyr::mutate(KCITY_NAME = forcats::fct_inorder(.data$KCITY_NAME)) %>%
+    dplyr::mutate(RCOM_NAME = forcats::fct_inorder(.data$RCOM_NAME))
 
   z <- sf::st_intersection(x, y)
 
