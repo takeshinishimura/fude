@@ -6,9 +6,9 @@
 #' @param data
 #'   List of [sf::sf()] objects.
 #' @param year
-#'   Year to be extracted.
+#'   Years to be extracted.
 #' @param city
-#'   Local government name (or code) to be extracted.
+#'   Local government names or codes to be extracted.
 #' @param list
 #'   logical. If `FALSE`, the object to be extracted is no longer a list.
 #' @returns A list of [sf::sf()] object(s).
@@ -35,10 +35,12 @@ extract_fude <- function(data, year = NULL, city = NULL, list = TRUE) {
     for (i in as.character(year)) {
       data_i <- ls_fude(data)[[i]]
       matching_idx1 <- match(city, data_i$local_government_cd)
-      matching_idx2 <- match(city, data_i$city_kanji)
+      matching_idx2 <- match(sub("(\u5e02|\u533a|\u753a|\u6751)$", "", city),
+                             sub("(\u5e02|\u533a|\u753a|\u6751)$", "", data_i$city_kanji))
       matching_idx3 <- match(tolower(gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", city, ignore.case = TRUE)),
                              tolower(gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", data_i$romaji, ignore.case = TRUE)))
-      matching_idx <- c(matching_idx1, matching_idx2, matching_idx3)
+      matching_idx4 <- match(city, data_i$names)
+      matching_idx <- unique(c(matching_idx1, matching_idx2, matching_idx3, matching_idx4))
       selected_names <- c(selected_names, data_i$full_names[stats::na.omit(matching_idx)])
     }
 

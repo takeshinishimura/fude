@@ -9,9 +9,9 @@ extract_fude(data, year = NULL, city = NULL, list = TRUE)
 \arguments{
 \item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
 
-\item{year}{Year to be extracted.}
+\item{year}{Years to be extracted.}
 
-\item{city}{Local government name (or code) to be extracted.}
+\item{city}{Local government names or codes to be extracted.}
 
 \item{list}{logical. If \code{FALSE}, the object to be extracted is no longer a list.}
 }
