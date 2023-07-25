@@ -64,9 +64,14 @@ read_boundary <- function(pref_code, year, quiet, to_wgs84) {
   return(x)
 }
 
+fude_to_lg_code <- function(data) {
+  x <- unlist(lapply(names(data), function(i) unique(data[[i]]$local_government_cd)))
+
+  return(x)
+}
+
 fude_to_pref_code <- function(data) {
-  local_government_cd <- unlist(lapply(names(data),
-                                       function(i) unique(data[[i]]$local_government_cd)))
+  local_government_cd <- fude_to_lg_code(data)
 
   x <- unique(substr(local_government_cd, start = 1, stop = 2))
 

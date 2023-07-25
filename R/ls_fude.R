@@ -17,7 +17,12 @@ ls_fude <- function(data) {
   x <- list()
 
   for (i in nen) {
-    x[[i]] <- sub(paste0(i, "_"), "", names(data)[grep(i, names(data))])
+    local_government_cd <- fude_to_lg_code(data[grep(i, names(data))])
+    x[[i]] <- data.frame(full_names = names(data)[grep(i, names(data))],
+                         names = sub(paste0(i, "_"), "", names(data)[grep(i, names(data))]),
+                         local_government_cd = local_government_cd,
+                         city_kanji = get_lg_name(local_government_cd, suffix = TRUE, romaji = NULL),
+                         romaji = get_lg_name(local_government_cd, suffix = TRUE, romaji = "title"))
   }
 
   return(x)
