@@ -44,7 +44,7 @@ extract_fude <- function(data, year = NULL, city = NULL, list = TRUE) {
 
   } else {
 
-    selected_names <- names(data)[grep(year, names(data))]
+    selected_names <- grep(paste0(year, collapse = "|"), names(data), value = TRUE)
 
   }
 
