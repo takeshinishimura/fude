@@ -20,10 +20,10 @@ combine_fude(
 the MAFF.}
 
 \item{city}{A local government name in Japanese to be extracted. In the case of
-overlapping local government names, this must contain the name of the
-prefecture in Japanese and the prefecture code in romaji
-(e.g., "Fuchu-shi, 13",  "fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO").
-Alternatively, it could be a 6-digit local government code.}
+overlapping local government names, this must contain the prefecture name
+in Japanese and the prefecture code in romaji (e.g., "Fuchu-shi, 13",
+"fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO"). Alternatively, it could be
+a 6-digit local government code.}
 
 \item{old_village}{String by regular expression. One or more old village name in Japanese to
 be extracted.}
@@ -31,8 +31,8 @@ be extracted.}
 \item{community}{String by regular expression. One or more agricultural community name in
 Japanese to be extracted.}
 
-\item{year}{Year in the column name of the \code{data}, if there is more than one
-applicable local government code.}
+\item{year}{Year in the column name of the \code{data}. If there is more than one
+applicable local government code, it is required.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.
