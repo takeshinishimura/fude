@@ -86,12 +86,12 @@ find_pref_name <- function(city) {
       if (sum(matching_idx) == 1) {
 
         pref_kanji <- fude::pref_table$pref_kanji[matching_idx]
-        city_kanji <- gsub(paste0(get_pref_code(pref_kanji), "|,|\\s"), "", city)
+        city_kanji <- toupper(gsub(paste0(get_pref_code(pref_kanji), "|,|\\s"), "", city))
 
       } else {
 
         pref_kanji <- NULL
-        city_kanji <- city
+        city_kanji <- toupper(city)
 
       }
 
@@ -122,15 +122,15 @@ find_pref_name <- function(city) {
 find_lg_code <- function(pref, city) {
   if (is.null(pref)) {
 
-    if (grepl("^[A-Za-z-]+$", city)) {
+    if (grepl("^[A-Z-]+$", city)) {
 
-      if (grepl("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", city, ignore.case = TRUE)) {
+      if (grepl("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", city)) {
 
-        matching_idx <- dplyr::filter(fude::lg_code_table, tolower(.data$romaji) == city)
+        matching_idx <- dplyr::filter(fude::lg_code_table, .data$romaji == city)
 
       } else {
 
-        matching_idx <- dplyr::filter(fude::lg_code_table, tolower(gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", .data$romaji)) == city)
+        matching_idx <- dplyr::filter(fude::lg_code_table, gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", .data$romaji) == city)
 
       }
 
@@ -138,7 +138,7 @@ find_lg_code <- function(pref, city) {
 
       if (grepl("(\u5e02|\u533a|\u753a|\u6751)$", city)) {
 
-        matching_idx <- dplyr::filter(fude::lg_code_table, tolower(.data$city_kanji) == city)
+        matching_idx <- dplyr::filter(fude::lg_code_table, .data$city_kanji == city)
 
       } else {
 
@@ -156,15 +156,15 @@ find_lg_code <- function(pref, city) {
 
   } else {
 
-    if (grepl("^[A-Za-z-]+$", city)) {
+    if (grepl("^[A-Z-]+$", city)) {
 
       if (grepl("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", city, ignore.case = TRUE)) {
 
-        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & tolower(.data$romaji) == city)
+        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & .data$romaji == city)
 
       } else {
 
-        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & tolower(gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", .data$romaji)) == city)
+        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", .data$romaji) == city)
 
       }
 
@@ -172,7 +172,7 @@ find_lg_code <- function(pref, city) {
 
       if (grepl("(\u5e02|\u533a|\u753a|\u6751)$", city)) {
 
-        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & tolower(.data$city_kanji) == city)
+        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & .data$city_kanji == city)
 
       } else {
 
