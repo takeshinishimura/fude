@@ -83,9 +83,9 @@ get_pref_code <- function(input) {
 
     return(input)
 
-  } else if (input %in% fude::pref_table$pref_name) {
+  } else if (input %in% fude::pref_table$pref_kanji) {
 
-    return(fude::pref_table$pref_code[fude::pref_table$pref_name == input])
+    return(fude::pref_table$pref_code[fude::pref_table$pref_kanji == input])
 
   } else {
 

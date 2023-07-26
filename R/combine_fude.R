@@ -38,10 +38,13 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
 
   data_no <- which(local_government_cd %in% lg_code)
   if (length(data_no) != 1) {
+
     if (is.null(year)) {
       stop("Specify the year since there are multiple applicable local government codes.")
     } else {
+
       data_no <- data_no[which(as.character(year) == sub("(_.*)", "", names(data)[data_no]))]
+
       if (length(data_no) == 0) {
         stop("Specify the correct year.")
       }
@@ -50,9 +53,8 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
   x <- data[[data_no]]
 
   pref <- substr(lg_code, start = 1, stop = 2)
-  community_city <- dplyr::if_else(grepl("\u533a$", location_info$city),
-                                   sub(".*\u5e02", "", location_info$city),
-                                   location_info$city)
+  community_city <- fude::lg_code_table$city_kanji[fude::lg_code_table$lg_code == lg_code]
+  community_city <- dplyr::if_else(grepl("\u533a$", community_city), sub(".*\u5e02", "", community_city), community_city)
 
   y <- boundary[[pref]] %>%
     dplyr::mutate(KCITY_NAME = dplyr::if_else(is.na(.data$KCITY_NAME), "", .data$KCITY_NAME)) %>%
@@ -77,29 +79,74 @@ find_pref_name <- function(city) {
 
   } else {
 
-    matching_idx <- sapply(fude::pref_table$pref_kanji, function(x) grepl(paste0("^", x), city))
+    if (grepl("^[A-Za-z0-9, -]+$", city)) {
 
-    if (sum(matching_idx) == 1) {
+      matching_idx <- sapply(fude::pref_table$pref_code, function(x) grepl(x, city))
 
-      pref_kanji <- fude::pref_table$pref_kanji[matching_idx]
-      city_kanji <- gsub(glue::glue("^{pref_kanji}|\\s|\u3000"), "", city)
+      if (sum(matching_idx) == 1) {
+
+        pref_kanji <- fude::pref_table$pref_kanji[matching_idx]
+        city_kanji <- gsub(paste0(get_pref_code(pref_kanji), "|,|\\s"), "", city)
+
+      } else {
+
+        pref_kanji <- NULL
+        city_kanji <- city
+
+      }
 
     } else {
 
-      pref_kanji <- NULL
-      city_kanji <- city
+      matching_idx <- sapply(fude::pref_table$pref_kanji, function(x) grepl(paste0("^", x), city))
+
+      if (sum(matching_idx) == 1) {
+
+        pref_kanji <- fude::pref_table$pref_kanji[matching_idx]
+        city_kanji <- gsub(glue::glue("^{pref_kanji}|\\s|\u3000"), "", city)
+
+      } else {
+
+        pref_kanji <- NULL
+        city_kanji <- city
+
+      }
 
     }
 
   }
 
   return(list(pref = pref_kanji, city = city_kanji))
+
 }
 
 find_lg_code <- function(pref, city) {
   if (is.null(pref)) {
 
-    matching_idx <- dplyr::filter(fude::lg_code_table, .data$city_kanji == city)
+    if (grepl("^[A-Za-z-]+$", city)) {
+
+      if (grepl("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", city, ignore.case = TRUE)) {
+
+        matching_idx <- dplyr::filter(fude::lg_code_table, tolower(.data$romaji) == city)
+
+      } else {
+
+        matching_idx <- dplyr::filter(fude::lg_code_table, tolower(gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", .data$romaji)) == city)
+
+      }
+
+    } else {
+
+      if (grepl("(\u5e02|\u533a|\u753a|\u6751)$", city)) {
+
+        matching_idx <- dplyr::filter(fude::lg_code_table, tolower(.data$city_kanji) == city)
+
+      } else {
+
+        matching_idx <- dplyr::filter(fude::lg_code_table, sub("(\u5e02|\u533a|\u753a|\u6751)$", "", .data$city_kanji) == city)
+
+      }
+
+    }
 
     if (nrow(matching_idx) > 1) {
 
@@ -109,7 +156,32 @@ find_lg_code <- function(pref, city) {
 
   } else {
 
-    matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & .data$city_kanji == city)
+    if (grepl("^[A-Za-z-]+$", city)) {
+
+      if (grepl("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", city, ignore.case = TRUE)) {
+
+        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & tolower(.data$romaji) == city)
+
+      } else {
+
+        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & tolower(gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", .data$romaji)) == city)
+
+      }
+
+    } else {
+
+      if (grepl("(\u5e02|\u533a|\u753a|\u6751)$", city)) {
+
+        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & tolower(.data$city_kanji) == city)
+
+      } else {
+
+        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & sub("(\u5e02|\u533a|\u753a|\u6751)$", "", .data$city_kanji) == city)
+
+      }
+
+
+    }
 
   }
 
