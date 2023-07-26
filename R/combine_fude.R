@@ -10,8 +10,10 @@
 #'   the MAFF.
 #' @param city
 #'   A local government name in Japanese to be extracted. In the case of
-#'   overlapping local government names, the prefecture name must be included
-#'   (e.g., Fuchu-shi). Alternatively, it could be a local government code.
+#'   overlapping local government names, this must contain the name of the
+#'   prefecture in Japanese and the prefecture code in romaji
+#'   (e.g., "Fuchu-shi, 13",  "fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO").
+#'   Alternatively, it could be a 6-digit local government code.
 #' @param old_village
 #'   String by regular expression. One or more old village name in Japanese to
 #'   be extracted.

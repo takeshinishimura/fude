@@ -26,9 +26,9 @@ Japanese. Romanji format is upper case unless specified.
 A list of \code{\link[sf:sf]{sf::sf()}} objects.
 }
 \description{
-\code{rename_fude()} renames the local government code of the list returned by
-\code{\link[=read_fude]{read_fude()}} to the corresponding Japanese name in order to make the data
-human-friendly.
+\code{rename_fude()} renames the 6-digit local government code of the list
+returned by \code{\link[=read_fude]{read_fude()}} to the corresponding Japanese name in order to
+make the data human-friendly.
 }
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")

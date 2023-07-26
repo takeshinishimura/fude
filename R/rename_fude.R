@@ -1,9 +1,9 @@
 #' Rename the Fude Polygon data
 #'
 #' @description
-#' `rename_fude()` renames the local government code of the list returned by
-#' [read_fude()] to the corresponding Japanese name in order to make the data
-#' human-friendly.
+#' `rename_fude()` renames the 6-digit local government code of the list
+#' returned by [read_fude()] to the corresponding Japanese name in order to
+#' make the data human-friendly.
 #' @param data
 #'   List of [sf::sf()] objects.
 #' @param suffix
