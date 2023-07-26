@@ -71,7 +71,7 @@ d3 <- d |> rename_fude(suffix = TRUE, romaji = "title", quiet = TRUE)
 names(d3)
 ```
 
-You can download the agricultural community boundary data corresponding to the Fude Polygon data from the MAFF website <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/index.html>.
+You can download the agricultural community boundary data corresponding to the Fude Polygon data from the MAFF website <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/> (only Japanese is available).
 ```{r eval = FALSE}
 b <- get_boundary(d2)
 ```
@@ -79,7 +79,7 @@ b <- get_boundary(d2)
 b <- get_boundary(d2, quiet = TRUE)
 ```
 
-You can draw a map combining Fude Polygons and agricultural community boundaries.
+You can easily draw a map combining Fude Polygons and agricultural community boundaries.
 ```{r eval = FALSE}
 library(ggplot2)
 
