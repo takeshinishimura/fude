@@ -168,12 +168,12 @@ mainmap <- ggplot() +
 ggdraw(mainmap) +
   draw_plot(
     {minimap +
-       geom_rect(aes(xmin = 132.55, xmax = 132.85,
+       geom_rect(aes(xmin = 132.5, xmax = 132.85,
                      ymin = 33.8, ymax = 34.0),
                  fill = NA,
                  colour = "black",
                  size = .5) +
-       coord_sf(xlim = c(132.55, 132.85),
+       coord_sf(xlim = c(132.5, 132.85),
                 ylim = c(33.8, 34.0),
                 expand = FALSE) +
        theme(legend.position = "none")
