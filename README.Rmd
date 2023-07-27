@@ -86,7 +86,7 @@ library(ggplot2)
 db <- combine_fude(d2, b, city = "松山市", community = "御手洗|泊|船越|鷲ケ巣|由良|北浦|門田|馬磯")
 
 ggplot() +
-  geom_sf(data = db$boundary, fill = "whitesmoke") +
+  geom_sf(data = db$boundary, fill = NA) +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void()
@@ -137,7 +137,7 @@ mainmap <- ggplot() +
                   aes(x = sf::st_coordinates(center)[, 1], 
                       y = sf::st_coordinates(center)[, 2], 
                       label = RCOM_NAME),
-                  nudge_x = c(-.01, .01, .01, -.01, .005, -.01, .01, .01),
+                  nudge_x = c(-.01, .01, .01, -.011, .005, -.01, .01, .01),
                   nudge_y = c(.005, 0.005, 0, .01, -.005, .01, 0, -.005),
                   min.segment.length = .01,
                   segment.color = "gray",
