@@ -143,7 +143,7 @@ minimap <- ggplot(data = bu, aes(label = unique(db$boundary$CITY_NAME))) +
   theme(panel.background = element_rect(fill = "aliceblue"))
 
 db$boundary <- db$boundary %>%
-  dplyr::mutate(center = sf::st_centroid(.data$geometry))
+  dplyr::mutate(center = sf::st_centroid(geometry))
 
 mainmap <- ggplot() +
   geom_sf(data = db$boundary, fill = "whitesmoke") +
@@ -156,7 +156,7 @@ mainmap <- ggplot() +
                   aes(x = sf::st_coordinates(center)[, 1], 
                       y = sf::st_coordinates(center)[, 2], 
                       label = RCOM_NAME),
-                  nudge_x = c(-.01, .01, .01, -.012, .005, -.01, .01, .01),
+                  nudge_x = c(-.01, .01, -.01, -.012, .005, -.01, .01, .01),
                   nudge_y = c(.005, 0.005, 0, .01, -.005, .01, 0, -.005),
                   min.segment.length = .01,
                   segment.color = "gray",
