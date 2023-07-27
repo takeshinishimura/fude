@@ -112,14 +112,78 @@ library(ggplot2)
 db <- combine_fude(d2, b, city = "松山市", community = "御手洗|泊|船越|鷲ケ巣|由良|北浦|門田|馬磯")
 
 ggplot() +
+  geom_sf(data = db$boundary, fill = "whitesmoke") +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
-  geom_sf(data = db$boundary, fill = NA) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void()
 ```
 
 <img src="man/figures/README-gogoshima-1.png" width="100%" />
+**出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
 
+If you want to be particular about the details of the map, for example,
+execute the following code.
+
+``` r
+library(magrittr)
+library(dplyr)
+library(ggrepel)
+library(cowplot)
+
+bu <- b[["38"]] %>%
+  dplyr::filter(grepl("松山市", CITY_NAME)) %>%
+  sf::st_union()
+
+minimap <- ggplot(data = bu, aes(label = unique(db$boundary$CITY_NAME))) +
+  geom_sf(fill = "white") +
+  geom_sf(data = db$boundary, fill = "black") +
+  geom_text(x = 132.8, y = 33.87, size = 3, family = "HiraKakuProN-W3") +
+  theme_void() +
+  theme(panel.background = element_rect(fill = 'aliceblue'))
+
+db$boundary <- db$boundary %>%
+  dplyr::mutate(center = sf::st_centroid(.data$geometry))
+
+mainmap <- ggplot() +
+  geom_sf(data = db$boundary, fill = "whitesmoke") +
+  geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
+  geom_point(data = db$boundary, 
+             aes(x = sf::st_coordinates(center)[, 1], 
+                 y = sf::st_coordinates(center)[, 2]), 
+             colour = "gray") +
+  geom_text_repel(data = db$boundary,
+                  aes(x = sf::st_coordinates(center)[, 1], 
+                      y = sf::st_coordinates(center)[, 2], 
+                      label = RCOM_NAME),
+                  nudge_x = c(-.01, .01, .01, -.01, .005, -.01, .01, .01),
+                  nudge_y = c(.005, 0.005, 0, .01, -.005, .01, 0, -.005),
+                  min.segment.length = .01,
+                  segment.color = "gray",
+                  size = 3,
+                  family = "HiraKakuProN-W3") +
+  theme_void() +
+  theme(legend.position = "none")
+
+ggdraw(mainmap) +
+  draw_plot(
+    {minimap +
+       geom_rect(aes(xmin = 132.5, xmax = 132.85,
+                     ymin = 33.8, ymax = 34.0),
+                 fill = NA,
+                 colour = "black",
+                 size = .5) +
+       coord_sf(xlim = c(132.5, 132.85),
+                ylim = c(33.8, 34.0),
+                expand = FALSE) +
+       theme(legend.position = "none")
+    },
+    x = .7, 
+    y = 0,
+    width = .3, 
+    height = .3)
+```
+
+<img src="man/figures/README-gogoshima_with_minimap-1.png" width="100%" />
 **出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
 
 If you want to use `mapview()`, do the following.
