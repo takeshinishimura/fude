@@ -139,7 +139,7 @@ mainmap <- ggplot() +
                       y = sf::st_coordinates(center)[, 2], 
                       label = RCOM_NAME),
                   nudge_x = c(-.01, .01, -.01, -.012, .005, -.01, .01, .01),
-                  nudge_y = c(.005, 0.005, 0, .01, -.005, .01, 0, -.005),
+                  nudge_y = c(.005, .005, 0, .01, -.005, .01, 0, -.005),
                   min.segment.length = .01,
                   segment.color = "gray",
                   size = 3,
