@@ -1,4 +1,4 @@
-# fude (development version)
+# fude 0.3.2
 
 * Improved the process of eliminating duplicate agricultural community names.
 
