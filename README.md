@@ -188,11 +188,44 @@ ggdraw(mainmap) +
 
 **出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
 
+This package may be beneficial, especially for R beginners, when simply
+wanting to draw agricultural community boundaries.
+
+``` r
+library(purrr)
+
+d3 <- extract_fude(d2, city = "八幡浜市") %>%
+  purrr::map_at(1, ~.x %>%
+    dplyr::mutate(land_type = factor(land_type, 
+                                     levels = c(100, 200), 
+                                     labels = c("田", "畑"))))
+
+db <- combine_fude(d3, b, city = "八幡浜市", old_village = "真穴")
+
+bu <- b[[1]] %>%
+  dplyr::filter(grepl("八幡浜市", CITY_NAME)) %>%
+  sf::st_union()
+
+ggplot(data = db$boundary) +
+  geom_sf(data = bu, fill = "gray") +
+  geom_sf_text(data = bu, label = "八幡浜市", family = "HiraKakuProN-W3") +
+  geom_sf(fill = "ivory") +
+# geom_sf(data = db$fude, aes(fill = land_type), colour = NA) +
+  geom_sf_label(aes(label = RCOM_NAME), family = "HiraKakuProN-W3") +
+  theme_void() +
+# scale_fill_manual(values = c("orange", "blue")) +
+  theme(legend.position = "none")
+```
+
+<img src="man/figures/README-yawatahama-1.png" width="100%" />
+
+**出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
+
 If you want to use `mapview()`, do the following.
 
 ``` r
 library(mapview)
 
 db <- combine_fude(d, b, city = "Uwajima", old_village = "遊子")
-mapview::mapview(db$fude, zcol = "RCOM_NAME")
+mapview::mapview(db$fude, zcol = "RCOM_NAME", layer.name = "農業集落名")
 ```
