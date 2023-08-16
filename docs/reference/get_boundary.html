@@ -54,7 +54,7 @@ boundary data provided by the MAFF.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_boundary</span><span class="op">(</span><span class="va">data</span>, year <span class="op">=</span> <span class="fl">2020</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span>, to_wgs84 <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_boundary</span><span class="op">(</span><span class="va">data</span>, year <span class="op">=</span> <span class="fl">2020</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span>, path <span class="op">=</span> <span class="cn">NULL</span>, to_wgs84 <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -69,6 +69,12 @@ boundary data provided by the MAFF.</p>
 
 <dt>quiet</dt>
 <dd><p>logical. Suppress information about the data to be read.</p></dd>
+
+
+<dt>path</dt>
+<dd><p>Path to the ZIP file containing the agricultural community boundary data;
+use a local ZIP file instead of going looking for a ZIP file. Specify a
+directory containing one or more ZIP files, not the ZIP file itself.</p></dd>
 
 
 <dt>to_wgs84</dt>

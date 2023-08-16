@@ -22,8 +22,11 @@ Depends:
 Imports:
     sf,
     dplyr,
+    tidyr,
+    purrr,
     magrittr,
     forcats,
+    stringi,
     glue
 Suggests: 
     testthat (>= 3.0.0)

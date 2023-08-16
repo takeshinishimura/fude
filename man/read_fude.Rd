@@ -4,10 +4,12 @@
 \alias{read_fude}
 \title{Read a Fude Polygon ZIP file}
 \usage{
-read_fude(path, quiet = FALSE)
+read_fude(path, stringsAsFactors = TRUE, quiet = FALSE)
 }
 \arguments{
 \item{path}{Path to the ZIP file containing one or more GeoJSON format files.}
+
+\item{stringsAsFactors}{logical. should character vectors be converted to factors?}
 
 \item{quiet}{logical. Suppress information about the data to be read.}
 }
@@ -22,5 +24,5 @@ as long as you do not change the filenames of the original GeoJSON files.
 }
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")
-d <- read_fude(path)
+d <- read_fude(path, stringsAsFactors = FALSE)
 }

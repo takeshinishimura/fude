@@ -15,9 +15,8 @@
 #' @seealso [read_fude()].
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
-#' d <- read_fude(path, quiet = TRUE)
-#' d2 <- extract_fude(d, year = 2022, city = "\u677e\u5c71\u5e02")
-#' d |> extract_fude(year = 2022)
+#' d <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
+#' d2 <- extract_fude(d, year = 2022)
 #' @export
 extract_fude <- function(data, year = NULL, city = NULL, list = TRUE) {
   if (is.null(year) & is.null(city)) {
@@ -27,13 +26,13 @@ extract_fude <- function(data, year = NULL, city = NULL, list = TRUE) {
   if (!is.null(city)) {
 
     if (is.null(year)) {
-      year <- names(ls_fude(data))
+      year <- unique(ls_fude(data)$year)
     }
 
     selected_names <- NULL
 
-    for (i in as.character(year)) {
-      data_i <- ls_fude(data)[[i]]
+    for (i in year) {
+      data_i <- ls_fude(data)[ls_fude(data)$year == i, ]
       matching_idx1 <- match(city, data_i$local_government_cd)
       matching_idx2 <- match(sub("(\u5e02|\u533a|\u753a|\u6751)$", "", city),
                              sub("(\u5e02|\u533a|\u753a|\u6751)$", "", data_i$city_kanji))
@@ -45,15 +44,11 @@ extract_fude <- function(data, year = NULL, city = NULL, list = TRUE) {
     }
 
   } else {
-
     selected_names <- grep(paste0(year, collapse = "|"), names(data), value = TRUE)
-
   }
 
   if (list == TRUE) {
-
     x <- data[selected_names]
-
   } else {
 
     if (length(selected_names) > 1) {

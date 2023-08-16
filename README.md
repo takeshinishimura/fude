@@ -100,7 +100,7 @@ to the Fude Polygon data from the MAFF website
 Japanese is available).
 
 ``` r
-b <- get_boundary(d2)
+b <- get_boundary(d)
 ```
 
 You can easily draw a map combining Fude Polygons and agricultural
@@ -109,10 +109,10 @@ community boundaries.
 ``` r
 library(ggplot2)
 
-db <- combine_fude(d2, b, city = "松山市", community = "御手洗|泊|船越|鷲ケ巣|由良|北浦|門田|馬磯")
+db <- combine_fude(d, b, city = "松山市", community = "御手洗|泊|船越|鷲ケ巣|由良|北浦|門田|馬磯")
 
 ggplot() +
-  geom_sf(data = db$boundary, fill = NA) +
+  geom_sf(data = db$community, fill = NA) +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void()
@@ -131,28 +131,24 @@ library(dplyr)
 library(ggrepel)
 library(cowplot)
 
-bu <- b[["38"]] %>%
-  dplyr::filter(grepl("松山市", CITY_NAME)) %>%
-  sf::st_union()
-
-minimap <- ggplot(data = bu, aes(label = unique(db$boundary$CITY_NAME))) +
+minimap <- ggplot(data = db$lg_all) +
   geom_sf(fill = "white") +
-  geom_text(x = 132.8, y = 33.87, size = 3, family = "HiraKakuProN-W3") +
-  geom_sf(data = db$boundary, fill = "black") +
+  geom_text(label = "松山市", x = 132.8, y = 33.87, size = 3, family = "HiraKakuProN-W3") +
+  geom_sf(data = db$community, fill = "black") +
   theme_void() +
   theme(panel.background = element_rect(fill = "aliceblue"))
 
-db$boundary <- db$boundary %>%
+db$community <- db$community %>%
   dplyr::mutate(center = sf::st_centroid(geometry))
 
 mainmap <- ggplot() +
-  geom_sf(data = db$boundary, fill = "whitesmoke") +
+  geom_sf(data = db$community, fill = "whitesmoke") +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
-  geom_point(data = db$boundary, 
+  geom_point(data = db$community, 
              aes(x = sf::st_coordinates(center)[, 1], 
                  y = sf::st_coordinates(center)[, 2]), 
              colour = "gray") +
-  geom_text_repel(data = db$boundary,
+  geom_text_repel(data = db$community,
                   aes(x = sf::st_coordinates(center)[, 1], 
                       y = sf::st_coordinates(center)[, 2], 
                       label = RCOM_NAME),
@@ -194,21 +190,11 @@ wanting to draw agricultural community boundaries.
 ``` r
 library(purrr)
 
-d3 <- extract_fude(d2, city = "八幡浜市") %>%
-  purrr::map_at(1, ~.x %>%
-    dplyr::mutate(land_type = factor(land_type, 
-                                     levels = c(100, 200), 
-                                     labels = c("田", "畑"))))
+db <- combine_fude(d, b, city = "八幡浜市", old_village = "真穴")
 
-db <- combine_fude(d3, b, city = "八幡浜市", old_village = "真穴")
-
-bu <- b[[1]] %>%
-  dplyr::filter(grepl("八幡浜市", CITY_NAME)) %>%
-  sf::st_union()
-
-ggplot(data = db$boundary) +
-  geom_sf(data = bu, fill = "gray") +
-  geom_sf_text(data = bu, label = "八幡浜市", family = "HiraKakuProN-W3") +
+ggplot(data = db$community) +
+  geom_sf(data = db$lg, fill = "gray") +
+  geom_sf_text(data = db$lg, label = "八幡浜市", family = "HiraKakuProN-W3") +
   geom_sf(fill = "ivory") +
 # geom_sf(data = db$fude, aes(fill = land_type), colour = NA) +
   geom_sf_label(aes(label = RCOM_NAME), family = "HiraKakuProN-W3") +

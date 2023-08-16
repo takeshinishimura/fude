@@ -21,7 +21,7 @@
 #' @seealso [read_fude()].
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
-#' d <- read_fude(path, quiet = TRUE)
+#' d <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
 #' d2 <- rename_fude(d)
 #' d2 <- rename_fude(d, suffix = FALSE)
 #' d2 <- d |> rename_fude(romaji = "upper")
@@ -35,11 +35,9 @@ rename_fude <- function(data, suffix = TRUE, romaji = NULL, quiet = FALSE) {
   new_names <- get_lg_name(matching_codes, suffix, romaji)
 
   if (suffix == FALSE) {
-
     new_names <- gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", new_names, ignore.case = TRUE)
     new_names <- sub("\u5e02(.*)(\u533a$)", "_\\1", new_names)
     new_names <- sub("(\u5e02|\u533a|\u753a|\u6751)$", "", new_names)
-
   }
 
   nochange <- is.na(new_names)
@@ -60,19 +58,13 @@ get_lg_name <- function(matching_codes, suffix, romaji) {
   matching_idx <- match(matching_codes, fude::lg_code_table$lg_code)
 
   if (is.null(romaji)) {
-
     x <- fude::lg_code_table$city_kanji[matching_idx]
-
   } else {
-
     x <- fude::lg_code_table$romaji[matching_idx]
 
     if (romaji == "lower") {
-
       x <- tolower(x)
-
     } else {
-
       if (romaji == "title") {
 
         unique_string <- "uniquestring"
@@ -83,9 +75,8 @@ get_lg_name <- function(matching_codes, suffix, romaji) {
         x <- sub(" ", "_", x)
 
       }
-
     }
-
   }
+
   return(x)
 }

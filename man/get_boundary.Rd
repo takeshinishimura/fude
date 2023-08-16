@@ -4,7 +4,7 @@
 \alias{get_boundary}
 \title{Get the agricultural community boundary data}
 \usage{
-get_boundary(data, year = 2020, quiet = FALSE, to_wgs84 = TRUE)
+get_boundary(data, year = 2020, quiet = FALSE, path = NULL, to_wgs84 = TRUE)
 }
 \arguments{
 \item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
@@ -12,6 +12,10 @@ get_boundary(data, year = 2020, quiet = FALSE, to_wgs84 = TRUE)
 \item{year}{Year in which the agricultural community boundary data was created.}
 
 \item{quiet}{logical. Suppress information about the data to be read.}
+
+\item{path}{Path to the ZIP file containing the agricultural community boundary data;
+use a local ZIP file instead of going looking for a ZIP file. Specify a
+directory containing one or more ZIP files, not the ZIP file itself.}
 
 \item{to_wgs84}{logical. Convert JGD2000 to WGS 84.}
 }

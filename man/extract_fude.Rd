@@ -24,9 +24,8 @@ A list of \code{\link[sf:sf]{sf::sf()}} object(s).
 }
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")
-d <- read_fude(path, quiet = TRUE)
-d2 <- extract_fude(d, year = 2022, city = "\u677e\u5c71\u5e02")
-d |> extract_fude(year = 2022)
+d <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
+d2 <- extract_fude(d, year = 2022)
 }
 \seealso{
 \code{\link[=read_fude]{read_fude()}}.
