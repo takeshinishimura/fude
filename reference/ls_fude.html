@@ -67,7 +67,7 @@ order to understand what is included in the list returned by <code><a href="read
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A list.</p>
+<p>A data.frame.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -77,17 +77,12 @@ order to understand what is included in the list returned by <code><a href="read
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"castle.zip"</span>, package <span class="op">=</span> <span class="st">"fude"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_fude.html">read_fude</a></span><span class="op">(</span><span class="va">path</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_fude.html">read_fude</a></span><span class="op">(</span><span class="va">path</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ls_fude</span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`2021`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    full_names  names local_government_cd city_kanji        romaji</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2021_382019 382019              382019     松山市 Matsuyama-shi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`2022`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    full_names  names local_government_cd city_kanji        romaji</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2022_382019 382019              382019     松山市 Matsuyama-shi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2022_382078 382078              382078     大洲市       Ozu-shi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    full_names year  names local_government_cd city_kanji        romaji</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2021_382019 2021 382019              382019     松山市 Matsuyama-shi</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2022_382019 2022 382019              382019     松山市 Matsuyama-shi</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 2022_382078 2022 382078              382078     大洲市       Ozu-shi</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
