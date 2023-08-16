@@ -189,12 +189,12 @@
 <span><span class="fu">ggdraw</span><span class="op">(</span><span class="va">mainmap</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">draw_plot</span><span class="op">(</span></span>
 <span>    <span class="op">{</span><span class="va">minimap</span> <span class="op">+</span></span>
-<span>       <span class="fu">geom_rect</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin <span class="op">=</span> <span class="fl">132.5</span>, xmax <span class="op">=</span> <span class="fl">132.85</span>,</span>
+<span>       <span class="fu">geom_rect</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin <span class="op">=</span> <span class="fl">132.55</span>, xmax <span class="op">=</span> <span class="fl">132.90</span>,</span>
 <span>                     ymin <span class="op">=</span> <span class="fl">33.8</span>, ymax <span class="op">=</span> <span class="fl">34.0</span><span class="op">)</span>,</span>
 <span>                 fill <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>                 colour <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>                 size <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>       <span class="fu">coord_sf</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">132.5</span>, <span class="fl">132.85</span><span class="op">)</span>,</span>
+<span>       <span class="fu">coord_sf</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">132.55</span>, <span class="fl">132.90</span><span class="op">)</span>,</span>
 <span>                ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">33.8</span>, <span class="fl">34.0</span><span class="op">)</span>,</span>
 <span>                expand <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>       <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
@@ -209,7 +209,7 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"八幡浜市"</span>, old_village <span class="op">=</span> <span class="st">"真穴"</span><span class="op">)</span></span>
+<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"八幡浜市"</span>, old_village <span class="op">=</span> <span class="st">"真穴"</span>, community <span class="op">=</span> <span class="st">"^(?!大島).*"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">community</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_sf</span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">lg</span>, fill <span class="op">=</span> <span class="st">"gray"</span><span class="op">)</span> <span class="op">+</span></span>
