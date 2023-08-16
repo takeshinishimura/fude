@@ -70,8 +70,8 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
     dplyr::mutate(KCITY_NAME = dplyr::if_else(is.na(.data$KCITY_NAME), "", .data$KCITY_NAME)) %>%
     dplyr::mutate(RCOM_NAME = dplyr::if_else(is.na(.data$RCOM_NAME), "", .data$RCOM_NAME)) %>%
     dplyr::filter(.data$CITY_NAME == community_city &
-                  grepl(old_village, .data$KCITY_NAME) &
-                  grepl(community, .data$RCOM_NAME)) %>%
+                  grepl(old_village, .data$KCITY_NAME, perl = TRUE) &
+                  grepl(community, .data$RCOM_NAME, perl = TRUE)) %>%
     dplyr::mutate(KCITY_NAME = forcats::fct_inorder(.data$KCITY_NAME),
                   RCOM_NAME = forcats::fct_inorder(.data$RCOM_NAME))
 

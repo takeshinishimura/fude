@@ -146,12 +146,12 @@ mainmap <- ggplot() +
 ggdraw(mainmap) +
   draw_plot(
     {minimap +
-       geom_rect(aes(xmin = 132.5, xmax = 132.85,
+       geom_rect(aes(xmin = 132.55, xmax = 132.90,
                      ymin = 33.8, ymax = 34.0),
                  fill = NA,
                  colour = "black",
                  size = .5) +
-       coord_sf(xlim = c(132.5, 132.85),
+       coord_sf(xlim = c(132.55, 132.90),
                 ylim = c(33.8, 34.0),
                 expand = FALSE) +
        theme(legend.position = "none")
@@ -168,7 +168,7 @@ This package may be beneficial, especially for R beginners, when simply wanting 
 ```{r yawatahama, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(purrr)
 
-db <- combine_fude(d, b, city = "八幡浜市", old_village = "真穴")
+db <- combine_fude(d, b, city = "八幡浜市", old_village = "真穴", community = "^(?!大島).*")
 
 ggplot(data = db$community) +
   geom_sf(data = db$lg, fill = "gray") +
