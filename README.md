@@ -194,7 +194,7 @@ db <- combine_fude(d, b, city = "八幡浜市", old_village = "真穴", communit
 
 ggplot(data = db$community) +
   geom_sf(data = db$lg, fill = "gray") +
-  geom_sf_text(data = db$lg, label = "八幡浜市", family = "HiraKakuProN-W3") +
+  geom_sf_text(data = db$lg, aes(label = city_kanji), family = "HiraKakuProN-W3") +
   geom_sf(fill = "ivory") +
 # geom_sf(data = db$fude, aes(fill = land_type), colour = NA) +
   geom_sf_label(aes(label = RCOM_NAME), family = "HiraKakuProN-W3") +
