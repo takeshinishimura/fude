@@ -25,4 +25,5 @@ as long as you do not change the filenames of the original GeoJSON files.
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path, stringsAsFactors = FALSE)
+
 }

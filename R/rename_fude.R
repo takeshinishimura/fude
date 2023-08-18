@@ -19,12 +19,14 @@
 #'   logical. Suppress information about the data to be read.
 #' @returns A list of [sf::sf()] objects.
 #' @seealso [read_fude()].
+#'
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
 #' d <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
 #' d2 <- rename_fude(d)
 #' d2 <- rename_fude(d, suffix = FALSE)
 #' d2 <- d |> rename_fude(romaji = "upper")
+#'
 #' @export
 rename_fude <- function(data, suffix = TRUE, romaji = NULL, quiet = FALSE) {
   old_names <- names(data)

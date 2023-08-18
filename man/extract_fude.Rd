@@ -26,6 +26,7 @@ A list of \code{\link[sf:sf]{sf::sf()}} object(s).
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
 d2 <- extract_fude(d, year = 2022)
+
 }
 \seealso{
 \code{\link[=read_fude]{read_fude()}}.

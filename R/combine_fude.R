@@ -24,12 +24,15 @@
 #'   Year in the column name of the `data`. If there is more than one
 #'   applicable local government code, it is required.
 #' @returns A list of [sf::sf()] objects.
+#' @seealso [read_fude()].
+#'
 #' @examplesIf interactive()
 #' path <- system.file("extdata", "castle.zip", package = "fude")
 #' d <- read_fude(path, stringsAsFactors = FALSE)
 #' b <- get_boundary(d)
 #' db <- combine_fude(d, b, "\u677e\u5c71\u5e02", "\u57ce\u6771", year = 2022)
 #' @importFrom magrittr %>%
+#'
 #' @export
 combine_fude <- function(data, boundary, city, old_village = "", community = "", year = NULL) {
   location_info <- find_pref_name(city)
@@ -73,7 +76,9 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
                   grepl(old_village, .data$KCITY_NAME, perl = TRUE) &
                   grepl(community, .data$RCOM_NAME, perl = TRUE)) %>%
     dplyr::mutate(KCITY_NAME = forcats::fct_inorder(.data$KCITY_NAME),
-                  RCOM_NAME = forcats::fct_inorder(.data$RCOM_NAME))
+                  RCOM_NAME = forcats::fct_inorder(.data$RCOM_NAME)) %>%
+    as.data.frame() %>%
+    sf::st_sf()
 
   intersection_fude <- sf::st_intersection(x, y)
   intersection_fude$local_government_cd.1 <- NULL
@@ -101,8 +106,11 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
     dplyr::select(-c(.data$full_names, .data$year, .data$names))
   lg_all_map <- dplyr::inner_join(lg_df, lg_ls, by = "local_government_cd")
 
+  lg_all_map <- lg_all_map %>%
+    dplyr::mutate(fill = factor(dplyr::if_else(.data$city_kanji == location_info$city, 1, 0)))
+
   lg_map <- lg_all_map %>%
-    dplyr::filter(.data$city_kanji == location_info$city)
+    dplyr::filter(.data$fill == 1)
 
   valid_boundary_KCITY_code <- valid_boundary %>%
     dplyr::mutate(KCITY_code = paste(.data$local_government_cd,
@@ -133,8 +141,11 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
   ov_df$KCITY_NAME[ov_df$KCITY_NAME == "NA"] <- NA
   ov_all_map <- sf::st_set_crs(ov_df, 4326)
 
+  ov_all_map <- ov_all_map %>%
+    dplyr::mutate(fill = factor(dplyr::if_else(.data$CITY_NAME == location_info$city, 1, 0)))
+
   ov_map <- ov_all_map %>%
-    dplyr::filter(.data$CITY_NAME == location_info$city)
+    dplyr::filter(.data$fill == 1)
 
   return(list(fude = intersection_fude,
               community = y,

@@ -36,6 +36,7 @@ d <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
 d2 <- rename_fude(d)
 d2 <- rename_fude(d, suffix = FALSE)
 d2 <- d |> rename_fude(romaji = "upper")
+
 }
 \seealso{
 \code{\link[=read_fude]{read_fude()}}.

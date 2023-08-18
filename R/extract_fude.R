@@ -13,10 +13,12 @@
 #'   logical. If `FALSE`, the object to be extracted is no longer a list.
 #' @returns A list of [sf::sf()] object(s).
 #' @seealso [read_fude()].
+#'
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
 #' d <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
 #' d2 <- extract_fude(d, year = 2022)
+#'
 #' @export
 extract_fude <- function(data, year = NULL, city = NULL, list = TRUE) {
   if (is.null(year) & is.null(city)) {

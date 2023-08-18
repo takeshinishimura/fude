@@ -11,11 +11,12 @@
 #'   logical. should character vectors be converted to factors?
 #' @param quiet
 #'   logical. Suppress information about the data to be read.
-#'
 #' @returns A list of [sf::sf()] objects.
+#'
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
 #' d <- read_fude(path, stringsAsFactors = FALSE)
+#'
 #' @export
 read_fude <- function(path, stringsAsFactors = TRUE, quiet = FALSE) {
   if (!grepl(".zip$", path)) {
@@ -38,7 +39,7 @@ read_fude <- function(path, stringsAsFactors = TRUE, quiet = FALSE) {
     x <- purrr::map(x, function(df) {
       df$land_type <- factor(df$land_type,
                              levels = c(100, 200),
-                             labels = c("\u7530", "\u756a"))
+                             labels = c("\u7530", "\u7551"))
       return(df)
     })
   }

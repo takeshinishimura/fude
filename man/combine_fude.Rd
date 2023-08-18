@@ -49,3 +49,6 @@ b <- get_boundary(d)
 db <- combine_fude(d, b, "\u677e\u5c71\u5e02", "\u57ce\u6771", year = 2022)
 \dontshow{\}) # examplesIf}
 }
+\seealso{
+\code{\link[=read_fude]{read_fude()}}.
+}

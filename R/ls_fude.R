@@ -7,10 +7,12 @@
 #'   List of [sf::sf()] objects.
 #' @returns A data.frame.
 #' @seealso [read_fude()].
+#'
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
 #' d <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
 #' ls_fude(d)
+#'
 #' @export
 ls_fude <- function(data) {
   nen <- unique(sub("(_.*)", "", names(data)))

@@ -16,10 +16,12 @@
 #' @param to_wgs84
 #'   logical. Convert JGD2000 to WGS 84.
 #' @returns A list of [sf::sf()] objects.
+#'
 #' @examplesIf interactive()
 #' path <- system.file("extdata", "castle.zip", package = "fude")
 #' d <- read_fude(path)
 #' b <- get_boundary(d)
+#'
 #' @export
 get_boundary <- function(data, year = 2020, quiet = FALSE, path = NULL, to_wgs84 = TRUE) {
   pref_codes <- fude_to_pref_code(data)

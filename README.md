@@ -210,6 +210,24 @@ ggplot(data = db$community) +
 If you want to use `mapview()`, do the following.
 
 ``` r
+db1 <- combine_fude(d, b, city = "八幡浜市")
+db2 <- combine_fude(d, b, city = "西予市", old_village = "三瓶|双岩|三島|二木生")
+db3 <- combine_fude(d, b, city = "伊方町")
+db <- bind_fude(db1, db2, db3)
+
+ggplot() + 
+  geom_sf(data = db$lg_all, aes(fill = fill)) +
+  geom_sf(data = db$fude, aes(fill = land_type)) +
+  theme_void() +
+  theme(legend.position = "none") +
+  scale_fill_manual(values = c("white", "gray", "orange", "white"))
+```
+
+<img src="man/figures/README-ja-nishiuwa-1.png" width="100%" />
+
+**出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
+
+``` r
 library(mapview)
 
 db <- combine_fude(d, b, city = "Uwajima", old_village = "遊子")
