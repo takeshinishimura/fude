@@ -118,25 +118,17 @@ db <- combine_fude(d, b, city = "松山市", old_village = "興居島", communit
 minimap <- ggplot() +
   geom_sf(data = db$lg_all, aes(fill = fill)) +
   geom_sf_text(data = db$lg_all, aes(label = city_kanji), family = "HiraKakuProN-W3") +
-  geom_sf(data = db$community, fill = "black") +
+  geom_sf(data = db$community_union, fill = "black", linewidth = 0) +
   theme_void() +
   theme(panel.background = element_rect(fill = "aliceblue")) +
   scale_fill_manual(values = c("white", "gray"))
 
-db$community <- db$community %>%
-  dplyr::mutate(center = sf::st_centroid(geometry))
-
 mainmap <- ggplot() +
   geom_sf(data = db$community, fill = "whitesmoke") +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
-  geom_point(data = db$community, 
-             aes(x = sf::st_coordinates(center)[, 1], 
-                 y = sf::st_coordinates(center)[, 2]), 
-             colour = "gray") +
+  geom_point(data = db$community, aes(x = X, y = Y), colour = "gray") +
   geom_text_repel(data = db$community,
-                  aes(x = sf::st_coordinates(center)[, 1], 
-                      y = sf::st_coordinates(center)[, 2], 
-                      label = RCOM_NAME),
+                  aes(x = X, y = Y, label = RCOM_NAME),
                   nudge_x = c(-.01, .01, -.01, -.012, .005, -.01, .01, .01),
                   nudge_y = c(.005, .005, 0, .01, -.005, .01, 0, -.005),
                   min.segment.length = .01,

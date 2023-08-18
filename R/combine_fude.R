@@ -77,11 +77,25 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
                   grepl(community, .data$RCOM_NAME, perl = TRUE)) %>%
     dplyr::mutate(KCITY_NAME = forcats::fct_inorder(.data$KCITY_NAME),
                   RCOM_NAME = forcats::fct_inorder(.data$RCOM_NAME)) %>%
+    dplyr::mutate(centroid = sf::st_centroid(.data$geometry)) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(X = sf::st_coordinates(.data$centroid)[, 1],
+                  Y = sf::st_coordinates(.data$centroid)[, 2]) %>%
+    dplyr::ungroup() %>%
     as.data.frame() %>%
     sf::st_sf()
 
   intersection_fude <- sf::st_intersection(x, y)
   intersection_fude$local_government_cd.1 <- NULL
+
+  y_union <- y %>%
+    sf::st_union() %>%
+    sf::st_sf() %>%
+    dplyr::mutate(centroid = sf::st_centroid(.data$geometry)) %>%
+    dplyr::mutate(X = sf::st_coordinates(.data$centroid)[, 1],
+                  Y = sf::st_coordinates(.data$centroid)[, 2]) %>%
+    as.data.frame() %>%
+    sf::st_sf()
 
   geometries <- valid_boundary %>%
     sf::st_union() %>%
@@ -149,6 +163,7 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
 
   return(list(fude = intersection_fude,
               community = y,
+              community_union = y_union,
               ov = ov_map,
               ov_all = ov_all_map,
               lg = lg_map,
