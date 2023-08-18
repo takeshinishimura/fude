@@ -114,7 +114,7 @@ db <- combine_fude(d, b, city = "松山市", community = "御手洗|泊|船越|�
 ggplot() +
   geom_sf(data = db$community, fill = NA) +
   geom_sf(data = db$fude, aes(fill = land_type)) +
-  guides(fill = guide_legend( title = "耕地の種類")) +
+  guides(fill = guide_legend(title = "耕地の種類")) +
   theme_void()
 ```
 
