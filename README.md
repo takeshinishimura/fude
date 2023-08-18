@@ -131,12 +131,15 @@ library(dplyr)
 library(ggrepel)
 library(cowplot)
 
-minimap <- ggplot(data = db$lg_all) +
-  geom_sf(fill = "white") +
-  geom_text(label = "松山市", x = 132.8, y = 33.87, size = 3, family = "HiraKakuProN-W3") +
+db <- combine_fude(d, b, city = "松山市", old_village = "興居島", community = "^(?!釣島).*")
+
+minimap <- ggplot() +
+  geom_sf(data = db$lg_all, aes(fill = fill)) +
+  geom_sf_text(data = db$lg_all, aes(label = city_kanji), family = "HiraKakuProN-W3") +
   geom_sf(data = db$community, fill = "black") +
   theme_void() +
-  theme(panel.background = element_rect(fill = "aliceblue"))
+  theme(panel.background = element_rect(fill = "aliceblue")) +
+  scale_fill_manual(values = c("white", "gray"))
 
 db$community <- db$community %>%
   dplyr::mutate(center = sf::st_centroid(geometry))
@@ -164,13 +167,13 @@ mainmap <- ggplot() +
 ggdraw(mainmap) +
   draw_plot(
     {minimap +
-       geom_rect(aes(xmin = 132.55, xmax = 132.90,
-                     ymin = 33.8, ymax = 34.0),
+       geom_rect(aes(xmin = 132.47, xmax = 133.0,
+                     ymin = 33.72, ymax = 34.05),
                  fill = NA,
                  colour = "black",
                  size = .5) +
-       coord_sf(xlim = c(132.55, 132.90),
-                ylim = c(33.8, 34.0),
+       coord_sf(xlim = c(132.47, 133.0),
+                ylim = c(33.72, 34.05),
                 expand = FALSE) +
        theme(legend.position = "none")
     },
@@ -188,9 +191,7 @@ This package may be beneficial, especially for R beginners, when simply
 wanting to draw agricultural community boundaries.
 
 ``` r
-library(purrr)
-
-db <- combine_fude(d, b, city = "八幡浜市", old_village = "真穴", community = "^(?!大島).*")
+db <- combine_fude(d, b, city = "八幡浜市", old_village = "真穴")
 
 ggplot(data = db$community) +
   geom_sf(data = db$lg, fill = "gray") +
@@ -199,7 +200,6 @@ ggplot(data = db$community) +
 # geom_sf(data = db$fude, aes(fill = land_type), colour = NA) +
   geom_sf_label(aes(label = RCOM_NAME), family = "HiraKakuProN-W3") +
   theme_void() +
-# scale_fill_manual(values = c("orange", "blue")) +
   theme(legend.position = "none")
 ```
 
@@ -210,26 +210,12 @@ ggplot(data = db$community) +
 If you want to use `mapview()`, do the following.
 
 ``` r
-db1 <- combine_fude(d, b, city = "八幡浜市")
-db2 <- combine_fude(d, b, city = "西予市", old_village = "三瓶|双岩|三島|二木生")
-db3 <- combine_fude(d, b, city = "伊方町")
-db <- bind_fude(db1, db2, db3)
-
-ggplot() + 
-  geom_sf(data = db$lg_all, aes(fill = fill)) +
-  geom_sf(data = db$fude, aes(fill = land_type)) +
-  theme_void() +
-  theme(legend.position = "none") +
-  scale_fill_manual(values = c("white", "gray", "orange", "white"))
-```
-
-<img src="man/figures/README-ja-nishiuwa-1.png" width="100%" />
-
-**出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
-
-``` r
 library(mapview)
 
-db <- combine_fude(d, b, city = "Uwajima", old_village = "遊子")
+db1 <- combine_fude(d, b, city = "伊方町")
+db2 <- combine_fude(d, b, city = "八幡浜市")
+db3 <- combine_fude(d, b, city = "西予市", old_village = "三瓶|双岩|三島|二木生")
+db <- bind_fude(db1, db2, db3)
+
 mapview::mapview(db$fude, zcol = "RCOM_NAME", layer.name = "農業集落名")
 ```
