@@ -79,8 +79,8 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
                   RCOM_NAME = forcats::fct_inorder(.data$RCOM_NAME)) %>%
     dplyr::mutate(centroid = sf::st_centroid(.data$geometry)) %>%
     dplyr::rowwise() %>%
-    dplyr::mutate(X = sf::st_coordinates(.data$centroid)[, 1],
-                  Y = sf::st_coordinates(.data$centroid)[, 2]) %>%
+    dplyr::mutate(x = sf::st_coordinates(.data$centroid)[, 1],
+                  y = sf::st_coordinates(.data$centroid)[, 2]) %>%
     dplyr::ungroup() %>%
     as.data.frame() %>%
     sf::st_sf()
@@ -88,12 +88,14 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
   intersection_fude <- sf::st_intersection(x, y)
   intersection_fude$local_government_cd.1 <- NULL
 
+  original_fude <- x[x$polygon_uuid %in% unique(intersection_fude$polygon_uuid), ]
+
   y_union <- y %>%
     sf::st_union() %>%
     sf::st_sf() %>%
     dplyr::mutate(centroid = sf::st_centroid(.data$geometry)) %>%
-    dplyr::mutate(X = sf::st_coordinates(.data$centroid)[, 1],
-                  Y = sf::st_coordinates(.data$centroid)[, 2]) %>%
+    dplyr::mutate(x = sf::st_coordinates(.data$centroid)[, 1],
+                  y = sf::st_coordinates(.data$centroid)[, 2]) %>%
     as.data.frame() %>%
     sf::st_sf()
 
@@ -162,6 +164,7 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
     dplyr::filter(.data$fill == 1)
 
   return(list(fude = intersection_fude,
+              original_fude = original_fude,
               community = y,
               community_union = y_union,
               ov = ov_map,
