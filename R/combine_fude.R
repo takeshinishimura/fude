@@ -88,7 +88,7 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
   intersection_fude <- sf::st_intersection(x, y)
   intersection_fude$local_government_cd.1 <- NULL
 
-  original_fude <- x[x$polygon_uuid %in% unique(intersection_fude$polygon_uuid), ]
+  fude_original <- x[x$polygon_uuid %in% unique(intersection_fude$polygon_uuid), ]
 
   y_union <- y %>%
     sf::st_union() %>%
@@ -164,7 +164,7 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
     dplyr::filter(.data$fill == 1)
 
   return(list(fude = intersection_fude,
-              original_fude = original_fude,
+              fude_original = fude_original,
               community = y,
               community_union = y_union,
               ov = ov_map,

@@ -128,7 +128,7 @@ avoid this, do the following.
 ``` r
 ggplot() +
   geom_sf(data = db$community, fill = NA) +
-  geom_sf(data = db$original_fude, aes(fill = land_type)) +
+  geom_sf(data = db$fude_original, aes(fill = land_type)) +
   guides(fill = guide_legend(title = "耕地の種類")) +
   theme_void() +
   theme(text = element_text(family = "HiraKakuProN-W3"))
@@ -138,7 +138,7 @@ ggplot() +
 
 ``` r
 names(db)
-#> [1] "fude"            "original_fude"   "community"       "community_union"
+#> [1] "fude"            "fude_original"   "community"       "community_union"
 #> [5] "ov"              "ov_all"          "lg"              "lg_all"         
 #> [9] "pref"
 ```

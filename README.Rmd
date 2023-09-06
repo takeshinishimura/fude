@@ -110,7 +110,7 @@ Polygon data near the boundaries between communities may be split. To avoid this
 ```{r nosplit_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 ggplot() +
   geom_sf(data = db$community, fill = NA) +
-  geom_sf(data = db$original_fude, aes(fill = land_type)) +
+  geom_sf(data = db$fude_original, aes(fill = land_type)) +
   guides(fill = guide_legend(title = "耕地の種類")) +
   theme_void() +
   theme(text = element_text(family = "HiraKakuProN-W3"))
