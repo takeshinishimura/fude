@@ -113,7 +113,7 @@ db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ�
 
 ggplot() +
   geom_sf(data = db$community, fill = NA) +
-  geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
+  geom_sf(data = db$fude_split, aes(fill = RCOM_NAME)) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void()
 ```
@@ -128,22 +128,28 @@ avoid this, do the following.
 ``` r
 ggplot() +
   geom_sf(data = db$community, fill = NA) +
-  geom_sf(data = db$fude_original, aes(fill = land_type)) +
-  guides(fill = guide_legend(title = "耕地の種類")) +
+  geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
+  guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
   theme(text = element_text(family = "HiraKakuProN-W3"))
 ```
 
 <img src="man/figures/README-nosplit_gogoshima-1.png" width="100%" />
 
+**出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
+
+Polygons located on community boundaries are not split, but are assigned
+to one of the communities. If this automatic assignment needs to be
+modified, ad hoc coding is required.
+
+There are nine types of objects obtained by `combine_fude()` as follows.
+
 ``` r
 names(db)
-#> [1] "fude"            "fude_original"   "community"       "community_union"
+#> [1] "fude"            "fude_split"      "community"       "community_union"
 #> [5] "ov"              "ov_all"          "lg"              "lg_all"         
 #> [9] "pref"
 ```
-
-**出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
 
 If you want to be particular about the details of the map, for example,
 execute the following code.
