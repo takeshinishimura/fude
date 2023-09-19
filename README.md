@@ -112,9 +112,7 @@ library(ggplot2)
 db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
-  geom_sf(data = db$community, fill = NA) +
   geom_sf(data = db$fude_split, aes(fill = RCOM_NAME)) +
-  guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void()
 ```
 
