@@ -1,5 +1,7 @@
 # fude (development version)
 
+* Support for polygon data that is not split.
+
 # fude 0.3.3
 
 * Added the ability to easily draw municipal boundaries.
