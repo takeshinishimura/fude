@@ -136,6 +136,10 @@ ggplot() +
 
 **出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
+Polygons located on community boundaries are not split, but are assigned
+to one of the communities. If this automatic assignment needs to be
+modified, ad hoc coding is required.
+
 The gghighlight package allows for a wider range of expression.
 
 ``` r
@@ -156,10 +160,6 @@ ggplot() +
 **Source**: Created by processing the Ministry of Agriculture, Forestry
 and Fisheries, *Fude Polygon Data (released in FY2022)* and
 *Agricultural Community Boundary Data (FY2020)*.
-
-Polygons located on community boundaries are not split, but are assigned
-to one of the communities. If this automatic assignment needs to be
-modified, ad hoc coding is required.
 
 There are 8 types of objects obtained by `combine_fude()` as follows.
 

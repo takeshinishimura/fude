@@ -114,6 +114,9 @@ ggplot() +
 
 **出典**：`r db$source$jp`
 
+Polygons located on community boundaries are not split, but are assigned to one of the communities.
+If this automatic assignment needs to be modified, ad hoc coding is required.
+
 The gghighlight package allows for a wider range of expression.
 ```{r facet_wrap_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(gghighlight)
@@ -129,9 +132,6 @@ ggplot() +
 ```
 
 **Source**: `r db$source$en`
-
-Polygons located on community boundaries are not split, but are assigned to one of the communities.
-If this automatic assignment needs to be modified, ad hoc coding is required.
 
 There are `r length(names(db))` types of objects obtained by `combine_fude()` as follows.
 ```{r}
