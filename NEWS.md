@@ -1,4 +1,4 @@
-# fude (development version)
+# fude 0.3.5
 
 * Simplified the return value of `combine_fude()` by eliminating the reduced version of the object.
 
