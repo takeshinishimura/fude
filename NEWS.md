@@ -1,5 +1,7 @@
 # fude (development version)
 
+* Simplified the return value of `combine_fude()` by eliminating the reduced version of the object.
+
 # fude 0.3.4
 
 * Support for polygon data that is not split.

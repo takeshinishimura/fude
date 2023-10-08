@@ -118,7 +118,7 @@ ggplot() +
 
 <img src="man/figures/README-gogoshima-1.png" width="100%" />
 
-**出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
 Polygon data near the boundaries between communities may be split. To
 avoid this, do the following.
@@ -134,42 +134,61 @@ ggplot() +
 
 <img src="man/figures/README-nosplit_gogoshima-1.png" width="100%" />
 
-**出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
+
+The gghighlight package allows for a wider range of expression.
+
+``` r
+library(gghighlight)
+
+ggplot() +
+  geom_sf(data = db$community, aes(fill = RCOM_NAME), alpha = 0) +
+  geom_sf(data = db$fude, aes(fill = RCOM_NAME), linewidth = 0) +
+  gghighlight() +
+  facet_wrap(vars(RCOM_NAME)) +
+  theme_void() +
+  theme(legend.position = "none",
+        text = element_text(family = "HiraKakuProN-W3"))
+```
+
+<img src="man/figures/README-facet_wrap_gogoshima-1.png" width="100%" />
+
+**Source**: Created by processing the Ministry of Agriculture, Forestry
+and Fisheries, *Fude Polygon Data (released in FY2022)* and
+*Agricultural Community Boundary Data (FY2020)*.
 
 Polygons located on community boundaries are not split, but are assigned
 to one of the communities. If this automatic assignment needs to be
 modified, ad hoc coding is required.
 
-There are nine types of objects obtained by `combine_fude()` as follows.
+There are 8 types of objects obtained by `combine_fude()` as follows.
 
 ``` r
 names(db)
 #> [1] "fude"            "fude_split"      "community"       "community_union"
-#> [5] "ov"              "ov_all"          "lg"              "lg_all"         
-#> [9] "pref"
+#> [5] "ov"              "lg"              "pref"            "source"
 ```
 
 If you want to be particular about the details of the map, for example,
 execute the following code.
 
 ``` r
-library(magrittr)
-library(dplyr)
 library(ggrepel)
 library(cowplot)
 
 db <- combine_fude(d, b, city = "松山市", old_village = "興居島", community = "^(?!釣島).*")
 
 minimap <- ggplot() +
-  geom_sf(data = db$lg_all, aes(fill = fill)) +
-  geom_sf_text(data = db$lg_all, aes(label = city_kanji), family = "HiraKakuProN-W3") +
+  geom_sf(data = db$lg, aes(fill = fill)) +
+  geom_sf_text(data = db$lg, aes(label = city_kanji), family = "HiraKakuProN-W3") +
+  gghighlight(fill == 1) +
   geom_sf(data = db$community_union, fill = "black", linewidth = 0) +
   theme_void() +
   theme(panel.background = element_rect(fill = "aliceblue")) +
   scale_fill_manual(values = c("white", "gray"))
 
 mainmap <- ggplot() +
-  geom_sf(data = db$community, fill = "whitesmoke") +
+  geom_sf(data = db$community, fill = "white") +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
   geom_point(data = db$community, aes(x = x, y = y), colour = "gray") +
   geom_text_repel(data = db$community,
@@ -202,29 +221,42 @@ ggdraw(mainmap) +
     height = .3)
 ```
 
-<img src="man/figures/README-gogoshima_with_minimap-1.png" width="100%" />
-
-**出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
-
 This package may be beneficial, especially for R beginners, when simply
 wanting to draw agricultural community boundaries.
 
 ``` r
-db <- combine_fude(d, b, city = "八幡浜市", old_village = "真穴")
+library(dplyr)
+library(ggrepel)
 
-ggplot(data = db$community) +
+db <- combine_fude(d, b, city = "西予市", old_village = "遊子川")
+
+ggplot() +
+  geom_sf(data = db$pref, fill = NA) +
   geom_sf(data = db$lg, fill = "gray") +
-  geom_sf_text(data = db$lg, aes(label = city_kanji), family = "HiraKakuProN-W3") +
-  geom_sf(fill = "ivory") +
-# geom_sf(data = db$fude, aes(fill = land_type), colour = NA) +
-  geom_sf_label(aes(label = RCOM_NAME), family = "HiraKakuProN-W3") +
-  theme_void() +
-  theme(legend.position = "none")
+  gghighlight(fill == 1,
+    unhighlighted_params = list(
+      alpha = .05
+    )) +
+  geom_sf(data = db$ov |> filter(fill == 1), fill = "black") +
+  geom_sf_text(data = db$lg |> filter(fill == 1),
+               aes(label = city_kanji),
+               size = 3,
+               nudge_x = -.025, nudge_y = -.025,
+               family = "HiraKakuProN-W3") +
+  geom_point(data = db$community_union, aes(x = x, y = y), colour = "black") +
+  geom_text_repel(data = db$community_union,
+                  aes(x = x, y = y),
+                  label = "遊子川地区",
+                  nudge_x = .3, nudge_y = -.025,
+                  segment.color = "black",
+                  size = 3,
+                  family = "HiraKakuProN-W3") +
+  theme_void()
 ```
 
-<img src="man/figures/README-yawatahama-1.png" width="100%" />
+<img src="man/figures/README-yusukawa-1.png" width="100%" />
 
-**出典**：農林水産省が提供する「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2021年度公開）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
 If you want to use `mapview()`, do the following.
 

@@ -38,8 +38,9 @@ read_fude <- function(path, stringsAsFactors = TRUE, quiet = FALSE) {
   if (stringsAsFactors == TRUE) {
     x <- purrr::map(x, function(df) {
       df$land_type <- factor(df$land_type,
-                             levels = c(100, 200),
-                             labels = c("\u7530", "\u7551"))
+                             levels = c(100, 200))
+      df$land_type_jp <- df$land_type
+      levels(df$land_type_jp) <- c("\u7530", "\u7551")
       return(df)
     })
   }

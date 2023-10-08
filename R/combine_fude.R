@@ -166,7 +166,7 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
   ov_all_map <- sf::st_set_crs(ov_df, 4326)
 
   ov_all_map <- ov_all_map %>%
-    dplyr::mutate(fill = factor(dplyr::if_else(.data$CITY_NAME == location_info$city, 1, 0)))
+    dplyr::mutate(fill = factor(dplyr::if_else(.data$KCITY_NAME == y$KCITY_NAME, 1, 0)))
 
   ov_map <- ov_all_map %>%
     dplyr::filter(.data$fill == 1)
@@ -175,11 +175,24 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
               fude_split = intersection_fude,
               community = y,
               community_union = y_union,
-              ov = ov_map,
-              ov_all = ov_all_map,
-              lg = lg_map,
-              lg_all = lg_all_map,
-              pref = pref_map))
+#             ov = ov_map,
+              ov = ov_all_map,
+#             lg = lg_map,
+              lg = lg_all_map,
+              pref = pref_map,
+              source = list(jp = paste0("\u8FB2\u6797\u6C34\u7523\u7701\u300C\u7B46\u30DD\u30EA\u30B4\u30F3\u30C7\u30FC\u30BF\uFF08",
+                                        paste0(unique(fude_original$issue_year), collapse = ", "),
+                                        "\u5E74\u5EA6\u516C\u958B\uFF09\u300D\u304A\u3088\u3073\u300C\u8FB2\u696D\u96C6\u843D\u5883\u754C\u30C7\u30FC\u30BF\uFF08",
+                                        paste0(unique(y$edit_year), collapse = ", "),
+                                        "\u5E74\u5EA6\uFF09\u300D\u3092\u52A0\u5DE5\u3057\u3066\u4F5C\u6210\u3002"),
+                           en = paste0("Created by processing the Ministry of Agriculture, Forestry and Fisheries, *Fude Polygon Data (released in FY",
+                                        paste0(unique(fude_original$issue_year), collapse = ", "),
+                                        ")* and *Agricultural Community Boundary Data (FY",
+                                        paste0(unique(y$edit_year), collapse = ", "),
+                                        ")*.")
+                         )
+              )
+        )
 }
 
 find_pref_name <- function(city) {
