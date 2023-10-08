@@ -167,7 +167,7 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
   ov_all_map <- sf::st_set_crs(ov_df, 4326)
 
   ov_all_map <- ov_all_map %>%
-    dplyr::mutate(fill = factor(dplyr::if_else(.data$KCITY_NAME %in% y$KCITY_NAME, 1, 0)))
+    dplyr::mutate(fill = factor(dplyr::if_else(.data$CITY_NAME == location_info$city & .data$KCITY_NAME %in% y$KCITY_NAME, 1, 0)))
 
   ov_map <- ov_all_map %>%
     dplyr::filter(.data$fill == 1)
