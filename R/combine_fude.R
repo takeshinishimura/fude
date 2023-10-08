@@ -102,7 +102,8 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
     sf::st_union() %>%
     sf::st_sf() %>%
     dplyr::mutate(centroid = sf::st_centroid(.data$geometry)) %>%
-    dplyr::mutate(x = sf::st_coordinates(.data$centroid)[, 1],
+    dplyr::mutate(local_government_cd = paste0(unique(y$local_government_cd), collapse = "/"),
+                  x = sf::st_coordinates(.data$centroid)[, 1],
                   y = sf::st_coordinates(.data$centroid)[, 2]) %>%
     as.data.frame() %>%
     sf::st_sf()
@@ -166,7 +167,7 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
   ov_all_map <- sf::st_set_crs(ov_df, 4326)
 
   ov_all_map <- ov_all_map %>%
-    dplyr::mutate(fill = factor(dplyr::if_else(.data$KCITY_NAME == y$KCITY_NAME, 1, 0)))
+    dplyr::mutate(fill = factor(dplyr::if_else(.data$KCITY_NAME %in% y$KCITY_NAME, 1, 0)))
 
   ov_map <- ov_all_map %>%
     dplyr::filter(.data$fill == 1)
