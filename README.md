@@ -237,7 +237,7 @@ ggplot() +
     unhighlighted_params = list(
       alpha = .05
     )) +
-  geom_sf(data = db$ov |> filter(fill == 1), fill = "black") +
+  geom_sf(data = db$ov |> filter(fill == 1), colour = NA, fill = "black") +
   geom_sf_text(data = db$lg |> filter(fill == 1),
                aes(label = city_kanji),
                size = 3,
