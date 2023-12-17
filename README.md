@@ -129,7 +129,7 @@ ggplot() +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
-  theme(text = element_text(family = "HiraKakuProN-W3"))
+  theme(text = element_text(family = "Hiragino Sans"))
 ```
 
 <img src="man/figures/README-nosplit_gogoshima-1.png" width="100%" />
@@ -152,7 +152,7 @@ ggplot() +
   facet_wrap(vars(RCOM_NAME)) +
   theme_void() +
   theme(legend.position = "none",
-        text = element_text(family = "HiraKakuProN-W3"))
+        text = element_text(family = "Hiragino Sans"))
 ```
 
 <img src="man/figures/README-facet_wrap_gogoshima-1.png" width="100%" />
@@ -180,7 +180,7 @@ db <- combine_fude(d, b, city = "松山市", old_village = "興居島", communit
 
 minimap <- ggplot() +
   geom_sf(data = db$lg, aes(fill = fill)) +
-  geom_sf_text(data = db$lg, aes(label = city_kanji), family = "HiraKakuProN-W3") +
+  geom_sf_text(data = db$lg, aes(label = city_kanji), family = "Hiragino Sans") +
   gghighlight(fill == 1) +
   geom_sf(data = db$community_union, fill = "black", linewidth = 0) +
   theme_void() +
@@ -198,7 +198,7 @@ mainmap <- ggplot() +
                   min.segment.length = .01,
                   segment.color = "gray",
                   size = 3,
-                  family = "HiraKakuProN-W3") +
+                  family = "Hiragino Sans") +
   theme_void() +
   theme(legend.position = "none")
 
@@ -242,7 +242,7 @@ ggplot() +
                aes(label = city_kanji),
                size = 3,
                nudge_x = -.025, nudge_y = -.025,
-               family = "HiraKakuProN-W3") +
+               family = "Hiragino Sans") +
   geom_point(data = db$community_union, aes(x = x, y = y), colour = "black") +
   geom_text_repel(data = db$community_union,
                   aes(x = x, y = y),
@@ -250,7 +250,7 @@ ggplot() +
                   nudge_x = .3, nudge_y = -.025,
                   segment.color = "black",
                   size = 3,
-                  family = "HiraKakuProN-W3") +
+                  family = "Hiragino Sans") +
   theme_void()
 ```
 
