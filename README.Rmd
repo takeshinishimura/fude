@@ -20,11 +20,11 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/fude)](https://CRAN.R-project.org/package=fude)
 <!-- badges: end -->
 
-The fude package provides utilities to facilitate handling of Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word fude is a Japanese counter suffix used when referring to land parcels.
+The fude package provides utilities to facilitate handling of Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word fude is a Japanese counter suffix used to denote land parcels.
 
 ## Obtaining Data
 
-Download the Fude Polygon data from the following release site of MAFF (only Japanese is available).
+Download the Fude Polygon data from the following release site of MAFF (available only in Japanese).
 
 - <https://open.fude.maff.go.jp>
 
@@ -43,7 +43,7 @@ devtools::install_github("takeshinishimura/fude")
 
 ## Usage
 
-You can let R read the downloaded ZIP file without unzipping it.
+You can allow R to read the downloaded ZIP file directly without the need to unzip it.
 ```{r eval = FALSE}
 library(fude)
 d <- read_fude("~/2022_38.zip")
@@ -53,14 +53,12 @@ library(fude)
 d <- read_fude("~/2022_38.zip", quiet = TRUE)
 ```
 
-Those who wish to use a mouse or trackpad for file selection, which is especially common among R beginners, can do the following.
-
+For those who prefer using a mouse or trackpad to select files, a method particularly popular among R beginners, the following approach can be taken.
 ```{r eval = FALSE}
 d <- read_fude(file.choose())
 ```
 
-You can rename the local government codes to the Japanese municipality names for easier handling.
-
+You can convert the local government codes into Japanese municipality names for more convenient management.
 ```{r}
 d2 <- rename_fude(d)
 ```
@@ -71,7 +69,7 @@ d3 <- d |> rename_fude(suffix = TRUE, romaji = "title", quiet = TRUE)
 names(d3)
 ```
 
-You can download the agricultural community boundary data corresponding to the Fude Polygon data from the MAFF website <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/> (only Japanese is available).
+You can download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website at  <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/> (onlyavailable only in Japanese).
 ```{r eval = FALSE}
 b <- get_boundary(d)
 ```
@@ -79,7 +77,7 @@ b <- get_boundary(d)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 ```
 
-You can easily draw a map combining Fude Polygons and agricultural community boundaries.
+You can effortlessly create a map that integrates Fude Polygons with agricultural community boundaries.
 ```{r eval = FALSE}
 library(ggplot2)
 
@@ -104,7 +102,7 @@ ggplot() +
 
 **出典**：`r db$source$jp`
 
-Polygon data near the boundaries between communities may be split. To avoid this, do the following.
+Polygon data close to community borders may be divided. To avoid this, utilize `db$fude`.
 ```{r nosplit_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(ggforce)
 
@@ -130,8 +128,12 @@ ggplot() +
 
 **出典**：`r db$source$jp`
 
-Polygons located on community boundaries are not split, but are assigned to one of the communities.
-If this automatic assignment needs to be modified, ad hoc coding is required.
+Polygons situated on community boundaries are not divided but are allocated to one of the communities.
+Should there be a need to adjust this automatic assignment, custom coding will be necessary.
+The rows that require consideration can be extracted with the following command.
+```{r}
+db$fude[duplicated(db$fude_split$polygon_uuid), ]
+```
 
 The gghighlight package allows for a wider range of expression.
 ```{r facet_wrap_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
