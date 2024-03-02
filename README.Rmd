@@ -111,16 +111,18 @@ library(ggforce)
 ggplot() +
   geom_sf(data = db$community, fill = NA) +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
-  geom_mark_hull(data = db$community, 
-                 aes(x = x, y = y,
+  geom_mark_hull(data = db$fude, 
+                 aes(x = point_lng, y = point_lat,
                      fill = RCOM_NAME,
                      label = RCOM_NAME),
-                 expand = unit(0, "mm"),
-                 radius = unit(0, "mm"),
+                 colour = NA,
+                 expand = unit(1, "mm"),
+                 radius = unit(1, "mm"),
+                 label.fontsize = 9,
                  label.family = "Hiragino Sans",
                  label.fill = NA,
                  label.colour = "black",
-                 label.buffer = unit(6.5, "mm"),
+                 label.buffer = unit(4, "mm"),
                  con.colour = "gray70") +
   theme_no_axes() +
   theme(legend.position = "none")
