@@ -113,6 +113,7 @@ db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ�
 
 ggplot() +
   geom_sf(data = db$fude_split, aes(fill = RCOM_NAME)) +
+  guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void()
 ```
 
@@ -124,12 +125,24 @@ Polygon data near the boundaries between communities may be split. To
 avoid this, do the following.
 
 ``` r
+library(ggforce)
+
 ggplot() +
   geom_sf(data = db$community, fill = NA) +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
-  guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
-  theme_void() +
-  theme(text = element_text(family = "Hiragino Sans"))
+  geom_mark_hull(data = db$community, 
+                 aes(x = x, y = y,
+                     fill = RCOM_NAME,
+                     label = RCOM_NAME),
+                 expand = unit(0, "mm"),
+                 radius = unit(0, "mm"),
+                 label.family = "Hiragino Sans",
+                 label.fill = NA,
+                 label.colour = "black",
+                 label.buffer = unit(6.5, "mm"),
+                 con.colour = "gray70") +
+  theme_no_axes() +
+  theme(legend.position = "none")
 ```
 
 <img src="man/figures/README-nosplit_gogoshima-1.png" width="100%" />
