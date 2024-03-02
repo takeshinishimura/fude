@@ -69,11 +69,11 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The fude package provides utilities to facilitate handling of Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word fude is a Japanese counter suffix used when referring to land parcels.</p>
+<p>The fude package provides utilities to facilitate handling of Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word fude is a Japanese counter suffix used to denote land parcels.</p>
 <div class="section level2">
 <h2 id="obtaining-data">Obtaining Data<a class="anchor" aria-label="anchor" href="#obtaining-data"></a>
 </h2>
-<p>Download the Fude Polygon data from the following release site of MAFF (only Japanese is available).</p>
+<p>Download the Fude Polygon data from the following release site of MAFF (available only in Japanese).</p>
 <ul>
 <li><a href="https://open.fude.maff.go.jp" class="external-link uri">https://open.fude.maff.go.jp</a></li>
 </ul>
@@ -92,14 +92,14 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>You can let R read the downloaded ZIP file without unzipping it.</p>
+<p>You can allow R to read the downloaded ZIP file directly without the need to unzip it.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/takeshinishimura/fude" class="external-link">fude</a></span><span class="op">)</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span><span class="st">"~/2022_38.zip"</span><span class="op">)</span></span></code></pre></div>
-<p>Those who wish to use a mouse or trackpad for file selection, which is especially common among R beginners, can do the following.</p>
+<p>For those who prefer using a mouse or trackpad to select files, a method particularly popular among R beginners, the following approach can be taken.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.choose.html" class="external-link">file.choose</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>You can rename the local government codes to the Japanese municipality names for easier handling.</p>
+<p>You can convert the local government codes into Japanese municipality names for more convenient management.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 2022_382019 -&gt; 2022_松山市</span></span>
@@ -133,10 +133,10 @@
 <span><span class="co">#&gt; [13] "2022_Kumakogen-cho"   "2022_Matsumae-cho"    "2022_Tobe-cho"       </span></span>
 <span><span class="co">#&gt; [16] "2022_Uchiko-cho"      "2022_Ikata-cho"       "2022_Matsuno-cho"    </span></span>
 <span><span class="co">#&gt; [19] "2022_Kihoku-cho"      "2022_Ainan-cho"</span></span></code></pre></div>
-<p>You can download the agricultural community boundary data corresponding to the Fude Polygon data from the MAFF website <a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/" class="external-link uri">https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/</a> (only Japanese is available).</p>
+<p>You can download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website at <a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/" class="external-link uri">https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/</a> (onlyavailable only in Japanese).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></code></pre></div>
-<p>You can easily draw a map combining Fude Polygons and agricultural community boundaries.</p>
+<p>You can effortlessly create a map that integrates Fude Polygons with agricultural community boundaries.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
@@ -148,7 +148,7 @@
 <span>  <span class="fu">theme_void</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-gogoshima-1.png" width="100%"></p>
 <p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
-<p>Polygon data near the boundaries between communities may be split. To avoid this, do the following.</p>
+<p>Polygon data close to community borders may be divided. To avoid this, utilize <code>db$fude</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggforce.data-imaginist.com" class="external-link">ggforce</a></span><span class="op">)</span></span>
 <span></span>
@@ -172,9 +172,95 @@
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-nosplit_gogoshima-1.png" width="100%"></p>
 <p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
-<p>Polygons located on community boundaries are not split, but are assigned to one of the communities. If this automatic assignment needs to be modified, ad hoc coding is required.</p>
-<p>The gghighlight package allows for a wider range of expression.</p>
+<p>Polygons situated on community boundaries are not divided but are allocated to one of the communities. Should there be a need to adjust this automatic assignment, custom coding will be necessary. The rows that require consideration can be extracted with the following command.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">db</span><span class="op">$</span><span class="va">fude</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude_split</span><span class="op">$</span><span class="va">polygon_uuid</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt; Simple feature collection with 80 features and 26 fields</span></span>
+<span><span class="co">#&gt; Active geometry column: geometry (with 4 geometries empty)</span></span>
+<span><span class="co">#&gt; Geometry type: POLYGON</span></span>
+<span><span class="co">#&gt; Dimension:     XY</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: 132.6574 ymin: 33.87414 xmax: 132.6946 ymax: 33.92217</span></span>
+<span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
+<span><span class="co">#&gt; First 10 features:</span></span>
+<span><span class="co">#&gt;                             polygon_uuid land_type issue_year edit_year</span></span>
+<span><span class="co">#&gt; 179 95d68fa9-02c8-41c9-a273-ee30465605ff       200       2022      2020</span></span>
+<span><span class="co">#&gt; 180 17a1301c-1edf-4217-a349-ff152d13cc73       200       2022      2020</span></span>
+<span><span class="co">#&gt; 187 36c62d0d-444c-412b-b171-b9b6a6a274bb       200       2022      2020</span></span>
+<span><span class="co">#&gt; 191 2c5e218b-bf8b-444d-85e4-d30de3e951ba       200       2022      2020</span></span>
+<span><span class="co">#&gt; 204 696bd14d-a0cc-4fb5-94f6-ce73328502ed       200       2022      2020</span></span>
+<span><span class="co">#&gt; 229 a422c19e-da70-47ff-848f-2d5e30f3fed9       200       2022      2020</span></span>
+<span><span class="co">#&gt; 237 befbd449-9f38-40c2-8db2-32236ff368b4       200       2022      2020</span></span>
+<span><span class="co">#&gt; 303 1ca420b2-6563-40ca-aae3-512e59b034de       200       2022      2020</span></span>
+<span><span class="co">#&gt; 418 55bc275e-9361-4a34-8fdc-e07fa7dcac87       200       2022      2020</span></span>
+<span><span class="co">#&gt; 527 81d95fa7-a821-407f-aa38-0a5b8a47b8d2       200       2022      2020</span></span>
+<span><span class="co">#&gt;                                                                                                                                                               history</span></span>
+<span><span class="co">#&gt; 179 [{"筆ポリゴンID":"58eb5fcb-ea9c-49f8-8d38-ae48e573f096","更新年度":2021,"前年同一":true},{"筆ポリゴンID":"58eb5fcb-ea9c-49f8-8d38-ae48e573f096","発生年度":2020}]</span></span>
+<span><span class="co">#&gt; 180 [{"筆ポリゴンID":"8d856d0a-b4cc-471b-bb0d-7a386aee263a","更新年度":2021,"前年同一":true},{"筆ポリゴンID":"8d856d0a-b4cc-471b-bb0d-7a386aee263a","発生年度":2020}]</span></span>
+<span><span class="co">#&gt; 187 [{"筆ポリゴンID":"17c4d96b-b7ae-4058-9c97-750961e04191","更新年度":2021,"前年同一":true},{"筆ポリゴンID":"17c4d96b-b7ae-4058-9c97-750961e04191","発生年度":2020}]</span></span>
+<span><span class="co">#&gt; 191 [{"筆ポリゴンID":"9fbf0d62-5287-4036-8e5e-39448edd7d39","更新年度":2021,"前年同一":true},{"筆ポリゴンID":"9fbf0d62-5287-4036-8e5e-39448edd7d39","発生年度":2020}]</span></span>
+<span><span class="co">#&gt; 204 [{"筆ポリゴンID":"2c35b35a-1a17-4631-8b65-9c3d5bd567d0","更新年度":2021,"前年同一":true},{"筆ポリゴンID":"2c35b35a-1a17-4631-8b65-9c3d5bd567d0","発生年度":2020}]</span></span>
+<span><span class="co">#&gt; 229 [{"筆ポリゴンID":"3910f090-033e-4e70-b940-572916e5ada3","更新年度":2021,"前年同一":true},{"筆ポリゴンID":"3910f090-033e-4e70-b940-572916e5ada3","発生年度":2020}]</span></span>
+<span><span class="co">#&gt; 237 [{"筆ポリゴンID":"079911a5-f6cd-4ea3-ac83-40f85c216a73","更新年度":2021,"前年同一":true},{"筆ポリゴンID":"079911a5-f6cd-4ea3-ac83-40f85c216a73","発生年度":2020}]</span></span>
+<span><span class="co">#&gt; 303 [{"筆ポリゴンID":"ce292372-6417-432c-8350-81cd0efcae00","更新年度":2021,"前年同一":true},{"筆ポリゴンID":"ce292372-6417-432c-8350-81cd0efcae00","発生年度":2020}]</span></span>
+<span><span class="co">#&gt; 418 [{"筆ポリゴンID":"91c37533-c2e4-4688-8f20-8b456fea7fef","更新年度":2021,"前年同一":true},{"筆ポリゴンID":"91c37533-c2e4-4688-8f20-8b456fea7fef","発生年度":2020}]</span></span>
+<span><span class="co">#&gt; 527 [{"筆ポリゴンID":"1359d49c-7df2-4941-bbd0-789a5e7daacc","更新年度":2021,"前年同一":true},{"筆ポリゴンID":"1359d49c-7df2-4941-bbd0-789a5e7daacc","発生年度":2020}]</span></span>
+<span><span class="co">#&gt;                        last_polygon_uuid prev_last_polygon_uuid</span></span>
+<span><span class="co">#&gt; 179 58eb5fcb-ea9c-49f8-8d38-ae48e573f096                   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 180 8d856d0a-b4cc-471b-bb0d-7a386aee263a                   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 187 17c4d96b-b7ae-4058-9c97-750961e04191                   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 191 9fbf0d62-5287-4036-8e5e-39448edd7d39                   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 204 2c35b35a-1a17-4631-8b65-9c3d5bd567d0                   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 229 3910f090-033e-4e70-b940-572916e5ada3                   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 237 079911a5-f6cd-4ea3-ac83-40f85c216a73                   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 303 ce292372-6417-432c-8350-81cd0efcae00                   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 418 91c37533-c2e4-4688-8f20-8b456fea7fef                   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 527 1359d49c-7df2-4941-bbd0-789a5e7daacc                   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;     local_government_cd point_lng point_lat land_type_jp        KEY PREF CITY</span></span>
+<span><span class="co">#&gt; 179              382019  132.6890  33.91362           畑 3820102008   38  201</span></span>
+<span><span class="co">#&gt; 180              382019  132.6729  33.87807           畑 3820102002   38  201</span></span>
+<span><span class="co">#&gt; 187              382019  132.6761  33.88398           畑 3820102002   38  201</span></span>
+<span><span class="co">#&gt; 191              382019  132.6859  33.91254           畑 3820102008   38  201</span></span>
+<span><span class="co">#&gt; 204              382019  132.6831  33.90642           畑 3820102008   38  201</span></span>
+<span><span class="co">#&gt; 229              382019  132.6667  33.88325           畑 3820102002   38  201</span></span>
+<span><span class="co">#&gt; 237              382019  132.6686  33.89156           畑 3820102003   38  201</span></span>
+<span><span class="co">#&gt; 303              382019  132.6886  33.90552           畑 3820102008   38  201</span></span>
+<span><span class="co">#&gt; 418              382019  132.6585  33.90284           畑 3820102005   38  201</span></span>
+<span><span class="co">#&gt; 527              382019  132.6875  33.90904           畑 3820102008   38  201</span></span>
+<span><span class="co">#&gt;     KCITY RCOM PREF_NAME CITY_NAME KCITY_NAME RCOM_NAME RCOM_KANA HININTEI</span></span>
+<span><span class="co">#&gt; 179    02  008    愛媛県    松山市   興居島村      門田    かどた        0</span></span>
+<span><span class="co">#&gt; 180    02  002    愛媛県    松山市   興居島村        泊    とまり        0</span></span>
+<span><span class="co">#&gt; 187    02  002    愛媛県    松山市   興居島村        泊    とまり        0</span></span>
+<span><span class="co">#&gt; 191    02  008    愛媛県    松山市   興居島村      門田    かどた        0</span></span>
+<span><span class="co">#&gt; 204    02  008    愛媛県    松山市   興居島村      門田    かどた        0</span></span>
+<span><span class="co">#&gt; 229    02  002    愛媛県    松山市   興居島村        泊    とまり        0</span></span>
+<span><span class="co">#&gt; 237    02  003    愛媛県    松山市   興居島村      船越  ふなこし        0</span></span>
+<span><span class="co">#&gt; 303    02  008    愛媛県    松山市   興居島村      門田    かどた        0</span></span>
+<span><span class="co">#&gt; 418    02  005    愛媛県    松山市   興居島村    鷲ケ巣  わしがす        0</span></span>
+<span><span class="co">#&gt; 527    02  008    愛媛県    松山市   興居島村      門田    かどた        0</span></span>
+<span><span class="co">#&gt;     edit_year.1 RCOM_romaji        x        y                       geometry</span></span>
+<span><span class="co">#&gt; 179        2020      Kadota 132.6865 33.91249 POLYGON ((132.6889 33.91384...</span></span>
+<span><span class="co">#&gt; 180        2020      Tomari 132.6745 33.88193 POLYGON ((132.6726 33.87832...</span></span>
+<span><span class="co">#&gt; 187        2020      Tomari 132.6745 33.88193 POLYGON ((132.676 33.88372,...</span></span>
+<span><span class="co">#&gt; 191        2020      Kadota 132.6865 33.91249 POLYGON ((132.6856 33.91279...</span></span>
+<span><span class="co">#&gt; 204        2020      Kadota 132.6865 33.91249 POLYGON ((132.6829 33.90642...</span></span>
+<span><span class="co">#&gt; 229        2020      Tomari 132.6745 33.88193 POLYGON ((132.6667 33.88354...</span></span>
+<span><span class="co">#&gt; 237        2020   Funakoshi 132.6706 33.89536 POLYGON ((132.6687 33.89186...</span></span>
+<span><span class="co">#&gt; 303        2020      Kadota 132.6865 33.91249 POLYGON ((132.6887 33.90569...</span></span>
+<span><span class="co">#&gt; 418        2020   Washigasu 132.6637 33.90494 POLYGON ((132.6577 33.90273...</span></span>
+<span><span class="co">#&gt; 527        2020      Kadota 132.6865 33.91249 POLYGON ((132.6879 33.90909...</span></span>
+<span><span class="co">#&gt;                      centroid</span></span>
+<span><span class="co">#&gt; 179 POINT (132.6865 33.91249)</span></span>
+<span><span class="co">#&gt; 180 POINT (132.6745 33.88193)</span></span>
+<span><span class="co">#&gt; 187 POINT (132.6745 33.88193)</span></span>
+<span><span class="co">#&gt; 191 POINT (132.6865 33.91249)</span></span>
+<span><span class="co">#&gt; 204 POINT (132.6865 33.91249)</span></span>
+<span><span class="co">#&gt; 229 POINT (132.6745 33.88193)</span></span>
+<span><span class="co">#&gt; 237 POINT (132.6706 33.89536)</span></span>
+<span><span class="co">#&gt; 303 POINT (132.6865 33.91249)</span></span>
+<span><span class="co">#&gt; 418 POINT (132.6637 33.90494)</span></span>
+<span><span class="co">#&gt; 527 POINT (132.6865 33.91249)</span></span></code></pre></div>
+<p>The gghighlight package allows for a wider range of expression.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yutannihilation.github.io/gghighlight/" class="external-link">gghighlight</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -188,12 +274,12 @@
 <p><img src="reference/figures/README-facet_wrap_gogoshima-1.png" width="100%"></p>
 <p><strong>Source</strong>: Created by processing the Ministry of Agriculture, Forestry and Fisheries, <em>Fude Polygon Data (released in FY2022)</em> and <em>Agricultural Community Boundary Data (FY2020)</em>.</p>
 <p>There are 8 types of objects obtained by <code><a href="reference/combine_fude.html">combine_fude()</a></code> as follows.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "fude"            "fude_split"      "community"       "community_union"</span></span>
 <span><span class="co">#&gt; [5] "ov"              "lg"              "pref"            "source"</span></span></code></pre></div>
 <p>If you want to be particular about the details of the map, for example, execute the following code.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggrepel.slowkow.com/" class="external-link">ggrepel</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/cowplot/" class="external-link">cowplot</a></span><span class="op">)</span></span>
 <span></span>
@@ -241,7 +327,7 @@
 <span>    width <span class="op">=</span> <span class="fl">.3</span>, </span>
 <span>    height <span class="op">=</span> <span class="fl">.3</span><span class="op">)</span></span></code></pre></div>
 <p>This package may be beneficial, especially for R beginners, when simply wanting to draw agricultural community boundaries.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggrepel.slowkow.com/" class="external-link">ggrepel</a></span><span class="op">)</span></span>
 <span></span>
@@ -272,7 +358,7 @@
 <p><img src="reference/figures/README-yusukawa-1.png" width="100%"></p>
 <p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
 <p>If you want to use <code>mapview()</code>, do the following.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/mapview" class="external-link">mapview</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">db1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"伊方町"</span><span class="op">)</span></span>
