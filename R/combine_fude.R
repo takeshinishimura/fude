@@ -177,7 +177,7 @@ combine_fude <- function(data,
   ov_map <- ov_all_map %>%
     dplyr::filter(.data$fill == 1)
 
-  message(paste(unique(fude_original$RCOM_NAME), "communities have been extracted."))
+  message(paste(length(unique(fude_original$RCOM_NAME)), "communities have been extracted."))
 
   return(list(fude = fude_original,
               fude_split = intersection_fude,
