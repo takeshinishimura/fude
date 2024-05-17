@@ -177,6 +177,10 @@ combine_fude <- function(data,
   ov_map <- ov_all_map %>%
     dplyr::filter(.data$fill == 1)
 
+  if (nrow(fude_original) == 0) {
+    stop("No matching Fude Polygon data found.")
+  }
+
   return(list(fude = fude_original,
               fude_split = intersection_fude,
               community = y,
