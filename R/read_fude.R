@@ -13,7 +13,7 @@
 #'   logical. Suppress information about the data to be read.
 #' @param supplementary
 #'   logical. If TRUE, add supplementary information for each polygon. Default
-#'   is FALSE.
+#'   is TRUE.
 #' @returns A list of [sf::sf()] objects.
 #'
 #' @examples
@@ -24,7 +24,7 @@
 read_fude <- function(path,
                       stringsAsFactors = TRUE,
                       quiet = FALSE,
-                      supplementary = FALSE) {
+                      supplementary = TRUE) {
   if (!grepl(".zip$", path)) {
     stop(path, " is not a ZIP file.")
   }

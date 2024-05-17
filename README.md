@@ -247,6 +247,10 @@ The gghighlight package allows for a wider range of expression.
 
 ``` r
 library(gghighlight)
+library(forcats)
+
+db$community$RCOM_NAME <- forcats::fct_rev(db$community$RCOM_NAME)
+db$fude$RCOM_NAME <- forcats::fct_rev(db$fude$RCOM_NAME)
 
 ggplot() +
   geom_sf(data = db$community, aes(fill = RCOM_NAME), alpha = 0) +
@@ -265,11 +269,12 @@ and Fisheries, *Fude Polygon Data (released in FY2022)* and
 *Agricultural Community Boundary Data (FY2020)*.
 
 ``` r
-ggplot(data = db$fude, aes(x = as.numeric(a), fill = RCOM_NAME)) +
-  geom_histogram(alpha = .7) +
-  labs(x = "Area (a)",
-       y = "Frequency") +
+ggplot(data = db$fude, aes(x = as.numeric(a), fill = land_type_jp)) +
+  geom_histogram(position = "identity", alpha = .5) +
+  labs(x = "面積（a）",
+       y = "頻度") +
   facet_wrap(vars(RCOM_NAME)) +
+  labs(fill = "耕地の種類") +
   theme_minimal() +
   theme(legend.position = "none",
         text = element_text(family = "Hiragino Sans"))

@@ -4,7 +4,7 @@
 \alias{read_fude}
 \title{Read a Fude Polygon ZIP file}
 \usage{
-read_fude(path, stringsAsFactors = TRUE, quiet = FALSE, supplementary = FALSE)
+read_fude(path, stringsAsFactors = TRUE, quiet = FALSE, supplementary = TRUE)
 }
 \arguments{
 \item{path}{Path to the ZIP file containing one or more GeoJSON format files.}
@@ -14,7 +14,7 @@ read_fude(path, stringsAsFactors = TRUE, quiet = FALSE, supplementary = FALSE)
 \item{quiet}{logical. Suppress information about the data to be read.}
 
 \item{supplementary}{logical. If TRUE, add supplementary information for each polygon. Default
-is FALSE.}
+is TRUE.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.
