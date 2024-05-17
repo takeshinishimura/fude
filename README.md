@@ -117,11 +117,11 @@ library(ggforce)
 
 ggplot() +
   geom_sf(data = db$community, fill = NA) +
-  geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
+  geom_sf(data = db$fude, aes(fill = RCOM_ROMAJI)) +
   geom_mark_hull(data = db$fude, 
                  aes(x = point_lng, y = point_lat,
-                     fill = RCOM_NAME,
-                     label = RCOM_NAME),
+                     fill = RCOM_ROMAJI,
+                     label = RCOM_ROMAJI),
                  colour = NA,
                  expand = unit(1, "mm"),
                  radius = unit(1, "mm"),
@@ -208,28 +208,28 @@ db$fude[duplicated(db$fude_split$polygon_uuid), ]
 #> 303   8.880173 [a]              3820102008   38  201    02  008    愛媛県
 #> 418 100.795286 [a]              3820102005   38  201    02  005    愛媛県
 #> 527  34.356437 [a]              3820102008   38  201    02  008    愛媛県
-#>     CITY_NAME KCITY_NAME RCOM_NAME RCOM_KANA HININTEI boundary_edit_year
-#> 179    松山市   興居島村      門田    かどた        0               2020
-#> 180    松山市   興居島村        泊    とまり        0               2020
-#> 187    松山市   興居島村        泊    とまり        0               2020
-#> 191    松山市   興居島村      門田    かどた        0               2020
-#> 204    松山市   興居島村      門田    かどた        0               2020
-#> 229    松山市   興居島村        泊    とまり        0               2020
-#> 237    松山市   興居島村      船越  ふなこし        0               2020
-#> 303    松山市   興居島村      門田    かどた        0               2020
-#> 418    松山市   興居島村    鷲ケ巣  わしがす        0               2020
-#> 527    松山市   興居島村      門田    かどた        0               2020
-#>     RCOM_romaji        x        y                       geometry
-#> 179      Kadota 132.6865 33.91249 POLYGON ((132.6889 33.91384...
-#> 180      Tomari 132.6745 33.88193 POLYGON ((132.6726 33.87832...
-#> 187      Tomari 132.6745 33.88193 POLYGON ((132.676 33.88372,...
-#> 191      Kadota 132.6865 33.91249 POLYGON ((132.6856 33.91279...
-#> 204      Kadota 132.6865 33.91249 POLYGON ((132.6829 33.90642...
-#> 229      Tomari 132.6745 33.88193 POLYGON ((132.6667 33.88354...
-#> 237   Funakoshi 132.6706 33.89536 POLYGON ((132.6687 33.89186...
-#> 303      Kadota 132.6865 33.91249 POLYGON ((132.6887 33.90569...
-#> 418   Washigasu 132.6637 33.90494 POLYGON ((132.6577 33.90273...
-#> 527      Kadota 132.6865 33.91249 POLYGON ((132.6879 33.90909...
+#>     CITY_NAME KCITY_NAME RCOM_NAME RCOM_KANA HININTEI RCOM_ROMAJI
+#> 179    松山市   興居島村      門田    かどた        0      Kadota
+#> 180    松山市   興居島村        泊    とまり        0      Tomari
+#> 187    松山市   興居島村        泊    とまり        0      Tomari
+#> 191    松山市   興居島村      門田    かどた        0      Kadota
+#> 204    松山市   興居島村      門田    かどた        0      Kadota
+#> 229    松山市   興居島村        泊    とまり        0      Tomari
+#> 237    松山市   興居島村      船越  ふなこし        0   Funakoshi
+#> 303    松山市   興居島村      門田    かどた        0      Kadota
+#> 418    松山市   興居島村    鷲ケ巣  わしがす        0   Washigasu
+#> 527    松山市   興居島村      門田    かどた        0      Kadota
+#>     boundary_edit_year        x        y                       geometry
+#> 179               2020 132.6865 33.91249 POLYGON ((132.6889 33.91384...
+#> 180               2020 132.6745 33.88193 POLYGON ((132.6726 33.87832...
+#> 187               2020 132.6745 33.88193 POLYGON ((132.676 33.88372,...
+#> 191               2020 132.6865 33.91249 POLYGON ((132.6856 33.91279...
+#> 204               2020 132.6865 33.91249 POLYGON ((132.6829 33.90642...
+#> 229               2020 132.6745 33.88193 POLYGON ((132.6667 33.88354...
+#> 237               2020 132.6706 33.89536 POLYGON ((132.6687 33.89186...
+#> 303               2020 132.6865 33.91249 POLYGON ((132.6887 33.90569...
+#> 418               2020 132.6637 33.90494 POLYGON ((132.6577 33.90273...
+#> 527               2020 132.6865 33.91249 POLYGON ((132.6879 33.90909...
 #>                      centroid
 #> 179 POINT (132.6865 33.91249)
 #> 180 POINT (132.6745 33.88193)
@@ -246,11 +246,14 @@ db$fude[duplicated(db$fude_split$polygon_uuid), ]
 The gghighlight package allows for a wider range of expression.
 
 ``` r
-library(gghighlight)
+library(dplyr)
 library(forcats)
+library(gghighlight)
 
-db$community$RCOM_NAME <- forcats::fct_rev(db$community$RCOM_NAME)
-db$fude$RCOM_NAME <- forcats::fct_rev(db$fude$RCOM_NAME)
+db$community <- db$community %>%
+  mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))
+db$fude <- db$fude %>%
+  mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))
 
 ggplot() +
   geom_sf(data = db$community, aes(fill = RCOM_NAME), alpha = 0) +
@@ -276,8 +279,7 @@ ggplot(data = db$fude, aes(x = as.numeric(a), fill = land_type_jp)) +
   facet_wrap(vars(RCOM_NAME)) +
   labs(fill = "耕地の種類") +
   theme_minimal() +
-  theme(legend.position = "none",
-        text = element_text(family = "Hiragino Sans"))
+  theme(text = element_text(family = "Hiragino Sans"))
 ```
 
 <img src="man/figures/README-facet_wrap_gogoshima_hist-1.png" width="100%" />
@@ -346,7 +348,6 @@ This package may be beneficial, especially for R beginners, when simply
 wanting to draw agricultural community boundaries.
 
 ``` r
-library(dplyr)
 library(ggrepel)
 
 db <- combine_fude(d, b, city = "西予市", old_village = "遊子川")

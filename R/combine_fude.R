@@ -34,7 +34,12 @@
 #' @importFrom magrittr %>%
 #'
 #' @export
-combine_fude <- function(data, boundary, city, old_village = "", community = "", year = NULL) {
+combine_fude <- function(data,
+                         boundary,
+                         city,
+                         old_village = "",
+                         community = "",
+                         year = NULL) {
   location_info <- find_pref_name(city)
   lg_code <- find_lg_code(location_info$pref, location_info$city)
 
@@ -65,8 +70,6 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
     dplyr::rowwise() %>%
     dplyr::mutate(local_government_cd = grep(paste0("^", .data$PREF, .data$CITY, "\\d$"), fude::lg_code_table$lg_code, value = TRUE)) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(RCOM_romaji = stringi::stri_trans_general(.data$RCOM_KANA, "any-latin"),
-                  RCOM_romaji = paste0(toupper(substring(.data$RCOM_romaji, 1, 1)), substring(.data$RCOM_romaji, 2))) %>%
     sf::st_make_valid()
 
   y <- valid_boundary %>%
@@ -76,7 +79,9 @@ combine_fude <- function(data, boundary, city, old_village = "", community = "",
                   grepl(old_village, .data$KCITY_NAME, perl = TRUE) &
                   grepl(community, .data$RCOM_NAME, perl = TRUE)) %>%
     dplyr::mutate(KCITY_NAME = forcats::fct_inorder(.data$KCITY_NAME),
-                  RCOM_NAME = forcats::fct_inorder(.data$RCOM_NAME)) %>%
+                  RCOM_NAME = forcats::fct_inorder(.data$RCOM_NAME),
+                  RCOM_KANA = forcats::fct_inorder(.data$RCOM_KANA),
+                  RCOM_ROMAJI = forcats::fct_inorder(.data$RCOM_ROMAJI)) %>%
     dplyr::mutate(centroid = sf::st_centroid(.data$geometry)) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(x = sf::st_coordinates(.data$centroid)[, 1],

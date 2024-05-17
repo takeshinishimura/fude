@@ -23,7 +23,10 @@
 #' b <- get_boundary(d)
 #'
 #' @export
-get_boundary <- function(data, year = 2020, quiet = FALSE, path = NULL, to_wgs84 = TRUE) {
+get_boundary <- function(data, year = 2020,
+                         quiet = FALSE,
+                         path = NULL,
+                         to_wgs84 = TRUE) {
   pref_codes <- fude_to_pref_code(data)
 
   x <- lapply(pref_codes, function(i) {
@@ -69,6 +72,8 @@ read_boundary <- function(pref_code, year, quiet, path, to_wgs84) {
     x <- sf::st_transform(x, crs = 4326)
   }
 
+  x$RCOM_ROMAJI <- stringi::stri_trans_general(x$RCOM_KANA, "any-latin")
+  x$RCOM_ROMAJI <- paste0(toupper(substring(x$RCOM_ROMAJI, 1, 1)), substring(x$RCOM_ROMAJI, 2))
   x$boundary_edit_year <- year
 
   return(x)

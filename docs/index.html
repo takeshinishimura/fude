@@ -136,11 +136,11 @@
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">community</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">fude</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">RCOM_NAME</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">fude</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">RCOM_ROMAJI</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggforce.data-imaginist.com/reference/geom_mark_hull.html" class="external-link">geom_mark_hull</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">fude</span>, </span>
 <span>                 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">point_lng</span>, y <span class="op">=</span> <span class="va">point_lat</span>,</span>
-<span>                     fill <span class="op">=</span> <span class="va">RCOM_NAME</span>,</span>
-<span>                     label <span class="op">=</span> <span class="va">RCOM_NAME</span><span class="op">)</span>,</span>
+<span>                     fill <span class="op">=</span> <span class="va">RCOM_ROMAJI</span>,</span>
+<span>                     label <span class="op">=</span> <span class="va">RCOM_ROMAJI</span><span class="op">)</span>,</span>
 <span>                 colour <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>                 expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
 <span>                 radius <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
@@ -219,28 +219,28 @@
 <span><span class="co">#&gt; 303   8.880173 [a]              3820102008   38  201    02  008    愛媛県</span></span>
 <span><span class="co">#&gt; 418 100.795286 [a]              3820102005   38  201    02  005    愛媛県</span></span>
 <span><span class="co">#&gt; 527  34.356437 [a]              3820102008   38  201    02  008    愛媛県</span></span>
-<span><span class="co">#&gt;     CITY_NAME KCITY_NAME RCOM_NAME RCOM_KANA HININTEI boundary_edit_year</span></span>
-<span><span class="co">#&gt; 179    松山市   興居島村      門田    かどた        0               2020</span></span>
-<span><span class="co">#&gt; 180    松山市   興居島村        泊    とまり        0               2020</span></span>
-<span><span class="co">#&gt; 187    松山市   興居島村        泊    とまり        0               2020</span></span>
-<span><span class="co">#&gt; 191    松山市   興居島村      門田    かどた        0               2020</span></span>
-<span><span class="co">#&gt; 204    松山市   興居島村      門田    かどた        0               2020</span></span>
-<span><span class="co">#&gt; 229    松山市   興居島村        泊    とまり        0               2020</span></span>
-<span><span class="co">#&gt; 237    松山市   興居島村      船越  ふなこし        0               2020</span></span>
-<span><span class="co">#&gt; 303    松山市   興居島村      門田    かどた        0               2020</span></span>
-<span><span class="co">#&gt; 418    松山市   興居島村    鷲ケ巣  わしがす        0               2020</span></span>
-<span><span class="co">#&gt; 527    松山市   興居島村      門田    かどた        0               2020</span></span>
-<span><span class="co">#&gt;     RCOM_romaji        x        y                       geometry</span></span>
-<span><span class="co">#&gt; 179      Kadota 132.6865 33.91249 POLYGON ((132.6889 33.91384...</span></span>
-<span><span class="co">#&gt; 180      Tomari 132.6745 33.88193 POLYGON ((132.6726 33.87832...</span></span>
-<span><span class="co">#&gt; 187      Tomari 132.6745 33.88193 POLYGON ((132.676 33.88372,...</span></span>
-<span><span class="co">#&gt; 191      Kadota 132.6865 33.91249 POLYGON ((132.6856 33.91279...</span></span>
-<span><span class="co">#&gt; 204      Kadota 132.6865 33.91249 POLYGON ((132.6829 33.90642...</span></span>
-<span><span class="co">#&gt; 229      Tomari 132.6745 33.88193 POLYGON ((132.6667 33.88354...</span></span>
-<span><span class="co">#&gt; 237   Funakoshi 132.6706 33.89536 POLYGON ((132.6687 33.89186...</span></span>
-<span><span class="co">#&gt; 303      Kadota 132.6865 33.91249 POLYGON ((132.6887 33.90569...</span></span>
-<span><span class="co">#&gt; 418   Washigasu 132.6637 33.90494 POLYGON ((132.6577 33.90273...</span></span>
-<span><span class="co">#&gt; 527      Kadota 132.6865 33.91249 POLYGON ((132.6879 33.90909...</span></span>
+<span><span class="co">#&gt;     CITY_NAME KCITY_NAME RCOM_NAME RCOM_KANA HININTEI RCOM_ROMAJI</span></span>
+<span><span class="co">#&gt; 179    松山市   興居島村      門田    かどた        0      Kadota</span></span>
+<span><span class="co">#&gt; 180    松山市   興居島村        泊    とまり        0      Tomari</span></span>
+<span><span class="co">#&gt; 187    松山市   興居島村        泊    とまり        0      Tomari</span></span>
+<span><span class="co">#&gt; 191    松山市   興居島村      門田    かどた        0      Kadota</span></span>
+<span><span class="co">#&gt; 204    松山市   興居島村      門田    かどた        0      Kadota</span></span>
+<span><span class="co">#&gt; 229    松山市   興居島村        泊    とまり        0      Tomari</span></span>
+<span><span class="co">#&gt; 237    松山市   興居島村      船越  ふなこし        0   Funakoshi</span></span>
+<span><span class="co">#&gt; 303    松山市   興居島村      門田    かどた        0      Kadota</span></span>
+<span><span class="co">#&gt; 418    松山市   興居島村    鷲ケ巣  わしがす        0   Washigasu</span></span>
+<span><span class="co">#&gt; 527    松山市   興居島村      門田    かどた        0      Kadota</span></span>
+<span><span class="co">#&gt;     boundary_edit_year        x        y                       geometry</span></span>
+<span><span class="co">#&gt; 179               2020 132.6865 33.91249 POLYGON ((132.6889 33.91384...</span></span>
+<span><span class="co">#&gt; 180               2020 132.6745 33.88193 POLYGON ((132.6726 33.87832...</span></span>
+<span><span class="co">#&gt; 187               2020 132.6745 33.88193 POLYGON ((132.676 33.88372,...</span></span>
+<span><span class="co">#&gt; 191               2020 132.6865 33.91249 POLYGON ((132.6856 33.91279...</span></span>
+<span><span class="co">#&gt; 204               2020 132.6865 33.91249 POLYGON ((132.6829 33.90642...</span></span>
+<span><span class="co">#&gt; 229               2020 132.6745 33.88193 POLYGON ((132.6667 33.88354...</span></span>
+<span><span class="co">#&gt; 237               2020 132.6706 33.89536 POLYGON ((132.6687 33.89186...</span></span>
+<span><span class="co">#&gt; 303               2020 132.6865 33.91249 POLYGON ((132.6887 33.90569...</span></span>
+<span><span class="co">#&gt; 418               2020 132.6637 33.90494 POLYGON ((132.6577 33.90273...</span></span>
+<span><span class="co">#&gt; 527               2020 132.6865 33.91249 POLYGON ((132.6879 33.90909...</span></span>
 <span><span class="co">#&gt;                      centroid</span></span>
 <span><span class="co">#&gt; 179 POINT (132.6865 33.91249)</span></span>
 <span><span class="co">#&gt; 180 POINT (132.6745 33.88193)</span></span>
@@ -254,17 +254,20 @@
 <span><span class="co">#&gt; 527 POINT (132.6865 33.91249)</span></span></code></pre></div>
 <p>The gghighlight package allows for a wider range of expression.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yutannihilation.github.io/gghighlight/" class="external-link">gghighlight</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org/" class="external-link">forcats</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yutannihilation.github.io/gghighlight/" class="external-link">gghighlight</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">db</span><span class="op">$</span><span class="va">community</span><span class="op">$</span><span class="va">RCOM_NAME</span> <span class="op">&lt;-</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html" class="external-link">fct_rev</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">community</span><span class="op">$</span><span class="va">RCOM_NAME</span><span class="op">)</span></span>
-<span><span class="va">db</span><span class="op">$</span><span class="va">fude</span><span class="op">$</span><span class="va">RCOM_NAME</span> <span class="op">&lt;-</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html" class="external-link">fct_rev</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span><span class="op">$</span><span class="va">RCOM_NAME</span><span class="op">)</span></span>
+<span><span class="va">db</span><span class="op">$</span><span class="va">community</span> <span class="op">&lt;-</span> <span class="va">db</span><span class="op">$</span><span class="va">community</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">across</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">RCOM_NAME</span>, <span class="va">RCOM_KANA</span>, <span class="va">RCOM_ROMAJI</span><span class="op">)</span>, <span class="fu">forcats</span><span class="fu">::</span><span class="va"><a href="https://forcats.tidyverse.org/reference/fct_rev.html" class="external-link">fct_rev</a></span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">db</span><span class="op">$</span><span class="va">fude</span> <span class="op">&lt;-</span> <span class="va">db</span><span class="op">$</span><span class="va">fude</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">across</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">RCOM_NAME</span>, <span class="va">RCOM_KANA</span>, <span class="va">RCOM_ROMAJI</span><span class="op">)</span>, <span class="fu">forcats</span><span class="fu">::</span><span class="va"><a href="https://forcats.tidyverse.org/reference/fct_rev.html" class="external-link">fct_rev</a></span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">community</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">RCOM_NAME</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">fude</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">RCOM_NAME</span><span class="op">)</span>, linewidth <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://yutannihilation.github.io/gghighlight/reference/gghighlight.html" class="external-link">gghighlight</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">RCOM_NAME</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">RCOM_NAME</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>        text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -275,11 +278,10 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span>position <span class="op">=</span> <span class="st">"identity"</span>, alpha <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"面積（a）"</span>,</span>
 <span>       y <span class="op">=</span> <span class="st">"頻度"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">RCOM_NAME</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">RCOM_NAME</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"耕地の種類"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span>,</span>
-<span>        text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-facet_wrap_gogoshima_hist-1.png" width="100%"></p>
 <p>There are 8 types of objects obtained by <code><a href="reference/combine_fude.html">combine_fude()</a></code> as follows.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -336,8 +338,7 @@
 <span>    height <span class="op">=</span> <span class="fl">.3</span><span class="op">)</span></span></code></pre></div>
 <p>This package may be beneficial, especially for R beginners, when simply wanting to draw agricultural community boundaries.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggrepel.slowkow.com/" class="external-link">ggrepel</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggrepel.slowkow.com/" class="external-link">ggrepel</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"西予市"</span>, old_village <span class="op">=</span> <span class="st">"遊子川"</span><span class="op">)</span></span>
 <span></span>

@@ -109,11 +109,11 @@ library(ggforce)
 
 ggplot() +
   geom_sf(data = db$community, fill = NA) +
-  geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
+  geom_sf(data = db$fude, aes(fill = RCOM_ROMAJI)) +
   geom_mark_hull(data = db$fude, 
                  aes(x = point_lng, y = point_lat,
-                     fill = RCOM_NAME,
-                     label = RCOM_NAME),
+                     fill = RCOM_ROMAJI,
+                     label = RCOM_ROMAJI),
                  colour = NA,
                  expand = unit(1, "mm"),
                  radius = unit(1, "mm"),
@@ -138,11 +138,14 @@ db$fude[duplicated(db$fude_split$polygon_uuid), ]
 
 The gghighlight package allows for a wider range of expression.
 ```{r facet_wrap_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-library(gghighlight)
+library(dplyr)
 library(forcats)
+library(gghighlight)
 
-db$community$RCOM_NAME <- forcats::fct_rev(db$community$RCOM_NAME)
-db$fude$RCOM_NAME <- forcats::fct_rev(db$fude$RCOM_NAME)
+db$community <- db$community %>%
+  mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))
+db$fude <- db$fude %>%
+  mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))
 
 ggplot() +
   geom_sf(data = db$community, aes(fill = RCOM_NAME), alpha = 0) +
@@ -164,8 +167,7 @@ ggplot(data = db$fude, aes(x = as.numeric(a), fill = land_type_jp)) +
   facet_wrap(vars(RCOM_NAME)) +
   labs(fill = "耕地の種類") +
   theme_minimal() +
-  theme(legend.position = "none",
-        text = element_text(family = "Hiragino Sans"))
+  theme(text = element_text(family = "Hiragino Sans"))
 ```
 
 There are `r length(names(db))` types of objects obtained by `combine_fude()` as follows.
@@ -225,7 +227,6 @@ ggdraw(mainmap) +
 
 This package may be beneficial, especially for R beginners, when simply wanting to draw agricultural community boundaries.
 ```{r yusukawa, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-library(dplyr)
 library(ggrepel)
 
 db <- combine_fude(d, b, city = "西予市", old_village = "遊子川")
