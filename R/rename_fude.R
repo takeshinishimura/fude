@@ -22,13 +22,16 @@
 #'
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
-#' d <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
+#' d <- read_fude(path, stringsAsFactors = FALSE, quiet = FALSE)
 #' d2 <- rename_fude(d)
 #' d2 <- rename_fude(d, suffix = FALSE)
 #' d2 <- d |> rename_fude(romaji = "upper")
 #'
 #' @export
-rename_fude <- function(data, suffix = TRUE, romaji = NULL, quiet = FALSE) {
+rename_fude <- function(data,
+                        suffix = TRUE,
+                        romaji = NULL,
+                        quiet = TRUE) {
   old_names <- names(data)
   nen <- sub("(_.*)", "_", old_names)
   unique_nen <- unique(nen)

@@ -50,7 +50,7 @@ d <- read_fude("~/2022_38.zip")
 ```
 ```{r echo = FALSE}
 library(fude)
-d <- read_fude("~/2022_38.zip", quiet = TRUE)
+d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
 ```
 
 For those who prefer using a mouse or trackpad to select files, a method particularly popular among R beginners, the following approach can be taken.
@@ -61,11 +61,12 @@ d <- read_fude(file.choose())
 You can convert the local government codes into Japanese municipality names for more convenient management.
 ```{r}
 d2 <- rename_fude(d)
+names(d2)
 ```
 
 It can also be renamed to romaji instead of Japanese.
 ```{r}
-d3 <- d |> rename_fude(suffix = TRUE, romaji = "title", quiet = TRUE)
+d3 <- d |> rename_fude(suffix = TRUE, romaji = "title")
 names(d3)
 ```
 
@@ -150,6 +151,17 @@ ggplot() +
 ```
 
 **Source**: `r db$source$en`
+
+```{r facet_wrap_gogoshima_hist, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+ggplot(data = db$fude, aes(x = as.numeric(a), fill = RCOM_NAME)) +
+  geom_histogram(alpha = .7) +
+  labs(x = "Area (a)",
+       y = "Frequency") +
+  facet_wrap(vars(RCOM_NAME)) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        text = element_text(family = "Hiragino Sans"))
+```
 
 There are `r length(names(db))` types of objects obtained by `combine_fude()` as follows.
 ```{r}

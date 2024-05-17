@@ -4,7 +4,7 @@
 \alias{rename_fude}
 \title{Rename the Fude Polygon data}
 \usage{
-rename_fude(data, suffix = TRUE, romaji = NULL, quiet = FALSE)
+rename_fude(data, suffix = TRUE, romaji = NULL, quiet = TRUE)
 }
 \arguments{
 \item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
@@ -32,7 +32,7 @@ make the data human-friendly.
 }
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")
-d <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
+d <- read_fude(path, stringsAsFactors = FALSE, quiet = FALSE)
 d2 <- rename_fude(d)
 d2 <- rename_fude(d, suffix = FALSE)
 d2 <- d |> rename_fude(romaji = "upper")

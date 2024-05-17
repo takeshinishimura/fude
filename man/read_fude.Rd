@@ -4,14 +4,17 @@
 \alias{read_fude}
 \title{Read a Fude Polygon ZIP file}
 \usage{
-read_fude(path, stringsAsFactors = TRUE, quiet = FALSE)
+read_fude(path, stringsAsFactors = TRUE, quiet = FALSE, supplementary = FALSE)
 }
 \arguments{
 \item{path}{Path to the ZIP file containing one or more GeoJSON format files.}
 
-\item{stringsAsFactors}{logical. should character vectors be converted to factors?}
+\item{stringsAsFactors}{logical. Should character vectors be converted to factors?}
 
 \item{quiet}{logical. Suppress information about the data to be read.}
+
+\item{supplementary}{logical. If TRUE, add supplementary information for each polygon. Default
+is FALSE.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.

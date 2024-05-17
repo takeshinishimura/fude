@@ -8,9 +8,12 @@
 #' @param path
 #'   Path to the ZIP file containing one or more GeoJSON format files.
 #' @param stringsAsFactors
-#'   logical. should character vectors be converted to factors?
+#'   logical. Should character vectors be converted to factors?
 #' @param quiet
 #'   logical. Suppress information about the data to be read.
+#' @param supplementary
+#'   logical. If TRUE, add supplementary information for each polygon. Default
+#'   is FALSE.
 #' @returns A list of [sf::sf()] objects.
 #'
 #' @examples
@@ -18,7 +21,10 @@
 #' d <- read_fude(path, stringsAsFactors = FALSE)
 #'
 #' @export
-read_fude <- function(path, stringsAsFactors = TRUE, quiet = FALSE) {
+read_fude <- function(path,
+                      stringsAsFactors = TRUE,
+                      quiet = FALSE,
+                      supplementary = FALSE) {
   if (!grepl(".zip$", path)) {
     stop(path, " is not a ZIP file.")
   }
@@ -29,7 +35,7 @@ read_fude <- function(path, stringsAsFactors = TRUE, quiet = FALSE) {
   json_files <- list.files(exdir, pattern = "\\.json$|\\.geojson$", recursive = TRUE, full.names = TRUE)
 
   if (length(json_files) == 0) {
-    stop("There is no GeoJSON format file in ", path, ".")
+    stop("There is no GeoJSON format file in ", path, ".", call. = FALSE)
   }
 
   x <- lapply(json_files, sf::st_read, quiet = quiet)
@@ -41,8 +47,18 @@ read_fude <- function(path, stringsAsFactors = TRUE, quiet = FALSE) {
                              levels = c(100, 200))
       df$land_type_jp <- df$land_type
       levels(df$land_type_jp) <- c("\u7530", "\u7551")
+
       return(df)
     })
+  }
+
+  if (supplementary == TRUE) {
+    for (i in names(x)) {
+      x[[i]]$area <- sf::st_area(x[[i]])
+      x[[i]]$a <- units::set_units(x[[i]]$area, "a")
+      x[[i]]$owner <- ""
+      x[[i]]$farmer <- ""
+    }
   }
 
   return(x)

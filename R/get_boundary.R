@@ -69,7 +69,7 @@ read_boundary <- function(pref_code, year, quiet, path, to_wgs84) {
     x <- sf::st_transform(x, crs = 4326)
   }
 
-  x$edit_year <- year
+  x$boundary_edit_year <- year
 
   return(x)
 }
