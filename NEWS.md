@@ -1,4 +1,4 @@
-# fude (development version)
+# fude 0.4.0
 
 # fude 0.3.5
 
