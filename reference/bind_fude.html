@@ -12,7 +12,7 @@ combined by combine_fude()."><!-- mathjax --><script src="https://cdnjs.cloudfla
     
     <a class="navbar-brand me-2" href="../index.html">fude</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,37 +82,43 @@ elements.</p></dd>
 <span class="r-in"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_fude.html">read_fude</a></span><span class="op">(</span><span class="va">path</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">bind_fude</span><span class="op">(</span><span class="va">d1</span>, <span class="va">d2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`2021_382019`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 10 fields</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 12 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POLYGON</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   X_color X_opacity X_weight X_fillColor X_fillOpacity local_government_cd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 #000000       0.5        3     #ff0000           0.5              382019</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             area            a owner farmer                       geometry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 4562.366 [m^2] 45.62366 [a]              POLYGON ((132.7653 33.84575...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             area            a farmland_name owner farmer crop</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 4562.366 [m^2] 45.62366 [a]                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         geometry</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 POLYGON ((132.7653 33.84575...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`2022_382019`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 10 fields</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 12 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POLYGON</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   X_color X_opacity X_weight X_fillColor X_fillOpacity local_government_cd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 #000000       0.5        3     #ff0000           0.5              382019</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             area            a owner farmer                       geometry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 4562.366 [m^2] 45.62366 [a]              POLYGON ((132.7653 33.84575...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             area            a farmland_name owner farmer crop</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 4562.366 [m^2] 45.62366 [a]                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         geometry</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 POLYGON ((132.7653 33.84575...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`2022_382078`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 10 fields</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 12 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POLYGON</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 132.541 ymin: 33.50931 xmax: 132.5415 ymax: 33.50966</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   X_color X_opacity X_weight X_fillColor X_fillOpacity local_government_cd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 #000000       0.5        3     #ff0000           0.5              382078</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             area            a owner farmer                       geometry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1303.233 [m^2] 13.03233 [a]              POLYGON ((132.541 33.50966,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             area            a farmland_name owner farmer crop</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1303.233 [m^2] 13.03233 [a]                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         geometry</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 POLYGON ((132.541 33.50966,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
