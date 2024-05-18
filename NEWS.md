@@ -1,5 +1,7 @@
 # fude 0.3.6
 
+* Added columns for additional information on each farmland.
+
 # fude 0.3.5
 
 * Simplified the return value of `combine_fude()` by eliminating the reduced version of the object.
