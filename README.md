@@ -270,12 +270,12 @@ ggdraw(mainmap) +
 If you want to use `mapview()`, do the following.
 
 ``` r
-library(mapview)
-
 db1 <- combine_fude(d, b, city = "伊方町")
 db2 <- combine_fude(d, b, city = "八幡浜市")
 db3 <- combine_fude(d, b, city = "西予市", old_village = "三瓶|二木生|三島|双岩")
 db <- bind_fude(db1, db2, db3)
+
+library(mapview)
 
 mapview::mapview(db$fude, zcol = "RCOM_NAME", layer.name = "農業集落名")
 ```
@@ -312,3 +312,55 @@ ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) +
 ```
 
 <img src="man/figures/README-matsuyama-1.png" width="100%" />
+
+You can also visualize the relationship between the residences of
+farmers and their farmland.
+
+``` r
+db <- combine_fude(d, b, city = "松山", community = "和気|安城寺|久万ノ台")
+
+set.seed(111)
+probabilities <- c("A" = 0.97, "B" = 0.01, "C" = 0.005, "D" = 0.005, "E" = 0.005, "F" = 0.005)
+db$fude$farmer = factor(sample(names(probabilities),
+                               nrow(db$fude),
+                               replace = TRUE,
+                               prob = probabilities))
+
+farm <- db$fude |>
+  group_by(farmer) |>
+  summarise(geometry = sf::st_union(geometry) |> sf::st_centroid()) |>
+  sf::st_set_crs(4326)
+
+farm_radius <- farm |>
+  sf::st_transform(crs = sp::CRS("+init=epsg:32632")) |>
+  sf::st_buffer(dist = units::as_units(1, "km")) |>
+  sf::st_transform(crs = 4326)
+
+library(osmdata)
+
+bbox <- sf::st_bbox(db$fude)
+
+streets <- bbox |>
+  osmdata::opq() |>
+  osmdata::add_osm_feature(key = "highway", 
+                           value = c("motorway", "primary", "secondary", "tertiary",
+                                     "residential", "living_street",
+                                     "unclassified", "service", "footway")) |>
+  osmdata::osmdata_sf()
+
+river <- bbox |>
+  osmdata::opq() |>
+  osmdata::add_osm_feature(key = "waterway", value = "river") |>
+  osmdata::osmdata_sf()
+
+ggplot() +
+  geom_sf(data = db$community_union, fill = NA) +
+  geom_sf(data = streets$osm_lines, colour = "gray") +
+  geom_sf(data = river$osm_lines, colour = "skyblue") +
+  geom_sf(data = db$fude, aes(colour = farmer, fill = farmer), alpha = .5) +
+  geom_sf(data = farm, aes(colour = farmer)) +
+  geom_sf(data = farm_radius, aes(colour = farmer), linewidth = .3, fill = NA) +
+  theme_void()
+```
+
+<img src="man/figures/README-sample-1.png" width="100%" />
