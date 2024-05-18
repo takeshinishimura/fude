@@ -20,11 +20,12 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/fude)](https://CRAN.R-project.org/package=fude)
 <!-- badges: end -->
 
-The fude package provides utilities to facilitate handling of Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word fude is a Japanese counter suffix used to denote land parcels.
+The fude package provides utilities to facilitate the handling of the Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word "fude" is a Japanese counter suffix used to denote land parcels.
+
 
 ## Obtaining Data
 
-Download the Fude Polygon data from the following release site of MAFF (available only in Japanese).
+Download the Fude Polygon data from the following MAFF release site (available only in Japanese):
 
 - <https://open.fude.maff.go.jp>
 
@@ -43,7 +44,7 @@ devtools::install_github("takeshinishimura/fude")
 
 ## Usage
 
-You can allow R to read the downloaded ZIP file directly without the need to unzip it.
+You can allow R to read the downloaded ZIP file directly without unzipping it.
 ```{r eval = FALSE}
 library(fude)
 d <- read_fude("~/2022_38.zip")
@@ -70,7 +71,7 @@ d3 <- d |> rename_fude(suffix = TRUE, romaji = "title")
 names(d3)
 ```
 
-You can download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website at  <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/> (onlyavailable only in Japanese).
+You can download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website at  <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/> (available only in Japanese).
 ```{r eval = FALSE}
 b <- get_boundary(d)
 ```
@@ -79,20 +80,10 @@ b <- get_boundary(d, path = "~", quiet = TRUE)
 ```
 
 You can effortlessly create a map that integrates Fude Polygons with agricultural community boundaries.
-```{r eval = FALSE}
-library(ggplot2)
-
+```{r gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
-ggplot() +
-  geom_sf(data = db$fude_split, aes(fill = RCOM_NAME)) +
-  guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
-  theme_void()
-```
-```{r gogoshima, echo = FALSE, warning = FALSE, message = FALSE, dpi = 150}
 library(ggplot2)
-
-db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
   geom_sf(data = db$fude_split, aes(fill = RCOM_NAME)) +
@@ -100,10 +91,10 @@ ggplot() +
   theme_void() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
-
 **出典**：`r db$source$jp`
 
-Polygon data close to community borders may be divided. To avoid this, utilize `db$fude`.
+Polygon data close to community borders may be divided.
+To avoid this, utilize `db$fude`.
 ```{r nosplit_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(ggforce)
 
@@ -118,27 +109,32 @@ ggplot() +
                  expand = unit(1, "mm"),
                  radius = unit(1, "mm"),
                  label.fontsize = 9,
-                 label.family = "Hiragino Sans",
+                 label.family = "Helvetica",
                  label.fill = NA,
                  label.colour = "black",
-                 label.buffer = unit(4, "mm"),
+                 label.buffer = unit(1, "mm"),
                  con.colour = "gray70") +
   theme_no_axes() +
   theme(legend.position = "none")
 ```
-
-**出典**：`r db$source$jp`
+**Source**: `r db$source$en`
 
 Polygons situated on community boundaries are not divided but are allocated to one of the communities.
 Should there be a need to adjust this automatic assignment, custom coding will be necessary.
 The rows that require consideration can be extracted with the following command.
-```{r}
-db$fude[duplicated(db$fude_split$polygon_uuid), ]
+```{r message = FALSE}
+library(dplyr)
+library(sf)
+# head(sf::st_drop_geometry(db$fude[db$fude$polygon_uuid %in% db$fude_split$polygon_uuid[duplicated(db$fude_split$polygon_uuid)], c("polygon_uuid", "PREF_NAME", "CITY_NAME", "KCITY_NAME", "RCOM_NAME", "RCOM_KANA", "RCOM_ROMAJI")]))
+db$fude |>
+  filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid))  |> pull(polygon_uuid))) |>
+  select(polygon_uuid, PREF_NAME, CITY_NAME, KCITY_NAME, RCOM_NAME, RCOM_KANA, RCOM_ROMAJI) |>
+  sf::st_drop_geometry() |>
+  head()
 ```
 
-The gghighlight package allows for a wider range of expression.
+The gghighlight package enables practical and effective visualization.
 ```{r facet_wrap_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-library(dplyr)
 library(forcats)
 library(gghighlight)
 
@@ -156,8 +152,7 @@ ggplot() +
   theme(legend.position = "none",
         text = element_text(family = "Hiragino Sans"))
 ```
-
-**Source**: `r db$source$en`
+**出典**：`r db$source$jp`
 
 ```{r facet_wrap_gogoshima_hist, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 ggplot(data = db$fude, aes(x = as.numeric(a), fill = land_type_jp)) +
@@ -170,17 +165,17 @@ ggplot(data = db$fude, aes(x = as.numeric(a), fill = land_type_jp)) +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
 
-There are `r length(names(db))` types of objects obtained by `combine_fude()` as follows.
+There are `r length(names(db))` types of objects obtained by `combine_fude()`, as follows:
 ```{r}
 names(db)
 ```
 
 If you want to be particular about the details of the map, for example, execute the following code.
 ```{r gogoshima_with_minimap, eval = FALSE, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+db <- combine_fude(d, b, city = "松山市", old_village = "興居島", community = "^(?!釣島).*")
+
 library(ggrepel)
 library(cowplot)
-
-db <- combine_fude(d, b, city = "松山市", old_village = "興居島", community = "^(?!釣島).*")
 
 minimap <- ggplot() +
   geom_sf(data = db$lg, aes(fill = fill)) +
@@ -225,38 +220,6 @@ ggdraw(mainmap) +
     height = .3)
 ```
 
-This package may be beneficial, especially for R beginners, when simply wanting to draw agricultural community boundaries.
-```{r yusukawa, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-library(ggrepel)
-
-db <- combine_fude(d, b, city = "西予市", old_village = "遊子川")
-
-ggplot() +
-  geom_sf(data = db$pref, fill = NA) +
-  geom_sf(data = db$lg, fill = "gray") +
-  gghighlight(fill == 1,
-    unhighlighted_params = list(
-      alpha = .05
-    )) +
-  geom_sf(data = db$ov |> filter(fill == 1), colour = NA, fill = "black") +
-  geom_sf_text(data = db$lg |> filter(fill == 1),
-               aes(label = city_kanji),
-               size = 3,
-               nudge_x = -.025, nudge_y = -.025,
-               family = "Hiragino Sans") +
-  geom_point(data = db$community_union, aes(x = x, y = y), colour = "black") +
-  geom_text_repel(data = db$community_union,
-                  aes(x = x, y = y),
-                  label = "遊子川地区",
-                  nudge_x = .3, nudge_y = -.025,
-                  segment.color = "black",
-                  size = 3,
-                  family = "Hiragino Sans") +
-  theme_void()
-```
-
-**出典**：`r db$source$jp`
-
 If you want to use `mapview()`, do the following.
 ```{r eval = FALSE}
 library(mapview)
@@ -267,4 +230,19 @@ db3 <- combine_fude(d, b, city = "西予市", old_village = "三瓶|二木生|�
 db <- bind_fude(db1, db2, db3)
 
 mapview::mapview(db$fude, zcol = "RCOM_NAME", layer.name = "農業集落名")
+```
+
+The possible values for `community` in `combine_fude()` can be listed as follows.
+```{r matsuyama, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+library(data.tree)
+
+b[[1]] |>
+  filter(grepl("松山", KCITY_NAME)) |>
+  mutate(pathString = paste(PREF_NAME, CITY_NAME, KCITY_NAME, RCOM_NAME, sep = "/")) |>
+  data.tree::as.Node() |>
+  print(limit = 10)
+ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) + 
+  geom_sf(fill = NA) +
+  geom_sf_text(aes(label = RCOM_NAME), size = 2, family = "Hiragino Sans") +
+  theme_void()
 ```

@@ -25,6 +25,7 @@ read_fude <- function(path,
                       stringsAsFactors = TRUE,
                       quiet = FALSE,
                       supplementary = TRUE) {
+
   if (!grepl(".zip$", path)) {
     stop(path, " is not a ZIP file.")
   }

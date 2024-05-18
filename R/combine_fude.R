@@ -40,6 +40,7 @@ combine_fude <- function(data,
                          old_village = "",
                          community = "",
                          year = NULL) {
+
   location_info <- find_pref_name(city)
   lg_code <- find_lg_code(location_info$pref, location_info$city)
 

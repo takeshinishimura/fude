@@ -21,6 +21,7 @@
 #'
 #' @export
 extract_fude <- function(data, year = NULL, city = NULL, list = TRUE) {
+
   if (is.null(year) & is.null(city)) {
     stop("Specify either `year` or `city`.")
   }

@@ -32,6 +32,7 @@ rename_fude <- function(data,
                         suffix = TRUE,
                         romaji = NULL,
                         quiet = TRUE) {
+
   old_names <- names(data)
   nen <- sub("(_.*)", "_", old_names)
   unique_nen <- unique(nen)

@@ -27,6 +27,7 @@ get_boundary <- function(data, year = 2020,
                          quiet = FALSE,
                          path = NULL,
                          to_wgs84 = TRUE) {
+
   pref_codes <- fude_to_pref_code(data)
 
   x <- lapply(pref_codes, function(i) {
