@@ -148,6 +148,7 @@ that require consideration can be extracted with the following command.
 ``` r
 library(dplyr)
 library(sf)
+
 # head(sf::st_drop_geometry(db$fude[db$fude$polygon_uuid %in% db$fude_split$polygon_uuid[duplicated(db$fude_split$polygon_uuid)], c("polygon_uuid", "PREF_NAME", "CITY_NAME", "KCITY_NAME", "RCOM_NAME", "RCOM_KANA", "RCOM_ROMAJI")]))
 db$fude |>
   filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid))  |> pull(polygon_uuid))) |>
@@ -357,7 +358,7 @@ ggplot() +
   geom_sf(data = db$community_union, fill = NA) +
   geom_sf(data = streets$osm_lines, colour = "gray") +
   geom_sf(data = river$osm_lines, colour = "skyblue") +
-  geom_sf(data = db$fude, aes(colour = farmer, fill = farmer), alpha = .5) +
+  geom_sf(data = db$fude, aes(fill = farmer, colour = farmer), alpha = .5) +
   geom_sf(data = farm, aes(colour = farmer)) +
   geom_sf(data = farm_radius, aes(colour = farmer), linewidth = .3, fill = NA) +
   theme_void()

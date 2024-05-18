@@ -57,8 +57,10 @@ read_fude <- function(path,
     for (i in names(x)) {
       x[[i]]$area <- sf::st_area(x[[i]])
       x[[i]]$a <- units::set_units(x[[i]]$area, "a")
+      x[[i]]$farmland_name <- ""
       x[[i]]$owner <- ""
       x[[i]]$farmer <- ""
+      x[[i]]$crop <- ""
     }
   }
 
