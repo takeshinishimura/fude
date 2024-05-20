@@ -107,6 +107,7 @@ ggplot() +
 ```
 
 <img src="man/figures/README-gogoshima-1.png" width="100%" />
+
 **出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
 Polygon data close to community borders may be divided. To avoid this,
@@ -136,6 +137,7 @@ ggplot() +
 ```
 
 <img src="man/figures/README-nosplit_gogoshima-1.png" width="100%" />
+
 **Source**: Created by processing the Ministry of Agriculture, Forestry
 and Fisheries, *Fude Polygon Data (released in FY2022)* and
 *Agricultural Community Boundary Data (FY2020)*.
@@ -151,7 +153,7 @@ library(sf)
 
 # head(sf::st_drop_geometry(db$fude[db$fude$polygon_uuid %in% db$fude_split$polygon_uuid[duplicated(db$fude_split$polygon_uuid)], c("polygon_uuid", "PREF_NAME", "CITY_NAME", "KCITY_NAME", "RCOM_NAME", "RCOM_KANA", "RCOM_ROMAJI")]))
 db$fude |>
-  filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid))  |> pull(polygon_uuid))) |>
+  filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
   select(polygon_uuid, PREF_NAME, CITY_NAME, KCITY_NAME, RCOM_NAME, RCOM_KANA, RCOM_ROMAJI) |>
   sf::st_drop_geometry() |>
   head()
@@ -193,6 +195,7 @@ ggplot() +
 ```
 
 <img src="man/figures/README-facet_wrap_gogoshima-1.png" width="100%" />
+
 **出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
@@ -321,7 +324,8 @@ farmers and their farmland.
 db <- combine_fude(d, b, city = "松山", community = "和気|安城寺|長戸|久万ノ台")
 
 set.seed(200)
-probabilities <- c("A" = 0.97, "B" = 0.01, "C" = 0.005, "D" = 0.005, "E" = 0.005, "F" = 0.005)
+probabilities <- c(0.97, 0.01, 0.005, 0.005, 0.005, 0.005)
+names(probabilities) <- LETTERS[1:length(probabilities)]
 db$fude$farmer = factor(sample(names(probabilities),
                                nrow(db$fude),
                                replace = TRUE,
@@ -402,11 +406,11 @@ ggplot(data = db$fude) +
                   family = "Helvetica") +
   geom_sf_inset(data = streets$osm_lines, colour = "gray", map_base = "none", inset = inset1) +
   geom_sf_inset(data = river$osm_lines, colour = "skyblue", map_base = "none", inset = inset1) +
-  geom_sf_inset(aes(fill = farmer, colour = farmer), alpha = .5, map_base = "normal", inset = inset1) +
+  geom_sf_inset(aes(fill = farmer, colour = farmer), alpha = .5, map_base = "none", inset = inset1) +
   geom_inset_frame(inset = inset1) +
   geom_sf_inset(data = streets$osm_lines, colour = "gray", map_base = "none", inset = inset2) +
   geom_sf_inset(data = river$osm_lines, colour = "skyblue", map_base = "none", inset = inset2) +
-  geom_sf_inset(aes(fill = farmer, colour = farmer), alpha = .5, map_base = "normal", inset = inset2) +
+  geom_sf_inset(aes(fill = farmer, colour = farmer), alpha = .5, map_base = "none", inset = inset2) +
   geom_inset_frame(inset = inset2) +
   theme_void() +
   theme(legend.position = "none")
