@@ -318,9 +318,9 @@ You can also visualize the relationship between the residences of
 farmers and their farmland.
 
 ``` r
-db <- combine_fude(d, b, city = "松山", community = "和気|安城寺|久万ノ台")
+db <- combine_fude(d, b, city = "松山", community = "和気|安城寺|長戸|久万ノ台")
 
-set.seed(111)
+set.seed(200)
 probabilities <- c("A" = 0.97, "B" = 0.01, "C" = 0.005, "D" = 0.005, "E" = 0.005, "F" = 0.005)
 db$fude$farmer = factor(sample(names(probabilities),
                                nrow(db$fude),
@@ -365,3 +365,51 @@ ggplot() +
 ```
 
 <img src="man/figures/README-sample-1.png" width="100%" />
+
+``` r
+
+library(ggmapinset)
+library(ggrepel)
+
+inset1 <- configure_inset(
+    centre = sf::st_geometry(farm)[farm$farmer == "F"],
+    scale = 3,
+    translation = c(-4, 1),
+    radius = 1, units = "km"
+  )
+inset2 <- configure_inset(
+    centre = sf::st_geometry(farm)[farm$farmer == "E"],
+    scale = 3,
+    translation = c(4, -3),
+    radius = 1, units = "km"
+  )
+
+farm$x <- sf::st_coordinates(farm)[, 1]
+farm$y <- sf::st_coordinates(farm)[, 2]
+
+ggplot(data = db$fude) +
+  geom_sf(data = streets$osm_lines, colour = "gray") +
+  geom_sf(data = river$osm_lines, colour = "skyblue") +
+  geom_sf(aes(fill = farmer, colour = farmer), alpha = .5) +
+  geom_sf(data = farm, aes(colour = farmer)) +
+  geom_text_repel(data = farm,
+                  aes(x = x, y = y, label = farmer),
+                  nudge_x = c(.02, .02, .02, -.01, .02, -.012),
+                  nudge_y = c(.01, 0, -.005, -.005, .01, -.005),
+                  min.segment.length = 0,
+                  segment.color = "black",
+                  size = 3,
+                  family = "Helvetica") +
+  geom_sf_inset(data = streets$osm_lines, colour = "gray", map_base = "none", inset = inset1) +
+  geom_sf_inset(data = river$osm_lines, colour = "skyblue", map_base = "none", inset = inset1) +
+  geom_sf_inset(aes(fill = farmer), alpha = 1, map_base = "normal", inset = inset1) +
+  geom_inset_frame(inset = inset1) +
+  geom_sf_inset(data = streets$osm_lines, colour = "gray", map_base = "none", inset = inset2) +
+  geom_sf_inset(data = river$osm_lines, colour = "skyblue", map_base = "none", inset = inset2) +
+  geom_sf_inset(aes(fill = farmer), alpha = 1, map_base = "normal", inset = inset2) +
+  geom_inset_frame(inset = inset2) +
+  theme_void() +
+  theme(legend.position = "none")
+```
+
+<img src="man/figures/README-sample-2.png" width="100%" />
