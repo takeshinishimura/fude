@@ -368,10 +368,11 @@ ggplot() +
   theme_void()
 ```
 
-<img src="man/figures/README-sample-1.png" width="100%" />
+<img src="man/figures/README-farmer1-1.png" width="100%" />
+
+**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
-
 library(ggmapinset)
 library(ggrepel)
 
@@ -416,4 +417,6 @@ ggplot(data = db$fude) +
   theme(legend.position = "none")
 ```
 
-<img src="man/figures/README-sample-2.png" width="100%" />
+<img src="man/figures/README-farmer2-1.png" width="100%" />
+
+**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。

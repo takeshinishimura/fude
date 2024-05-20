@@ -252,7 +252,7 @@ ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) +
 ```
 
 You can also visualize the relationship between the residences of farmers and their farmland.
-```{r sample, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+```{r farmer1, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 db <- combine_fude(d, b, city = "松山", community = "和気|安城寺|長戸|久万ノ台")
 
 set.seed(200)
@@ -298,7 +298,11 @@ ggplot() +
   geom_sf(data = farm, aes(colour = farmer)) +
   geom_sf(data = farm_radius, aes(colour = farmer), linewidth = .3, fill = NA) +
   theme_void()
+```
 
+**出典**：`r db$source$jp`
+
+```{r farmer2, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(ggmapinset)
 library(ggrepel)
 
@@ -342,3 +346,5 @@ ggplot(data = db$fude) +
   theme_void() +
   theme(legend.position = "none")
 ```
+
+**出典**：`r db$source$jp`
