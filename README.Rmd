@@ -329,11 +329,11 @@ ggplot(data = db$fude) +
                   family = "Helvetica") +
   geom_sf_inset(data = streets$osm_lines, colour = "gray", map_base = "none", inset = inset1) +
   geom_sf_inset(data = river$osm_lines, colour = "skyblue", map_base = "none", inset = inset1) +
-  geom_sf_inset(aes(fill = farmer), alpha = 1, map_base = "normal", inset = inset1) +
+  geom_sf_inset(aes(fill = farmer, colour = farmer), alpha = .5, map_base = "normal", inset = inset1) +
   geom_inset_frame(inset = inset1) +
   geom_sf_inset(data = streets$osm_lines, colour = "gray", map_base = "none", inset = inset2) +
   geom_sf_inset(data = river$osm_lines, colour = "skyblue", map_base = "none", inset = inset2) +
-  geom_sf_inset(aes(fill = farmer), alpha = 1, map_base = "normal", inset = inset2) +
+  geom_sf_inset(aes(fill = farmer, colour = farmer), alpha = .5, map_base = "normal", inset = inset2) +
   geom_inset_frame(inset = inset2) +
   theme_void() +
   theme(legend.position = "none")
