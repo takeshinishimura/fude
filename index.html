@@ -92,11 +92,8 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/takeshinishimura/fude" class="external-link">fude</a></span><span class="op">)</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span><span class="st">"~/2022_38.zip"</span><span class="op">)</span></span></code></pre></div>
-<p>For those who prefer using a mouse or trackpad to select files, a method particularly popular among R beginners, the following approach can be taken.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.choose.html" class="external-link">file.choose</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>You can convert the local government codes into Japanese municipality names for more convenient management.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">d2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "2022_松山市"     "2022_今治市"     "2022_宇和島市"   "2022_八幡浜市"  </span></span>
@@ -105,9 +102,9 @@
 <span><span class="co">#&gt; [13] "2022_久万高原町" "2022_松前町"     "2022_砥部町"     "2022_内子町"    </span></span>
 <span><span class="co">#&gt; [17] "2022_伊方町"     "2022_松野町"     "2022_鬼北町"     "2022_愛南町"</span></span></code></pre></div>
 <p>It can also be renamed to romaji instead of Japanese.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span>suffix <span class="op">=</span> <span class="cn">TRUE</span>, romaji <span class="op">=</span> <span class="st">"title"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">d3</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span>suffix <span class="op">=</span> <span class="cn">TRUE</span>, romaji <span class="op">=</span> <span class="st">"title"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">d2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "2022_Matsuyama-shi"   "2022_Imabari-shi"     "2022_Uwajima-shi"    </span></span>
 <span><span class="co">#&gt;  [4] "2022_Yawatahama-shi"  "2022_Niihama-shi"     "2022_Saijo-shi"      </span></span>
 <span><span class="co">#&gt;  [7] "2022_Ozu-shi"         "2022_Iyo-shi"         "2022_Shikokuchuo-shi"</span></span>
@@ -116,10 +113,10 @@
 <span><span class="co">#&gt; [16] "2022_Uchiko-cho"      "2022_Ikata-cho"       "2022_Matsuno-cho"    </span></span>
 <span><span class="co">#&gt; [19] "2022_Kihoku-cho"      "2022_Ainan-cho"</span></span></code></pre></div>
 <p>You can download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website at <a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/" class="external-link uri">https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/</a> (available only in Japanese).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></code></pre></div>
 <p>You can effortlessly create a map that integrates Fude Polygons with agricultural community boundaries.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"松山市"</span>, community <span class="op">=</span> <span class="st">"由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -130,9 +127,9 @@
 <span>  <span class="fu">theme_void</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme</span><span class="op">(</span>text <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-gogoshima-1.png" width="100%"></p>
-<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
+<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。</p>
 <p>Polygon data close to community borders may be divided. To avoid this, utilize <code>db$fude</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggforce.data-imaginist.com" class="external-link">ggforce</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -154,9 +151,9 @@
 <span>  <span class="fu">theme_no_axes</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-nosplit_gogoshima-1.png" width="100%"></p>
-<p><strong>Source</strong>: Created by processing the Ministry of Agriculture, Forestry and Fisheries, <em>Fude Polygon Data (released in FY2022)</em> and <em>Agricultural Community Boundary Data (FY2020)</em>.</p>
+<p><strong>Source</strong>: Created by processing the Ministry of Agriculture, Forestry and Fisheries, ‘Fude Polygon Data (released in FY2022)’ and ‘Agricultural Community Boundary Data (FY2022)’.</p>
 <p>Polygons situated on community boundaries are not divided but are allocated to one of the communities. Should there be a need to adjust this automatic assignment, custom coding will be necessary. The rows that require consideration can be extracted with the following command.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span></span>
@@ -181,7 +178,7 @@
 <span><span class="co">#&gt; 5  ふなこし   Funakoshi</span></span>
 <span><span class="co">#&gt; 6      ゆら        Yura</span></span></code></pre></div>
 <p>The gghighlight package enables practical and effective visualization.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org/" class="external-link">forcats</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yutannihilation.github.io/gghighlight/" class="external-link">gghighlight</a></span><span class="op">)</span></span>
 <span></span>
@@ -199,8 +196,8 @@
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>        text <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-facet_wrap_gogoshima-1.png" width="100%"></p>
-<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">fude</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">land_type_jp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>position <span class="op">=</span> <span class="st">"identity"</span>, alpha <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"面積（a）"</span>,</span>
@@ -210,13 +207,13 @@
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme</span><span class="op">(</span>text <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-facet_wrap_gogoshima_hist-1.png" width="100%"></p>
-<p>There are 8 types of objects obtained by <code><a href="reference/combine_fude.html">combine_fude()</a></code>, as follows:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p>There are 7 types of objects obtained by <code><a href="reference/combine_fude.html">combine_fude()</a></code>, as follows:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "fude"            "fude_split"      "community"       "community_union"</span></span>
-<span><span class="co">#&gt; [5] "ov"              "lg"              "pref"            "source"</span></span></code></pre></div>
+<span><span class="co">#&gt; [5] "ov"              "lg"              "pref"</span></span></code></pre></div>
 <p>If you want to be particular about the details of the map, for example, execute the following code.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"松山市"</span>, old_village <span class="op">=</span> <span class="st">"興居島"</span>, community <span class="op">=</span> <span class="st">"^(?!釣島).*"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggrepel.slowkow.com/" class="external-link">ggrepel</a></span><span class="op">)</span></span>
@@ -264,7 +261,7 @@
 <span>    width <span class="op">=</span> <span class="fl">.3</span>, </span>
 <span>    height <span class="op">=</span> <span class="fl">.3</span><span class="op">)</span></span></code></pre></div>
 <p>If you want to use <code>mapview()</code>, do the following.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">db1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"伊方町"</span><span class="op">)</span></span>
 <span><span class="va">db2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"八幡浜市"</span><span class="op">)</span></span>
 <span><span class="va">db3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"西予市"</span>, old_village <span class="op">=</span> <span class="st">"三瓶|二木生|三島|双岩"</span><span class="op">)</span></span>
@@ -274,7 +271,7 @@
 <span></span>
 <span><span class="fu">mapview</span><span class="fu">::</span><span class="fu">mapview</span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span>, zcol <span class="op">=</span> <span class="st">"RCOM_NAME"</span>, layer.name <span class="op">=</span> <span class="st">"農業集落名"</span><span class="op">)</span></span></code></pre></div>
 <p>The possible values for <code>community</code> in <code><a href="reference/combine_fude.html">combine_fude()</a></code> can be listed as follows.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gluc/data.tree" class="external-link">data.tree</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">b</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span></span>
@@ -293,12 +290,18 @@
 <span><span class="co">#&gt; 8           ¦--小栗第３              </span></span>
 <span><span class="co">#&gt; 9           ¦--藤原第１              </span></span>
 <span><span class="co">#&gt; 10          °--... 102 nodes w/ 0 sub</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">b</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"松山"</span>, <span class="va">KCITY_NAME</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_sf</span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_sf_text</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="va">RCOM_NAME</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">2</span>, family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_void</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-matsuyama-1.png" width="100%"></p>
+<p><code><a href="reference/shiny_fude.html">shiny_fude()</a></code></p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/shiny_fude.html">shiny_fude</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span><span class="op">)</span></span>
+<span><span class="co"># shiny::shinyApp(ui = s$ui, server = s$server)</span></span></code></pre></div>
 <p>You can also visualize the relationship between the residences of farmers and their farmland.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"松山"</span>, community <span class="op">=</span> <span class="st">"和気|安城寺|長戸|久万ノ台"</span><span class="op">)</span></span>
@@ -317,11 +320,13 @@
 <span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_set_crs</a></span><span class="op">(</span><span class="fl">4326</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">farm_radius</span> <span class="op">&lt;-</span> <span class="va">farm</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu">sp</span><span class="fu">::</span><span class="fu">CRS</span><span class="op">(</span><span class="st">"+init=epsg:32632"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu">sp</span><span class="fu">::</span><span class="fu"><a href="https://edzer.github.io/sp/reference/CRS-class.html" class="external-link">CRS</a></span><span class="op">(</span><span class="st">"+init=epsg:32632"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_buffer</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://r-quantities.github.io/units/reference/units.html" class="external-link">as_units</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"km"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/osmdata/" class="external-link">osmdata</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cidm-ph/ggmapinset" class="external-link">ggmapinset</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggrepel.slowkow.com/" class="external-link">ggrepel</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">bbox</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span><span class="op">)</span></span>
 <span></span>
@@ -337,20 +342,6 @@
 <span>  <span class="fu">osmdata</span><span class="fu">::</span><span class="fu">opq</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">osmdata</span><span class="fu">::</span><span class="fu">add_osm_feature</span><span class="op">(</span>key <span class="op">=</span> <span class="st">"waterway"</span>, value <span class="op">=</span> <span class="st">"river"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">osmdata</span><span class="fu">::</span><span class="fu">osmdata_sf</span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_sf</span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">community_union</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_sf</span><span class="op">(</span>data <span class="op">=</span> <span class="va">streets</span><span class="op">$</span><span class="va">osm_lines</span>, colour <span class="op">=</span> <span class="st">"gray"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_sf</span><span class="op">(</span>data <span class="op">=</span> <span class="va">river</span><span class="op">$</span><span class="va">osm_lines</span>, colour <span class="op">=</span> <span class="st">"skyblue"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_sf</span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">fude</span>, <span class="fu">aes</span><span class="op">(</span>fill <span class="op">=</span> <span class="va">farmer</span>, colour <span class="op">=</span> <span class="va">farmer</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_sf</span><span class="op">(</span>data <span class="op">=</span> <span class="va">farm</span>, <span class="fu">aes</span><span class="op">(</span>colour <span class="op">=</span> <span class="va">farmer</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_sf</span><span class="op">(</span>data <span class="op">=</span> <span class="va">farm_radius</span>, <span class="fu">aes</span><span class="op">(</span>colour <span class="op">=</span> <span class="va">farmer</span><span class="op">)</span>, linewidth <span class="op">=</span> <span class="fl">.3</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_void</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-farmer1-1.png" width="100%"></p>
-<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cidm-ph/ggmapinset" class="external-link">ggmapinset</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggrepel.slowkow.com/" class="external-link">ggrepel</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">inset1</span> <span class="op">&lt;-</span> <span class="fu">configure_inset</span><span class="op">(</span></span>
 <span>    centre <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">farm</span><span class="op">)</span><span class="op">[</span><span class="va">farm</span><span class="op">$</span><span class="va">farmer</span> <span class="op">==</span> <span class="st">"F"</span><span class="op">]</span>,</span>
@@ -391,8 +382,8 @@
 <span>  <span class="fu">geom_inset_frame</span><span class="op">(</span>inset <span class="op">=</span> <span class="va">inset2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_void</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-farmer2-1.png" width="100%"></p>
-<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
+<p><img src="reference/figures/README-farmer1-1.png" width="100%"></p>
+<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
