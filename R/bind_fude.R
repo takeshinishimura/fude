@@ -53,16 +53,11 @@ bind_fude <- function(...) {
         as.data.frame() %>%
         sf::st_sf()
     } else {
-      if (current_name == "source") {
-        tmp %>%
-          dplyr::distinct() %>% as.list()
-      } else {
-        tmp %>%
-          dplyr::distinct() %>%
-          dplyr::arrange(dplyr::desc(!!rlang::sym(order_column))) %>%
-          as.data.frame() %>%
-          sf::st_sf()
-      }
+      tmp %>%
+        dplyr::distinct() %>%
+        dplyr::arrange(dplyr::desc(!!rlang::sym(order_column))) %>%
+        as.data.frame() %>%
+        sf::st_sf()
     }
 
   })

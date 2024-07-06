@@ -54,11 +54,6 @@ library(fude)
 d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
 ```
 
-For those who prefer using a mouse or trackpad to select files, a method particularly popular among R beginners, the following approach can be taken.
-```{r eval = FALSE}
-d <- read_fude(file.choose())
-```
-
 You can convert the local government codes into Japanese municipality names for more convenient management.
 ```{r}
 d2 <- rename_fude(d)
@@ -67,8 +62,8 @@ names(d2)
 
 It can also be renamed to romaji instead of Japanese.
 ```{r}
-d3 <- d |> rename_fude(suffix = TRUE, romaji = "title")
-names(d3)
+d2 <- d |> rename_fude(suffix = TRUE, romaji = "title")
+names(d2)
 ```
 
 You can download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website at  <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/> (available only in Japanese).
@@ -92,7 +87,7 @@ ggplot() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
 
-**出典**：`r db$source$jp`
+**出典**：`r cite_fude(db)$ja`
 
 Polygon data close to community borders may be divided.
 To avoid this, utilize `db$fude`.
@@ -119,7 +114,7 @@ ggplot() +
   theme(legend.position = "none")
 ```
 
-**Source**: `r db$source$en`
+**Source**: `r cite_fude(db)$en`
 
 Polygons situated on community boundaries are not divided but are allocated to one of the communities.
 Should there be a need to adjust this automatic assignment, custom coding will be necessary.
@@ -156,7 +151,7 @@ ggplot() +
         text = element_text(family = "Hiragino Sans"))
 ```
 
-**出典**：`r db$source$jp`
+**出典**：`r cite_fude(db)$ja`
 
 ```{r facet_wrap_gogoshima_hist, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 ggplot(data = db$fude, aes(x = as.numeric(a), fill = land_type_jp)) +
@@ -251,6 +246,15 @@ ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) +
   theme_void()
 ```
 
+`shiny_fude()`
+
+```{r shiny_fude, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+library(shiny)
+
+s <- shiny_fude(db$fude)
+# shiny::shinyApp(ui = s$ui, server = s$server)
+```
+
 You can also visualize the relationship between the residences of farmers and their farmland.
 ```{r farmer1, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 db <- combine_fude(d, b, city = "松山", community = "和気|安城寺|長戸|久万ノ台")
@@ -274,6 +278,8 @@ farm_radius <- farm |>
   sf::st_transform(crs = 4326)
 
 library(osmdata)
+library(ggmapinset)
+library(ggrepel)
 
 bbox <- sf::st_bbox(db$fude)
 
@@ -289,22 +295,6 @@ river <- bbox |>
   osmdata::opq() |>
   osmdata::add_osm_feature(key = "waterway", value = "river") |>
   osmdata::osmdata_sf()
-
-ggplot() +
-  geom_sf(data = db$community_union, fill = NA) +
-  geom_sf(data = streets$osm_lines, colour = "gray") +
-  geom_sf(data = river$osm_lines, colour = "skyblue") +
-  geom_sf(data = db$fude, aes(fill = farmer, colour = farmer), alpha = .5) +
-  geom_sf(data = farm, aes(colour = farmer)) +
-  geom_sf(data = farm_radius, aes(colour = farmer), linewidth = .3, fill = NA) +
-  theme_void()
-```
-
-**出典**：`r db$source$jp`
-
-```{r farmer2, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-library(ggmapinset)
-library(ggrepel)
 
 inset1 <- configure_inset(
     centre = sf::st_geometry(farm)[farm$farmer == "F"],
@@ -347,4 +337,4 @@ ggplot(data = db$fude) +
   theme(legend.position = "none")
 ```
 
-**出典**：`r db$source$jp`
+**出典**：`r cite_fude(db)$ja`

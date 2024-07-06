@@ -47,14 +47,6 @@ library(fude)
 d <- read_fude("~/2022_38.zip")
 ```
 
-For those who prefer using a mouse or trackpad to select files, a method
-particularly popular among R beginners, the following approach can be
-taken.
-
-``` r
-d <- read_fude(file.choose())
-```
-
 You can convert the local government codes into Japanese municipality
 names for more convenient management.
 
@@ -71,8 +63,8 @@ names(d2)
 It can also be renamed to romaji instead of Japanese.
 
 ``` r
-d3 <- d |> rename_fude(suffix = TRUE, romaji = "title")
-names(d3)
+d2 <- d |> rename_fude(suffix = TRUE, romaji = "title")
+names(d2)
 #>  [1] "2022_Matsuyama-shi"   "2022_Imabari-shi"     "2022_Uwajima-shi"    
 #>  [4] "2022_Yawatahama-shi"  "2022_Niihama-shi"     "2022_Saijo-shi"      
 #>  [7] "2022_Ozu-shi"         "2022_Iyo-shi"         "2022_Shikokuchuo-shi"
@@ -108,7 +100,7 @@ ggplot() +
 
 <img src="man/figures/README-gogoshima-1.png" width="100%" />
 
-**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。
 
 Polygon data close to community borders may be divided. To avoid this,
 utilize `db$fude`.
@@ -139,8 +131,8 @@ ggplot() +
 <img src="man/figures/README-nosplit_gogoshima-1.png" width="100%" />
 
 **Source**: Created by processing the Ministry of Agriculture, Forestry
-and Fisheries, *Fude Polygon Data (released in FY2022)* and
-*Agricultural Community Boundary Data (FY2020)*.
+and Fisheries, ‘Fude Polygon Data (released in FY2022)’ and
+‘Agricultural Community Boundary Data (FY2022)’.
 
 Polygons situated on community boundaries are not divided but are
 allocated to one of the communities. Should there be a need to adjust
@@ -196,7 +188,7 @@ ggplot() +
 
 <img src="man/figures/README-facet_wrap_gogoshima-1.png" width="100%" />
 
-**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。
 
 ``` r
 ggplot(data = db$fude, aes(x = as.numeric(a), fill = land_type_jp)) +
@@ -211,12 +203,12 @@ ggplot(data = db$fude, aes(x = as.numeric(a), fill = land_type_jp)) +
 
 <img src="man/figures/README-facet_wrap_gogoshima_hist-1.png" width="100%" />
 
-There are 8 types of objects obtained by `combine_fude()`, as follows:
+There are 7 types of objects obtained by `combine_fude()`, as follows:
 
 ``` r
 names(db)
 #> [1] "fude"            "fude_split"      "community"       "community_union"
-#> [5] "ov"              "lg"              "pref"            "source"
+#> [5] "ov"              "lg"              "pref"
 ```
 
 If you want to be particular about the details of the map, for example,
@@ -317,6 +309,15 @@ ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) +
 
 <img src="man/figures/README-matsuyama-1.png" width="100%" />
 
+`shiny_fude()`
+
+``` r
+library(shiny)
+
+s <- shiny_fude(db$fude)
+# shiny::shinyApp(ui = s$ui, server = s$server)
+```
+
 You can also visualize the relationship between the residences of
 farmers and their farmland.
 
@@ -342,6 +343,8 @@ farm_radius <- farm |>
   sf::st_transform(crs = 4326)
 
 library(osmdata)
+library(ggmapinset)
+library(ggrepel)
 
 bbox <- sf::st_bbox(db$fude)
 
@@ -357,24 +360,6 @@ river <- bbox |>
   osmdata::opq() |>
   osmdata::add_osm_feature(key = "waterway", value = "river") |>
   osmdata::osmdata_sf()
-
-ggplot() +
-  geom_sf(data = db$community_union, fill = NA) +
-  geom_sf(data = streets$osm_lines, colour = "gray") +
-  geom_sf(data = river$osm_lines, colour = "skyblue") +
-  geom_sf(data = db$fude, aes(fill = farmer, colour = farmer), alpha = .5) +
-  geom_sf(data = farm, aes(colour = farmer)) +
-  geom_sf(data = farm_radius, aes(colour = farmer), linewidth = .3, fill = NA) +
-  theme_void()
-```
-
-<img src="man/figures/README-farmer1-1.png" width="100%" />
-
-**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
-
-``` r
-library(ggmapinset)
-library(ggrepel)
 
 inset1 <- configure_inset(
     centre = sf::st_geometry(farm)[farm$farmer == "F"],
@@ -417,6 +402,6 @@ ggplot(data = db$fude) +
   theme(legend.position = "none")
 ```
 
-<img src="man/figures/README-farmer2-1.png" width="100%" />
+<img src="man/figures/README-farmer1-1.png" width="100%" />
 
-**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。

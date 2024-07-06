@@ -36,7 +36,7 @@ read_fude <- function(path,
   json_files <- list.files(exdir, pattern = "\\.json$|\\.geojson$", recursive = TRUE, full.names = TRUE)
 
   if (length(json_files) == 0) {
-    stop("There is no GeoJSON format file in ", path, ".", call. = FALSE)
+    stop("There is no GeoJSON format file in ", path, ".")
   }
 
   x <- lapply(json_files, sf::st_read, quiet = quiet)
