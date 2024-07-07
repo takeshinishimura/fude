@@ -1,10 +1,9 @@
 #' Generate Citation Text for Fude Polygon Data
 #'
 #' @description
-#' This function generates citation text in Japanese and English for Fude
-#' Polygon Data.
+#' Generates citation text in Japanese and English for Fude Polygon Data.
 #' @param data
-#'   A list or data.frame containing Fude Polygon data.
+#'   A list or data frame containing Fude Polygon data.
 #' @return A list with two elements: `ja` for Japanese citation text and `en`
 #'   for English citation text.
 #'

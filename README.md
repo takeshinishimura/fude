@@ -39,16 +39,20 @@ devtools::install_github("takeshinishimura/fude")
 
 ## Usage
 
-You can allow R to read the downloaded ZIP file directly without
-unzipping it.
+### Reading Fude Polygon Data
+
+You can let R read the downloaded ZIP file directly without unzipping
+it.
 
 ``` r
 library(fude)
 d <- read_fude("~/2022_38.zip")
 ```
 
-You can convert the local government codes into Japanese municipality
-names for more convenient management.
+### Renaming Columns
+
+You can convert local government codes into Japanese municipality names
+for easier management.
 
 ``` r
 d2 <- rename_fude(d)
@@ -60,7 +64,7 @@ names(d2)
 #> [17] "2022_伊方町"     "2022_松野町"     "2022_鬼北町"     "2022_愛南町"
 ```
 
-It can also be renamed to romaji instead of Japanese.
+You can also rename the columns to Romaji instead of Japanese.
 
 ``` r
 d2 <- d |> rename_fude(suffix = TRUE, romaji = "title")
@@ -74,6 +78,8 @@ names(d2)
 #> [19] "2022_Kihoku-cho"      "2022_Ainan-cho"
 ```
 
+### Getting Agricultural Community Boundary Data
+
 You can download the agricultural community boundary data, which
 corresponds to the Fude Polygon data, from the MAFF website at
 <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/> (available
@@ -83,7 +89,7 @@ only in Japanese).
 b <- get_boundary(d)
 ```
 
-You can effortlessly create a map that integrates Fude Polygons with
+You can easily create a map that combines Fude Polygons with
 agricultural community boundaries.
 
 ``` r
@@ -102,8 +108,8 @@ ggplot() +
 
 **出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。
 
-Polygon data close to community borders may be divided. To avoid this,
-utilize `db$fude`.
+Polygon data near community borders may be divided. To avoid this, use
+`db$fude`.
 
 ``` r
 library(ggforce)
@@ -134,10 +140,10 @@ ggplot() +
 and Fisheries, ‘Fude Polygon Data (released in FY2022)’ and
 ‘Agricultural Community Boundary Data (FY2022)’.
 
-Polygons situated on community boundaries are not divided but are
-allocated to one of the communities. Should there be a need to adjust
-this automatic assignment, custom coding will be necessary. The rows
-that require consideration can be extracted with the following command.
+Polygons on community boundaries are not divided but are assigned to one
+of the communities. If you need to adjust this automatic assignment, you
+will need to write custom code. The rows that require attention can be
+identified with the following command.
 
 ``` r
 library(dplyr)
@@ -165,7 +171,20 @@ db$fude |>
 #> 6      ゆら        Yura
 ```
 
-The gghighlight package enables practical and effective visualization.
+### Visualizing Fude Polygon Data
+
+You can confirm Fude Polygon data in detail.
+
+``` r
+library(shiny)
+
+s <- shiny_fude(db$fude)
+# shiny::shinyApp(ui = s$ui, server = s$server)
+```
+
+### Using `gghighlight` Package
+
+The `gghighlight` package enables practical and effective visualization.
 
 ``` r
 library(forcats)
@@ -203,6 +222,23 @@ ggplot(data = db$fude, aes(x = as.numeric(a), fill = land_type_jp)) +
 
 <img src="man/figures/README-facet_wrap_gogoshima_hist-1.png" width="100%" />
 
+### Using `mapview` package
+
+If you want to use `mapview()`, do the following.
+
+``` r
+db1 <- combine_fude(d, b, city = "伊方町")
+db2 <- combine_fude(d, b, city = "八幡浜市")
+db3 <- combine_fude(d, b, city = "西予市", old_village = "三瓶|二木生|三島|双岩")
+db <- bind_fude(db1, db2, db3)
+
+library(mapview)
+
+mapview::mapview(db$fude, zcol = "RCOM_NAME", layer.name = "農業集落名")
+```
+
+### Additional Information
+
 There are 7 types of objects obtained by `combine_fude()`, as follows:
 
 ``` r
@@ -210,6 +246,39 @@ names(db)
 #> [1] "fude"            "fude_split"      "community"       "community_union"
 #> [5] "ov"              "lg"              "pref"
 ```
+
+The possible values for `community` in `combine_fude()` can be listed as
+follows.
+
+``` r
+library(data.tree)
+
+b[[1]] |>
+  filter(grepl("松山", KCITY_NAME)) |>
+  mutate(pathString = paste(PREF_NAME, CITY_NAME, KCITY_NAME, RCOM_NAME, sep = "/")) |>
+  data.tree::as.Node() |>
+  print(limit = 10)
+#>                              levelName
+#> 1  愛媛県                             
+#> 2   °--松山市                        
+#> 3       °--松山市                    
+#> 4           ¦--土居田                
+#> 5           ¦--針田                  
+#> 6           ¦--小栗第１              
+#> 7           ¦--小栗第２              
+#> 8           ¦--小栗第３              
+#> 9           ¦--藤原第１              
+#> 10          °--... 102 nodes w/ 0 sub
+```
+
+``` r
+ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) + 
+  geom_sf(fill = NA) +
+  geom_sf_text(aes(label = RCOM_NAME), size = 2, family = "Hiragino Sans") +
+  theme_void()
+```
+
+<img src="man/figures/README-matsuyama-1.png" width="100%" />
 
 If you want to be particular about the details of the map, for example,
 execute the following code.
@@ -263,65 +332,14 @@ ggdraw(mainmap) +
     height = .3)
 ```
 
-If you want to use `mapview()`, do the following.
-
-``` r
-db1 <- combine_fude(d, b, city = "伊方町")
-db2 <- combine_fude(d, b, city = "八幡浜市")
-db3 <- combine_fude(d, b, city = "西予市", old_village = "三瓶|二木生|三島|双岩")
-db <- bind_fude(db1, db2, db3)
-
-library(mapview)
-
-mapview::mapview(db$fude, zcol = "RCOM_NAME", layer.name = "農業集落名")
-```
-
-The possible values for `community` in `combine_fude()` can be listed as
-follows.
-
-``` r
-library(data.tree)
-
-b[[1]] |>
-  filter(grepl("松山", KCITY_NAME)) |>
-  mutate(pathString = paste(PREF_NAME, CITY_NAME, KCITY_NAME, RCOM_NAME, sep = "/")) |>
-  data.tree::as.Node() |>
-  print(limit = 10)
-#>                              levelName
-#> 1  愛媛県                             
-#> 2   °--松山市                        
-#> 3       °--松山市                    
-#> 4           ¦--土居田                
-#> 5           ¦--針田                  
-#> 6           ¦--小栗第１              
-#> 7           ¦--小栗第２              
-#> 8           ¦--小栗第３              
-#> 9           ¦--藤原第１              
-#> 10          °--... 102 nodes w/ 0 sub
-```
-
-``` r
-ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) + 
-  geom_sf(fill = NA) +
-  geom_sf_text(aes(label = RCOM_NAME), size = 2, family = "Hiragino Sans") +
-  theme_void()
-```
-
-<img src="man/figures/README-matsuyama-1.png" width="100%" />
-
-`shiny_fude()`
-
-``` r
-library(shiny)
-
-s <- shiny_fude(db$fude)
-# shiny::shinyApp(ui = s$ui, server = s$server)
-```
-
 You can also visualize the relationship between the residences of
 farmers and their farmland.
 
 ``` r
+library(osmdata)
+library(ggmapinset)
+library(ggrepel)
+
 db <- combine_fude(d, b, city = "松山", community = "和気|安城寺|長戸|久万ノ台")
 
 set.seed(200)
@@ -341,10 +359,6 @@ farm_radius <- farm |>
   sf::st_transform(crs = sp::CRS("+init=epsg:32632")) |>
   sf::st_buffer(dist = units::as_units(1, "km")) |>
   sf::st_transform(crs = 4326)
-
-library(osmdata)
-library(ggmapinset)
-library(ggrepel)
 
 bbox <- sf::st_bbox(db$fude)
 

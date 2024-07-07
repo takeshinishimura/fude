@@ -1,21 +1,37 @@
-#' Generate Citation Text for Fude Polygon Data
+#' Prepare Leaflet Map for Fude Polygon Data
 #'
 #' @description
-#' This function generates citation text in Japanese and English for Fude
-#' Polygon Data.
+#' Prepares a Leaflet map for Fude Polygon data.
 #' @param data
-#'   A list or data.frame containing Fude Polygon data.
-#' @return A list with two elements: `ja` for Japanese citation text and `en`
-#'   for English citation text.
+#'   A list or data frame containing Fude Polygon data.
+#' @param community
+#'   A logical value indicating whether to overlay community data on the map.
+#' @return A Leaflet map object with Fude Polygon data with an HTML table.
 #'
 #' @export
-shiny_fude <- function(data) {
+shiny_fude <- function(data, community = FALSE) {
 
-  data <- data %>%
-    dplyr::mutate(
-      layerId = .data$polygon_uuid,
-      label = .data$RCOM_NAME
-    )
+  if ("fude" %in% names(data)) {
+      data_fude <- data$fude %>%
+        dplyr::mutate(
+          layerId = .data$polygon_uuid,
+          label = .data$RCOM_NAME
+        )
+    } else {
+      data_fude <- data %>%
+        dplyr::mutate(
+          layerId = .data$polygon_uuid,
+          label = .data$RCOM_NAME
+        )
+    }
+
+    if (community && "community" %in% names(data)) {
+      data_community <- data$community %>%
+        dplyr::mutate(
+          community_layerId = .data$RCOM,
+          community_label = .data$RCOM_NAME
+        )
+    }
 
   ui <- shiny::fluidPage(
     shiny::tags$head(
@@ -39,7 +55,7 @@ shiny_fude <- function(data) {
   )
 
   server <- function(input, output, session) {
-    rv <- shiny::reactiveValues(selected_fude = NULL, filtered_data = data)
+    rv <- shiny::reactiveValues(selected_fude = NULL, filtered_data = data_fude)
 
     shiny::observeEvent(input$mapfilter_shape_click, {
       click <- input$mapfilter_shape_click
@@ -52,33 +68,64 @@ shiny_fude <- function(data) {
         rv$selected_fude <- c(rv$selected_fude, click$id)
       }
 
-      leaflet::leafletProxy("mapfilter", session) %>%
-        leaflet::clearShapes() %>%
+      proxy <- leaflet::leafletProxy("mapfilter", session) %>%
+        leaflet::clearShapes()
+
+      if (community) {
+        proxy %>%
+          leaflet::addPolygons(
+            data = data_community,
+            layerId = ~community_layerId,
+            label = ~community_label,
+            fillColor = "gray",
+            color = "black",
+            weight = 2,
+            fillOpacity = 0
+          )
+      }
+
+      proxy %>%
         leaflet::addPolygons(
-          data = data,
+          data = data_fude,
           layerId = ~layerId,
           label = ~label,
           fillColor = "steelblue",
           color = "black",
           weight = 2,
-          fillOpacity = ifelse(data$polygon_uuid %in% rv$selected_fude, 1, 0.1),
+          fillOpacity = ifelse(data_fude$polygon_uuid %in% rv$selected_fude, 1, 0.1),
           highlightOptions = leaflet::highlightOptions(
             fillOpacity = 1,
             bringToFront = TRUE
           )
         )
+
     })
 
     output$mapfilter <- leaflet::renderLeaflet({
-      leaflet::leaflet(
-        data,
+      proxy <- leaflet::leaflet(
+        data_fude,
         options = leaflet::leafletOptions(
           zoomControl = TRUE,
           dragging = TRUE,
-          minZoom = 10,
+          minZoom = 6,
           maxZoom = 18
         )
-      ) %>%
+      )
+
+      if (community) {
+        proxy <- proxy %>%
+          leaflet::addPolygons(
+            data = data_community,
+            layerId = ~community_layerId,
+            label = ~community_label,
+            fillColor = "gray",
+            color = "black",
+            weight = 2,
+            fillOpacity = 0
+          )
+      }
+
+      proxy %>%
         leaflet::addPolygons(
           layerId = ~layerId,
           label = ~label,
@@ -114,10 +161,10 @@ shiny_fude <- function(data) {
 
     shiny::observe({
       if (!is.null(rv$selected_fude) && length(rv$selected_fude) > 0) {
-        rv$filtered_data <- data %>%
+        rv$filtered_data <- data_fude %>%
           dplyr::filter(layerId %in% rv$selected_fude)
       } else {
-        rv$filtered_data <- data
+        rv$filtered_data <- data_fude
       }
     })
 
@@ -127,32 +174,63 @@ shiny_fude <- function(data) {
         selected_polygon_uuid <- rv$filtered_data$polygon_uuid[selected_row]
         rv$selected_fude <- selected_polygon_uuid
 
-        leaflet::leafletProxy("mapfilter", session) %>%
-          leaflet::clearShapes() %>%
+        proxy <- leaflet::leafletProxy("mapfilter", session) %>%
+          leaflet::clearShapes()
+
+        if (community) {
+          proxy %>%
+            leaflet::addPolygons(
+              data = data_community,
+              layerId = ~community_layerId,
+              label = ~community_label,
+              fillColor = "gray",
+              color = "black",
+              weight = 2,
+              fillOpacity = 0
+            )
+        }
+
+        proxy %>%
           leaflet::addPolygons(
-            data = data,
+            data = data_fude,
             layerId = ~layerId,
             label = ~label,
             fillColor = "steelblue",
             color = "black",
             weight = 2,
-            fillOpacity = ifelse(data$polygon_uuid %in% rv$selected_fude, 1, 0.1),
+            fillOpacity = ifelse(data_fude$polygon_uuid %in% rv$selected_fude, 1, 0.1),
             highlightOptions = leaflet::highlightOptions(
               fillOpacity = 1,
               bringToFront = TRUE
             )
           )
+
       }
     })
 
     shiny::observeEvent(input$clear_selection, {
       rv$selected_fude <- NULL
-      rv$filtered_data <- data
+      rv$filtered_data <- data_fude
 
-      leaflet::leafletProxy("mapfilter", session) %>%
-        leaflet::clearShapes() %>%
+      proxy <- leaflet::leafletProxy("mapfilter", session) %>%
+        leaflet::clearShapes()
+
+      if (community) {
+        proxy %>%
+          leaflet::addPolygons(
+            data = data_community,
+            layerId = ~community_layerId,
+            label = ~community_label,
+            fillColor = "gray",
+            color = "black",
+            weight = 2,
+            fillOpacity = 0
+          )
+      }
+
+      proxy %>%
         leaflet::addPolygons(
-          data = data,
+          data = data_fude,
           layerId = ~layerId,
           label = ~label,
           fillColor = "steelblue",
@@ -164,11 +242,12 @@ shiny_fude <- function(data) {
             bringToFront = TRUE
           )
         )
+
     })
-  }
+   }
 
   return(list(ui = ui, server = server))
 
 }
 
-utils::globalVariables(c("layerId", "label"))
+utils::globalVariables(c("layerId", "label", "community_layerId", "community_label"))

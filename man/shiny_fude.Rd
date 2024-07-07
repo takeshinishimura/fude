@@ -2,18 +2,18 @@
 % Please edit documentation in R/shiny_fude.R
 \name{shiny_fude}
 \alias{shiny_fude}
-\title{Generate Citation Text for Fude Polygon Data}
+\title{Prepare Leaflet Map for Fude Polygon Data}
 \usage{
-shiny_fude(data)
+shiny_fude(data, community = FALSE)
 }
 \arguments{
-\item{data}{A list or data.frame containing Fude Polygon data.}
+\item{data}{A list or data frame containing Fude Polygon data.}
+
+\item{community}{A logical value indicating whether to overlay community data on the map.}
 }
 \value{
-A list with two elements: \code{ja} for Japanese citation text and \code{en}
-for English citation text.
+A Leaflet map object with Fude Polygon data with an HTML table.
 }
 \description{
-This function generates citation text in Japanese and English for Fude
-Polygon Data.
+Prepares a Leaflet map for Fude Polygon data.
 }
