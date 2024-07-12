@@ -92,7 +92,8 @@ combine_fude <- function(data,
     sf::st_sf()
 
   intersection_fude <- sf::st_intersection(x, y)
-  intersection_fude$local_government_cd.1 <- NULL
+  intersection_fude <- intersection_fude %>%
+    dplyr::select(-.data$local_government_cd.1, -.data$centroid, -.data$x, -.data$y)
 
   fude_original <- x[x$polygon_uuid %in% unique(intersection_fude$polygon_uuid), ]
   fude_filtered <- intersection_fude %>%
@@ -102,7 +103,20 @@ combine_fude <- function(data,
   fude_selected <- fude_filtered %>%
     dplyr::select(-dplyr::one_of(common_cols)) %>%
     sf::st_set_geometry(NULL)
-  fude_original <- dplyr::left_join(fude_original, fude_selected, by = "polygon_uuid")
+  fude_original <- fude_original %>%
+    dplyr::left_join(fude_selected, by = "polygon_uuid") %>%
+    dplyr::mutate(centroid = sf::st_centroid(.data$geometry)) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(x = sf::st_coordinates(.data$centroid)[, 1],
+                  y = sf::st_coordinates(.data$centroid)[, 2]) %>%
+    dplyr::ungroup()
+
+  intersection_fude <- intersection_fude %>%
+    dplyr::mutate(centroid = sf::st_centroid(.data$geometry)) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(x = sf::st_coordinates(.data$centroid)[, 1],
+                  y = sf::st_coordinates(.data$centroid)[, 2]) %>%
+    dplyr::ungroup()
 
   y_union <- y %>%
     sf::st_union() %>%

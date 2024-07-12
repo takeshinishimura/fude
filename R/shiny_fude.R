@@ -15,7 +15,7 @@ shiny_fude <- function(data, community = FALSE) {
       data_fude <- data$fude %>%
         dplyr::mutate(
           layerId = .data$polygon_uuid,
-          label = .data$RCOM_NAME
+          label = .data$polygon_uuid
         )
     } else {
       data_fude <- data %>%

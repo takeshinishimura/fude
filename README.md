@@ -152,23 +152,18 @@ library(sf)
 # head(sf::st_drop_geometry(db$fude[db$fude$polygon_uuid %in% db$fude_split$polygon_uuid[duplicated(db$fude_split$polygon_uuid)], c("polygon_uuid", "PREF_NAME", "CITY_NAME", "KCITY_NAME", "RCOM_NAME", "RCOM_KANA", "RCOM_ROMAJI")]))
 db$fude |>
   filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
-  select(polygon_uuid, PREF_NAME, CITY_NAME, KCITY_NAME, RCOM_NAME, RCOM_KANA, RCOM_ROMAJI) |>
   sf::st_drop_geometry() |>
+  select(polygon_uuid, KCITY_NAME, RCOM_NAME, RCOM_KANA, RCOM_ROMAJI) |>
   head()
-#>                           polygon_uuid PREF_NAME CITY_NAME KCITY_NAME RCOM_NAME
-#> 1 8085bc47-9af5-440f-89e9-f188d3b95746    愛媛県    松山市   興居島村        泊
-#> 2 26920da0-b63e-4994-a9eb-175e2982fe21    愛媛県    松山市   興居島村      門田
-#> 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0aec    愛媛県    松山市   興居島村      由良
-#> 4 ea130038-7035-4cf3-b71c-091783090d74    愛媛県    松山市   興居島村      船越
-#> 5 4aba8229-1b14-4eab-8a91-e10d9e841180    愛媛県    松山市   興居島村      船越
-#> 6 156a3459-25cb-494c-824f-9ba6b0fb6f23    愛媛県    松山市   興居島村      由良
-#>   RCOM_KANA RCOM_ROMAJI
-#> 1    とまり      Tomari
-#> 2    かどた      Kadota
-#> 3      ゆら        Yura
-#> 4  ふなこし   Funakoshi
-#> 5  ふなこし   Funakoshi
-#> 6      ゆら        Yura
+#> # A tibble: 6 × 5
+#>   polygon_uuid                        KCITY_NAME RCOM_NAME RCOM_KANA RCOM_ROMAJI
+#>   <chr>                               <fct>      <fct>     <fct>     <fct>      
+#> 1 8085bc47-9af5-440f-89e9-f188d3b957… 興居島村   泊        とまり    Tomari     
+#> 2 26920da0-b63e-4994-a9eb-175e2982fe… 興居島村   門田      かどた    Kadota     
+#> 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0a… 興居島村   由良      ゆら      Yura       
+#> 4 ea130038-7035-4cf3-b71c-091783090d… 興居島村   船越      ふなこし  Funakoshi  
+#> 5 4aba8229-1b14-4eab-8a91-e10d9e8411… 興居島村   船越      ふなこし  Funakoshi  
+#> 6 156a3459-25cb-494c-824f-9ba6b0fb6f… 興居島村   由良      ゆら      Yura
 ```
 
 ### Visualizing Fude Polygon Data
@@ -178,9 +173,12 @@ You can confirm Fude Polygon data in detail.
 ``` r
 library(shiny)
 
-s <- shiny_fude(db$fude)
+s <- shiny_fude(db, community = TRUE)
 # shiny::shinyApp(ui = s$ui, server = s$server)
 ```
+
+This feature was heavily inspired by the following website:
+<https://brendenmsmith.com/blog/shiny_map_filter/>
 
 ### Using `gghighlight` Package
 
@@ -269,9 +267,6 @@ b[[1]] |>
 #> 8           ¦--小栗第３              
 #> 9           ¦--藤原第１              
 #> 10          °--... 102 nodes w/ 0 sub
-```
-
-``` r
 ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) + 
   geom_sf(fill = NA) +
   geom_sf_text(aes(label = RCOM_NAME), size = 2, family = "Hiragino Sans") +
@@ -280,142 +275,68 @@ ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) +
 
 <img src="man/figures/README-matsuyama-1.png" width="100%" />
 
-If you want to be particular about the details of the map, for example,
-execute the following code.
-
 ``` r
-db <- combine_fude(d, b, city = "松山市", old_village = "興居島", community = "^(?!釣島).*")
+db$fude_points <- db$fude %>%
+  sf::st_drop_geometry() %>%
+  dplyr::mutate(
+    geometry = purrr::map(centroid, ~ sf::st_point(c(.x[1], .x[2])))
+  ) %>%
+  dplyr::mutate(
+    geometry = sf::st_sfc(geometry, crs = 4326)
+  ) %>%
+  sf::st_as_sf(crs = 4326)
 
-library(ggrepel)
-library(cowplot)
+fude_points_projected <- sf::st_transform(db$fude_points, crs = 32633)
+community_union_projected <- sf::st_transform(db$community_union, crs = 32633)
 
-minimap <- ggplot() +
-  geom_sf(data = db$lg, aes(fill = fill)) +
-  geom_sf_text(data = db$lg, aes(label = city_kanji), family = "Hiragino Sans") +
-  gghighlight(fill == 1) +
-  geom_sf(data = db$community_union, fill = "black", linewidth = 0) +
-  theme_void() +
-  theme(panel.background = element_rect(fill = "aliceblue")) +
-  scale_fill_manual(values = c("white", "gray"))
-
-mainmap <- ggplot() +
-  geom_sf(data = db$community, fill = "white") +
-  geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
-  geom_point(data = db$community, aes(x = x, y = y), colour = "gray") +
-  geom_text_repel(data = db$community,
-                  aes(x = x, y = y, label = RCOM_NAME),
-                  nudge_x = c(-.01, .01, -.01, -.012, .005, -.01, .01, .01),
-                  nudge_y = c(.005, .005, 0, .01, -.005, .01, 0, -.005),
-                  min.segment.length = .01,
-                  segment.color = "gray",
-                  size = 3,
-                  family = "Hiragino Sans") +
-  theme_void() +
-  theme(legend.position = "none")
-
-ggdraw(mainmap) +
-  draw_plot(
-    {minimap +
-       geom_rect(aes(xmin = 132.47, xmax = 133.0,
-                     ymin = 33.72, ymax = 34.05),
-                 fill = NA,
-                 colour = "black",
-                 size = .5) +
-       coord_sf(xlim = c(132.47, 133.0),
-                ylim = c(33.72, 34.05),
-                expand = FALSE) +
-       theme(legend.position = "none")
-    },
-    x = .7, 
-    y = 0,
-    width = .3, 
-    height = .3)
-```
-
-You can also visualize the relationship between the residences of
-farmers and their farmland.
-
-``` r
-library(osmdata)
-library(ggmapinset)
-library(ggrepel)
-
-db <- combine_fude(d, b, city = "松山", community = "和気|安城寺|長戸|久万ノ台")
-
-set.seed(200)
-probabilities <- c(0.97, 0.01, 0.005, 0.005, 0.005, 0.005)
-names(probabilities) <- LETTERS[1:length(probabilities)]
-db$fude$farmer = factor(sample(names(probabilities),
-                               nrow(db$fude),
-                               replace = TRUE,
-                               prob = probabilities))
-
-farm <- db$fude |>
-  group_by(farmer) |>
-  summarise(geometry = sf::st_union(geometry) |> sf::st_centroid()) |>
-  sf::st_set_crs(4326)
-
-farm_radius <- farm |>
-  sf::st_transform(crs = sp::CRS("+init=epsg:32632")) |>
-  sf::st_buffer(dist = units::as_units(1, "km")) |>
+voronoi <- fude_points_projected %>%
+  sf::st_geometry() %>%
+  sf::st_union() %>%
+  sf::st_voronoi() %>%
+  sf::st_collection_extract(type = "POLYGON") %>%
+  sf::st_sf(crs = 32633) %>%
+  sf::st_intersection(y = sf::st_geometry(community_union_projected)) %>%
+  sf::st_join(y = fude_points_projected) %>%
+  dplyr::select(-geometry.y) %>%
+  dplyr::rename(geometry = geometry.x) %>%
+  sf::st_cast("POLYGON") %>%
   sf::st_transform(crs = 4326)
 
-bbox <- sf::st_bbox(db$fude)
+library(patchwork)
 
-streets <- bbox |>
-  osmdata::opq() |>
-  osmdata::add_osm_feature(key = "highway", 
-                           value = c("motorway", "primary", "secondary", "tertiary",
-                                     "residential", "living_street",
-                                     "unclassified", "service", "footway")) |>
-  osmdata::osmdata_sf()
-
-river <- bbox |>
-  osmdata::opq() |>
-  osmdata::add_osm_feature(key = "waterway", value = "river") |>
-  osmdata::osmdata_sf()
-
-inset1 <- configure_inset(
-    centre = sf::st_geometry(farm)[farm$farmer == "F"],
-    scale = 3,
-    translation = c(-4, 1),
-    radius = 1, units = "km"
-  )
-inset2 <- configure_inset(
-    centre = sf::st_geometry(farm)[farm$farmer == "E"],
-    scale = 3,
-    translation = c(4, -3),
-    radius = 1, units = "km"
-  )
-
-farm$x <- sf::st_coordinates(farm)[, 1]
-farm$y <- sf::st_coordinates(farm)[, 2]
-
-ggplot(data = db$fude) +
-  geom_sf(data = streets$osm_lines, colour = "gray") +
-  geom_sf(data = river$osm_lines, colour = "skyblue") +
-  geom_sf(aes(fill = farmer, colour = farmer), alpha = .5) +
-  geom_sf(data = farm, aes(colour = farmer)) +
-  geom_text_repel(data = farm,
-                  aes(x = x, y = y, label = farmer),
-                  nudge_x = c(.02, .02, .02, -.01, .02, -.012),
-                  nudge_y = c(.01, 0, -.005, -.005, .01, -.005),
-                  min.segment.length = 0,
-                  segment.color = "black",
-                  size = 3,
-                  family = "Helvetica") +
-  geom_sf_inset(data = streets$osm_lines, colour = "gray", map_base = "none", inset = inset1) +
-  geom_sf_inset(data = river$osm_lines, colour = "skyblue", map_base = "none", inset = inset1) +
-  geom_sf_inset(aes(fill = farmer, colour = farmer), alpha = .5, map_base = "none", inset = inset1) +
-  geom_inset_frame(inset = inset1) +
-  geom_sf_inset(data = streets$osm_lines, colour = "gray", map_base = "none", inset = inset2) +
-  geom_sf_inset(data = river$osm_lines, colour = "skyblue", map_base = "none", inset = inset2) +
-  geom_sf_inset(aes(fill = farmer, colour = farmer), alpha = .5, map_base = "none", inset = inset2) +
-  geom_inset_frame(inset = inset2) +
+map1 <- ggplot() +
+  geom_sf(data = db$fude |> filter(RCOM_NAME == "泊"), aes(fill = RCOM_NAME), linewidth = .3) +
+  geom_sf(data = db$fude_points |> filter(RCOM_NAME == "泊"), size = .5) +
+  geom_sf(data = db$community |> filter(RCOM_NAME == "泊"), aes(fill = RCOM_NAME), alpha = 0, linewidth = 1) +
   theme_void() +
   theme(legend.position = "none")
+
+map2 <- ggplot() +
+  geom_sf(data = voronoi |> filter(RCOM_NAME == "泊"), aes(fill = RCOM_NAME), linewidth = .3) +
+  geom_sf(data = db$fude_points |> filter(RCOM_NAME == "泊"), size = .5) +
+  geom_sf(data = db$community |> filter(RCOM_NAME == "泊"), aes(fill = RCOM_NAME), alpha = 0, linewidth = 1) +
+  theme_void() +
+  theme(legend.position = "none")
+
+map1 + map2
 ```
 
-<img src="man/figures/README-farmer1-1.png" width="100%" />
+<img src="man/figures/README-voronoi1-1.png" width="100%" />
 
 **出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。
+
+``` r
+voronoi$area_voronoi <- sf::st_area(voronoi)
+voronoi$a_voronoi <- units::set_units(voronoi$area_voronoi, "a")
+
+ggplot(data = voronoi, aes(x = as.numeric(a_voronoi), fill = land_type_jp)) +
+  geom_histogram(position = "identity", alpha = .5) +
+  labs(x = "面積（a）",
+       y = "頻度") +
+  facet_wrap(vars(RCOM_NAME)) +
+  labs(fill = "耕地の種類") +
+  theme_minimal() +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+<img src="man/figures/README-voronoi3-1.png" width="100%" />
