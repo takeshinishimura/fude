@@ -112,24 +112,36 @@ Polygon data near community borders may be divided. To avoid this, use
 `db$fude`.
 
 ``` r
+library(dplyr)
 library(ggforce)
+library(sf)
+
+db$fude2 <- db$fude |>
+  group_by(RCOM) |>
+  mutate(n = gsub("c\\(|\\)", "", 
+                  paste0("Count of Fude: ", n(), "\n",
+                         list(table(land_type)))))
+bbox <- sf::st_bbox(db$fude2)
 
 ggplot() +
   geom_sf(data = db$community, fill = NA) +
   geom_sf(data = db$fude, aes(fill = RCOM_ROMAJI)) +
-  geom_mark_hull(data = db$fude, 
+  geom_mark_hull(data = db$fude2,
                  aes(x = point_lng, y = point_lat,
                      fill = RCOM_ROMAJI,
-                     label = RCOM_ROMAJI),
+                     label = RCOM_ROMAJI,
+                     description = n),
                  colour = NA,
                  expand = unit(1, "mm"),
                  radius = unit(1, "mm"),
                  label.fontsize = 9,
                  label.family = "Helvetica",
-                 label.fill = NA,
+                 label.fill = "white",
                  label.colour = "black",
-                 label.buffer = unit(1, "mm"),
-                 con.colour = "gray70") +
+#                label.buffer = unit(0, "pt"),
+                 con.colour = "black") +
+  coord_sf(xlim = c(bbox["xmin"] - 0.02, bbox["xmax"] + 0.02),
+           ylim = c(bbox["ymin"] - 0.01, bbox["ymax"] + 0.01)) +
   theme_void() +
   theme(legend.position = "none")
 ```
@@ -155,15 +167,20 @@ db$fude |>
   sf::st_drop_geometry() |>
   select(polygon_uuid, KCITY_NAME, RCOM_NAME, RCOM_KANA, RCOM_ROMAJI) |>
   head()
-#> # A tibble: 6 × 5
-#>   polygon_uuid                        KCITY_NAME RCOM_NAME RCOM_KANA RCOM_ROMAJI
-#>   <chr>                               <fct>      <fct>     <fct>     <fct>      
-#> 1 8085bc47-9af5-440f-89e9-f188d3b957… 興居島村   泊        とまり    Tomari     
-#> 2 26920da0-b63e-4994-a9eb-175e2982fe… 興居島村   門田      かどた    Kadota     
-#> 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0a… 興居島村   由良      ゆら      Yura       
-#> 4 ea130038-7035-4cf3-b71c-091783090d… 興居島村   船越      ふなこし  Funakoshi  
-#> 5 4aba8229-1b14-4eab-8a91-e10d9e8411… 興居島村   船越      ふなこし  Funakoshi  
-#> 6 156a3459-25cb-494c-824f-9ba6b0fb6f… 興居島村   由良      ゆら      Yura
+#>                           polygon_uuid KCITY_NAME RCOM_NAME RCOM_KANA
+#> 1 8085bc47-9af5-440f-89e9-f188d3b95746   興居島村        泊    とまり
+#> 2 26920da0-b63e-4994-a9eb-175e2982fe21   興居島村      門田    かどた
+#> 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0aec   興居島村      由良      ゆら
+#> 4 ea130038-7035-4cf3-b71c-091783090d74   興居島村      船越  ふなこし
+#> 5 4aba8229-1b14-4eab-8a91-e10d9e841180   興居島村      船越  ふなこし
+#> 6 156a3459-25cb-494c-824f-9ba6b0fb6f23   興居島村      由良      ゆら
+#>   RCOM_ROMAJI
+#> 1      Tomari
+#> 2      Kadota
+#> 3        Yura
+#> 4   Funakoshi
+#> 5   Funakoshi
+#> 6        Yura
 ```
 
 ### Visualizing Fude Polygon Data

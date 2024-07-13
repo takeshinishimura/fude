@@ -18,7 +18,6 @@ b <- get_boundary(d, path = "~", quiet = TRUE)
 
 If you want to be particular about the details of the map, for example, execute the following code.
 ```{r matsuyama, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-library(dplyr)
 library(sf)
 library(ggplot2)
 library(gghighlight)
@@ -51,18 +50,18 @@ mainmap <- ggplot() +
   theme_void() +
   theme(legend.position = "none")
 
-x <- sf::st_bbox(db$lg |> filter(fill == 1))
+bbox <- sf::st_bbox(db$lg[db$lg$fill == 1, ])
 
 ggdraw(mainmap) +
   draw_plot(
     {minimap +
-       geom_rect(aes(xmin = x$xmin, xmax = x$xmax,
-                     ymin = x$ymin, ymax = x$ymax),
+       geom_rect(aes(xmin = bbox$xmin, xmax = bbox$xmax,
+                     ymin = bbox$ymin, ymax = bbox$ymax),
                  fill = NA,
                  colour = "black",
                  size = .5) +
-       coord_sf(xlim = x[c("xmin", "xmax")],
-                ylim = x[c("ymin", "ymax")],
+       coord_sf(xlim = bbox[c("xmin", "xmax")],
+                ylim = bbox[c("ymin", "ymax")],
                 expand = FALSE) +
        theme(legend.position = "none")
     },

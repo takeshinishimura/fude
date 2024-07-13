@@ -128,24 +128,36 @@
 <p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。</p>
 <p>Polygon data near community borders may be divided. To avoid this, use <code>db$fude</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggforce.data-imaginist.com" class="external-link">ggforce</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggforce.data-imaginist.com" class="external-link">ggforce</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db</span><span class="op">$</span><span class="va">fude2</span> <span class="op">&lt;-</span> <span class="va">db</span><span class="op">$</span><span class="va">fude</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">RCOM</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"c\\(|\\)"</span>, <span class="st">""</span>, </span>
+<span>                  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Count of Fude: "</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"\n"</span>,</span>
+<span>                         <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">land_type</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bbox</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">community</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">fude</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">RCOM_ROMAJI</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggforce.data-imaginist.com/reference/geom_mark_hull.html" class="external-link">geom_mark_hull</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">fude</span>, </span>
+<span>  <span class="fu"><a href="https://ggforce.data-imaginist.com/reference/geom_mark_hull.html" class="external-link">geom_mark_hull</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">db</span><span class="op">$</span><span class="va">fude2</span>,</span>
 <span>                 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">point_lng</span>, y <span class="op">=</span> <span class="va">point_lat</span>,</span>
 <span>                     fill <span class="op">=</span> <span class="va">RCOM_ROMAJI</span>,</span>
-<span>                     label <span class="op">=</span> <span class="va">RCOM_ROMAJI</span><span class="op">)</span>,</span>
+<span>                     label <span class="op">=</span> <span class="va">RCOM_ROMAJI</span>,</span>
+<span>                     description <span class="op">=</span> <span class="va">n</span><span class="op">)</span>,</span>
 <span>                 colour <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>                 expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
 <span>                 radius <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
 <span>                 label.fontsize <span class="op">=</span> <span class="fl">9</span>,</span>
 <span>                 label.family <span class="op">=</span> <span class="st">"Helvetica"</span>,</span>
-<span>                 label.fill <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>                 label.fill <span class="op">=</span> <span class="st">"white"</span>,</span>
 <span>                 label.colour <span class="op">=</span> <span class="st">"black"</span>,</span>
-<span>                 label.buffer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
-<span>                 con.colour <span class="op">=</span> <span class="st">"gray70"</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="co">#                label.buffer = unit(0, "pt"),</span></span>
+<span>                 con.colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"xmin"</span><span class="op">]</span> <span class="op">-</span> <span class="fl">0.02</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"xmax"</span><span class="op">]</span> <span class="op">+</span> <span class="fl">0.02</span><span class="op">)</span>,</span>
+<span>           ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymin"</span><span class="op">]</span> <span class="op">-</span> <span class="fl">0.01</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"ymax"</span><span class="op">]</span> <span class="op">+</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-nosplit_gogoshima-1.png" width="100%"></p>
@@ -161,15 +173,20 @@
 <span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">polygon_uuid</span>, <span class="va">KCITY_NAME</span>, <span class="va">RCOM_NAME</span>, <span class="va">RCOM_KANA</span>, <span class="va">RCOM_ROMAJI</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
-<span><span class="co">#&gt;   polygon_uuid                        KCITY_NAME RCOM_NAME RCOM_KANA RCOM_ROMAJI</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                               &lt;fct&gt;      &lt;fct&gt;     &lt;fct&gt;     &lt;fct&gt;      </span></span>
-<span><span class="co">#&gt; 1 8085bc47-9af5-440f-89e9-f188d3b957… 興居島村   泊        とまり    Tomari     </span></span>
-<span><span class="co">#&gt; 2 26920da0-b63e-4994-a9eb-175e2982fe… 興居島村   門田      かどた    Kadota     </span></span>
-<span><span class="co">#&gt; 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0a… 興居島村   由良      ゆら      Yura       </span></span>
-<span><span class="co">#&gt; 4 ea130038-7035-4cf3-b71c-091783090d… 興居島村   船越      ふなこし  Funakoshi  </span></span>
-<span><span class="co">#&gt; 5 4aba8229-1b14-4eab-8a91-e10d9e8411… 興居島村   船越      ふなこし  Funakoshi  </span></span>
-<span><span class="co">#&gt; 6 156a3459-25cb-494c-824f-9ba6b0fb6f… 興居島村   由良      ゆら      Yura</span></span></code></pre></div>
+<span><span class="co">#&gt;                           polygon_uuid KCITY_NAME RCOM_NAME RCOM_KANA</span></span>
+<span><span class="co">#&gt; 1 8085bc47-9af5-440f-89e9-f188d3b95746   興居島村        泊    とまり</span></span>
+<span><span class="co">#&gt; 2 26920da0-b63e-4994-a9eb-175e2982fe21   興居島村      門田    かどた</span></span>
+<span><span class="co">#&gt; 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0aec   興居島村      由良      ゆら</span></span>
+<span><span class="co">#&gt; 4 ea130038-7035-4cf3-b71c-091783090d74   興居島村      船越  ふなこし</span></span>
+<span><span class="co">#&gt; 5 4aba8229-1b14-4eab-8a91-e10d9e841180   興居島村      船越  ふなこし</span></span>
+<span><span class="co">#&gt; 6 156a3459-25cb-494c-824f-9ba6b0fb6f23   興居島村      由良      ゆら</span></span>
+<span><span class="co">#&gt;   RCOM_ROMAJI</span></span>
+<span><span class="co">#&gt; 1      Tomari</span></span>
+<span><span class="co">#&gt; 2      Kadota</span></span>
+<span><span class="co">#&gt; 3        Yura</span></span>
+<span><span class="co">#&gt; 4   Funakoshi</span></span>
+<span><span class="co">#&gt; 5   Funakoshi</span></span>
+<span><span class="co">#&gt; 6        Yura</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="visualizing-fude-polygon-data">Visualizing Fude Polygon Data<a class="anchor" aria-label="anchor" href="#visualizing-fude-polygon-data"></a>
