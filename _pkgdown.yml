@@ -2,3 +2,15 @@ url: https://takeshinishimura.github.io/fude/
 template:
   bootstrap: 5
 
+articles:
+  - title: "Additional Information"
+    contents:
+      - articles/additional
+
+  - title: "Example"
+    contents:
+      - articles/example1
+      - articles/example2
+      - articles/example3
+      - articles/example4
+      - articles/example5

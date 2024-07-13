@@ -1,0 +1,53 @@
+---
+title: "Using `gghighlight` Package"
+
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using `gghighlight` Package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Using `gghighlight` Package
+
+```{r echo = FALSE, warning = FALSE}
+library(fude)
+d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
+b <- get_boundary(d, path = "~", quiet = TRUE)
+```
+
+```{r facet_wrap_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+library(dplyr)
+library(forcats)
+library(ggplot2)
+library(gghighlight)
+
+db <- combine_fude(d, b, city = "松山市", old_village = "興居島", community = "^(?!釣島).*")
+
+db$community <- db$community %>%
+  mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))
+db$fude <- db$fude %>%
+  mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))
+
+ggplot() +
+  geom_sf(data = db$community, aes(fill = RCOM_NAME), alpha = 0) +
+  geom_sf(data = db$fude, aes(fill = RCOM_NAME), linewidth = 0) +
+  gghighlight() +
+  facet_wrap(vars(RCOM_NAME)) +
+  theme_void() +
+  theme(legend.position = "none",
+        text = element_text(family = "Hiragino Sans"))
+```
+
+**出典**：`r cite_fude(db)$ja`
+
+```{r facet_wrap_gogoshima_hist, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+ggplot(data = db$fude, aes(x = a, fill = land_type_jp)) +
+  geom_histogram(position = "identity", alpha = .5) +
+  labs(x = "面積（a）",
+       y = "頻度") +
+  facet_wrap(vars(RCOM_NAME)) +
+  labs(fill = "耕地の種類") +
+  theme_minimal() +
+  theme(text = element_text(family = "Hiragino Sans"))
+```

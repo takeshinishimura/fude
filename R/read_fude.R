@@ -55,8 +55,10 @@ read_fude <- function(path,
 
   if (supplementary == TRUE) {
     for (i in names(x)) {
-      x[[i]]$area <- sf::st_area(x[[i]])
-      x[[i]]$a <- units::set_units(x[[i]]$area, "a")
+      pref_code <- regmatches(i, regexpr("(?<=\\d{4}_)\\d{2}", i, perl = TRUE))
+      crs <- get_plane_rectangular_cs(pref_code)
+      x[[i]]$area <- sf::st_area(x[[i]] |> sf::st_transform(crs = crs))
+      x[[i]]$a <- as.numeric(units::set_units(x[[i]]$area, "a"))
       x[[i]]$farmland_name <- ""
       x[[i]]$owner <- ""
       x[[i]]$farmer <- ""
@@ -65,4 +67,58 @@ read_fude <- function(path,
   }
 
   return(x)
+}
+
+get_plane_rectangular_cs <- function(pref_code) {
+  cs_mapping <- list(
+    "01" = 6669,
+    "02" = 6668,
+    "03" = 6667,
+    "04" = 6666,
+    "05" = 6666,
+    "06" = 6665,
+    "07" = 6665,
+    "08" = 6665,
+    "09" = 6665,
+    "10" = 6664,
+    "11" = 6664,
+    "12" = 6664,
+    "13" = 6664,
+    "14" = 6664,
+    "15" = 6663,
+    "16" = 6663,
+    "17" = 6663,
+    "18" = 6663,
+    "19" = 6662,
+    "20" = 6662,
+    "21" = 6661,
+    "22" = 6661,
+    "23" = 6661,
+    "24" = 6660,
+    "25" = 6660,
+    "26" = 6660,
+    "27" = 6660,
+    "28" = 6660,
+    "29" = 6660,
+    "30" = 6660,
+    "31" = 6670,
+    "32" = 6670,
+    "33" = 6670,
+    "34" = 6670,
+    "35" = 6671,
+    "36" = 6673,
+    "37" = 6673,
+    "38" = 6673,
+    "39" = 6673,
+    "40" = 6671,
+    "41" = 6671,
+    "42" = 6671,
+    "43" = 6672,
+    "44" = 6672,
+    "45" = 6672,
+    "46" = 6672,
+    "47" = 6694
+  )
+
+  return(cs_mapping[[as.character(pref_code)]])
 }

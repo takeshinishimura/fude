@@ -1,0 +1,75 @@
+---
+title: "Displaying a Wide Area Map with cowplot"
+
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Displaying a Wide Area Map with cowplot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Displaying a Wide Area Map with cowplot
+
+```{r echo = FALSE, warning = FALSE}
+library(fude)
+d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
+b <- get_boundary(d, path = "~", quiet = TRUE)
+```
+
+If you want to be particular about the details of the map, for example, execute the following code.
+```{r matsuyama, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+library(dplyr)
+library(sf)
+library(ggplot2)
+library(gghighlight)
+library(ggrepel)
+library(cowplot)
+
+db <- combine_fude(d, b, city = "松山市", old_village = "興居島", community = "^(?!釣島).*")
+
+minimap <- ggplot() +
+  geom_sf(data = db$lg, aes(fill = fill)) +
+  geom_sf_text(data = db$lg, aes(label = city_kanji), family = "Hiragino Sans") +
+  gghighlight(fill == 1) +
+  geom_sf(data = db$community_union, fill = "black", linewidth = 0) +
+  theme_void() +
+  theme(panel.background = element_rect(fill = "aliceblue")) +
+  scale_fill_manual(values = c("white", "gray"))
+
+mainmap <- ggplot() +
+  geom_sf(data = db$community, fill = "white") +
+  geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
+  geom_point(data = db$community, aes(x = x, y = y), colour = "gray") +
+  geom_text_repel(data = db$community,
+                  aes(x = x, y = y, label = RCOM_NAME),
+                  nudge_x = c(-.01, .01, -.01, -.012, .005, -.01, .01, .01),
+                  nudge_y = c(.005, .005, 0, .01, -.005, .01, 0, -.005),
+                  min.segment.length = .01,
+                  segment.color = "gray",
+                  size = 3,
+                  family = "Hiragino Sans") +
+  theme_void() +
+  theme(legend.position = "none")
+
+x <- sf::st_bbox(db$lg |> filter(fill == 1))
+
+ggdraw(mainmap) +
+  draw_plot(
+    {minimap +
+       geom_rect(aes(xmin = x$xmin, xmax = x$xmax,
+                     ymin = x$ymin, ymax = x$ymax),
+                 fill = NA,
+                 colour = "black",
+                 size = .5) +
+       coord_sf(xlim = x[c("xmin", "xmax")],
+                ylim = x[c("ymin", "ymax")],
+                expand = FALSE) +
+       theme(legend.position = "none")
+    },
+    x = .7, 
+    y = 0,
+    width = .3, 
+    height = .3)
+```
+
+**出典**：`r cite_fude(db)$ja`

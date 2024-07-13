@@ -130,7 +130,7 @@ ggplot() +
                  label.colour = "black",
                  label.buffer = unit(1, "mm"),
                  con.colour = "gray70") +
-  theme_no_axes() +
+  theme_void() +
   theme(legend.position = "none")
 ```
 
@@ -178,47 +178,7 @@ s <- shiny_fude(db, community = TRUE)
 ```
 
 This feature was heavily inspired by the following website:
-<https://brendenmsmith.com/blog/shiny_map_filter/>
-
-### Using `gghighlight` Package
-
-The `gghighlight` package enables practical and effective visualization.
-
-``` r
-library(forcats)
-library(gghighlight)
-
-db$community <- db$community %>%
-  mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))
-db$fude <- db$fude %>%
-  mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))
-
-ggplot() +
-  geom_sf(data = db$community, aes(fill = RCOM_NAME), alpha = 0) +
-  geom_sf(data = db$fude, aes(fill = RCOM_NAME), linewidth = 0) +
-  gghighlight() +
-  facet_wrap(vars(RCOM_NAME)) +
-  theme_void() +
-  theme(legend.position = "none",
-        text = element_text(family = "Hiragino Sans"))
-```
-
-<img src="man/figures/README-facet_wrap_gogoshima-1.png" width="100%" />
-
-**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。
-
-``` r
-ggplot(data = db$fude, aes(x = as.numeric(a), fill = land_type_jp)) +
-  geom_histogram(position = "identity", alpha = .5) +
-  labs(x = "面積（a）",
-       y = "頻度") +
-  facet_wrap(vars(RCOM_NAME)) +
-  labs(fill = "耕地の種類") +
-  theme_minimal() +
-  theme(text = element_text(family = "Hiragino Sans"))
-```
-
-<img src="man/figures/README-facet_wrap_gogoshima_hist-1.png" width="100%" />
+<https://brendenmsmith.com/blog/shiny_map_filter/>.
 
 ### Using `mapview` package
 
@@ -234,109 +194,3 @@ library(mapview)
 
 mapview::mapview(db$fude, zcol = "RCOM_NAME", layer.name = "農業集落名")
 ```
-
-### Additional Information
-
-There are 7 types of objects obtained by `combine_fude()`, as follows:
-
-``` r
-names(db)
-#> [1] "fude"            "fude_split"      "community"       "community_union"
-#> [5] "ov"              "lg"              "pref"
-```
-
-The possible values for `community` in `combine_fude()` can be listed as
-follows.
-
-``` r
-library(data.tree)
-
-b[[1]] |>
-  filter(grepl("松山", KCITY_NAME)) |>
-  mutate(pathString = paste(PREF_NAME, CITY_NAME, KCITY_NAME, RCOM_NAME, sep = "/")) |>
-  data.tree::as.Node() |>
-  print(limit = 10)
-#>                              levelName
-#> 1  愛媛県                             
-#> 2   °--松山市                        
-#> 3       °--松山市                    
-#> 4           ¦--土居田                
-#> 5           ¦--針田                  
-#> 6           ¦--小栗第１              
-#> 7           ¦--小栗第２              
-#> 8           ¦--小栗第３              
-#> 9           ¦--藤原第１              
-#> 10          °--... 102 nodes w/ 0 sub
-ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) + 
-  geom_sf(fill = NA) +
-  geom_sf_text(aes(label = RCOM_NAME), size = 2, family = "Hiragino Sans") +
-  theme_void()
-```
-
-<img src="man/figures/README-matsuyama-1.png" width="100%" />
-
-``` r
-db$fude_points <- db$fude %>%
-  sf::st_drop_geometry() %>%
-  dplyr::mutate(
-    geometry = purrr::map(centroid, ~ sf::st_point(c(.x[1], .x[2])))
-  ) %>%
-  dplyr::mutate(
-    geometry = sf::st_sfc(geometry, crs = 4326)
-  ) %>%
-  sf::st_as_sf(crs = 4326)
-
-fude_points_projected <- sf::st_transform(db$fude_points, crs = 32633)
-community_union_projected <- sf::st_transform(db$community_union, crs = 32633)
-
-voronoi <- fude_points_projected %>%
-  sf::st_geometry() %>%
-  sf::st_union() %>%
-  sf::st_voronoi() %>%
-  sf::st_collection_extract(type = "POLYGON") %>%
-  sf::st_sf(crs = 32633) %>%
-  sf::st_intersection(y = sf::st_geometry(community_union_projected)) %>%
-  sf::st_join(y = fude_points_projected) %>%
-  dplyr::select(-geometry.y) %>%
-  dplyr::rename(geometry = geometry.x) %>%
-  sf::st_cast("POLYGON") %>%
-  sf::st_transform(crs = 4326)
-
-library(patchwork)
-
-map1 <- ggplot() +
-  geom_sf(data = db$fude |> filter(RCOM_NAME == "泊"), aes(fill = RCOM_NAME), linewidth = .3) +
-  geom_sf(data = db$fude_points |> filter(RCOM_NAME == "泊"), size = .5) +
-  geom_sf(data = db$community |> filter(RCOM_NAME == "泊"), aes(fill = RCOM_NAME), alpha = 0, linewidth = 1) +
-  theme_void() +
-  theme(legend.position = "none")
-
-map2 <- ggplot() +
-  geom_sf(data = voronoi |> filter(RCOM_NAME == "泊"), aes(fill = RCOM_NAME), linewidth = .3) +
-  geom_sf(data = db$fude_points |> filter(RCOM_NAME == "泊"), size = .5) +
-  geom_sf(data = db$community |> filter(RCOM_NAME == "泊"), aes(fill = RCOM_NAME), alpha = 0, linewidth = 1) +
-  theme_void() +
-  theme(legend.position = "none")
-
-map1 + map2
-```
-
-<img src="man/figures/README-voronoi1-1.png" width="100%" />
-
-**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。
-
-``` r
-voronoi$area_voronoi <- sf::st_area(voronoi)
-voronoi$a_voronoi <- units::set_units(voronoi$area_voronoi, "a")
-
-ggplot(data = voronoi, aes(x = as.numeric(a_voronoi), fill = land_type_jp)) +
-  geom_histogram(position = "identity", alpha = .5) +
-  labs(x = "面積（a）",
-       y = "頻度") +
-  facet_wrap(vars(RCOM_NAME)) +
-  labs(fill = "耕地の種類") +
-  theme_minimal() +
-  theme(text = element_text(family = "Hiragino Sans"))
-```
-
-<img src="man/figures/README-voronoi3-1.png" width="100%" />

@@ -1,0 +1,43 @@
+---
+title: "Structure of Combined Fude Polygon Data with Agricultural Community Boundary Data"
+
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Structure of Combined Fude Polygon Data with Agricultural Community Boundary Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Structure of Combined Fude Polygon Data with Agricultural Community Boundary Data
+
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+library(fude)
+d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
+b <- get_boundary(d, path = "~", quiet = TRUE)
+db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+```
+
+There are `r length(names(db))` types of objects obtained by `combine_fude()`, as follows:
+```{r}
+names(db)
+```
+
+The possible values for `community` in `combine_fude()` can be listed as follows.
+```{r community_in_data, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+library(dplyr)
+library(data.tree)
+library(ggplot2)
+
+b[[1]] |>
+  filter(grepl("松山", KCITY_NAME)) |>
+  mutate(pathString = paste(PREF_NAME, CITY_NAME, KCITY_NAME, RCOM_NAME, sep = "/")) |>
+  data.tree::as.Node() |>
+  print(limit = 10)
+
+ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) + 
+  geom_sf(fill = NA) +
+  geom_sf_text(aes(label = RCOM_NAME), size = 2, family = "Hiragino Sans") +
+  theme_void()
+```
+
+**出典**：`r cite_fude(db)$ja`
