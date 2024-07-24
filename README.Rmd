@@ -102,17 +102,16 @@ library(dplyr)
 library(ggforce)
 library(sf)
 
-db$fude2 <- db$fude |>
-  group_by(RCOM) |>
-  mutate(n = gsub("c\\(|\\)", "", 
-                  paste0("Count of Fude: ", n(), "\n",
-                         list(table(land_type)))))
-bbox <- sf::st_bbox(db$fude2)
+bbox <- sf::st_bbox(db$fude)
 
 ggplot() +
   geom_sf(data = db$community, fill = NA) +
   geom_sf(data = db$fude, aes(fill = RCOM_ROMAJI)) +
-  geom_mark_hull(data = db$fude2,
+  geom_mark_hull(data = db$fude |>
+                   group_by(RCOM) |>
+                   mutate(n = gsub("c\\(|\\)", "", 
+                                   paste0("Count of Fude: ", n(), "\n",
+                                          list(table(land_type))))),
                  aes(x = point_lng, y = point_lat,
                      fill = RCOM_ROMAJI,
                      label = RCOM_ROMAJI,
@@ -138,9 +137,6 @@ Polygons on community boundaries are not divided but are assigned to one of the 
 If you need to adjust this automatic assignment, you will need to write custom code.
 The rows that require attention can be identified with the following command.
 ```{r message = FALSE}
-library(dplyr)
-library(sf)
-
 # head(sf::st_drop_geometry(db$fude[db$fude$polygon_uuid %in% db$fude_split$polygon_uuid[duplicated(db$fude_split$polygon_uuid)], c("polygon_uuid", "PREF_NAME", "CITY_NAME", "KCITY_NAME", "RCOM_NAME", "RCOM_KANA", "RCOM_ROMAJI")]))
 db$fude |>
   filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
@@ -149,9 +145,9 @@ db$fude |>
   head()
 ```
 
-### Visualizing Fude Polygon Data
+### Review Fude Polygon Data
 
-You can confirm Fude Polygon data in detail.
+You can review Fude Polygon data in detail.
 ```{r shiny_fude, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(shiny)
 
