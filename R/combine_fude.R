@@ -107,10 +107,6 @@ combine_fude <- function(data,
     dplyr::left_join(fude_selected, by = "polygon_uuid") %>%
     dplyr::mutate(centroid = sf::st_sfc(purrr::map2(.data$point_lng, .data$point_lat, ~ sf::st_point(c(.x, .y))),
                                         crs = sf::st_crs(.)))
-#   dplyr::rowwise() %>%
-#   dplyr::mutate(x = sf::st_coordinates(.data$centroid)[, 1],
-#                 y = sf::st_coordinates(.data$centroid)[, 2]) %>%
-#   dplyr::ungroup()
 
   intersection_fude <- intersection_fude %>%
     dplyr::mutate(centroid = sf::st_centroid(.data$geometry)) %>%
@@ -199,9 +195,7 @@ combine_fude <- function(data,
               fude_split = intersection_fude,
               community = y,
               community_union = y_union,
-#             ov = ov_map,
               ov = ov_all_map,
-#             lg = lg_map,
               lg = lg_all_map,
               pref = pref_map
               )
