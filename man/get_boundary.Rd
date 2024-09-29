@@ -7,7 +7,8 @@
 get_boundary(data, year = 2020, quiet = FALSE, path = NULL, to_wgs84 = TRUE)
 }
 \arguments{
-\item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
+\item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects or one or more strings representing prefecture
+codes.}
 
 \item{year}{Year in which the agricultural community boundary data was created.}
 

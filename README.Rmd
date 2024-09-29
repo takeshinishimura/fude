@@ -87,9 +87,10 @@ db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ�
 library(ggplot2)
 
 ggplot() +
-  geom_sf(data = db$fude_split, aes(fill = RCOM_NAME)) +
+  geom_sf(data = db$fude_split, aes(fill = RCOM_NAME), alpha = .8) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
+  theme(legend.position = "bottom") +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
 

@@ -4,7 +4,8 @@
 #' `get_boundary()` downloads and reads one or more agricultural community
 #' boundary data provided by the MAFF.
 #' @param data
-#'   List of [sf::sf()] objects.
+#'   List of [sf::sf()] objects or one or more strings representing prefecture
+#'   codes.
 #' @param year
 #'   Year in which the agricultural community boundary data was created.
 #' @param quiet
@@ -23,7 +24,8 @@
 #' b <- get_boundary(d)
 #'
 #' @export
-get_boundary <- function(data, year = 2020,
+get_boundary <- function(data,
+                         year = 2020,
                          quiet = FALSE,
                          path = NULL,
                          to_wgs84 = TRUE) {
@@ -73,17 +75,35 @@ read_boundary <- function(pref_code, year, quiet, path, to_wgs84) {
     x <- sf::st_transform(x, crs = 4326)
   }
 
-  x$RCOM_ROMAJI <- stringi::stri_trans_general(x$RCOM_KANA, "any-latin")
-  x$RCOM_ROMAJI <- paste0(toupper(substring(x$RCOM_ROMAJI, 1, 1)), substring(x$RCOM_ROMAJI, 2))
-  x$boundary_edit_year <- year
+  x <- x %>%
+    dplyr::mutate(
+      RCOM_ROMAJI = stringi::stri_trans_general(.data$RCOM_KANA, "any-latin"),
+      RCOM_ROMAJI = stringi::stri_trans_totitle(.data$RCOM_ROMAJI),
+      RCOM_ROMAJI = stringi::stri_trans_general(.data$RCOM_ROMAJI, "Fullwidth-Halfwidth"),
+      boundary_edit_year = year
+    )
 
   return(x)
 }
 
 fude_to_lg_code <- function(data) {
-  x <- unlist(lapply(names(data), function(i) unique(data[[i]]$local_government_cd)))
+
+  if (is.character(data)) {
+
+    x <- data
+
+  } else if (is.data.frame(data)) {
+
+    x <- unique(data$local_government_cd)
+
+  } else if (is.list(data)) {
+
+    x <- unique(unlist(sapply(data, `[[`, "local_government_cd")))
+
+  }
 
   return(x)
+
 }
 
 fude_to_pref_code <- function(data) {

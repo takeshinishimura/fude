@@ -98,15 +98,16 @@ db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ�
 library(ggplot2)
 
 ggplot() +
-  geom_sf(data = db$fude_split, aes(fill = RCOM_NAME)) +
+  geom_sf(data = db$fude_split, aes(fill = RCOM_NAME), alpha = .8) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
+  theme(legend.position = "bottom") +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
 
 <img src="man/figures/README-gogoshima-1.png" width="100%" />
 
-**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
 Polygon data near community borders may be divided. To avoid this, use
 `db$fude`.
@@ -149,7 +150,7 @@ ggplot() +
 
 **Source**: Created by processing the Ministry of Agriculture, Forestry
 and Fisheries, ‘Fude Polygon Data (released in FY2022)’ and
-‘Agricultural Community Boundary Data (FY2022)’.
+‘Agricultural Community Boundary Data (FY2020)’.
 
 Polygons on community boundaries are not divided but are assigned to one
 of the communities. If you need to adjust this automatic assignment, you

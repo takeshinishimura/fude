@@ -3,6 +3,7 @@
 export(bind_fude)
 export(cite_fude)
 export(combine_fude)
+export(extract_boundary)
 export(extract_fude)
 export(get_boundary)
 export(ls_fude)

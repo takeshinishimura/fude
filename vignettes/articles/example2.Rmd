@@ -12,34 +12,45 @@ vignette: >
 
 ```{r echo = FALSE, warning = FALSE}
 library(fude)
-d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
-b <- get_boundary(d, path = "~", quiet = TRUE)
 ```
 
 This package may be beneficial, especially for R beginners, when simply wanting to draw agricultural community boundaries.
-```{r yusukawa, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+```{r houjou, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(dplyr)
 library(ggplot2)
 library(gghighlight)
 library(ggrepel)
 
-db <- combine_fude(d, b, city = "西予市", old_village = "遊子川")
+b <- get_boundary("38", path = "~", quiet = TRUE)
+eb <- extract_boundary(b, city = "松山市", old_village = "浅海|立岩|難波|正岡|北条|河野|粟井")
+
+ggplot(data = eb, aes(fill = KCITY_NAME)) +
+  geom_sf(alpha = .2) +
+  geom_sf_text(aes(label = RCOM_NAME), size = 2, family = "Hiragino Sans") +
+  theme_void() +
+  theme(legend.position = "none")
+```
+
+**出典**：`r cite_fude(eb)$ja`
+
+```{r yusukawa, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+eb <- extract_boundary(b, city = "西予市", old_village = "遊子川", all = TRUE)
 
 ggplot() +
-  geom_sf(data = db$pref, fill = NA) +
-  geom_sf(data = db$lg, fill = "gray") +
+  geom_sf(data = eb$pref, fill = NA) +
+  geom_sf(data = eb$lg, fill = "gray") +
   gghighlight(fill == 1,
     unhighlighted_params = list(
       alpha = .05
     )) +
-  geom_sf(data = db$ov |> filter(fill == 1), fill = "black") +
-  geom_sf_text(data = db$lg |> filter(fill == 1),
+  geom_sf(data = eb$ov |> filter(fill == 1), fill = "black") +
+  geom_sf_text(data = eb$lg |> filter(fill == 1),
                aes(label = city_kanji),
                size = 3,
                nudge_x = -.025, nudge_y = -.025,
                family = "HiraKakuProN-W3") +
-  geom_point(data = db$community_union, aes(x = x, y = y), colour = "black") +
-  geom_text_repel(data = db$community_union,
+  geom_point(data = eb$community_union, aes(x = x, y = y), colour = "black") +
+  geom_text_repel(data = eb$community_union,
                   aes(x = x, y = y),
                   label = "遊子川地区",
                   nudge_x = .3, nudge_y = -.025,
@@ -49,19 +60,19 @@ ggplot() +
   theme_void()
 ```
 
-**出典**：`r cite_fude(db)$ja`
+**出典**：`r cite_fude(eb)$ja`
 
 ```{r maana, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-db <- combine_fude(d, b, city = "八幡浜市", old_village = "真穴")
+eb <- extract_boundary(b, city = "八幡浜市", old_village = "真穴", all = TRUE)
 
-ggplot(data = db$community) +
-  geom_sf(data = db$lg |> filter(fill == 1), fill = "gray") +
-  geom_sf_text(data = db$lg |> filter(fill == 1), aes(label = city_kanji), family = "HiraKakuProN-W3") +
+ggplot(data = eb$community) +
+  geom_sf(data = eb$lg |> filter(fill == 1), fill = "gray") +
+  geom_sf_text(data = eb$lg |> filter(fill == 1), aes(label = city_kanji), family = "HiraKakuProN-W3") +
   geom_sf(fill = "ivory") +
-# geom_sf(data = db$fude, aes(fill = land_type), colour = NA) +
+# geom_sf(data = eb$fude, aes(fill = land_type), colour = NA) +
   geom_sf_label(aes(label = RCOM_NAME), family = "HiraKakuProN-W3") +
   theme_void() +
   theme(legend.position = "none")
 ```
 
-**出典**：`r cite_fude(db)$ja`
+**出典**：`r cite_fude(eb)$ja`

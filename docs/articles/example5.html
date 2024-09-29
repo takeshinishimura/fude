@@ -117,7 +117,7 @@
 <span></span>
 <span><span class="va">map1</span> <span class="op">+</span> <span class="va">map2</span></span></code></pre></div>
 <p><img src="example5_files/figure-html/voronoi-1.png" width="1093.75"></p>
-<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。</p>
+<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">voronoi</span><span class="op">$</span><span class="va">area_voronoi</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_area</a></span><span class="op">(</span><span class="va">voronoi</span><span class="op">)</span></span>
 <span><span class="va">voronoi</span><span class="op">$</span><span class="va">a_voronoi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://r-quantities.github.io/units/reference/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="va">voronoi</span><span class="op">$</span><span class="va">area_voronoi</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span>
@@ -183,7 +183,7 @@
 <span></span>
 <span><span class="va">gI</span> <span class="op">+</span> <span class="va">gp</span></span></code></pre></div>
 <p><img src="example5_files/figure-html/spdep_poly2nb-2.png" width="1093.75"></p>
-<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。</p>
+<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
 </div>
 <div class="section level3">
 <h3 id="spdepknn2nb-and-localmoran">
@@ -254,7 +254,7 @@
 <span></span>
 <span><span class="va">gI</span> <span class="op">+</span> <span class="va">gp</span></span></code></pre></div>
 <p><img src="example5_files/figure-html/spdep_knn2nb-2.png" width="1093.75"></p>
-<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。</p>
+<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">localmoran</span> <span class="op">&lt;-</span> <span class="fu">spdep</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/localmoran.html" class="external-link">localmoran</a></span><span class="op">(</span><span class="va">voronoi</span><span class="op">$</span><span class="va">a</span>, listw <span class="op">=</span> <span class="va">lw2</span><span class="op">)</span></span>
 <span><span class="va">localmoran_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">localmoran</span><span class="op">)</span></span>
@@ -280,7 +280,7 @@
 <span></span>
 <span><span class="va">gI</span> <span class="op">+</span> <span class="va">gp</span></span></code></pre></div>
 <p><img src="example5_files/figure-html/spdep_knn2nb2-1.png" width="1093.75"></p>
-<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2022年度）」を加工して作成。</p>
+<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -294,7 +294,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

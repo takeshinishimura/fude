@@ -14,7 +14,7 @@ vignette: >
 library(fude)
 d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
-db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+db <- combine_fude(d, b, city = "松山市", old_village = "浅海")
 ```
 
 There are `r length(names(db))` types of objects obtained by `combine_fude()`, as follows:
@@ -22,7 +22,9 @@ There are `r length(names(db))` types of objects obtained by `combine_fude()`, a
 names(db)
 ```
 
-The possible values for `community` in `combine_fude()` can be listed as follows.
+
+# The Possible Values for `community` in `combine_fude()`
+
 ```{r community_in_data, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(dplyr)
 library(data.tree)
@@ -40,4 +42,4 @@ ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) +
   theme_void()
 ```
 
-**出典**：`r cite_fude(db)$ja`
+**出典**：`r cite_fude(b)$ja`

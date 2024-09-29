@@ -45,7 +45,8 @@ combine_fude <- function(data,
   lg_code <- find_lg_code(location_info$pref, location_info$city)
 
   local_government_cd <- unlist(
-    lapply(names(data), function(i) unique(data[[i]]$local_government_cd)))
+    lapply(names(data), function(i) unique(data[[i]]$local_government_cd))
+  )
 
   data_no <- which(local_government_cd %in% lg_code)
   if (length(data_no) != 1) {
@@ -63,35 +64,13 @@ combine_fude <- function(data,
   }
   x <- data[[data_no]]
 
-  pref_code <- substr(lg_code, start = 1, stop = 2)
-  community_city <- fude::lg_code_table$city_kanji[fude::lg_code_table$lg_code == lg_code]
-  community_city <- dplyr::if_else(grepl("\u533a$", community_city), sub(".*\u5e02", "", community_city), community_city)
+  extracted_boundary <- extract_boundary(boundary = boundary,
+                                         city = city,
+                                         old_village = old_village,
+                                         community = community,
+                                         all = TRUE)
 
-  valid_boundary <- boundary[[pref_code]] %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(local_government_cd = grep(paste0("^", .data$PREF, .data$CITY, "\\d$"), fude::lg_code_table$lg_code, value = TRUE)) %>%
-    dplyr::ungroup() %>%
-    sf::st_make_valid()
-
-  y <- valid_boundary %>%
-    dplyr::mutate(KCITY_NAME = dplyr::if_else(is.na(.data$KCITY_NAME), "", .data$KCITY_NAME)) %>%
-    dplyr::mutate(RCOM_NAME = dplyr::if_else(is.na(.data$RCOM_NAME), "", .data$RCOM_NAME)) %>%
-    dplyr::filter(.data$CITY_NAME == community_city &
-                  grepl(old_village, .data$KCITY_NAME, perl = TRUE) &
-                  grepl(community, .data$RCOM_NAME, perl = TRUE)) %>%
-    dplyr::mutate(KCITY_NAME = forcats::fct_inorder(.data$KCITY_NAME),
-                  RCOM_NAME = forcats::fct_inorder(.data$RCOM_NAME),
-                  RCOM_KANA = forcats::fct_inorder(.data$RCOM_KANA),
-                  RCOM_ROMAJI = forcats::fct_inorder(.data$RCOM_ROMAJI)) %>%
-    dplyr::mutate(centroid = sf::st_centroid(.data$geometry)) %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(x = sf::st_coordinates(.data$centroid)[, 1],
-                  y = sf::st_coordinates(.data$centroid)[, 2]) %>%
-    dplyr::ungroup() %>%
-    as.data.frame() %>%
-    sf::st_sf()
-
-  intersection_fude <- sf::st_intersection(x, y)
+  intersection_fude <- sf::st_intersection(x, extracted_boundary$community)
   intersection_fude <- intersection_fude %>%
     dplyr::select(-.data$local_government_cd.1, -.data$centroid, -.data$x, -.data$y)
 
@@ -105,193 +84,33 @@ combine_fude <- function(data,
     sf::st_set_geometry(NULL)
   fude_original <- fude_original %>%
     dplyr::left_join(fude_selected, by = "polygon_uuid") %>%
-    dplyr::mutate(centroid = sf::st_sfc(purrr::map2(.data$point_lng, .data$point_lat, ~ sf::st_point(c(.x, .y))),
-                                        crs = sf::st_crs(.)))
+    dplyr::mutate(
+      centroid = sf::st_sfc(purrr::map2(.data$point_lng, .data$point_lat, ~ sf::st_point(c(.x, .y))),
+                            crs = sf::st_crs(.))
+    )
 
   intersection_fude <- intersection_fude %>%
-    dplyr::mutate(centroid = sf::st_centroid(.data$geometry)) %>%
+    dplyr::mutate(
+      centroid = sf::st_centroid(.data$geometry)
+    ) %>%
     dplyr::rowwise() %>%
-    dplyr::mutate(point_lng = sf::st_coordinates(.data$centroid)[, 1],
-                  point_lat = sf::st_coordinates(.data$centroid)[, 2]) %>%
+    dplyr::mutate(
+      point_lng = sf::st_coordinates(.data$centroid)[, 1],
+      point_lat = sf::st_coordinates(.data$centroid)[, 2]
+    ) %>%
     dplyr::ungroup()
-
-  y_union <- y %>%
-    sf::st_union() %>%
-    sf::st_sf() %>%
-    dplyr::mutate(centroid = sf::st_centroid(.data$geometry)) %>%
-    dplyr::mutate(local_government_cd = paste0(unique(y$local_government_cd), collapse = "/"),
-                  x = sf::st_coordinates(.data$centroid)[, 1],
-                  y = sf::st_coordinates(.data$centroid)[, 2]) %>%
-    as.data.frame() %>%
-    sf::st_sf()
-
-  geometries <- valid_boundary %>%
-    sf::st_union() %>%
-    sf::st_geometry()
-  pref_df <- sf::st_sf(pref_code = pref_code, geometry = geometries)
-  pref_df <- sf::st_set_crs(pref_df, 4326)
-  pref_map <- dplyr::left_join(pref_df, fude::pref_table, by = "pref_code")
-
-  unique_local_government_cd <- unique(valid_boundary$local_government_cd)
-  geometries <- purrr::map(unique_local_government_cd,
-    function(cd) {
-      valid_boundary %>%
-        dplyr::filter(grepl(cd, .data$local_government_cd)) %>%
-        sf::st_union() %>%
-        sf::st_geometry() %>%
-        .[[1]]
-    }) %>% do.call(sf::st_sfc, .)
-  lg_df <- sf::st_sf(local_government_cd = unique_local_government_cd, geometry = geometries)
-  lg_df <- sf::st_set_crs(lg_df, 4326)
-  lg_ls <- ls_fude(data)[!duplicated(ls_fude(data)$local_government_cd), ]
-  lg_ls <- lg_ls %>%
-    dplyr::select(-c(.data$full_names, .data$year, .data$names))
-  lg_all_map <- dplyr::inner_join(lg_df, lg_ls, by = "local_government_cd")
-
-  lg_all_map <- lg_all_map %>%
-    dplyr::mutate(fill = factor(dplyr::if_else(.data$city_kanji == location_info$city, 1, 0)))
-
-  lg_map <- lg_all_map %>%
-    dplyr::filter(.data$fill == 1)
-
-  valid_boundary_KCITY_code <- valid_boundary %>%
-    dplyr::mutate(KCITY_code = paste(.data$local_government_cd,
-                                     .data$PREF,
-                                     .data$CITY,
-                                     .data$KCITY,
-                                     .data$PREF_NAME,
-                                     .data$CITY_NAME,
-                                     .data$KCITY_NAME, sep = "_"))
-  unique_KCITY <- unique(valid_boundary_KCITY_code$KCITY_code)
-  geometries <- purrr::map(unique_KCITY,
-    function (cd) {
-      valid_boundary_KCITY_code %>%
-        dplyr::filter(grepl(cd, .data$KCITY_code)) %>%
-        sf::st_union() %>%
-        sf::st_geometry() %>%
-        .[[1]]
-    }) %>% do.call(sf::st_sfc, .)
-  ov_df <- sf::st_sf(KCITY_code = unique_KCITY, geometry = geometries)
-  ov_df <- ov_df %>%
-    tidyr::separate(.data$KCITY_code, into = c("local_government_cd",
-                                               "PREF",
-                                               "CITY",
-                                               "KCITY",
-                                               "PREF_NAME",
-                                               "CITY_NAME",
-                                               "KCITY_NAME"), sep = "_")
-  ov_df$KCITY_NAME[ov_df$KCITY_NAME == "NA"] <- NA
-  ov_all_map <- sf::st_set_crs(ov_df, 4326)
-
-  ov_all_map <- ov_all_map %>%
-    dplyr::mutate(fill = factor(dplyr::if_else(.data$CITY_NAME == location_info$city & .data$KCITY_NAME %in% y$KCITY_NAME, 1, 0)))
-
-  ov_map <- ov_all_map %>%
-    dplyr::filter(.data$fill == 1)
 
   message(paste(length(unique(fude_original$RCOM_NAME)), "communities have been extracted."))
 
-  return(list(fude = fude_original,
-              fude_split = intersection_fude,
-              community = y,
-              community_union = y_union,
-              ov = ov_all_map,
-              lg = lg_all_map,
-              pref = pref_map
-              )
-        )
-}
-
-find_pref_name <- function(city) {
-  if (grepl("^\\d{6}$", city)) {
-
-    matching_idx <- which(fude::lg_code_table$lg_code == city)
-    pref_kanji <- fude::lg_code_table$pref_kanji[matching_idx]
-    city_kanji <- fude::lg_code_table$city_kanji[matching_idx]
-
-  } else {
-
-    if (grepl("^[A-Za-z0-9, -]+$", city)) {
-
-      matching_idx <- sapply(fude::pref_table$pref_code, function(x) grepl(x, city))
-
-      if (sum(matching_idx) == 1) {
-        pref_kanji <- fude::pref_table$pref_kanji[matching_idx]
-        city_kanji <- toupper(gsub(paste0(get_pref_code(pref_kanji), "|,|\\s"), "", city))
-      } else {
-        pref_kanji <- NULL
-        city_kanji <- toupper(city)
-      }
-
-    } else {
-
-      matching_idx <- sapply(fude::pref_table$pref_kanji, function(x) grepl(paste0("^", x), city))
-
-      if (sum(matching_idx) == 1) {
-        pref_kanji <- fude::pref_table$pref_kanji[matching_idx]
-        city_kanji <- gsub(glue::glue("^{pref_kanji}|\\s|\u3000"), "", city)
-      } else {
-        pref_kanji <- NULL
-        city_kanji <- city
-      }
-
-    }
-
-  }
-
-  return(list(pref = pref_kanji, city = city_kanji))
-}
-
-find_lg_code <- function(pref, city) {
-  if (is.null(pref)) {
-
-    if (grepl("^[A-Z-]+$", city)) {
-
-      if (grepl("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", city)) {
-        matching_idx <- dplyr::filter(fude::lg_code_table, .data$romaji == city)
-      } else {
-        matching_idx <- dplyr::filter(fude::lg_code_table, gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", .data$romaji) == city)
-      }
-
-    } else {
-
-      if (grepl("(\u5e02|\u533a|\u753a|\u6751)$", city)) {
-        matching_idx <- dplyr::filter(fude::lg_code_table, .data$city_kanji == city)
-      } else {
-        matching_idx <- dplyr::filter(fude::lg_code_table, sub("(\u5e02|\u533a|\u753a|\u6751)$", "", .data$city_kanji) == city)
-      }
-
-    }
-
-    if (nrow(matching_idx) > 1) {
-      stop("Include the prefecture name in the argument 'city'.")
-    }
-
-  } else {
-
-    if (grepl("^[A-Z-]+$", city)) {
-
-      if (grepl("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", city, ignore.case = TRUE)) {
-        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & .data$romaji == city)
-      } else {
-        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", .data$romaji) == city)
-      }
-
-    } else {
-
-      if (grepl("(\u5e02|\u533a|\u753a|\u6751)$", city)) {
-        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & .data$city_kanji == city)
-      } else {
-        matching_idx <- dplyr::filter(fude::lg_code_table, .data$pref_kanji == pref & sub("(\u5e02|\u533a|\u753a|\u6751)$", "", .data$city_kanji) == city)
-      }
-
-    }
-
-  }
-
-  return(matching_idx$lg_code)
-}
-
-if (getRversion() >= "2.15.1") {
-  utils::globalVariables(".")
+  return(
+    list(
+      fude = fude_original,
+      fude_split = intersection_fude,
+      community = extracted_boundary$community,
+      community_union = extracted_boundary$community_union,
+      ov = extracted_boundary$ov,
+      lg = extracted_boundary$lg,
+      pref = extracted_boundary$pref
+    )
+  )
 }
