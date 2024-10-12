@@ -66,37 +66,30 @@ extract_boundary <- function(boundary,
       KCITY_NAME = forcats::fct_inorder(.data$KCITY_NAME),
       RCOM_NAME = forcats::fct_inorder(.data$RCOM_NAME),
       RCOM_KANA = forcats::fct_inorder(.data$RCOM_KANA),
-      RCOM_ROMAJI = forcats::fct_inorder(.data$RCOM_ROMAJI),
-      centroid = sf::st_centroid(.data$geometry)
+      RCOM_ROMAJI = forcats::fct_inorder(.data$RCOM_ROMAJI)
     ) %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(
-      x = sf::st_coordinates(.data$centroid)[, 1],
-      y = sf::st_coordinates(.data$centroid)[, 2]
-    ) %>%
-    dplyr::ungroup() %>%
     as.data.frame() %>%
-    sf::st_sf()
+    sf::st_sf() %>%
+    add_xy()
 
   extracted_boundary_union <- extracted_boundary %>%
     sf::st_union() %>%
     sf::st_sf() %>%
     dplyr::mutate(
-      centroid = sf::st_centroid(.data$geometry),
-      local_government_cd = paste0(unique(extracted_boundary$local_government_cd), collapse = "/"),
-      x = sf::st_coordinates(.data$centroid)[, 1],
-      y = sf::st_coordinates(.data$centroid)[, 2]
+      local_government_cd = paste0(unique(extracted_boundary$local_government_cd), collapse = "/")
     ) %>%
     as.data.frame() %>%
-    sf::st_sf()
+    sf::st_sf() %>%
+    add_xy()
 
   geometries <- pref_boundary %>%
     sf::st_union() %>%
     sf::st_geometry()
-  pref_df <- sf::st_sf(pref_code = fude_to_pref_code(pref_boundary),
-                       geometry = geometries) %>%
-    sf::st_set_crs(4326)
-  pref_map <- dplyr::left_join(pref_df, fude::pref_table, by = "pref_code")
+  pref_map <- sf::st_sf(pref_code = fude_to_pref_code(pref_boundary),
+                        geometry = geometries) %>%
+    sf::st_set_crs(4326) %>%
+    dplyr::left_join(fude::pref_table, by = "pref_code") %>%
+    add_xy()
 
   unique_local_government_cd <- unique(pref_boundary$local_government_cd)
   geometries <- purrr::map(unique_local_government_cd,
@@ -118,10 +111,8 @@ extract_boundary <- function(boundary,
   lg_all_map <- lg_all_map %>%
     dplyr::mutate(
       fill = factor(dplyr::if_else(.data$city_kanji == location_info$city, 1, 0))
-    )
-
-  lg_map <- lg_all_map %>%
-    dplyr::filter(.data$fill == 1)
+    ) %>%
+    add_xy()
 
   pref_boundary_KCITY_code <- pref_boundary %>%
     dplyr::mutate(KCITY_code = paste(.data$local_government_cd,
@@ -140,8 +131,7 @@ extract_boundary <- function(boundary,
                                sf::st_geometry() %>%
                                .[[1]]
                            }) %>% do.call(sf::st_sfc, .)
-  ov_df <- sf::st_sf(KCITY_code = unique_KCITY,
-                     geometry = geometries) %>%
+  ov_df <- sf::st_sf(KCITY_code = unique_KCITY, geometry = geometries) %>%
     tidyr::separate(.data$KCITY_code, into = c("local_government_cd",
                                                "PREF",
                                                "CITY",
@@ -155,12 +145,8 @@ extract_boundary <- function(boundary,
     sf::st_set_crs(4326) %>%
     dplyr::mutate(
       fill = factor(dplyr::if_else(.data$CITY_NAME == location_info$city & .data$KCITY_NAME %in% extracted_boundary$KCITY_NAME, 1, 0))
-    )
-  lg_all_map
-
-  ov_map <- ov_all_map %>%
-    dplyr::filter(.data$fill == 1)
-
+    ) %>%
+    add_xy()
 
   if (all == TRUE) {
     return(
@@ -268,6 +254,18 @@ find_lg_code <- function(pref, city) {
   }
 
   return(matching_idx$lg_code)
+}
+
+add_xy <- function(data) {
+  x <- data %>%
+    dplyr::mutate(
+      centroid = sf::st_centroid(.data$geometry),
+      x = sf::st_coordinates(.data$centroid)[, 1],
+      y = sf::st_coordinates(.data$centroid)[, 2]
+    ) %>%
+    sf::st_sf()
+
+  return(x)
 }
 
 if (getRversion() >= "2.15.1") {

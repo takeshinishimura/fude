@@ -1,5 +1,5 @@
 ---
-title: "Displaying a Wide Area Map with cowplot"
+title: "Practical Mapping Examples"
 
 output: rmarkdown::html_vignette
 vignette: >
@@ -8,13 +8,53 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Displaying a Wide Area Map with cowplot
+# Using `ggforce` Package
 
 ```{r echo = FALSE, warning = FALSE}
 library(fude)
 d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 ```
+
+```{r gogoshima_en, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+library(dplyr)
+library(sf)
+library(ggplot2)
+library(ggforce)
+
+db <- combine_fude(d, b, city = "松山市", old_village = "興居島", community = "^(?!釣島).*")
+bbox <- sf::st_bbox(db$fude)
+
+ggplot() +
+  geom_sf(data = db$community, fill = NA) +
+  geom_sf(data = db$fude, aes(fill = RCOM_ROMAJI)) +
+  geom_mark_hull(data = db$fude |>
+                   group_by(RCOM) |>
+                   mutate(n = gsub("c\\(|\\)", "", 
+                                   paste0("Count of Fude: ", n(), "\n",
+                                          list(table(land_type))))),
+                 aes(x = point_lng, y = point_lat,
+                     fill = RCOM_ROMAJI,
+                     label = RCOM_ROMAJI,
+                     description = n),
+                 colour = NA,
+                 expand = unit(1, "mm"),
+                 radius = unit(1, "mm"),
+                 label.fontsize = 9,
+                 label.family = "Helvetica",
+                 label.fill = "white",
+                 label.colour = "black",
+#                label.buffer = unit(0, "pt"),
+                 con.colour = "black") +
+  coord_sf(xlim = c(bbox["xmin"] - 0.02, bbox["xmax"] + 0.02),
+           ylim = c(bbox["ymin"] - 0.01, bbox["ymax"] + 0.01)) +
+  theme_void() +
+  theme(legend.position = "none")
+```
+
+**Source**: `r cite_fude(db)$en`
+
+# Displaying a Wide Area Map with `cowplot`
 
 If you want to be particular about the details of the map, for example, execute the following code.
 ```{r matsuyama, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
@@ -23,8 +63,6 @@ library(ggplot2)
 library(gghighlight)
 library(ggrepel)
 library(cowplot)
-
-db <- combine_fude(d, b, city = "松山市", old_village = "興居島", community = "^(?!釣島).*")
 
 minimap <- ggplot() +
   geom_sf(data = db$lg, aes(fill = fill)) +

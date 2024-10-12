@@ -41,18 +41,18 @@ devtools::install_github("takeshinishimura/fude")
 
 ### Reading Fude Polygon Data
 
-You can let R read the downloaded ZIP file directly without unzipping
-it.
+You can allow R to read the downloaded ZIP file directly without
+unzipping it.
 
 ``` r
 library(fude)
 d <- read_fude("~/2022_38.zip")
 ```
 
-### Renaming Columns
+### Renaming the Local Government Code
 
-You can convert local government codes into Japanese municipality names
-for easier management.
+Convert local government codes into Japanese municipality names for
+easier management.
 
 ``` r
 d2 <- rename_fude(d)
@@ -80,8 +80,8 @@ names(d2)
 
 ### Getting Agricultural Community Boundary Data
 
-You can download the agricultural community boundary data, which
-corresponds to the Fude Polygon data, from the MAFF website at
+Download the agricultural community boundary data, which corresponds to
+the Fude Polygon data, from the MAFF website:
 <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/> (available
 only in Japanese).
 
@@ -98,7 +98,7 @@ db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ�
 library(ggplot2)
 
 ggplot() +
-  geom_sf(data = db$fude_split, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db$fude, aes(fill = RCOM_NAME), alpha = .8) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
   theme(legend.position = "bottom") +
@@ -109,59 +109,45 @@ ggplot() +
 
 **出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
-Polygon data near community borders may be divided. To avoid this, use
-`db$fude`.
+### Data Assignment
+
+- `db$fude`: Automatically assigns polygons on the boundaries to a
+  community.
+- `db$fude_split`: Provides cleaner boundaries, but polygon data near
+  community borders may be divided.
 
 ``` r
-library(dplyr)
-library(ggforce)
-library(sf)
+library(patchwork)
 
-bbox <- sf::st_bbox(db$fude)
-
-ggplot() +
-  geom_sf(data = db$community, fill = NA) +
-  geom_sf(data = db$fude, aes(fill = RCOM_ROMAJI)) +
-  geom_mark_hull(data = db$fude |>
-                   group_by(RCOM) |>
-                   mutate(n = gsub("c\\(|\\)", "", 
-                                   paste0("Count of Fude: ", n(), "\n",
-                                          list(table(land_type))))),
-                 aes(x = point_lng, y = point_lat,
-                     fill = RCOM_ROMAJI,
-                     label = RCOM_ROMAJI,
-                     description = n),
-                 colour = NA,
-                 expand = unit(1, "mm"),
-                 radius = unit(1, "mm"),
-                 label.fontsize = 9,
-                 label.family = "Helvetica",
-                 label.fill = "white",
-                 label.colour = "black",
-#                label.buffer = unit(0, "pt"),
-                 con.colour = "black") +
-  coord_sf(xlim = c(bbox["xmin"] - 0.02, bbox["xmax"] + 0.02),
-           ylim = c(bbox["ymin"] - 0.01, bbox["ymax"] + 0.01)) +
+fude <- ggplot() +
+  geom_sf(data = db$fude, aes(fill = RCOM_NAME), alpha = .8) +
   theme_void() +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
+
+fude_split <- ggplot() +
+  geom_sf(data = db$fude_split, aes(fill = RCOM_NAME), alpha = .8) +
+  theme_void() +
+  theme(legend.position = "none") +
+  coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
+
+fude + fude_split
 ```
 
 <img src="man/figures/README-nosplit_gogoshima-1.png" width="100%" />
 
-**Source**: Created by processing the Ministry of Agriculture, Forestry
-and Fisheries, ‘Fude Polygon Data (released in FY2022)’ and
-‘Agricultural Community Boundary Data (FY2020)’.
-
-Polygons on community boundaries are not divided but are assigned to one
-of the communities. If you need to adjust this automatic assignment, you
-will need to write custom code. The rows that require attention can be
-identified with the following command.
+If you need to adjust this automatic assignment, you will need to write
+custom code. The rows that require attention can be identified with the
+following command.
 
 ``` r
 # head(sf::st_drop_geometry(db$fude[db$fude$polygon_uuid %in% db$fude_split$polygon_uuid[duplicated(db$fude_split$polygon_uuid)], c("polygon_uuid", "PREF_NAME", "CITY_NAME", "KCITY_NAME", "RCOM_NAME", "RCOM_KANA", "RCOM_ROMAJI")]))
+library(dplyr)
+library(sf)
+
 db$fude |>
   filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
-  sf::st_drop_geometry() |>
+  st_drop_geometry() |>
   select(polygon_uuid, KCITY_NAME, RCOM_NAME, RCOM_KANA, RCOM_ROMAJI) |>
   head()
 #>                           polygon_uuid KCITY_NAME RCOM_NAME RCOM_KANA

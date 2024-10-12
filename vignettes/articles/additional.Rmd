@@ -23,7 +23,7 @@ names(db)
 ```
 
 
-# The Possible Values for `community` in `combine_fude()`
+# The Possible Values for `community` in `combine_fude()` and `extract_boundary()`
 
 ```{r community_in_data, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(dplyr)
@@ -40,6 +40,20 @@ ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) +
   geom_sf(fill = NA) +
   geom_sf_text(aes(label = RCOM_NAME), size = 2, family = "Hiragino Sans") +
   theme_void()
+```
+
+**出典**：`r cite_fude(b)$ja`
+
+# The Possible Values for `old_village` in `combine_fude()` and `extract_boundary()`
+
+```{r kcity_in_data, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+library(paletteer)
+
+ggplot(b[[1]] |> filter(CITY_NAME == "松山市")) +
+  geom_sf(aes(fill = KCITY_NAME), alpha = .8) +
+  theme_void() +
+  theme(text = element_text(family = "Hiragino Sans")) +
+  paletteer::scale_fill_paletteer_d("Polychrome::kelly")
 ```
 
 **出典**：`r cite_fude(b)$ja`

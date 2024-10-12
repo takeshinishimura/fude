@@ -72,7 +72,7 @@ combine_fude <- function(data,
 
   intersection_fude <- sf::st_intersection(x, extracted_boundary$community)
   intersection_fude <- intersection_fude %>%
-    dplyr::select(-.data$local_government_cd.1, -.data$centroid, -.data$x, -.data$y)
+    dplyr::select(-.data$local_government_cd.1)
 
   fude_original <- x[x$polygon_uuid %in% unique(intersection_fude$polygon_uuid), ]
   fude_filtered <- intersection_fude %>%
@@ -91,14 +91,10 @@ combine_fude <- function(data,
 
   intersection_fude <- intersection_fude %>%
     dplyr::mutate(
-      centroid = sf::st_centroid(.data$geometry)
-    ) %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(
+      centroid = sf::st_centroid(.data$geometry),
       point_lng = sf::st_coordinates(.data$centroid)[, 1],
       point_lat = sf::st_coordinates(.data$centroid)[, 2]
-    ) %>%
-    dplyr::ungroup()
+    )
 
   message(paste(length(unique(fude_original$RCOM_NAME)), "communities have been extracted."))
 
