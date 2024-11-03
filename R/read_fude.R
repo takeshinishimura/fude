@@ -122,3 +122,8 @@ get_plane_rectangular_cs <- function(pref_code) {
 
   return(cs_mapping[[as.character(pref_code)]])
 }
+
+.onLoad <- function(libname, pkgname) {
+  utils::globalVariables(c(".data"))
+  NULL
+}

@@ -4,7 +4,13 @@
 \alias{extract_boundary}
 \title{Extract specified agricultural community boundary data}
 \usage{
-extract_boundary(boundary, city, old_village = "", community = "", all = FALSE)
+extract_boundary(
+  boundary,
+  city = "",
+  old_village = "",
+  community = "",
+  all = FALSE
+)
 }
 \arguments{
 \item{boundary}{List of one or more agricultural community boundary data provided by

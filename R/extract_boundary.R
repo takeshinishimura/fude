@@ -25,17 +25,33 @@
 #'
 #' @export
 extract_boundary <- function(boundary,
-                             city,
+                             city = "",
                              old_village = "",
                              community = "",
                              all = FALSE) {
 
-  location_info <- find_pref_name(city)
-  lg_code <- find_lg_code(location_info$pref, location_info$city)
-  pref_code <- fude_to_pref_code(lg_code)
+  if (city != "") {
 
-  community_city <- fude::lg_code_table$city_kanji[fude::lg_code_table$lg_code == lg_code]
-  community_city <- dplyr::if_else(grepl("\u533a$", community_city), sub(".*\u5e02", "", community_city), community_city)
+    city_list <- strsplit(city, "\\|")[[1]]
+
+    target_city <- purrr::map_chr(city_list, function(single_city) {
+
+      location_info <- find_pref_name(single_city)
+      lg_code <- find_lg_code(location_info$pref, location_info$city)
+      pref_code <- fude_to_pref_code(lg_code)
+
+      city_name <- fude::lg_code_table$city_kanji[fude::lg_code_table$lg_code == lg_code]
+      city_name <- dplyr::if_else(grepl("\u533a$", city_name), sub(".*\u5e02", "", city_name), city_name)
+
+      return(city_name)
+    })
+
+  } else {
+
+    pref_code <- names(boundary)[1]
+    target_city <- ""
+
+  }
 
   pref_boundary <- boundary[[pref_code]] %>%
     dplyr::rowwise() %>%
@@ -59,7 +75,7 @@ extract_boundary <- function(boundary,
       KCITY_NAME = dplyr::if_else(is.na(.data$KCITY_NAME), "", .data$KCITY_NAME),
       RCOM_NAME = dplyr::if_else(is.na(.data$RCOM_NAME), "", .data$RCOM_NAME)
     ) %>%
-    dplyr::filter(.data$CITY_NAME == community_city &
+    dplyr::filter(grepl(paste(target_city, collapse = "|"), .data$CITY_NAME) &
                   grepl(old_village, .data$KCITY_NAME, perl = TRUE) &
                   grepl(community, .data$RCOM_NAME, perl = TRUE)) %>%
     dplyr::mutate(
@@ -108,10 +124,14 @@ extract_boundary <- function(boundary,
     dplyr::select(local_government_cd = .data$lg_code, .data$pref_kanji, .data$city_kanji, .data$romaji)
   lg_all_map <- dplyr::inner_join(lg_df, lg_ls, by = "local_government_cd")
 
+  if (city != "") {
+    lg_all_map <- lg_all_map %>%
+      dplyr::mutate(
+        fill = factor(dplyr::if_else(.data$city_kanji %in% target_city, 1, 0))
+      )
+  }
+
   lg_all_map <- lg_all_map %>%
-    dplyr::mutate(
-      fill = factor(dplyr::if_else(.data$city_kanji == location_info$city, 1, 0))
-    ) %>%
     add_xy()
 
   pref_boundary_KCITY_code <- pref_boundary %>%
@@ -140,12 +160,17 @@ extract_boundary <- function(boundary,
                                                "CITY_NAME",
                                                "KCITY_NAME"), sep = "_")
   ov_df$KCITY_NAME[ov_df$KCITY_NAME == "NA"] <- NA
-
   ov_all_map <- ov_df %>%
-    sf::st_set_crs(4326) %>%
-    dplyr::mutate(
-      fill = factor(dplyr::if_else(.data$CITY_NAME == location_info$city & .data$KCITY_NAME %in% extracted_boundary$KCITY_NAME, 1, 0))
-    ) %>%
+    sf::st_set_crs(4326)
+
+  if (city != "") {
+    ov_all_map <- ov_all_map %>%
+      dplyr::mutate(
+        fill = factor(dplyr::if_else(.data$CITY_NAME %in% target_city & .data$KCITY_NAME %in% extracted_boundary$KCITY_NAME, 1, 0))
+      )
+  }
+
+  ov_all_map <- ov_all_map %>%
     add_xy()
 
   if (all == TRUE) {
@@ -271,3 +296,5 @@ add_xy <- function(data) {
 if (getRversion() >= "2.15.1") {
   utils::globalVariables(".")
 }
+
+utils::globalVariables("location_info")
