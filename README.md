@@ -187,7 +187,7 @@ If you want to use `mapview()`, do the following.
 ``` r
 db1 <- combine_fude(d, b, city = "伊方町")
 db2 <- combine_fude(d, b, city = "八幡浜市")
-db3 <- combine_fude(d, b, city = "西予市", old_village = "三瓶|二木生|三島|双岩")
+db3 <- combine_fude(d, b, city = "西予市", kcity = "三瓶|二木生|三島|双岩")
 
 db <- bind_fude(db1, db2, db3)
 

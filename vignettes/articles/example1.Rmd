@@ -22,7 +22,7 @@ library(forcats)
 library(ggplot2)
 library(gghighlight)
 
-db <- combine_fude(d, b, city = "松山市", old_village = "興居島", community = "^(?!釣島).*")
+db <- combine_fude(d, b, city = "松山市", kcity = "興居島", community = "^(?!釣島).*")
 
 db$community <- db$community %>%
   mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))

@@ -12,9 +12,9 @@
 #'   in Japanese and the prefecture code in romaji (e.g., "Fuchu-shi, 13",
 #'   "fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO"). Alternatively, it could be
 #'   a 6-digit local government code.
-#' @param old_village
-#'   String by regular expression. One or more old village name in Japanese to
-#'   be extracted.
+#' @param kcity
+#'   String by regular expression. One or more old city name in Japanese to be
+#'   extracted.
 #' @param community
 #'   String by regular expression. One or more agricultural community name in
 #'   Japanese to be extracted.
@@ -26,7 +26,7 @@
 #' @export
 extract_boundary <- function(boundary,
                              city = "",
-                             old_village = "",
+                             kcity = "",
                              community = "",
                              all = FALSE) {
 
@@ -34,7 +34,7 @@ extract_boundary <- function(boundary,
 
     city_list <- strsplit(city, "\\|")[[1]]
 
-    target_city <- purrr::map_chr(city_list, function(single_city) {
+    target_city_list <- purrr::map(city_list, function(single_city) {
 
       location_info <- find_pref_name(single_city)
       lg_code <- find_lg_code(location_info$pref, location_info$city)
@@ -43,8 +43,11 @@ extract_boundary <- function(boundary,
       city_name <- fude::lg_code_table$city_kanji[fude::lg_code_table$lg_code == lg_code]
       city_name <- dplyr::if_else(grepl("\u533a$", city_name), sub(".*\u5e02", "", city_name), city_name)
 
-      return(city_name)
+      return(list(target_city = city_name, pref_code = pref_code))
     })
+
+    target_city <- purrr::map_chr(target_city_list, "target_city")
+    pref_code <- purrr::map_chr(target_city_list, "pref_code")[1]
 
   } else {
 
@@ -76,7 +79,7 @@ extract_boundary <- function(boundary,
       RCOM_NAME = dplyr::if_else(is.na(.data$RCOM_NAME), "", .data$RCOM_NAME)
     ) %>%
     dplyr::filter(grepl(paste(target_city, collapse = "|"), .data$CITY_NAME) &
-                  grepl(old_village, .data$KCITY_NAME, perl = TRUE) &
+                  grepl(kcity, .data$KCITY_NAME, perl = TRUE) &
                   grepl(community, .data$RCOM_NAME, perl = TRUE)) %>%
     dplyr::mutate(
       KCITY_NAME = forcats::fct_inorder(.data$KCITY_NAME),
@@ -116,22 +119,22 @@ extract_boundary <- function(boundary,
                                sf::st_geometry() %>%
                                .[[1]]
                            }) %>% do.call(sf::st_sfc, .)
-  lg_df <- sf::st_sf(local_government_cd = unique_local_government_cd,
-                     geometry = geometries) %>%
+  city_df <- sf::st_sf(local_government_cd = unique_local_government_cd,
+                       geometry = geometries) %>%
     sf::st_set_crs(4326)
-  lg_ls <- fude::lg_code_table %>%
+  city_ls <- fude::lg_code_table %>%
     dplyr::filter(.data$lg_code %in% unique_local_government_cd) %>%
     dplyr::select(local_government_cd = .data$lg_code, .data$pref_kanji, .data$city_kanji, .data$romaji)
-  lg_all_map <- dplyr::inner_join(lg_df, lg_ls, by = "local_government_cd")
+  city_all_map <- dplyr::inner_join(city_df, city_ls, by = "local_government_cd")
 
   if (city != "") {
-    lg_all_map <- lg_all_map %>%
+    city_all_map <- city_all_map %>%
       dplyr::mutate(
         fill = factor(dplyr::if_else(.data$city_kanji %in% target_city, 1, 0))
       )
   }
 
-  lg_all_map <- lg_all_map %>%
+  city_all_map <- city_all_map %>%
     add_xy()
 
   pref_boundary_KCITY_code <- pref_boundary %>%
@@ -151,7 +154,7 @@ extract_boundary <- function(boundary,
                                sf::st_geometry() %>%
                                .[[1]]
                            }) %>% do.call(sf::st_sfc, .)
-  ov_df <- sf::st_sf(KCITY_code = unique_KCITY, geometry = geometries) %>%
+  kcity_df <- sf::st_sf(KCITY_code = unique_KCITY, geometry = geometries) %>%
     tidyr::separate(.data$KCITY_code, into = c("local_government_cd",
                                                "PREF",
                                                "CITY",
@@ -159,18 +162,18 @@ extract_boundary <- function(boundary,
                                                "PREF_NAME",
                                                "CITY_NAME",
                                                "KCITY_NAME"), sep = "_")
-  ov_df$KCITY_NAME[ov_df$KCITY_NAME == "NA"] <- NA
-  ov_all_map <- ov_df %>%
+  kcity_df$KCITY_NAME[kcity_df$KCITY_NAME == "NA"] <- NA
+  kcity_all_map <- kcity_df %>%
     sf::st_set_crs(4326)
 
   if (city != "") {
-    ov_all_map <- ov_all_map %>%
+    kcity_all_map <- kcity_all_map %>%
       dplyr::mutate(
         fill = factor(dplyr::if_else(.data$CITY_NAME %in% target_city & .data$KCITY_NAME %in% extracted_boundary$KCITY_NAME, 1, 0))
       )
   }
 
-  ov_all_map <- ov_all_map %>%
+  kcity_all_map <- kcity_all_map %>%
     add_xy()
 
   if (all == TRUE) {
@@ -178,8 +181,8 @@ extract_boundary <- function(boundary,
       list(
         community = extracted_boundary,
         community_union = extracted_boundary_union,
-        ov = ov_all_map,
-        lg = lg_all_map,
+        kcity = kcity_all_map,
+        city = city_all_map,
         pref = pref_map
       )
     )

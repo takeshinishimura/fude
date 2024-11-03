@@ -14,7 +14,7 @@ vignette: >
 library(fude)
 d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
-db <- combine_fude(d, b, city = "松山市", old_village = "浅海")
+db <- combine_fude(d, b, city = "松山市", kcity = "浅海")
 ```
 
 There are `r length(names(db))` types of objects obtained by `combine_fude()`, as follows:
@@ -44,7 +44,7 @@ ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) +
 
 **出典**：`r cite_fude(b)$ja`
 
-# The Possible Values for `old_village` in `combine_fude()` and `extract_boundary()`
+# The Possible Values for `kcity` in `combine_fude()` and `extract_boundary()`
 
 ```{r kcity_in_data, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(paletteer)

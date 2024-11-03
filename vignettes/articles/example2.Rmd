@@ -22,7 +22,7 @@ library(gghighlight)
 library(ggrepel)
 
 b <- get_boundary("38", path = "~", quiet = TRUE)
-eb <- extract_boundary(b, city = "松山市", old_village = "浅海|立岩|難波|正岡|北条|河野|粟井")
+eb <- extract_boundary(b, city = "松山市", kcity = "浅海|立岩|難波|正岡|北条|河野|粟井")
 
 ggplot(data = eb, aes(fill = KCITY_NAME)) +
   geom_sf(alpha = .2) +
@@ -33,18 +33,27 @@ ggplot(data = eb, aes(fill = KCITY_NAME)) +
 
 **出典**：`r cite_fude(eb)$ja`
 
+```{r imabari_uchiko, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+eb <- extract_boundary(b, city = "今治|内子", all = TRUE)
+
+ggplot(data = eb$kcity) +
+  geom_sf(aes(fill = fill))
+```
+
+**出典**：`r cite_fude(eb)$ja`
+
 ```{r yusukawa, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-eb <- extract_boundary(b, city = "西予市", old_village = "遊子川", all = TRUE)
+eb <- extract_boundary(b, city = "西予市", kcity = "遊子川", all = TRUE)
 
 ggplot() +
   geom_sf(data = eb$pref, fill = NA) +
-  geom_sf(data = eb$lg, fill = "gray") +
+  geom_sf(data = eb$city, fill = "gray") +
   gghighlight(fill == 1,
     unhighlighted_params = list(
       alpha = .05
     )) +
-  geom_sf(data = eb$ov |> filter(fill == 1), fill = "black") +
-  geom_sf_text(data = eb$lg |> filter(fill == 1),
+  geom_sf(data = eb$kcity |> filter(fill == 1), fill = "black") +
+  geom_sf_text(data = eb$city |> filter(fill == 1),
                aes(label = city_kanji),
                size = 3,
                nudge_x = -.025, nudge_y = -.025,
@@ -63,11 +72,11 @@ ggplot() +
 **出典**：`r cite_fude(eb)$ja`
 
 ```{r maana, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-eb <- extract_boundary(b, city = "八幡浜市", old_village = "真穴", all = TRUE)
+eb <- extract_boundary(b, city = "八幡浜市", kcity = "真穴", all = TRUE)
 
 ggplot(data = eb$community) +
-  geom_sf(data = eb$lg |> filter(fill == 1), fill = "gray") +
-  geom_sf_text(data = eb$lg |> filter(fill == 1), aes(label = city_kanji), family = "HiraKakuProN-W3") +
+  geom_sf(data = eb$city |> filter(fill == 1), fill = "gray") +
+  geom_sf_text(data = eb$city |> filter(fill == 1), aes(label = city_kanji), family = "HiraKakuProN-W3") +
   geom_sf(fill = "ivory") +
 # geom_sf(data = eb$fude, aes(fill = land_type), colour = NA) +
   geom_sf_label(aes(label = RCOM_NAME), family = "HiraKakuProN-W3") +

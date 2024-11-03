@@ -4,13 +4,7 @@
 \alias{extract_boundary}
 \title{Extract specified agricultural community boundary data}
 \usage{
-extract_boundary(
-  boundary,
-  city = "",
-  old_village = "",
-  community = "",
-  all = FALSE
-)
+extract_boundary(boundary, city = "", kcity = "", community = "", all = FALSE)
 }
 \arguments{
 \item{boundary}{List of one or more agricultural community boundary data provided by
@@ -22,8 +16,8 @@ in Japanese and the prefecture code in romaji (e.g., "Fuchu-shi, 13",
 "fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO"). Alternatively, it could be
 a 6-digit local government code.}
 
-\item{old_village}{String by regular expression. One or more old village name in Japanese to
-be extracted.}
+\item{kcity}{String by regular expression. One or more old city name in Japanese to be
+extracted.}
 
 \item{community}{String by regular expression. One or more agricultural community name in
 Japanese to be extracted.}

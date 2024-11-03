@@ -14,9 +14,9 @@
 #'   in Japanese and the prefecture code in romaji (e.g., "Fuchu-shi, 13",
 #'   "fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO"). Alternatively, it could be
 #'   a 6-digit local government code.
-#' @param old_village
-#'   String by regular expression. One or more old village name in Japanese to
-#'   be extracted.
+#' @param kcity
+#'   String by regular expression. One or more old city name in Japanese to be
+#'   extracted.
 #' @param community
 #'   String by regular expression. One or more agricultural community name in
 #'   Japanese to be extracted.
@@ -37,7 +37,7 @@
 combine_fude <- function(data,
                          boundary,
                          city,
-                         old_village = "",
+                         kcity = "",
                          community = "",
                          year = NULL) {
 
@@ -66,7 +66,7 @@ combine_fude <- function(data,
 
   extracted_boundary <- extract_boundary(boundary = boundary,
                                          city = city,
-                                         old_village = old_village,
+                                         kcity = kcity,
                                          community = community,
                                          all = TRUE)
 
@@ -104,8 +104,8 @@ combine_fude <- function(data,
       fude_split = intersection_fude,
       community = extracted_boundary$community,
       community_union = extracted_boundary$community_union,
-      ov = extracted_boundary$ov,
-      lg = extracted_boundary$lg,
+      kcity = extracted_boundary$kcity,
+      city = extracted_boundary$city,
       pref = extracted_boundary$pref
     )
   )

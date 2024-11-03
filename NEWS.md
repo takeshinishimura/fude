@@ -1,6 +1,7 @@
 # fude (development version)
 
 * Enabled handling of agricultural community boundary data without the need to load Fude polygons.
+* Changed some names in the output list.
 
 # fude 0.3.6
 
