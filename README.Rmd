@@ -52,7 +52,7 @@ devtools::install_github("takeshinishimura/fude")
 
 There are two ways to load Fude Polygon data, depending on how the data was obtained:
 
-1. **From a locally saved ZIP file**:  
+1. **From a locally saved ZIP file**: 
 This method works for both GeoJSON (from Obtaining Data #1) and FlatGeobuf (from Obtaining Data #2) formats. You can load a ZIP file saved on your computer without unzipping it.
 ```{r eval = FALSE}
 library(fude)
@@ -63,7 +63,7 @@ library(fude)
 d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
 ```
 
-2. **By specifying a prefecture name or code**:
+2. **By specifying a prefecture name or code**: 
 This method is available only for FlatGeobuf data (from Obtaining Data #2). Provide the name of a prefecture (e.g., "愛媛") or its corresponding prefecture code (e.g., "38"), and the required FlatGeobuf format ZIP file will be automatically downloaded and loaded.
 ```{r}
 d2 <- read_fude(pref = "愛媛")
@@ -149,7 +149,7 @@ library(sf)
 db$fude |>
   filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
   st_drop_geometry() |>
-  select(polygon_uuid, KCITY_NAME, RCOM_NAME, RCOM_KANA, RCOM_ROMAJI) |>
+  select(polygon_uuid, KCITY_NAME, RCOM_NAME, RCOM_ROMAJI) |>
   head()
 ```
 
@@ -161,14 +161,14 @@ A notable feature of this format is that each record already includes an **accur
 db2 <- combine_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
-  geom_sf(data = db2$fude, aes(fill = key), alpha = .8) +
-  guides(fill = guide_legend(reverse = TRUE, title = "興居島の農業集落コード")) +
+  geom_sf(data = db2$fude, aes(fill = RCOM_NAME), alpha = .8) +
+  guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
   theme(legend.position = "bottom") +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
 
-**出典**：`r cite_fude(db)$ja`
+**出典**：`r cite_fude(db2)$ja`
 
 ### Review Fude Polygon Data
 

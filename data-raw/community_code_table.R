@@ -66,6 +66,33 @@ process_kana <- function(pref_name, city_name, column) {
 
 community_code_table <- NULL
 
+pref_romaji_table <- tibble::tibble(
+  PREF_KANA = c(
+    "ほっかいどう", "あおもりけん", "いわてけん", "みやぎけん", "あきたけん",
+    "やまがたけん", "ふくしまけん", "いばらきけん", "とちぎけん", "ぐんまけん",
+    "さいたまけん", "ちばけん", "とうきょうと", "かながわけん", "にいがたけん",
+    "とやまけん", "いしかわけん", "ふくいけん", "やまなしけん", "ながのけん",
+    "ぎふけん", "しずおかけん", "あいちけん", "みえけん", "しがけん",
+    "きょうとふ", "おおさかふ", "ひょうごけん", "ならけん", "わかやまけん",
+    "とっとりけん", "しまねけん", "おかやまけん", "ひろしまけん", "やまぐちけん",
+    "とくしまけん", "かがわけん", "えひめけん", "こうちけん", "ふくおかけん",
+    "さがけん", "ながさきけん", "くまもとけん", "おおいたけん", "みやざきけん",
+    "かごしまけん", "おきなわけん"
+  ),
+  PREF_ROMAJI = c(
+    "Hokkaido", "Aomori", "Iwate", "Miyagi", "Akita",
+    "Yamagata", "Fukushima", "Ibaraki", "Tochigi", "Gunma",
+    "Saitama", "Chiba", "Tokyo", "Kanagawa", "Niigata",
+    "Toyama", "Ishikawa", "Fukui", "Yamanashi", "Nagano",
+    "Gifu", "Shizuoka", "Aichi", "Mie", "Shiga",
+    "Kyoto", "Osaka", "Hyogo", "Nara", "Wakayama",
+    "Tottori", "Shimane", "Okayama", "Hiroshima", "Yamaguchi",
+    "Tokushima", "Kagawa", "Ehime", "Kochi", "Fukuoka",
+    "Saga", "Nagasaki", "Kumamoto", "Oita", "Miyazaki",
+    "Kagoshima", "Okinawa"
+  )
+)
+
 for (pref_code in sprintf("%02d", 1:47)) {
   new_pref <- read_boundary(pref_code) |>
     sf::st_drop_geometry() |>
@@ -77,15 +104,15 @@ for (pref_code in sprintf("%02d", 1:47)) {
       local_government_cd = process_kana(PREF_NAME, CITY_NAME, "lg_code"),
     ) |>
     dplyr::ungroup() |>
+    dplyr::left_join(pref_romaji_table, by = "PREF_KANA") |>
     dplyr::mutate(
       RCOM_ROMAJI = .data$RCOM_KANA |>
         stringi::stri_trans_general("any-latin") |>
-        stringi::stri_trans_general("Fullwidth-Halfwidth") |>
         stringi::stri_trans_totitle(),
       census_year = census_year
     ) |>
     dplyr::select(
-      KEY, PREF_NAME, PREF_KANA, CITY_NAME, CITY_KANA, CITY_ROMAJI,
+      KEY, PREF_NAME, PREF_KANA, PREF_ROMAJI, CITY_NAME, CITY_KANA, CITY_ROMAJI,
       KCITY_NAME, RCOM_NAME, RCOM_KANA, RCOM_ROMAJI,
       local_government_cd, census_year
     )

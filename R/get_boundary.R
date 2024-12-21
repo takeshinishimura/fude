@@ -76,10 +76,10 @@ read_boundary <- function(pref_code, year, census_year, quiet, path, to_wgs84) {
   }
 
   x <- sf::st_read(shp_files, quiet = quiet, options = "ENCODING=CP932") |>
+    dplyr::left_join(fude::community_code_table |>
+                       dplyr::select(.data$KEY, .data$PREF_KANA, .data$PREF_ROMAJI, .data$CITY_KANA, .data$CITY_ROMAJI, .data$RCOM_ROMAJI),
+                     by = c("KEY" = "KEY")) |>
     dplyr::mutate(
-      RCOM_ROMAJI = stringi::stri_trans_general(.data$RCOM_KANA, "any-latin") |>
-        stringi::stri_trans_totitle() |>
-        stringi::stri_trans_general("Fullwidth-Halfwidth"),
       boundary_edit_year = year,
       boundary_census_year = census_year
     )

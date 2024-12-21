@@ -20,19 +20,18 @@ LazyData: true
 Depends:
     R (>= 3.5)
 Imports:
-    sf,
     dplyr,
-    tidyr,
+    DT,
+    forcats,
+    glue,
+    leaflet,
+    magrittr,
     purrr,
     rlang,
-    magrittr,
-    forcats,
-    stringi,
-    units,
-    glue,
+    sf,
     shiny,
-    leaflet,
-    DT
+    tidyr,
+    units
 Suggests: 
     testthat (>= 3.0.0)
 Roxygen: list(markdown = TRUE)

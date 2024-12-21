@@ -28,11 +28,12 @@
 #'
 #' A dataset containing codes/names of communities in Japan.
 #'
-#' @format A data frame with 149,511 rows and 12 variables:
+#' @format A data frame with 149,511 rows and 13 variables:
 #' \describe{
 #'   \item{KEY}{Unique community codes}
 #'   \item{PREF_NAME}{Prefecture names in Kanji}
 #'   \item{PREF_KANA}{Prefecture names in Hiragana}
+#'   \item{PREF_ROMAJI}{Prefecture names in Romaji}
 #'   \item{CITY_NAME}{City names in Kanji}
 #'   \item{CITY_KANA}{City names in Hiragana}
 #'   \item{CITY_ROMAJI}{City names in Romaji}

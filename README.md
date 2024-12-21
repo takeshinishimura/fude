@@ -48,10 +48,10 @@ devtools::install_github("takeshinishimura/fude")
 There are two ways to load Fude Polygon data, depending on how the data
 was obtained:
 
-1.  **From a locally saved ZIP file**:  
-    This method works for both GeoJSON (from Obtaining Data \#1) and
-    FlatGeobuf (from Obtaining Data \#2) formats. You can load a ZIP
-    file saved on your computer without unzipping it.
+1.  **From a locally saved ZIP file**: This method works for both
+    GeoJSON (from Obtaining Data \#1) and FlatGeobuf (from Obtaining
+    Data \#2) formats. You can load a ZIP file saved on your computer
+    without unzipping it.
 
 ``` r
 library(fude)
@@ -67,7 +67,7 @@ d <- read_fude("~/2022_38.zip")
 ``` r
 d2 <- read_fude(pref = "愛媛")
 #> Reading layer `MB0001_2024_2020_38' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpHNW56H/file169653e2a4e36/MB0001_2024_2020_38/MB0001_2024_2020_38.fgb' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmpqu7e4D/file1cbc6129f4f1/MB0001_2024_2020_38/MB0001_2024_2020_38.fgb' 
 #>   using driver `FlatGeobuf'
 #> Simple feature collection with 632287 features and 6 fields
 #> Geometry type: MULTIPOLYGON
@@ -182,22 +182,15 @@ library(sf)
 db$fude |>
   filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
   st_drop_geometry() |>
-  select(polygon_uuid, KCITY_NAME, RCOM_NAME, RCOM_KANA, RCOM_ROMAJI) |>
+  select(polygon_uuid, KCITY_NAME, RCOM_NAME, RCOM_ROMAJI) |>
   head()
-#>                           polygon_uuid KCITY_NAME RCOM_NAME RCOM_KANA
-#> 1 8085bc47-9af5-440f-89e9-f188d3b95746   興居島村        泊    とまり
-#> 2 26920da0-b63e-4994-a9eb-175e2982fe21   興居島村      門田    かどた
-#> 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0aec   興居島村      由良      ゆら
-#> 4 ea130038-7035-4cf3-b71c-091783090d74   興居島村      船越  ふなこし
-#> 5 4aba8229-1b14-4eab-8a91-e10d9e841180   興居島村      船越  ふなこし
-#> 6 156a3459-25cb-494c-824f-9ba6b0fb6f23   興居島村      由良      ゆら
-#>   RCOM_ROMAJI
-#> 1      Tomari
-#> 2      Kadota
-#> 3        Yura
-#> 4   Funakoshi
-#> 5   Funakoshi
-#> 6        Yura
+#>                           polygon_uuid KCITY_NAME RCOM_NAME RCOM_ROMAJI
+#> 1 8085bc47-9af5-440f-89e9-f188d3b95746   興居島村        泊      Tomari
+#> 2 26920da0-b63e-4994-a9eb-175e2982fe21   興居島村      門田      Kadota
+#> 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0aec   興居島村      由良        Yura
+#> 4 ea130038-7035-4cf3-b71c-091783090d74   興居島村      船越   Funakoshi
+#> 5 4aba8229-1b14-4eab-8a91-e10d9e841180   興居島村      船越   Funakoshi
+#> 6 156a3459-25cb-494c-824f-9ba6b0fb6f23   興居島村      由良        Yura
 ```
 
 #### Characteristics of Data from FlatGeobuf (Obtaining Data \#2)
@@ -210,8 +203,8 @@ notable feature of this format is that each record already includes an
 db2 <- combine_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
-  geom_sf(data = db2$fude, aes(fill = key), alpha = .8) +
-  guides(fill = guide_legend(reverse = TRUE, title = "興居島の農業集落コード")) +
+  geom_sf(data = db2$fude, aes(fill = RCOM_NAME), alpha = .8) +
+  guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
   theme(legend.position = "bottom") +
   theme(text = element_text(family = "Hiragino Sans"))
@@ -219,7 +212,7 @@ ggplot() +
 
 <img src="man/figures/README-gogoshimafgb-1.png" width="100%" />
 
-**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2024年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
 ### Review Fude Polygon Data
 

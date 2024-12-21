@@ -91,7 +91,7 @@ read_fude <- function(path = NULL,
   x <- purrr::map(x, ~ {
     if (!"local_government_cd" %in% names(.x)) {
       .x$local_government_cd <- fude::community_code_table$local_government_cd[
-        match(.x$key, fude::community_code_table$key)
+        match(.x$key, fude::community_code_table$KEY)
       ]
     }
     .x

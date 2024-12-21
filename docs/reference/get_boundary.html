@@ -43,7 +43,14 @@ boundary data provided by the MAFF.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_boundary</span><span class="op">(</span><span class="va">data</span>, year <span class="op">=</span> <span class="fl">2020</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span>, path <span class="op">=</span> <span class="cn">NULL</span>, to_wgs84 <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_boundary</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  year <span class="op">=</span> <span class="fl">2020</span>,</span>
+<span>  census_year <span class="op">=</span> <span class="fl">2020</span>,</span>
+<span>  path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  to_wgs84 <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -56,11 +63,11 @@ codes.</p></dd>
 
 
 <dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
-<dd><p>Year in which the agricultural community boundary data was created.</p></dd>
+<dd><p>The year when the agricultural community boundary data was created.</p></dd>
 
 
-<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
-<dd><p>logical. Suppress information about the data to be read.</p></dd>
+<dt id="arg-census-year">census_year<a class="anchor" aria-label="anchor" href="#arg-census-year"></a></dt>
+<dd><p>The year of the Agricultural and Forestry Census.</p></dd>
 
 
 <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
@@ -71,6 +78,10 @@ directory containing one or more ZIP files, not the ZIP file itself.</p></dd>
 
 <dt id="arg-to-wgs-">to_wgs84<a class="anchor" aria-label="anchor" href="#arg-to-wgs-"></a></dt>
 <dd><p>logical. Convert JGD2000 to WGS 84.</p></dd>
+
+
+<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
+<dd><p>logical. Suppress information about the data to be read.</p></dd>
 
 </dl></div>
     <div class="section level2">
