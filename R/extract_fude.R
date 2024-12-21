@@ -50,7 +50,7 @@ extract_fude <- function(data, year = NULL, city = NULL, list = TRUE) {
     selected_names <- grep(paste0(year, collapse = "|"), names(data), value = TRUE)
   }
 
-  if (list == TRUE) {
+  if (isTRUE(list)) {
     x <- data[selected_names]
   } else {
 

@@ -56,7 +56,7 @@ extract_boundary <- function(boundary,
 
   }
 
-  pref_boundary <- boundary[[pref_code]] %>%
+  pref_boundary <- boundary[[grepl(paste0("_", pref_code, "$"), names(boundary))]] %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
       local_government_cd = sapply(
@@ -78,9 +78,11 @@ extract_boundary <- function(boundary,
       KCITY_NAME = dplyr::if_else(is.na(.data$KCITY_NAME), "", .data$KCITY_NAME),
       RCOM_NAME = dplyr::if_else(is.na(.data$RCOM_NAME), "", .data$RCOM_NAME)
     ) %>%
-    dplyr::filter(grepl(paste(target_city, collapse = "|"), .data$CITY_NAME) &
-                  grepl(kcity, .data$KCITY_NAME, perl = TRUE) &
-                  grepl(community, .data$RCOM_NAME, perl = TRUE)) %>%
+    dplyr::filter(
+      grepl(paste(target_city, collapse = "|"), .data$CITY_NAME) &
+      grepl(kcity, .data$KCITY_NAME, perl = TRUE) &
+      grepl(community, .data$RCOM_NAME, perl = TRUE)
+    ) %>%
     dplyr::mutate(
       KCITY_NAME = forcats::fct_inorder(.data$KCITY_NAME),
       RCOM_NAME = forcats::fct_inorder(.data$RCOM_NAME),
@@ -88,7 +90,6 @@ extract_boundary <- function(boundary,
       RCOM_ROMAJI = forcats::fct_inorder(.data$RCOM_ROMAJI)
     ) %>%
     as.data.frame() %>%
-    sf::st_sf() %>%
     add_xy()
 
   extracted_boundary_union <- extracted_boundary %>%
@@ -98,7 +99,6 @@ extract_boundary <- function(boundary,
       local_government_cd = paste0(unique(extracted_boundary$local_government_cd), collapse = "/")
     ) %>%
     as.data.frame() %>%
-    sf::st_sf() %>%
     add_xy()
 
   geometries <- pref_boundary %>%
@@ -107,7 +107,7 @@ extract_boundary <- function(boundary,
   pref_map <- sf::st_sf(pref_code = fude_to_pref_code(pref_boundary),
                         geometry = geometries) %>%
     sf::st_set_crs(4326) %>%
-    dplyr::left_join(fude::pref_table, by = "pref_code") %>%
+    dplyr::left_join(fude::pref_code_table, by = "pref_code") %>%
     add_xy()
 
   unique_local_government_cd <- unique(pref_boundary$local_government_cd)
@@ -176,7 +176,7 @@ extract_boundary <- function(boundary,
   kcity_all_map <- kcity_all_map %>%
     add_xy()
 
-  if (all == TRUE) {
+  if (isTRUE(all)) {
     return(
       list(
         community = extracted_boundary,
@@ -205,10 +205,10 @@ find_pref_name <- function(city) {
 
     if (grepl("^[A-Za-z0-9, -]+$", city)) {
 
-      matching_idx <- sapply(fude::pref_table$pref_code, function(x) grepl(x, city))
+      matching_idx <- sapply(fude::pref_code_table$pref_code, function(x) grepl(x, city))
 
       if (sum(matching_idx) == 1) {
-        pref_kanji <- fude::pref_table$pref_kanji[matching_idx]
+        pref_kanji <- fude::pref_code_table$pref_kanji[matching_idx]
         city_kanji <- toupper(gsub(paste0(get_pref_code(pref_kanji), "|,|\\s"), "", city))
       } else {
         pref_kanji <- NULL
@@ -217,10 +217,10 @@ find_pref_name <- function(city) {
 
     } else {
 
-      matching_idx <- sapply(fude::pref_table$pref_kanji, function(x) grepl(paste0("^", x), city))
+      matching_idx <- sapply(fude::pref_code_table$pref_kanji, function(x) grepl(paste0("^", x), city))
 
       if (sum(matching_idx) == 1) {
-        pref_kanji <- fude::pref_table$pref_kanji[matching_idx]
+        pref_kanji <- fude::pref_code_table$pref_kanji[matching_idx]
         city_kanji <- gsub(glue::glue("^{pref_kanji}|\\s|\u3000"), "", city)
       } else {
         pref_kanji <- NULL

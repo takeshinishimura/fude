@@ -1,5 +1,6 @@
 # fude (development version)
 
+* Added support for reading FlatGeobuf files in addition to GeoJSON files.
 * Enabled handling of agricultural community boundary data without the need to load Fude polygons.
 * Changed some names in the output list.
 

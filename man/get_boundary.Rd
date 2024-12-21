@@ -4,21 +4,30 @@
 \alias{get_boundary}
 \title{Get the agricultural community boundary data}
 \usage{
-get_boundary(data, year = 2020, quiet = FALSE, path = NULL, to_wgs84 = TRUE)
+get_boundary(
+  data,
+  year = 2020,
+  census_year = 2020,
+  path = NULL,
+  to_wgs84 = TRUE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects or one or more strings representing prefecture
 codes.}
 
-\item{year}{Year in which the agricultural community boundary data was created.}
+\item{year}{The year when the agricultural community boundary data was created.}
 
-\item{quiet}{logical. Suppress information about the data to be read.}
+\item{census_year}{The year of the Agricultural and Forestry Census.}
 
 \item{path}{Path to the ZIP file containing the agricultural community boundary data;
 use a local ZIP file instead of going looking for a ZIP file. Specify a
 directory containing one or more ZIP files, not the ZIP file itself.}
 
 \item{to_wgs84}{logical. Convert JGD2000 to WGS 84.}
+
+\item{quiet}{logical. Suppress information about the data to be read.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.

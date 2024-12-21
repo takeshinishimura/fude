@@ -25,9 +25,13 @@ The fude package provides utilities to facilitate the handling of the Fude Polyg
 
 ## Obtaining Data
 
-Download the Fude Polygon data from the following MAFF release site (available only in Japanese):
+Fude Polygon data can now be downloaded from two different MAFF websites (both available only in Japanese):
 
-- <https://open.fude.maff.go.jp>
+1. **GeoJSON format**:  
+   <https://open.fude.maff.go.jp>
+
+2. **FlatGeobuf format**:  
+   <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/mb/>
 
 ## Installation
 
@@ -46,7 +50,10 @@ devtools::install_github("takeshinishimura/fude")
 
 ### Reading Fude Polygon Data
 
-You can allow R to read the downloaded ZIP file directly without unzipping it.
+There are two ways to load Fude Polygon data, depending on how the data was obtained:
+
+1. **From a locally saved ZIP file**:  
+This method works for both GeoJSON (from Obtaining Data #1) and FlatGeobuf (from Obtaining Data #2) formats. You can load a ZIP file saved on your computer without unzipping it.
 ```{r eval = FALSE}
 library(fude)
 d <- read_fude("~/2022_38.zip")
@@ -56,18 +63,26 @@ library(fude)
 d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
 ```
 
+2. **By specifying a prefecture name or code**:
+This method is available only for FlatGeobuf data (from Obtaining Data #2). Provide the name of a prefecture (e.g., "愛媛") or its corresponding prefecture code (e.g., "38"), and the required FlatGeobuf format ZIP file will be automatically downloaded and loaded.
+```{r}
+d2 <- read_fude(pref = "愛媛")
+```
+
 ### Renaming the Local Government Code
+
+**Note:** This feature is available only for data obtained from GeoJSON (Obtaining Data #1).
 
 Convert local government codes into Japanese municipality names for easier management.
 ```{r}
-d2 <- rename_fude(d)
-names(d2)
+dren <- rename_fude(d)
+names(dren)
 ```
 
 You can also rename the columns to Romaji instead of Japanese.
 ```{r}
-d2 <- d |> rename_fude(suffix = TRUE, romaji = "title")
-names(d2)
+dren <- d |> rename_fude(suffix = TRUE, romaji = "title")
+names(dren)
 ```
 
 ### Getting Agricultural Community Boundary Data
@@ -81,7 +96,12 @@ b <- get_boundary(d)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 ```
 
-You can easily create a map that combines Fude Polygons with agricultural community boundaries.
+### Combining Fude Polygons with Agricultural Community Boundaries
+
+You can easily combine Fude Polygons with agricultural community boundaries to create enriched spatial analyses or maps.
+
+#### Characteristics of Data from GeoJSON (Obtaining Data #1)
+
 ```{r gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
@@ -97,7 +117,7 @@ ggplot() +
 
 **出典**：`r cite_fude(db)$ja`
 
-### Data Assignment
+##### Data Assignment
 
 - `db$fude`: Automatically assigns polygons on the boundaries to a community.
 - `db$fude_split`: Provides cleaner boundaries, but polygon data near community borders may be divided.
@@ -132,6 +152,23 @@ db$fude |>
   select(polygon_uuid, KCITY_NAME, RCOM_NAME, RCOM_KANA, RCOM_ROMAJI) |>
   head()
 ```
+
+#### Characteristics of Data from FlatGeobuf (Obtaining Data #2)
+
+The FlatGeobuf format offers a more efficient alternative to GeoJSON.
+A notable feature of this format is that each record already includes an **accurately assigned agricultural community code**.
+```{r gogoshimafgb, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+db2 <- combine_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+
+ggplot() +
+  geom_sf(data = db2$fude, aes(fill = key), alpha = .8) +
+  guides(fill = guide_legend(reverse = TRUE, title = "興居島の農業集落コード")) +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+**出典**：`r cite_fude(db)$ja`
 
 ### Review Fude Polygon Data
 

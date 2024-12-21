@@ -47,11 +47,17 @@ bind_fude <- function(...) {
       tmp %>%
         dplyr::distinct() %>%
         dplyr::arrange(dplyr::desc(!!rlang::sym(order_column))) %>%
-        dplyr::group_by(dplyr::across(-c(.data$fill))) %>%
-        dplyr::slice_max(.data$fill, n = 1, with_ties = TRUE) %>%
-        dplyr::ungroup() %>%
+        dplyr::slice_max(.data$fill, n = 1, with_ties = TRUE, .by = -.data$fill) %>%
         as.data.frame() %>%
         sf::st_sf()
+#     tmp %>%
+#       dplyr::distinct() %>%
+#       dplyr::arrange(dplyr::desc(!!rlang::sym(order_column))) %>%
+#       dplyr::group_by(dplyr::across(-c(.data$fill))) %>%
+#       dplyr::slice_max(.data$fill, n = 1, with_ties = TRUE) %>%
+#       dplyr::ungroup() %>%
+#       as.data.frame() %>%
+#       sf::st_sf()
     } else {
       tmp %>%
         dplyr::distinct() %>%

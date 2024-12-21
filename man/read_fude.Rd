@@ -4,12 +4,30 @@
 \alias{read_fude}
 \title{Read a Fude Polygon ZIP file}
 \usage{
-read_fude(path, stringsAsFactors = TRUE, quiet = FALSE, supplementary = TRUE)
+read_fude(
+  path = NULL,
+  pref = NULL,
+  year = 2024,
+  census_year = 2020,
+  stringsAsFactors = TRUE,
+  to_wgs84 = TRUE,
+  quiet = FALSE,
+  supplementary = TRUE
+)
 }
 \arguments{
-\item{path}{Path to the ZIP file containing one or more GeoJSON format files.}
+\item{path}{Path to the ZIP file containing one or more supported spatial data files.
+Supported formats include \code{.geojson}, \code{.json}, and \code{.fgb}.}
+
+\item{pref}{The year when the Fude Polygon data was created.}
+
+\item{year}{The year when the Fude Polygon data was created.}
+
+\item{census_year}{The year of the Agricultural and Forestry Census.}
 
 \item{stringsAsFactors}{logical. Should character vectors be converted to factors?}
+
+\item{to_wgs84}{logical. Convert JGD2000 to WGS 84.}
 
 \item{quiet}{logical. Suppress information about the data to be read.}
 
@@ -21,9 +39,10 @@ A list of \code{\link[sf:sf]{sf::sf()}} objects.
 }
 \description{
 \code{read_fude()} reads Fude Polygon data as a list. The data can be downloaded
-from the MAFF website as a ZIP file, which contains one or more GeoJSON
-format files. The function should also work with the ZIP file you created,
-as long as you do not change the filenames of the original GeoJSON files.
+from the MAFF website as a ZIP file, which contains one or more spatial data
+files, such as \strong{GeoJSON} files (\code{.json} or \code{.geojson}) and \strong{FlatGeobuf}
+files (\code{.fgb}). The function also works with ZIP files you created, as long
+as you do not change the filenames of the original files.
 }
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")

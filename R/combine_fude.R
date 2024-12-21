@@ -41,62 +41,75 @@ combine_fude <- function(data,
                          community = "",
                          year = NULL) {
 
-  location_info <- find_pref_name(city)
-  lg_code <- find_lg_code(location_info$pref, location_info$city)
-
-  local_government_cd <- unlist(
-    lapply(names(data), function(i) unique(data[[i]]$local_government_cd))
-  )
-
-  data_no <- which(local_government_cd %in% lg_code)
-  if (length(data_no) != 1) {
-
-    if (is.null(year)) {
-      stop("Specify the year since there are multiple applicable local government codes.")
-    } else {
-
-      data_no <- data_no[which(as.character(year) == sub("(_.*)", "", names(data)[data_no]))]
-
-      if (length(data_no) == 0) {
-        stop("Specify the correct year.")
-      }
-    }
-  }
-  x <- data[[data_no]]
-
   extracted_boundary <- extract_boundary(boundary = boundary,
                                          city = city,
                                          kcity = kcity,
                                          community = community,
                                          all = TRUE)
 
-  intersection_fude <- sf::st_intersection(x, extracted_boundary$community)
-  intersection_fude <- intersection_fude %>%
-    dplyr::select(-.data$local_government_cd.1)
+  location_info <- find_pref_name(city)
+  lg_code <- find_lg_code(location_info$pref, location_info$city)
 
-  fude_original <- x[x$polygon_uuid %in% unique(intersection_fude$polygon_uuid), ]
-  fude_filtered <- intersection_fude %>%
-    dplyr::filter(!duplicated(.data$polygon_uuid))
-  common_cols <- intersect(names(fude_original), names(fude_filtered))
-  common_cols <- setdiff(common_cols, "polygon_uuid")
-  fude_selected <- fude_filtered %>%
-    dplyr::select(-dplyr::one_of(common_cols)) %>%
-    sf::st_set_geometry(NULL)
-  fude_original <- fude_original %>%
-    dplyr::left_join(fude_selected, by = "polygon_uuid") %>%
-    dplyr::mutate(
-      centroid = sf::st_sfc(purrr::map2(.data$point_lng, .data$point_lat, ~ sf::st_point(c(.x, .y))),
-                            crs = sf::st_crs(.))
+  if ("key" %in% names(data[[1]])) {
+
+    target_key <- unique(extracted_boundary$community$KEY)
+    fude_original <- data[[grepl(paste0("_", substr(lg_code, start = 1, stop = 2), "$"), names(data))]] |>
+      dplyr::filter(.data$key %in% target_key)
+    intersection_fude <- NULL
+
+  } else {
+
+    local_government_cd <- unlist(
+      lapply(names(data), function(i) unique(data[[i]]$local_government_cd))
     )
 
-  intersection_fude <- intersection_fude %>%
-    dplyr::mutate(
-      centroid = sf::st_centroid(.data$geometry),
-      point_lng = sf::st_coordinates(.data$centroid)[, 1],
-      point_lat = sf::st_coordinates(.data$centroid)[, 2]
-    )
+    data_no <- which(local_government_cd %in% lg_code)
+    if (length(data_no) != 1) {
 
-  message(paste(length(unique(fude_original$RCOM_NAME)), "communities have been extracted."))
+      if (is.null(year)) {
+        stop("Specify the year since there are multiple applicable local government codes.")
+      } else {
+
+        data_no <- data_no[which(as.character(year) == sub("(_.*)", "", names(data)[data_no]))]
+
+        if (length(data_no) == 0) {
+          stop("Specify the correct year.")
+        }
+      }
+    }
+    x <- data[[data_no]]
+
+    intersection_fude <- x |>
+      sf::st_intersection(extracted_boundary$community) |>
+      dplyr::select(-.data$local_government_cd.1)
+
+    fude_original <- x[x$polygon_uuid %in% unique(intersection_fude$polygon_uuid), ]
+    fude_filtered <- intersection_fude |>
+      dplyr::filter(!duplicated(.data$polygon_uuid))
+    common_cols <- intersect(names(fude_original), names(fude_filtered))
+    common_cols <- setdiff(common_cols, "polygon_uuid")
+    fude_selected <- fude_filtered |>
+      dplyr::select(-dplyr::one_of(common_cols)) |>
+      sf::st_set_geometry(NULL)
+    fude_original <- fude_original %>%
+      dplyr::left_join(fude_selected, by = "polygon_uuid") %>%
+      dplyr::mutate(
+        centroid = sf::st_sfc(
+          purrr::map2(.data$point_lng, .data$point_lat, ~ sf::st_point(c(.x, .y))),
+          crs = sf::st_crs(.)
+        )
+      )
+
+    intersection_fude <- intersection_fude |>
+      dplyr::mutate(
+        centroid = sf::st_centroid(.data$geometry),
+        point_lng = sf::st_coordinates(.data$centroid)[, 1],
+        point_lat = sf::st_coordinates(.data$centroid)[, 2]
+      )
+
+  }
+
+  message(paste(length(unique(extracted_boundary$community$KEY)), "communities have been extracted."))
 
   return(
     list(

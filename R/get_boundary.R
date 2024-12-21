@@ -7,15 +7,17 @@
 #'   List of [sf::sf()] objects or one or more strings representing prefecture
 #'   codes.
 #' @param year
-#'   Year in which the agricultural community boundary data was created.
-#' @param quiet
-#'   logical. Suppress information about the data to be read.
+#'   The year when the agricultural community boundary data was created.
+#' @param census_year
+#'   The year of the Agricultural and Forestry Census.
 #' @param path
 #'   Path to the ZIP file containing the agricultural community boundary data;
 #'   use a local ZIP file instead of going looking for a ZIP file. Specify a
 #'   directory containing one or more ZIP files, not the ZIP file itself.
 #' @param to_wgs84
 #'   logical. Convert JGD2000 to WGS 84.
+#' @param quiet
+#'   logical. Suppress information about the data to be read.
 #' @returns A list of [sf::sf()] objects.
 #'
 #' @examplesIf interactive()
@@ -26,30 +28,35 @@
 #' @export
 get_boundary <- function(data,
                          year = 2020,
-                         quiet = FALSE,
+                         census_year = 2020,
                          path = NULL,
-                         to_wgs84 = TRUE) {
+                         to_wgs84 = TRUE,
+                         quiet = FALSE) {
 
   pref_codes <- fude_to_pref_code(data)
 
   x <- lapply(pref_codes, function(i) {
     pref_code <- get_pref_code(i)
-    read_boundary(pref_code, year, quiet, path, to_wgs84)
+    read_boundary(pref_code, year, census_year, quiet, path, to_wgs84)
   })
 
-  names(x) <- pref_codes
+  names(x) <- sprintf("MA0001_%s_%s_%s", year, census_year, sapply(pref_codes, get_pref_code))
 
   return(x)
 }
 
-read_boundary <- function(pref_code, year, quiet, path, to_wgs84) {
+read_boundary <- function(pref_code, year, census_year, quiet, path, to_wgs84) {
   url <- sprintf("https://www.machimura.maff.go.jp/shurakudata/%s/ma/MA0001_%s_%s_%s.zip",
-                 year, year, year, pref_code)
+                 census_year, year, census_year, pref_code)
 
   zipfile <- tempfile(fileext = ".zip")
+  homepath <- file.path(getwd(), basename(url))
 
   if (is.null(path)) {
-    utils::download.file(url, zipfile)
+    if (!file.exists(homepath)) {
+      utils::download.file(url, homepath)
+    }
+    file.copy(homepath, zipfile)
   } else {
     file.copy(file.path(path, basename(url)), zipfile)
   }
@@ -68,20 +75,19 @@ read_boundary <- function(pref_code, year, quiet, path, to_wgs84) {
     stop(ifelse(length(shp_files) > 1, "Multiple shapefiles found.", "No shapefile found in the ZIP archive."))
   }
 
-  x <- sf::st_read(shp_files, quiet = quiet, options = "ENCODING=CP932")
+  x <- sf::st_read(shp_files, quiet = quiet, options = "ENCODING=CP932") |>
+    dplyr::mutate(
+      RCOM_ROMAJI = stringi::stri_trans_general(.data$RCOM_KANA, "any-latin") |>
+        stringi::stri_trans_totitle() |>
+        stringi::stri_trans_general("Fullwidth-Halfwidth"),
+      boundary_edit_year = year,
+      boundary_census_year = census_year
+    )
 
   # Convert JGD2000 to WGS 84
-  if (sf::st_crs(x)$epsg != 4326 && to_wgs84 == TRUE) {
+  if (sf::st_crs(x)$epsg != 4326 && isTRUE(to_wgs84)) {
     x <- sf::st_transform(x, crs = 4326)
   }
-
-  x <- x %>%
-    dplyr::mutate(
-      RCOM_ROMAJI = stringi::stri_trans_general(.data$RCOM_KANA, "any-latin"),
-      RCOM_ROMAJI = stringi::stri_trans_totitle(.data$RCOM_ROMAJI),
-      RCOM_ROMAJI = stringi::stri_trans_general(.data$RCOM_ROMAJI, "Fullwidth-Halfwidth"),
-      boundary_edit_year = year
-    )
 
   return(x)
 }
@@ -115,10 +121,12 @@ fude_to_pref_code <- function(data) {
 }
 
 get_pref_code <- function(input) {
-  if (input %in% fude::pref_table$pref_code) {
+  if (input %in% fude::pref_code_table$pref_code) {
     return(input)
-  } else if (input %in% fude::pref_table$pref_kanji) {
-    return(fude::pref_table$pref_code[fude::pref_table$pref_kanji == input])
+  } else if (any(fude::pref_code_table$pref_kanji == input)) {
+    return(fude::pref_code_table$pref_code[fude::pref_code_table$pref_kanji == input])
+  } else if (any(grepl(input, fude::pref_code_table$pref_kanji))) {
+    return(fude::pref_code_table$pref_code[grepl(input, fude::pref_code_table$pref_kanji)][1])
   } else {
     stop("Invalid input. Please enter a valid prefecture name or code.")
   }

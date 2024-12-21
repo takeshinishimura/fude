@@ -17,10 +17,14 @@ counter suffix used to denote land parcels.
 
 ## Obtaining Data
 
-Download the Fude Polygon data from the following MAFF release site
-(available only in Japanese):
+Fude Polygon data can now be downloaded from two different MAFF websites
+(both available only in Japanese):
 
-- <https://open.fude.maff.go.jp>
+1.  **GeoJSON format**:  
+    <https://open.fude.maff.go.jp>
+
+2.  **FlatGeobuf format**:  
+    <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/mb/>
 
 ## Installation
 
@@ -41,22 +45,48 @@ devtools::install_github("takeshinishimura/fude")
 
 ### Reading Fude Polygon Data
 
-You can allow R to read the downloaded ZIP file directly without
-unzipping it.
+There are two ways to load Fude Polygon data, depending on how the data
+was obtained:
+
+1.  **From a locally saved ZIP file**:  
+    This method works for both GeoJSON (from Obtaining Data \#1) and
+    FlatGeobuf (from Obtaining Data \#2) formats. You can load a ZIP
+    file saved on your computer without unzipping it.
 
 ``` r
 library(fude)
 d <- read_fude("~/2022_38.zip")
 ```
 
+2.  **By specifying a prefecture name or code**: This method is
+    available only for FlatGeobuf data (from Obtaining Data \#2).
+    Provide the name of a prefecture (e.g., “愛媛”) or its corresponding
+    prefecture code (e.g., “38”), and the required FlatGeobuf format ZIP
+    file will be automatically downloaded and loaded.
+
+``` r
+d2 <- read_fude(pref = "愛媛")
+#> Reading layer `MB0001_2024_2020_38' from data source 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpHNW56H/file169653e2a4e36/MB0001_2024_2020_38/MB0001_2024_2020_38.fgb' 
+#>   using driver `FlatGeobuf'
+#> Simple feature collection with 632287 features and 6 fields
+#> Geometry type: MULTIPOLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: 132.0215 ymin: 32.9103 xmax: 133.6916 ymax: 34.29884
+#> Geodetic CRS:  JGD2000
+```
+
 ### Renaming the Local Government Code
+
+**Note:** This feature is available only for data obtained from GeoJSON
+(Obtaining Data \#1).
 
 Convert local government codes into Japanese municipality names for
 easier management.
 
 ``` r
-d2 <- rename_fude(d)
-names(d2)
+dren <- rename_fude(d)
+names(dren)
 #>  [1] "2022_松山市"     "2022_今治市"     "2022_宇和島市"   "2022_八幡浜市"  
 #>  [5] "2022_新居浜市"   "2022_西条市"     "2022_大洲市"     "2022_伊予市"    
 #>  [9] "2022_四国中央市" "2022_西予市"     "2022_東温市"     "2022_上島町"    
@@ -67,8 +97,8 @@ names(d2)
 You can also rename the columns to Romaji instead of Japanese.
 
 ``` r
-d2 <- d |> rename_fude(suffix = TRUE, romaji = "title")
-names(d2)
+dren <- d |> rename_fude(suffix = TRUE, romaji = "title")
+names(dren)
 #>  [1] "2022_Matsuyama-shi"   "2022_Imabari-shi"     "2022_Uwajima-shi"    
 #>  [4] "2022_Yawatahama-shi"  "2022_Niihama-shi"     "2022_Saijo-shi"      
 #>  [7] "2022_Ozu-shi"         "2022_Iyo-shi"         "2022_Shikokuchuo-shi"
@@ -89,8 +119,12 @@ only in Japanese).
 b <- get_boundary(d)
 ```
 
-You can easily create a map that combines Fude Polygons with
-agricultural community boundaries.
+### Combining Fude Polygons with Agricultural Community Boundaries
+
+You can easily combine Fude Polygons with agricultural community
+boundaries to create enriched spatial analyses or maps.
+
+#### Characteristics of Data from GeoJSON (Obtaining Data \#1)
 
 ``` r
 db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
@@ -109,7 +143,7 @@ ggplot() +
 
 **出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
-### Data Assignment
+##### Data Assignment
 
 - `db$fude`: Automatically assigns polygons on the boundaries to a
   community.
@@ -165,6 +199,27 @@ db$fude |>
 #> 5   Funakoshi
 #> 6        Yura
 ```
+
+#### Characteristics of Data from FlatGeobuf (Obtaining Data \#2)
+
+The FlatGeobuf format offers a more efficient alternative to GeoJSON. A
+notable feature of this format is that each record already includes an
+**accurately assigned agricultural community code**.
+
+``` r
+db2 <- combine_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+
+ggplot() +
+  geom_sf(data = db2$fude, aes(fill = key), alpha = .8) +
+  guides(fill = guide_legend(reverse = TRUE, title = "興居島の農業集落コード")) +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+<img src="man/figures/README-gogoshimafgb-1.png" width="100%" />
+
+**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
 ### Review Fude Polygon Data
 

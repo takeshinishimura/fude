@@ -8,8 +8,8 @@
 <title>Structure of Combined Fude Polygon Data with Agricultural Community Boundary Data • fude</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Structure of Combined Fude Polygon Data with Agricultural Community Boundary Data">
 </head>
 <body>
@@ -64,9 +64,11 @@
 <h2 id="structure-of-combined-fude-polygon-data-with-agricultural-community-boundary-data">Structure of Combined Fude Polygon Data with Agricultural Community
 Boundary Data<a class="anchor" aria-label="anchor" href="#structure-of-combined-fude-polygon-data-with-agricultural-community-boundary-data"></a>
 </h2>
+<pre><code><span><span class="co">## Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
+<span><span class="co">##   object 'type_sum.accel' not found</span></span></code></pre>
 <p>There are 7 types of objects obtained by <code><a href="../reference/combine_fude.html">combine_fude()</a></code>,
 as follows:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "fude"            "fude_split"      "community"       "community_union"</span></span>
 <span><span class="co">## [5] "kcity"           "city"            "pref"</span></span></code></pre>
@@ -75,7 +77,7 @@ as follows:</p>
 <h2 id="the-possible-values-for-community-in-combine_fude-and-extract_boundary">The Possible Values for <code>community</code> in
 <code>combine_fude()</code> and <code>extract_boundary()</code><a class="anchor" aria-label="anchor" href="#the-possible-values-for-community-in-combine_fude-and-extract_boundary"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gluc/data.tree" class="external-link">data.tree</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -85,8 +87,8 @@ as follows:</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pathString <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">PREF_NAME</span>, <span class="va">CITY_NAME</span>, <span class="va">KCITY_NAME</span>, <span class="va">RCOM_NAME</span>, sep <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">data.tree</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.tree/man/as.Node.html" class="external-link">as.Node</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span>limit <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##                             levelName</span></span>
-<span><span class="co">## 1  愛媛県                            </span></span>
+<pre><code><span><span class="co">##                              levelName</span></span>
+<span><span class="co">## 1  愛媛県                             </span></span>
 <span><span class="co">## 2   °--松山市                        </span></span>
 <span><span class="co">## 3       °--松山市                    </span></span>
 <span><span class="co">## 4           ¦--土居田                </span></span>
@@ -96,7 +98,7 @@ as follows:</p>
 <span><span class="co">## 8           ¦--小栗第３              </span></span>
 <span><span class="co">## 9           ¦--藤原第１              </span></span>
 <span><span class="co">## 10          °--... 102 nodes w/ 0 sub</span></span></code></pre>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">b</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"松山"</span>, <span class="va">KCITY_NAME</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">RCOM_NAME</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">2</span>, family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -108,7 +110,7 @@ as follows:</p>
 <h2 id="the-possible-values-for-kcity-in-combine_fude-and-extract_boundary">The Possible Values for <code>kcity</code> in
 <code>combine_fude()</code> and <code>extract_boundary()</code><a class="anchor" aria-label="anchor" href="#the-possible-values-for-kcity-in-combine_fude-and-extract_boundary"></a>
 </h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/EmilHvitfeldt/paletteer" class="external-link">paletteer</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">b</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CITY_NAME</span> <span class="op">==</span> <span class="st">"松山市"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>

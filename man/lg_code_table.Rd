@@ -8,11 +8,11 @@
 A data frame with 1,992 rows and 6 variables:
 \describe{
 \item{lg_code}{Local government codes}
-\item{pref_kanji}{Prefecture names written in kanji}
-\item{city_kanji}{Local government names written in kanji}
-\item{pref_kana}{Prefecture names written in katakana}
-\item{city_kana}{Local government names written in katakana}
-\item{romaji}{Local government names written in romaji}
+\item{pref_kanji}{Prefecture names in Kanji}
+\item{city_kanji}{Local government names in Kanji}
+\item{pref_kana}{Prefecture names in Katakana}
+\item{city_kana}{Local government names in Katakana}
+\item{romaji}{Local government names in Romaji}
 }
 }
 \usage{

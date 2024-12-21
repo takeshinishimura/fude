@@ -18,7 +18,7 @@ BugReports: https://github.com/takeshinishimura/fude/issues
 Encoding: UTF-8
 LazyData: true
 Depends:
-    R (>= 3.3.0)
+    R (>= 3.5)
 Imports:
     sf,
     dplyr,
