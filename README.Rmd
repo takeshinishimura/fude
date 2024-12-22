@@ -69,7 +69,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 d2 <- read_fude(pref = "愛媛")
 ```
 ```{r echo = FALSE}
-d2 <- read_fude(path = "~/MB0001_2024_2020_38.zip")
+d2 <- read_fude("~/MB0001_2024_2020_38.zip")
 ```
 
 ### Renaming the Local Government Code
