@@ -14,7 +14,7 @@ A data frame with 149,511 rows and 13 variables:
 \item{CITY_NAME}{City names in Kanji}
 \item{CITY_KANA}{City names in Hiragana}
 \item{CITY_ROMAJI}{City names in Romaji}
-\item{KCITY_NAME}{Old village names in Kanji}
+\item{KCITY_NAME}{Former village names in Kanji}
 \item{RCOM_NAME}{Community names in Kanji}
 \item{RCOM_KANA}{Community names in Hiragana}
 \item{RCOM_ROMAJI}{Community names in Romaji}

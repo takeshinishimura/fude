@@ -52,7 +52,7 @@ devtools::install_github("takeshinishimura/fude")
 
 There are two ways to load Fude Polygon data, depending on how the data was obtained:
 
-1. **From a locally saved ZIP file**: 
+1. **From a locally saved ZIP file**:  
 This method works for both GeoJSON (from Obtaining Data #1) and FlatGeobuf (from Obtaining Data #2) formats. You can load a ZIP file saved on your computer without unzipping it.
 ```{r eval = FALSE}
 library(fude)
@@ -63,10 +63,13 @@ library(fude)
 d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
 ```
 
-2. **By specifying a prefecture name or code**: 
+2. **By specifying a prefecture name or code**:  
 This method is available only for FlatGeobuf data (from Obtaining Data #2). Provide the name of a prefecture (e.g., "愛媛") or its corresponding prefecture code (e.g., "38"), and the required FlatGeobuf format ZIP file will be automatically downloaded and loaded.
-```{r}
+```{r eval = FALSE}
 d2 <- read_fude(pref = "愛媛")
+```
+```{r echo = FALSE}
+d2 <- read_fude(path = "~/MB0001_2024_2020_38.zip")
 ```
 
 ### Renaming the Local Government Code
@@ -142,7 +145,6 @@ fude + fude_split
 If you need to adjust this automatic assignment, you will need to write custom code.
 The rows that require attention can be identified with the following command.
 ```{r message = FALSE}
-# head(sf::st_drop_geometry(db$fude[db$fude$polygon_uuid %in% db$fude_split$polygon_uuid[duplicated(db$fude_split$polygon_uuid)], c("polygon_uuid", "PREF_NAME", "CITY_NAME", "KCITY_NAME", "RCOM_NAME", "RCOM_KANA", "RCOM_ROMAJI")]))
 library(dplyr)
 library(sf)
 
@@ -169,6 +171,14 @@ ggplot() +
 ```
 
 **出典**：`r cite_fude(db2)$ja`
+
+Data enables extraction based on city names, former village names, and agricultural community names.
+
+**Note:** This feature is available only for data obtained from FlatGeobuf (Obtaining Data #2).
+
+```{r message = FALSE}
+d2 |> extract_fude(city = "松山市", kcity = "興居島")
+```
 
 ### Review Fude Polygon Data
 

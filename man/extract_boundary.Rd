@@ -16,8 +16,8 @@ in Japanese and the prefecture code in romaji (e.g., "Fuchu-shi, 13",
 "fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO"). Alternatively, it could be
 a 6-digit local government code.}
 
-\item{kcity}{String by regular expression. One or more old city name in Japanese to be
-extracted.}
+\item{kcity}{String by regular expression. One or more former village name in Japanese
+to be extracted.}
 
 \item{community}{String by regular expression. One or more agricultural community name in
 Japanese to be extracted.}

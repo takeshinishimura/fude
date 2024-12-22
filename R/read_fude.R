@@ -22,8 +22,7 @@
 #' @param quiet
 #'   logical. Suppress information about the data to be read.
 #' @param supplementary
-#'   logical. If TRUE, add supplementary information for each polygon. Default
-#'   is TRUE.
+#'   logical. If TRUE, add supplementary information for each polygon.
 #' @returns A list of [sf::sf()] objects.
 #'
 #' @examples
@@ -38,7 +37,7 @@ read_fude <- function(path = NULL,
                       stringsAsFactors = TRUE,
                       to_wgs84 = TRUE,
                       quiet = FALSE,
-                      supplementary = TRUE) {
+                      supplementary = FALSE) {
 
   if (is.null(path)) {
     if (is.null(pref)) {

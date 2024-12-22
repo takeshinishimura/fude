@@ -48,33 +48,35 @@ devtools::install_github("takeshinishimura/fude")
 There are two ways to load Fude Polygon data, depending on how the data
 was obtained:
 
-1.  **From a locally saved ZIP file**: This method works for both
-    GeoJSON (from Obtaining Data \#1) and FlatGeobuf (from Obtaining
-    Data \#2) formats. You can load a ZIP file saved on your computer
-    without unzipping it.
+1.  **From a locally saved ZIP file**:  
+    This method works for both GeoJSON (from Obtaining Data \#1) and
+    FlatGeobuf (from Obtaining Data \#2) formats. You can load a ZIP
+    file saved on your computer without unzipping it.
 
 ``` r
 library(fude)
 d <- read_fude("~/2022_38.zip")
 ```
 
-2.  **By specifying a prefecture name or code**: This method is
-    available only for FlatGeobuf data (from Obtaining Data \#2).
-    Provide the name of a prefecture (e.g., “愛媛”) or its corresponding
-    prefecture code (e.g., “38”), and the required FlatGeobuf format ZIP
-    file will be automatically downloaded and loaded.
+2.  **By specifying a prefecture name or code**:  
+    This method is available only for FlatGeobuf data (from Obtaining
+    Data \#2). Provide the name of a prefecture (e.g., “愛媛”) or its
+    corresponding prefecture code (e.g., “38”), and the required
+    FlatGeobuf format ZIP file will be automatically downloaded and
+    loaded.
 
 ``` r
 d2 <- read_fude(pref = "愛媛")
-#> Reading layer `MB0001_2024_2020_38' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmpqu7e4D/file1cbc6129f4f1/MB0001_2024_2020_38/MB0001_2024_2020_38.fgb' 
-#>   using driver `FlatGeobuf'
-#> Simple feature collection with 632287 features and 6 fields
-#> Geometry type: MULTIPOLYGON
-#> Dimension:     XY
-#> Bounding box:  xmin: 132.0215 ymin: 32.9103 xmax: 133.6916 ymax: 34.29884
-#> Geodetic CRS:  JGD2000
 ```
+
+    #> Reading layer `MB0001_2024_2020_38' from data source 
+    #>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpLFmlN7/fileab9d6efb7619/MB0001_2024_2020_38/MB0001_2024_2020_38.fgb' 
+    #>   using driver `FlatGeobuf'
+    #> Simple feature collection with 632287 features and 6 fields
+    #> Geometry type: MULTIPOLYGON
+    #> Dimension:     XY
+    #> Bounding box:  xmin: 132.0215 ymin: 32.9103 xmax: 133.6916 ymax: 34.29884
+    #> Geodetic CRS:  JGD2000
 
 ### Renaming the Local Government Code
 
@@ -175,7 +177,6 @@ custom code. The rows that require attention can be identified with the
 following command.
 
 ``` r
-# head(sf::st_drop_geometry(db$fude[db$fude$polygon_uuid %in% db$fude_split$polygon_uuid[duplicated(db$fude_split$polygon_uuid)], c("polygon_uuid", "PREF_NAME", "CITY_NAME", "KCITY_NAME", "RCOM_NAME", "RCOM_KANA", "RCOM_ROMAJI")]))
 library(dplyr)
 library(sf)
 
@@ -213,6 +214,55 @@ ggplot() +
 <img src="man/figures/README-gogoshimafgb-1.png" width="100%" />
 
 **出典**：農林水産省「筆ポリゴンデータ（2024年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
+
+Data enables extraction based on city names, former village names, and
+agricultural community names.
+
+**Note:** This feature is available only for data obtained from
+FlatGeobuf (Obtaining Data \#2).
+
+``` r
+d2 |> extract_fude(city = "松山市", kcity = "興居島")
+#> Simple feature collection with 1690 features and 8 fields
+#> Geometry type: MULTIPOLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: 132.6373 ymin: 33.87055 xmax: 132.6991 ymax: 33.92544
+#> Geodetic CRS:  WGS 84
+#> First 10 features:
+#>                            polygon_uuid land_type issue_year point_lng
+#> 1  87a649f2-0385-4daf-81ba-82a61d44dd1b       200       2024  132.6446
+#> 2  bc56286f-b6a0-48c0-826a-97ce21b50de6       200       2024  132.6447
+#> 3  417bda37-fd35-44be-9c15-a89ed40eb28d       200       2024  132.6445
+#> 4  a2823989-8451-4982-9ba4-27dca5f21a38       200       2024  132.6441
+#> 5  d41c3920-d3ec-4bde-b461-c207d77d9b11       200       2024  132.6437
+#> 6  78d5397b-1a63-4257-8b01-aa365bfb5138       200       2024  132.6434
+#> 7  5af7e914-38d6-4e5d-867b-c0ab2d8f904a       200       2024  132.6436
+#> 8  1b0126bd-6869-4986-a5bf-8c59939ed50d       200       2024  132.6420
+#> 9  be6c809a-2b57-4a79-b123-1dd6669e0221       200       2024  132.6421
+#> 10 58f4149a-273b-4b4a-95c9-1ac353580619       200       2024  132.6423
+#>    point_lat        key land_type_jp local_government_cd
+#> 1   33.88813 3820102004           畑              382019
+#> 2   33.88768 3820102004           畑              382019
+#> 3   33.88746 3820102004           畑              382019
+#> 4   33.88755 3820102004           畑              382019
+#> 5   33.88740 3820102004           畑              382019
+#> 6   33.88729 3820102004           畑              382019
+#> 7   33.88770 3820102004           畑              382019
+#> 8   33.88782 3820102004           畑              382019
+#> 9   33.88792 3820102004           畑              382019
+#> 10  33.88765 3820102004           畑              382019
+#>                          geometry
+#> 1  MULTIPOLYGON (((132.6446 33...
+#> 2  MULTIPOLYGON (((132.6444 33...
+#> 3  MULTIPOLYGON (((132.6448 33...
+#> 4  MULTIPOLYGON (((132.6442 33...
+#> 5  MULTIPOLYGON (((132.6437 33...
+#> 6  MULTIPOLYGON (((132.6434 33...
+#> 7  MULTIPOLYGON (((132.6435 33...
+#> 8  MULTIPOLYGON (((132.6418 33...
+#> 9  MULTIPOLYGON (((132.6422 33...
+#> 10 MULTIPOLYGON (((132.6422 33...
+```
 
 ### Review Fude Polygon Data
 

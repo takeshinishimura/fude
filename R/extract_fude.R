@@ -11,16 +11,22 @@
 #'   Local government names or codes to be extracted.
 #' @param list
 #'   logical. If `FALSE`, the object to be extracted is no longer a list.
+#' @param kcity
+#'   String by regular expression. One or more former village name in Japanese
+#'   to be extracted.
+#' @param community
+#'   String by regular expression. One or more agricultural community name in
+#'   Japanese to be extracted.
 #' @returns A list of [sf::sf()] object(s).
 #' @seealso [read_fude()].
 #'
-#' @examples
-#' path <- system.file("extdata", "castle.zip", package = "fude")
-#' d <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
-#' d2 <- extract_fude(d, year = 2022)
-#'
 #' @export
-extract_fude <- function(data, year = NULL, city = NULL, list = TRUE) {
+extract_fude <- function(data,
+                         year = NULL,
+                         city = NULL,
+                         kcity = "",
+                         community = "",
+                         list = TRUE) {
 
   if (is.null(year) & is.null(city)) {
     stop("Specify either `year` or `city`.")
@@ -29,36 +35,52 @@ extract_fude <- function(data, year = NULL, city = NULL, list = TRUE) {
   if (!is.null(city)) {
 
     if (is.null(year)) {
-      year <- unique(ls_fude(data)$year)
+      year <- unique(ls_fude(data)$issue_year)
     }
 
     selected_names <- NULL
 
     for (i in year) {
-      data_i <- ls_fude(data)[ls_fude(data)$year == i, ]
-      matching_idx1 <- match(city, data_i$local_government_cd)
-      matching_idx2 <- match(sub("(\u5e02|\u533a|\u753a|\u6751)$", "", city),
-                             sub("(\u5e02|\u533a|\u753a|\u6751)$", "", data_i$city_kanji))
-      matching_idx3 <- match(tolower(gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", city, ignore.case = TRUE)),
-                             tolower(gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", data_i$romaji, ignore.case = TRUE)))
-      matching_idx4 <- match(city, data_i$names)
+      ls_data <- ls_fude(data) |>
+        dplyr::filter(.data$issue_year == i)
+
+      matching_idx1 <- match(city, ls_data$local_government_cd)
+      matching_idx2 <- match(
+        sub("(\u5e02|\u533a|\u753a|\u6751)$", "", city),
+        sub("(\u5e02|\u533a|\u753a|\u6751)$", "", ls_data$CITY_NAME)
+      )
+      matching_idx3 <- match(
+        tolower(gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", city, ignore.case = TRUE)),
+        tolower(gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", ls_data$CITY_ROMAJI, ignore.case = TRUE))
+      )
+      matching_idx4 <- match(city, ls_data$CITY_NAME)
+
       matching_idx <- unique(c(matching_idx1, matching_idx2, matching_idx3, matching_idx4))
-      selected_names <- c(selected_names, data_i$full_names[stats::na.omit(matching_idx)])
+
+      selected_names <- c(selected_names, ls_data$names[stats::na.omit(matching_idx)])
     }
 
+
   } else {
-    selected_names <- grep(paste0(year, collapse = "|"), names(data), value = TRUE)
+
+    selected_names <- ls_fude(data) |>
+      dplyr::filter(.data$issue_year == year) |>
+      dplyr::pull(.data$names)
+
   }
 
-  if (isTRUE(list)) {
-    x <- data[selected_names]
-  } else {
+  x <- dplyr::bind_rows(data[names(data) %in% selected_names])
 
-    if (length(selected_names) > 1) {
-      stop("`list` must be TRUE if there are multiple objects to be extracted.")
-    }
+  if ("key" %in% names(x)) {
 
-    x <- data[[selected_names]]
+    target_community_key <- fude::community_code_table |>
+      dplyr::filter(grepl(kcity, .data$KCITY_NAME)) |>
+      dplyr::filter(grepl(community, .data$RCOM_NAME)) |>
+      dplyr::pull(.data$KEY)
+
+    x <- x |>
+      dplyr::filter(.data$key %in% target_community_key)
+
   }
 
   return(x)

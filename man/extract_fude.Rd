@@ -4,7 +4,14 @@
 \alias{extract_fude}
 \title{Extract specified Fude Polygon data}
 \usage{
-extract_fude(data, year = NULL, city = NULL, list = TRUE)
+extract_fude(
+  data,
+  year = NULL,
+  city = NULL,
+  kcity = "",
+  community = "",
+  list = TRUE
+)
 }
 \arguments{
 \item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
@@ -12,6 +19,12 @@ extract_fude(data, year = NULL, city = NULL, list = TRUE)
 \item{year}{Years to be extracted.}
 
 \item{city}{Local government names or codes to be extracted.}
+
+\item{kcity}{String by regular expression. One or more former village name in Japanese
+to be extracted.}
+
+\item{community}{String by regular expression. One or more agricultural community name in
+Japanese to be extracted.}
 
 \item{list}{logical. If \code{FALSE}, the object to be extracted is no longer a list.}
 }
@@ -21,12 +34,6 @@ A list of \code{\link[sf:sf]{sf::sf()}} object(s).
 \description{
 \code{extract_fude()} extracts the specified data from the list returned by
 \code{\link[=read_fude]{read_fude()}}.
-}
-\examples{
-path <- system.file("extdata", "castle.zip", package = "fude")
-d <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
-d2 <- extract_fude(d, year = 2022)
-
 }
 \seealso{
 \code{\link[=read_fude]{read_fude()}}.

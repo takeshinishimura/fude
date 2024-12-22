@@ -15,7 +15,7 @@ as you do not change the filenames of the original files."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">fude</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +60,7 @@ as you do not change the filenames of the original files.</p>
 <span>  stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  to_wgs84 <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  supplementary <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  supplementary <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -98,8 +98,7 @@ Supported formats include <code>.geojson</code>, <code>.json</code>, and <code>.
 
 
 <dt id="arg-supplementary">supplementary<a class="anchor" aria-label="anchor" href="#arg-supplementary"></a></dt>
-<dd><p>logical. If TRUE, add supplementary information for each polygon. Default
-is TRUE.</p></dd>
+<dd><p>logical. If TRUE, add supplementary information for each polygon.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -112,7 +111,7 @@ is TRUE.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"castle.zip"</span>, package <span class="op">=</span> <span class="st">"fude"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">read_fude</span><span class="op">(</span><span class="va">path</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Reading layer `2021_382019' from data source </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpRi0slW/file1d803469365a/castle/2021_382019.json' </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmptwfjHF/file9fbe383a9151/castle/2021_382019.json' </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   using driver `GeoJSON'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 6 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POLYGON</span>
@@ -120,7 +119,7 @@ is TRUE.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Reading layer `2022_382019' from data source </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpRi0slW/file1d803469365a/castle/2022_382019.json' </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmptwfjHF/file9fbe383a9151/castle/2022_382019.json' </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   using driver `GeoJSON'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 6 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POLYGON</span>
@@ -128,7 +127,7 @@ is TRUE.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Reading layer `2022_382078' from data source </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpRi0slW/file1d803469365a/castle/2022_382078.json' </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmptwfjHF/file9fbe383a9151/castle/2022_382078.json' </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   using driver `GeoJSON'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 6 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POLYGON</span>

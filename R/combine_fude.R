@@ -15,8 +15,8 @@
 #'   "fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO"). Alternatively, it could be
 #'   a 6-digit local government code.
 #' @param kcity
-#'   String by regular expression. One or more old city name in Japanese to be
-#'   extracted.
+#'   String by regular expression. One or more former village name in Japanese
+#'   to be extracted.
 #' @param community
 #'   String by regular expression. One or more agricultural community name in
 #'   Japanese to be extracted.

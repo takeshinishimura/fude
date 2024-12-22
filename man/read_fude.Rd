@@ -12,7 +12,7 @@ read_fude(
   stringsAsFactors = TRUE,
   to_wgs84 = TRUE,
   quiet = FALSE,
-  supplementary = TRUE
+  supplementary = FALSE
 )
 }
 \arguments{
@@ -31,8 +31,7 @@ Supported formats include \code{.geojson}, \code{.json}, and \code{.fgb}.}
 
 \item{quiet}{logical. Suppress information about the data to be read.}
 
-\item{supplementary}{logical. If TRUE, add supplementary information for each polygon. Default
-is TRUE.}
+\item{supplementary}{logical. If TRUE, add supplementary information for each polygon.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.
