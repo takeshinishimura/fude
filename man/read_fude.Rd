@@ -9,10 +9,10 @@ read_fude(
   pref = NULL,
   year = 2024,
   census_year = 2020,
-  stringsAsFactors = TRUE,
+  stringsAsFactors = FALSE,
+  supplementary = FALSE,
   to_wgs84 = TRUE,
-  quiet = FALSE,
-  supplementary = FALSE
+  quiet = FALSE
 )
 }
 \arguments{
@@ -27,11 +27,11 @@ Supported formats include \code{.geojson}, \code{.json}, and \code{.fgb}.}
 
 \item{stringsAsFactors}{logical. Should character vectors be converted to factors?}
 
+\item{supplementary}{logical. If TRUE, add supplementary information for each polygon.}
+
 \item{to_wgs84}{logical. Convert JGD2000 to WGS 84.}
 
 \item{quiet}{logical. Suppress information about the data to be read.}
-
-\item{supplementary}{logical. If TRUE, add supplementary information for each polygon.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.

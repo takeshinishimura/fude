@@ -11,18 +11,17 @@
 #' @export
 ls_fude <- function(data) {
 
+  validate_fude(data)
+  data <- add_local_government_cd(data)
+
   if (is.data.frame(data)) {
-    validate_fude(data)
+
     x <- process_ls_data(data)
 
   } else if (is.list(data)) {
-    validate_fude(data[[1]])
+
     x <- lapply(names(data), function(i) process_ls_data(data[[i]], name = i)) |>
       dplyr::bind_rows()
-
-  } else {
-
-    stop("The provided data must be either a data frame or a list of data frames.")
 
   }
 
@@ -30,8 +29,16 @@ ls_fude <- function(data) {
 }
 
 validate_fude <- function(data) {
-  if (!"polygon_uuid" %in% names(data)) {
-    stop("The provided data is not Fude Polygon data.")
+  if (is.data.frame(data)) {
+    if (!"polygon_uuid" %in% names(data)) {
+      stop("The data frame must contain a 'polygon_uuid' column.")
+    }
+  } else if (is.list(data)) {
+    if (!"polygon_uuid" %in% names(data[[1]])) {
+      stop("The first data frame in the list must contain a 'polygon_uuid' column.")
+    }
+  } else {
+    stop("Input must be a Fude Polygon data.")
   }
 }
 

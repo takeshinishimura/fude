@@ -33,6 +33,7 @@ get_boundary <- function(data,
                          to_wgs84 = TRUE,
                          quiet = FALSE) {
 
+  data <- add_local_government_cd(data)
   pref_codes <- fude_to_pref_code(data)
 
   x <- lapply(pref_codes, function(i) {
@@ -93,23 +94,15 @@ read_boundary <- function(pref_code, year, census_year, quiet, path, to_wgs84) {
 }
 
 fude_to_lg_code <- function(data) {
-
   if (is.character(data)) {
-
     x <- data
-
   } else if (is.data.frame(data)) {
-
     x <- unique(data$local_government_cd)
-
   } else if (is.list(data)) {
-
     x <- unique(unlist(sapply(data, `[[`, "local_government_cd")))
-
   }
 
   return(x)
-
 }
 
 fude_to_pref_code <- function(data) {
@@ -120,14 +113,16 @@ fude_to_pref_code <- function(data) {
   return(x)
 }
 
-get_pref_code <- function(input) {
-  if (input %in% fude::pref_code_table$pref_code) {
-    return(input)
-  } else if (any(fude::pref_code_table$pref_kanji == input)) {
-    return(fude::pref_code_table$pref_code[fude::pref_code_table$pref_kanji == input])
-  } else if (any(grepl(input, fude::pref_code_table$pref_kanji))) {
-    return(fude::pref_code_table$pref_code[grepl(input, fude::pref_code_table$pref_kanji)][1])
+get_pref_code <- function(data) {
+  if (data %in% fude::pref_code_table$pref_code) {
+    x <- data
+  } else if (any(fude::pref_code_table$pref_kanji == data)) {
+    x <- fude::pref_code_table$pref_code[fude::pref_code_table$pref_kanji == data]
+  } else if (any(grepl(data, fude::pref_code_table$pref_kanji))) {
+    x <- fude::pref_code_table$pref_code[grepl(data, fude::pref_code_table$pref_kanji)][1]
   } else {
     stop("Invalid input. Please enter a valid prefecture name or code.")
   }
+
+  return(x)
 }

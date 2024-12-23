@@ -41,6 +41,9 @@ combine_fude <- function(data,
                          community = "",
                          year = NULL) {
 
+  validate_fude(data)
+  data <- add_local_government_cd(data)
+
   extracted_boundary <- extract_boundary(boundary = boundary,
                                          city = city,
                                          kcity = kcity,

@@ -28,6 +28,9 @@ extract_fude <- function(data,
                          community = "",
                          list = TRUE) {
 
+  validate_fude(data)
+  data <- add_local_government_cd(data)
+
   if (is.null(year) & is.null(city)) {
     stop("Specify either `year` or `city`.")
   }

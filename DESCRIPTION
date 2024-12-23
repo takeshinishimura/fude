@@ -27,7 +27,6 @@ Imports:
     leaflet,
     magrittr,
     purrr,
-    rlang,
     sf,
     shiny,
     tidyr,

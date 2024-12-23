@@ -17,12 +17,12 @@
 #'   The year of the Agricultural and Forestry Census.
 #' @param stringsAsFactors
 #'   logical. Should character vectors be converted to factors?
+#' @param supplementary
+#'   logical. If TRUE, add supplementary information for each polygon.
 #' @param to_wgs84
 #'   logical. Convert JGD2000 to WGS 84.
 #' @param quiet
 #'   logical. Suppress information about the data to be read.
-#' @param supplementary
-#'   logical. If TRUE, add supplementary information for each polygon.
 #' @returns A list of [sf::sf()] objects.
 #'
 #' @examples
@@ -34,10 +34,10 @@ read_fude <- function(path = NULL,
                       pref = NULL,
                       year = 2024,
                       census_year = 2020,
-                      stringsAsFactors = TRUE,
+                      stringsAsFactors = FALSE,
+                      supplementary = FALSE,
                       to_wgs84 = TRUE,
-                      quiet = FALSE,
-                      supplementary = FALSE) {
+                      quiet = FALSE) {
 
   if (is.null(path)) {
     if (is.null(pref)) {
@@ -87,14 +87,12 @@ read_fude <- function(path = NULL,
     })
   }
 
-  x <- purrr::map(x, ~ {
-    if (!"local_government_cd" %in% names(.x)) {
-      .x$local_government_cd <- fude::community_code_table$local_government_cd[
-        match(.x$key, fude::community_code_table$KEY)
-      ]
-    }
-    .x
-  })
+#  x <- purrr::map(x, ~ {
+#    if (!"local_government_cd" %in% names(.x) && "key" %in% names(.x)) {
+#      .x$local_government_cd <- modulus11(.x$key)
+#    }
+#    .x
+#  })
 
   if (isTRUE(supplementary)) {
     for (i in names(x)) {
@@ -128,6 +126,41 @@ get_fude <- function(pref_code, year, census_year) {
   }
 
   return(homepath)
+}
+
+modulus11 <- function(data) {
+  code5 <- substr(data, start = 1, stop = 5)
+  digits <- do.call(rbind, lapply(strsplit(code5, ""), as.numeric))
+  weights <- c(6, 5, 4, 3, 2)
+
+  remainder <- (digits %*% weights) %% 11
+
+  check_digit <- ifelse(remainder == 0, 1,
+                        ifelse(remainder == 1, 0,
+                               ifelse(remainder == 10, 1, 11 - remainder)))
+
+  return(paste0(code5, check_digit))
+}
+
+add_local_government_cd <- function(data) {
+  if (is.data.frame(data)) {
+    if (!"local_government_cd" %in% names(data) && "key" %in% names(data)) {
+      data$local_government_cd <- modulus11(data$key)
+    }
+    return(data)
+  }
+
+  if (is.list(data)) {
+    data <- lapply(data, function(df) {
+      if (is.data.frame(df) && !"local_government_cd" %in% names(df) && "key" %in% names(df)) {
+        df$local_government_cd <- modulus11(df$key)
+      }
+      return(df)
+    })
+    return(data)
+  }
+
+  return(data)
 }
 
 get_plane_rectangular_cs <- function(pref_code) {

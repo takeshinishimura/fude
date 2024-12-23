@@ -1,5 +1,7 @@
 # fude (development version)
 
+* Added support for processing data without requiring the local government code to be pre-written.
+
 # fude 0.3.7
 
 * Added support for reading FlatGeobuf files in addition to GeoJSON files.

@@ -17,6 +17,7 @@
 #'
 #' @export
 bind_fude <- function(...) {
+
   databases <- list(...)
 
   all_names <- purrr::reduce(databases, function(db1, db2) {
@@ -34,33 +35,31 @@ bind_fude <- function(...) {
 
     tmp <- do.call(dplyr::bind_rows, purrr::discard(relevant_dbs, is.null))
 
-    if(is.null(tmp)) {
+    if (is.null(tmp) || nrow(tmp) == 0) {
       return(NULL)
     }
 
-    order_column <- dplyr::case_when(
-      "local_government_cd" %in% names(tmp) ~ "local_government_cd",
-      TRUE ~ "pref_code"
-    )
-
-    if ("fill" %in% names(tmp)) {
-      tmp %>%
-        dplyr::distinct() %>%
-        dplyr::arrange(dplyr::desc(!!rlang::sym(order_column))) %>%
-        dplyr::slice_max(.data$fill, n = 1, with_ties = TRUE, .by = -.data$fill) %>%
-        as.data.frame() %>%
-        sf::st_sf()
+    order_column <- if ("local_government_cd" %in% names(tmp)) {
+      "local_government_cd"
     } else {
-      tmp %>%
-        dplyr::distinct() %>%
-        dplyr::arrange(dplyr::desc(!!rlang::sym(order_column))) %>%
-        as.data.frame() %>%
-        sf::st_sf()
+      "pref_code"
     }
 
+    if ("fill" %in% names(tmp)) {
+      tmp <- tmp %>%
+        dplyr::distinct() %>%
+        dplyr::arrange(dplyr::desc(.data[[order_column]])) %>%
+        dplyr::slice_max(order_by = .data$fill, n = 1, with_ties = TRUE)
+    } else {
+      tmp <- tmp %>%
+        dplyr::distinct() %>%
+        dplyr::arrange(dplyr::desc(.data[[order_column]]))
+    }
+
+    sf::st_as_sf(tmp)
   })
 
   names(x) <- all_names
-
   return(x)
+
 }
