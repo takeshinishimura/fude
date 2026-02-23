@@ -8,11 +8,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Using `gghighlight` Package
+# Using `gghighlight` package
 
 ```{r echo = FALSE, warning = FALSE}
 library(fude)
-d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
+d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 ```
 
@@ -22,21 +22,23 @@ library(forcats)
 library(ggplot2)
 library(gghighlight)
 
-db <- combine_fude(d, b, city = "松山市", kcity = "興居島", community = "^(?!釣島).*")
+db <- combine_fude(d, b, city = "松山市", kcity = "興居島", community = "^(?!釣島)")
 
-db$community <- db$community %>%
+db$community <- db$community |>
   mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))
-db$fude <- db$fude %>%
+db$fude <- db$fude |>
   mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))
 
 ggplot() +
   geom_sf(data = db$community, aes(fill = RCOM_NAME), alpha = 0) +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME), linewidth = 0) +
   gghighlight() +
-  facet_wrap(vars(RCOM_NAME)) +
+  facet_wrap(~ RCOM_NAME) +
   theme_void() +
-  theme(legend.position = "none",
-        text = element_text(family = "Hiragino Sans"))
+  theme(
+    legend.position = "none",
+    text = element_text(family = "Hiragino Sans")
+  )
 ```
 
 **出典**：`r cite_fude(db)$ja`
@@ -46,7 +48,7 @@ ggplot(data = db$fude, aes(x = a, fill = land_type_jp)) +
   geom_histogram(position = "identity", alpha = .5) +
   labs(x = "面積（a）",
        y = "頻度") +
-  facet_wrap(vars(RCOM_NAME)) +
+  facet_wrap(~ RCOM_NAME) +
   labs(fill = "耕地の種類") +
   theme_minimal() +
   theme(text = element_text(family = "Hiragino Sans"))

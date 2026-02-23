@@ -69,7 +69,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 d2 <- read_fude(pref = "愛媛")
 ```
 ```{r echo = FALSE}
-d2 <- read_fude("~/MB0001_2024_2020_38.zip", quiet = TRUE)
+d2 <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
 ```
 
 ### Renaming the Local Government Code
@@ -189,8 +189,6 @@ library(shiny)
 s <- shiny_fude(db, community = TRUE)
 # shiny::shinyApp(ui = s$ui, server = s$server)
 ```
-
-This feature was heavily inspired by the following website: <https://brendenmsmith.com/blog/shiny_map_filter/>.
 
 ### Using `mapview` package
 

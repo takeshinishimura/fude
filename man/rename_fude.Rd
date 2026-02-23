@@ -32,7 +32,7 @@ make the data human-friendly.
 }
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")
-d <- read_fude(path, stringsAsFactors = FALSE, quiet = FALSE)
+d <- read_fude(path, quiet = FALSE)
 d2 <- rename_fude(d)
 d2 <- rename_fude(d, suffix = FALSE)
 d2 <- d |> rename_fude(romaji = "upper")

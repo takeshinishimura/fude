@@ -8,11 +8,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Using `ggforce` Package
+# Using `ggforce` package
 
 ```{r echo = FALSE, warning = FALSE}
 library(fude)
-d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
+d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 ```
 
@@ -22,39 +22,45 @@ library(sf)
 library(ggplot2)
 library(ggforce)
 
-db <- combine_fude(d, b, city = "松山市", kcity = "興居島", community = "^(?!釣島).*")
+db <- combine_fude(d, b, city = "松山市", kcity = "興居島", community = "^(?!釣島)")
 bbox <- sf::st_bbox(db$fude)
 
 ggplot() +
   geom_sf(data = db$community, fill = NA) +
   geom_sf(data = db$fude, aes(fill = RCOM_ROMAJI)) +
-  geom_mark_hull(data = db$fude |>
-                   group_by(RCOM) |>
-                   mutate(n = gsub("c\\(|\\)", "", 
-                                   paste0("Count of Fude: ", n(), "\n",
-                                          list(table(land_type))))),
-                 aes(x = point_lng, y = point_lat,
-                     fill = RCOM_ROMAJI,
-                     label = RCOM_ROMAJI,
-                     description = n),
-                 colour = NA,
-                 expand = unit(1, "mm"),
-                 radius = unit(1, "mm"),
-                 label.fontsize = 9,
-                 label.family = "Helvetica",
-                 label.fill = "white",
-                 label.colour = "black",
-#                label.buffer = unit(0, "pt"),
-                 con.colour = "black") +
-  coord_sf(xlim = c(bbox["xmin"] - 0.02, bbox["xmax"] + 0.02),
-           ylim = c(bbox["ymin"] - 0.01, bbox["ymax"] + 0.01)) +
+  geom_mark_hull(
+    data = db$fude |>
+      group_by(RCOM) |>
+      mutate(
+        n = gsub("c\\(|\\)", "", 
+                 paste0("Count of Fude: ", n(), "\n",
+                        list(table(land_type))))
+      ),
+    aes(x = point_lng, y = point_lat,
+        fill = RCOM_ROMAJI,
+        label = RCOM_ROMAJI,
+        description = n),
+    colour = NA,
+    expand = unit(1, "mm"),
+    radius = unit(1, "mm"),
+    label.fontsize = 9,
+    label.family = "Helvetica",
+    label.fill = "white",
+    label.colour = "black",
+#   label.buffer = unit(0, "pt"),
+    con.colour = "black"
+  ) +
+  coord_sf(
+    xlim = c(bbox["xmin"] - 0.02, bbox["xmax"] + 0.02),
+    ylim = c(bbox["ymin"] - 0.01, bbox["ymax"] + 0.01)
+  ) +
   theme_void() +
   theme(legend.position = "none")
 ```
 
 **Source**: `r cite_fude(db)$en`
 
-# Displaying a Wide Area Map with `cowplot`
+# Displaying a wide area map with `cowplot`
 
 If you want to be particular about the details of the map, for example, execute the following code.
 ```{r matsuyama, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
@@ -77,14 +83,16 @@ mainmap <- ggplot() +
   geom_sf(data = db$community, fill = "white") +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
   geom_point(data = db$community, aes(x = x, y = y), colour = "gray") +
-  geom_text_repel(data = db$community,
-                  aes(x = x, y = y, label = RCOM_NAME),
-                  nudge_x = c(-.01, .01, -.01, -.012, .005, -.01, .01, .01),
-                  nudge_y = c(.005, .005, 0, .01, -.005, .01, 0, -.005),
-                  min.segment.length = .01,
-                  segment.color = "gray",
-                  size = 3,
-                  family = "Hiragino Sans") +
+  geom_text_repel(
+    data = db$community,
+    aes(x = x, y = y, label = RCOM_NAME),
+    nudge_x = c(-.01, .01, -.01, -.012, .005, -.01, .01, .01),
+    nudge_y = c(.005, .005, 0, .01, -.005, .01, 0, -.005),
+    min.segment.length = .01,
+    segment.color = "gray",
+    size = 3,
+    family = "Hiragino Sans"
+  ) +
   theme_void() +
   theme(legend.position = "none")
 
@@ -92,21 +100,27 @@ bbox <- sf::st_bbox(db$city[db$city$fill == 1, ])
 
 ggdraw(mainmap) +
   draw_plot(
-    {minimap +
-       geom_rect(aes(xmin = bbox$xmin, xmax = bbox$xmax,
-                     ymin = bbox$ymin, ymax = bbox$ymax),
-                 fill = NA,
-                 colour = "black",
-                 size = .5) +
-       coord_sf(xlim = bbox[c("xmin", "xmax")],
-                ylim = bbox[c("ymin", "ymax")],
-                expand = FALSE) +
-       theme(legend.position = "none")
+    {
+      minimap +
+        geom_rect(
+          aes(xmin = bbox$xmin, xmax = bbox$xmax,
+              ymin = bbox$ymin, ymax = bbox$ymax),
+          fill = NA,
+          colour = "black",
+          size = .5
+        ) +
+        coord_sf(
+          xlim = bbox[c("xmin", "xmax")],
+          ylim = bbox[c("ymin", "ymax")],
+          expand = FALSE
+        ) +
+        theme(legend.position = "none")
     },
     x = .7, 
     y = 0,
     width = .3, 
-    height = .3)
+    height = .3
+  )
 ```
 
 **出典**：`r cite_fude(db)$ja`

@@ -4,29 +4,20 @@
 \alias{extract_fude}
 \title{Extract specified Fude Polygon data}
 \usage{
-extract_fude(
-  data,
-  year = NULL,
-  city = NULL,
-  kcity = "",
-  community = "",
-  list = TRUE
-)
+extract_fude(data, year = NULL, city = NULL, kcity = "", community = "")
 }
 \arguments{
-\item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
+\item{data}{A list of \code{\link[sf:sf]{sf::sf()}} objects.}
 
-\item{year}{Years to be extracted.}
+\item{year}{One or more years to extract.}
 
-\item{city}{Local government names or codes to be extracted.}
+\item{city}{Local government names or codes to extract.}
 
-\item{kcity}{String by regular expression. One or more former village name in Japanese
-to be extracted.}
+\item{kcity}{A regular expression string. One or more former village names (in Japanese)
+to extract.}
 
-\item{community}{String by regular expression. One or more agricultural community name in
-Japanese to be extracted.}
-
-\item{list}{logical. If \code{FALSE}, the object to be extracted is no longer a list.}
+\item{community}{A regular expression string. One or more agricultural community names (in
+Japanese) to extract.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} object(s).

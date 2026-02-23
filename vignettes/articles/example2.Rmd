@@ -8,7 +8,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Drawing Agricultural Community Boundaries
+# Drawing agricultural community boundaries
 
 ```{r echo = FALSE, warning = FALSE}
 library(fude)
@@ -34,16 +34,21 @@ ggplot(data = eb, aes(fill = KCITY_NAME)) +
 **出典**：`r cite_fude(eb)$ja`
 
 ```{r imabari_uchiko, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-eb <- extract_boundary(b, city = "今治|内子", all = TRUE)
+eb <- extract_boundary(b, city = "今治|内子", layer = TRUE)
 
+ggplot(data = eb$city) +
+  geom_sf(aes(fill = fill))
 ggplot(data = eb$kcity) +
   geom_sf(aes(fill = fill))
+ggplot(data = eb$city) +
+  geom_sf() +
+  geom_sf(data = eb$community)
 ```
 
 **出典**：`r cite_fude(eb)$ja`
 
 ```{r yusukawa, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-eb <- extract_boundary(b, city = "西予市", kcity = "遊子川", all = TRUE)
+eb <- extract_boundary(b, city = "西予市", kcity = "遊子川", layer = TRUE)
 
 ggplot() +
   geom_sf(data = eb$pref, fill = NA) +
@@ -53,26 +58,30 @@ ggplot() +
       alpha = .05
     )) +
   geom_sf(data = eb$kcity |> filter(fill == 1), fill = "black") +
-  geom_sf_text(data = eb$city |> filter(fill == 1),
-               aes(label = city_kanji),
-               size = 3,
-               nudge_x = -.025, nudge_y = -.025,
-               family = "HiraKakuProN-W3") +
+  geom_sf_text(
+    data = eb$city |> filter(fill == 1),
+    aes(label = city_kanji),
+    size = 3,
+    nudge_x = -.025, nudge_y = -.025,
+    family = "HiraKakuProN-W3"
+  ) +
   geom_point(data = eb$community_union, aes(x = x, y = y), colour = "black") +
-  geom_text_repel(data = eb$community_union,
-                  aes(x = x, y = y),
-                  label = "遊子川地区",
-                  nudge_x = .3, nudge_y = -.025,
-                  segment.color = "black",
-                  size = 3,
-                  family = "HiraKakuProN-W3") +
+  geom_text_repel(
+    data = eb$community_union,
+    aes(x = x, y = y),
+    label = "遊子川地区",
+    nudge_x = .3, nudge_y = -.025,
+    segment.color = "black",
+    size = 3,
+    family = "HiraKakuProN-W3"
+  ) +
   theme_void()
 ```
 
 **出典**：`r cite_fude(eb)$ja`
 
 ```{r maana, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-eb <- extract_boundary(b, city = "八幡浜市", kcity = "真穴", all = TRUE)
+eb <- extract_boundary(b, city = "八幡浜市", kcity = "真穴", layer = TRUE)
 
 ggplot(data = eb$community) +
   geom_sf(data = eb$city |> filter(fill == 1), fill = "gray") +

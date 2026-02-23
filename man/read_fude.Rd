@@ -7,44 +7,41 @@
 read_fude(
   path = NULL,
   pref = NULL,
-  year = 2024,
+  year = 2025,
   census_year = 2020,
-  stringsAsFactors = FALSE,
   supplementary = FALSE,
   to_wgs84 = TRUE,
   quiet = FALSE
 )
 }
 \arguments{
-\item{path}{Path to the ZIP file containing one or more supported spatial data files.
-Supported formats include \code{.geojson}, \code{.json}, and \code{.fgb}.}
+\item{path}{Path to a ZIP file containing one or more supported spatial files
+(\code{.geojson}, \code{.json}, and \code{.fgb}).}
 
-\item{pref}{The year when the Fude Polygon data was created.}
+\item{pref}{Prefecture name or JIS prefecture code.}
 
-\item{year}{The year when the Fude Polygon data was created.}
+\item{year}{Year when the Fude Polygon data was created.}
 
-\item{census_year}{The year of the Agricultural and Forestry Census.}
+\item{census_year}{Year of the Agricultural and Forestry Census.}
 
-\item{stringsAsFactors}{logical. Should character vectors be converted to factors?}
+\item{supplementary}{Logical. If \code{TRUE}, add supplementary information for each polygon.}
 
-\item{supplementary}{logical. If TRUE, add supplementary information for each polygon.}
+\item{to_wgs84}{Logical. If \code{TRUE}, transform coordinates to WGS 84 (EPSG:4326).}
 
-\item{to_wgs84}{logical. Convert JGD2000 to WGS 84.}
-
-\item{quiet}{logical. Suppress information about the data to be read.}
+\item{quiet}{If \code{TRUE}, suppress messages about reading progress.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.
 }
 \description{
-\code{read_fude()} reads Fude Polygon data as a list. The data can be downloaded
-from the MAFF website as a ZIP file, which contains one or more spatial data
-files, such as \strong{GeoJSON} files (\code{.json} or \code{.geojson}) and \strong{FlatGeobuf}
-files (\code{.fgb}). The function also works with ZIP files you created, as long
-as you do not change the filenames of the original files.
+\code{read_fude()} reads MAFF Fude Polygon data from a ZIP file and returns the
+layers as a list of \code{\link[sf:sf]{sf::sf()}} objects. The ZIP may contain one or more spatial
+data files such as \strong{GeoJSON} (\code{.json} or \code{.geojson}) and \strong{FlatGeobuf}
+(\code{.fgb}). The function also works with ZIP files you created, as long as
+the original filenames are unchanged.
 }
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")
-d <- read_fude(path, stringsAsFactors = FALSE)
+d <- read_fude(path)
 
 }

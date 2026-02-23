@@ -19,8 +19,8 @@ combined by \code{\link[=combine_fude]{combine_fude()}}.
 }
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")
-d1 <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
-d2 <- read_fude(path, stringsAsFactors = FALSE, quiet = TRUE)
+d1 <- read_fude(path, quiet = TRUE)
+d2 <- read_fude(path, quiet = TRUE)
 bind_fude(d1, d2)
 
 }

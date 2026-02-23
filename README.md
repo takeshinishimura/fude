@@ -132,7 +132,7 @@ ggplot() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
 
-<img src="man/figures/README-gogoshima-1.png" width="100%" />
+<img src="man/figures/README-gogoshima-1.png" alt="" width="100%" />
 
 **出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
@@ -161,7 +161,7 @@ fude_split <- ggplot() +
 fude + fude_split
 ```
 
-<img src="man/figures/README-nosplit_gogoshima-1.png" width="100%" />
+<img src="man/figures/README-nosplit_gogoshima-1.png" alt="" width="100%" />
 
 If you need to adjust this automatic assignment, you will need to write
 custom code. The rows that require attention can be identified with the
@@ -202,9 +202,9 @@ ggplot() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
 
-<img src="man/figures/README-gogoshimafgb-1.png" width="100%" />
+<img src="man/figures/README-gogoshimafgb-1.png" alt="" width="100%" />
 
-**出典**：農林水産省「筆ポリゴンデータ（2024年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
 Data enables extraction based on city names, former village names, and
 agricultural community names.
@@ -214,34 +214,34 @@ FlatGeobuf (Obtaining Data \#2).
 
 ``` r
 d2 |> extract_fude(city = "松山市", kcity = "興居島")
-#> Simple feature collection with 1690 features and 7 fields
+#> Simple feature collection with 1691 features and 6 fields
 #> Geometry type: MULTIPOLYGON
 #> Dimension:     XY
 #> Bounding box:  xmin: 132.6373 ymin: 33.87055 xmax: 132.6991 ymax: 33.92544
 #> Geodetic CRS:  WGS 84
 #> First 10 features:
 #>                            polygon_uuid land_type issue_year point_lng
-#> 1  87a649f2-0385-4daf-81ba-82a61d44dd1b       200       2024  132.6446
-#> 2  bc56286f-b6a0-48c0-826a-97ce21b50de6       200       2024  132.6447
-#> 3  417bda37-fd35-44be-9c15-a89ed40eb28d       200       2024  132.6445
-#> 4  a2823989-8451-4982-9ba4-27dca5f21a38       200       2024  132.6441
-#> 5  d41c3920-d3ec-4bde-b461-c207d77d9b11       200       2024  132.6437
-#> 6  78d5397b-1a63-4257-8b01-aa365bfb5138       200       2024  132.6434
-#> 7  5af7e914-38d6-4e5d-867b-c0ab2d8f904a       200       2024  132.6436
-#> 8  1b0126bd-6869-4986-a5bf-8c59939ed50d       200       2024  132.6420
-#> 9  be6c809a-2b57-4a79-b123-1dd6669e0221       200       2024  132.6421
-#> 10 58f4149a-273b-4b4a-95c9-1ac353580619       200       2024  132.6423
-#>    point_lat        key local_government_cd                       geometry
-#> 1   33.88813 3820102004              382019 MULTIPOLYGON (((132.6446 33...
-#> 2   33.88768 3820102004              382019 MULTIPOLYGON (((132.6444 33...
-#> 3   33.88746 3820102004              382019 MULTIPOLYGON (((132.6448 33...
-#> 4   33.88755 3820102004              382019 MULTIPOLYGON (((132.6442 33...
-#> 5   33.88740 3820102004              382019 MULTIPOLYGON (((132.6437 33...
-#> 6   33.88729 3820102004              382019 MULTIPOLYGON (((132.6434 33...
-#> 7   33.88770 3820102004              382019 MULTIPOLYGON (((132.6435 33...
-#> 8   33.88782 3820102004              382019 MULTIPOLYGON (((132.6418 33...
-#> 9   33.88792 3820102004              382019 MULTIPOLYGON (((132.6422 33...
-#> 10  33.88765 3820102004              382019 MULTIPOLYGON (((132.6422 33...
+#> 1  5a72b4ef-b5f4-465e-9948-e93142819676       200       2025  132.6446
+#> 2  c69d86d5-1fb2-4528-a87b-155d88260964       200       2025  132.6447
+#> 3  627134ea-919c-4769-bd94-be16cb549c5b       200       2025  132.6445
+#> 4  f2631019-d16e-42f9-8501-75f26515ca9a       200       2025  132.6441
+#> 5  8fedb70d-4bb9-4447-879b-a0eeabc22915       200       2025  132.6437
+#> 6  cd235cdf-da51-4ead-ad50-efc6ea1c84cf       200       2025  132.6434
+#> 7  5853b7a1-62c3-4973-9e79-cabd3da6cdc7       200       2025  132.6436
+#> 8  5e090780-6d16-4b9e-aca9-c56229851bfc       200       2025  132.6420
+#> 9  90de4abf-e972-4031-987f-f3391b04b03c       200       2025  132.6421
+#> 10 e5ade914-c803-42d1-9fa8-0921b98d69b8       200       2025  132.6423
+#>    point_lat        key                       geometry
+#> 1   33.88813 3820102004 MULTIPOLYGON (((132.6446 33...
+#> 2   33.88768 3820102004 MULTIPOLYGON (((132.6444 33...
+#> 3   33.88746 3820102004 MULTIPOLYGON (((132.6448 33...
+#> 4   33.88755 3820102004 MULTIPOLYGON (((132.6442 33...
+#> 5   33.88740 3820102004 MULTIPOLYGON (((132.6437 33...
+#> 6   33.88729 3820102004 MULTIPOLYGON (((132.6434 33...
+#> 7   33.88770 3820102004 MULTIPOLYGON (((132.6435 33...
+#> 8   33.88782 3820102004 MULTIPOLYGON (((132.6418 33...
+#> 9   33.88792 3820102004 MULTIPOLYGON (((132.6422 33...
+#> 10  33.88765 3820102004 MULTIPOLYGON (((132.6422 33...
 ```
 
 ### Review Fude Polygon Data
@@ -254,9 +254,6 @@ library(shiny)
 s <- shiny_fude(db, community = TRUE)
 # shiny::shinyApp(ui = s$ui, server = s$server)
 ```
-
-This feature was heavily inspired by the following website:
-<https://brendenmsmith.com/blog/shiny_map_filter/>.
 
 ### Using `mapview` package
 

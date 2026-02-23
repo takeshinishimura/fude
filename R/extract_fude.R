@@ -3,88 +3,124 @@
 #' @description
 #' `extract_fude()` extracts the specified data from the list returned by
 #' [read_fude()].
+#'
 #' @param data
-#'   List of [sf::sf()] objects.
+#'   A list of [sf::sf()] objects.
 #' @param year
-#'   Years to be extracted.
+#'   One or more years to extract.
 #' @param city
-#'   Local government names or codes to be extracted.
-#' @param list
-#'   logical. If `FALSE`, the object to be extracted is no longer a list.
+#'   Local government names or codes to extract.
 #' @param kcity
-#'   String by regular expression. One or more former village name in Japanese
-#'   to be extracted.
+#'   A regular expression string. One or more former village names (in Japanese)
+#'   to extract.
 #' @param community
-#'   String by regular expression. One or more agricultural community name in
-#'   Japanese to be extracted.
+#'   A regular expression string. One or more agricultural community names (in
+#'   Japanese) to extract.
+#'
 #' @returns A list of [sf::sf()] object(s).
+#'
 #' @seealso [read_fude()].
 #'
 #' @export
-extract_fude <- function(data,
-                         year = NULL,
-                         city = NULL,
-                         kcity = "",
-                         community = "",
-                         list = TRUE) {
-
+extract_fude <- function(
+  data,
+  year = NULL,
+  city = NULL,
+  kcity = "",
+  community = ""
+) {
   validate_fude(data)
-  data <- add_local_government_cd(data)
 
-  if (is.null(year) & is.null(city)) {
-    stop("Specify either `year` or `city`.")
+  # if (is.null(year) & is.null(city)) {
+  #   stop("Specify either `year` or `city`.")
+  # }
+
+  target_key <- find_key(
+    city = city,
+    kcity = kcity,
+    community = community
+  )
+
+  x <- data |>
+    dplyr::bind_rows()
+
+  if (!is.null(year)) {
+    x <- x |>
+      dplyr::filter(.data$issue_year %in% year)
   }
-
-  if (!is.null(city)) {
-
-    if (is.null(year)) {
-      year <- unique(ls_fude(data)$issue_year)
-    }
-
-    selected_names <- NULL
-
-    for (i in year) {
-      ls_data <- ls_fude(data) |>
-        dplyr::filter(.data$issue_year == i)
-
-      matching_idx1 <- match(city, ls_data$local_government_cd)
-      matching_idx2 <- match(
-        sub("(\u5e02|\u533a|\u753a|\u6751)$", "", city),
-        sub("(\u5e02|\u533a|\u753a|\u6751)$", "", ls_data$CITY_NAME)
-      )
-      matching_idx3 <- match(
-        tolower(gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", city, ignore.case = TRUE)),
-        tolower(gsub("-SHI|-KU|-CHO|-MACHI|-SON|-MURA", "", ls_data$CITY_ROMAJI, ignore.case = TRUE))
-      )
-      matching_idx4 <- match(city, ls_data$CITY_NAME)
-
-      matching_idx <- unique(c(matching_idx1, matching_idx2, matching_idx3, matching_idx4))
-
-      selected_names <- c(selected_names, ls_data$names[stats::na.omit(matching_idx)])
-    }
-
-
-  } else {
-
-    selected_names <- ls_fude(data) |>
-      dplyr::filter(.data$issue_year == year) |>
-      dplyr::pull(.data$names)
-
-  }
-
-  x <- dplyr::bind_rows(data[names(data) %in% selected_names])
 
   if ("key" %in% names(x)) {
-
-    target_community_key <- fude::community_code_table |>
-      dplyr::filter(grepl(kcity, .data$KCITY_NAME)) |>
-      dplyr::filter(grepl(community, .data$RCOM_NAME)) |>
-      dplyr::pull(.data$KEY)
-
     x <- x |>
-      dplyr::filter(.data$key %in% target_community_key)
-
+      dplyr::filter(
+        .data$key %in% target_key
+      )
+  } else if ("local_government_cd" %in% names(x)) {
+    x <- x |>
+      dplyr::filter(
+        .data$local_government_cd %in% unique(modulus11(target_key))
+      )
   }
+
+  return(x)
+}
+
+find_key <- function(
+  city = city,
+  kcity = kcity,
+  community = community
+) {
+  strip_jp_suffix <- function(x) {
+    sub("(\u5e02|\u533a|\u753a|\u6751)$", "", x)
+  }
+
+  strip_kana_suffix <- function(x) {
+    sub(
+      "(\u3057|\u304f|\u3061\u3087\u3046|\u307e\u3061|\u305d\u3093|\u3080\u3089)$",
+      "",
+      x
+    )
+  }
+
+  strip_romaji_suffix <- function(x) {
+    tolower(gsub(
+      "-SHI|-KU|-CHO|-MACHI|-SON|-MURA",
+      "",
+      x,
+      ignore.case = TRUE
+    ))
+  }
+
+  has_city <- !(is.null(city) || length(city) == 0 || all(!nzchar(city)))
+
+  city_vec <- if (has_city) city[nzchar(city)] else character()
+
+  city_code <- city_vec[grepl("^\\d+$", city_vec)]
+  city_jp <- strip_jp_suffix(city_vec)
+  city_kana <- strip_kana_suffix(city_vec)
+  city_romaji <- strip_romaji_suffix(city_vec)
+
+  x <- fude::community_code_table |>
+    dplyr::filter(
+      if (!has_city) {
+        TRUE
+      } else {
+        ((.data$local_government_cd %in% city_code) |
+          (strip_jp_suffix(.data$CITY_NAME) %in% city_jp) |
+          (strip_kana_suffix(.data$CITY_KANA) %in% city_kana) |
+          (strip_romaji_suffix(.data$CITY_ROMAJI) %in% city_romaji))
+      },
+      if (is.null(kcity) || length(kcity) == 0 || !nzchar(kcity)) {
+        TRUE
+      } else {
+        grepl(kcity, .data$KCITY_NAME, perl = TRUE)
+      },
+      if (is.null(community) || length(community) == 0 || !nzchar(community)) {
+        TRUE
+      } else {
+        grepl(community, .data$RCOM_NAME, perl = TRUE)
+      }
+    ) |>
+    dplyr::pull(.data$KEY)
 
   return(x)
 }

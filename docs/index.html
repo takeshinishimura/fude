@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">fude</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,21 +95,13 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 </ol>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span>pref <span class="op">=</span> <span class="st">"愛媛"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#&gt; Reading layer `MB0001_2024_2020_38' from data source </span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt;   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpLFmlN7/fileab9d6efb7619/MB0001_2024_2020_38/MB0001_2024_2020_38.fgb' </span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt;   using driver `FlatGeobuf'</span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 632287 features and 6 fields</span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 132.0215 ymin: 32.9103 xmax: 133.6916 ymax: 34.29884</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  JGD2000</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="renaming-the-local-government-code">Renaming the Local Government Code<a class="anchor" aria-label="anchor" href="#renaming-the-local-government-code"></a>
 </h3>
 <p><strong>Note:</strong> This feature is available only for data obtained from GeoJSON (Obtaining Data #1).</p>
 <p>Convert local government codes into Japanese municipality names for easier management.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dren</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dren</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "2022_松山市"     "2022_今治市"     "2022_宇和島市"   "2022_八幡浜市"  </span></span>
@@ -118,7 +110,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span><span class="co">#&gt; [13] "2022_久万高原町" "2022_松前町"     "2022_砥部町"     "2022_内子町"    </span></span>
 <span><span class="co">#&gt; [17] "2022_伊方町"     "2022_松野町"     "2022_鬼北町"     "2022_愛南町"</span></span></code></pre></div>
 <p>You can also rename the columns to Romaji instead of Japanese.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dren</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span>suffix <span class="op">=</span> <span class="cn">TRUE</span>, romaji <span class="op">=</span> <span class="st">"title"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dren</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "2022_Matsuyama-shi"   "2022_Imabari-shi"     "2022_Uwajima-shi"    </span></span>
@@ -133,7 +125,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <h3 id="getting-agricultural-community-boundary-data">Getting Agricultural Community Boundary Data<a class="anchor" aria-label="anchor" href="#getting-agricultural-community-boundary-data"></a>
 </h3>
 <p>Download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website: <a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/" class="external-link uri">https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/</a> (available only in Japanese).</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -143,7 +135,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <div class="section level4">
 <h4 id="characteristics-of-data-from-geojson-obtaining-data-1">Characteristics of Data from GeoJSON (Obtaining Data #1)<a class="anchor" aria-label="anchor" href="#characteristics-of-data-from-geojson-obtaining-data-1"></a>
 </h4>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"松山市"</span>, community <span class="op">=</span> <span class="st">"由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -154,7 +146,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-gogoshima-1.png" width="100%"></p>
+<p><img src="reference/figures/README-gogoshima-1.png" alt="" width="100%"></p>
 <p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
 <div class="section level5">
 <h5 id="data-assignment">Data Assignment<a class="anchor" aria-label="anchor" href="#data-assignment"></a>
@@ -165,7 +157,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <li>
 <code>db$fude_split</code>: Provides cleaner boundaries, but polygon data near community borders may be divided.</li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fude</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -181,9 +173,9 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">132.658</span>, <span class="fl">132.678</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">33.887</span>, <span class="fl">33.902</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fude</span> <span class="op">+</span> <span class="va">fude_split</span></span></code></pre></div>
-<p><img src="reference/figures/README-nosplit_gogoshima-1.png" width="100%"></p>
+<p><img src="reference/figures/README-nosplit_gogoshima-1.png" alt="" width="100%"></p>
 <p>If you need to adjust this automatic assignment, you will need to write custom code. The rows that require attention can be identified with the following command.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span></span>
@@ -205,7 +197,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <h4 id="characteristics-of-data-from-flatgeobuf-obtaining-data-2">Characteristics of Data from FlatGeobuf (Obtaining Data #2)<a class="anchor" aria-label="anchor" href="#characteristics-of-data-from-flatgeobuf-obtaining-data-2"></a>
 </h4>
 <p>The FlatGeobuf format offers a more efficient alternative to GeoJSON. A notable feature of this format is that each record already includes an <strong>accurately assigned agricultural community code</strong>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">db2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d2</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"松山市"</span>, community <span class="op">=</span> <span class="st">"由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -214,69 +206,57 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-gogoshimafgb-1.png" width="100%"></p>
-<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2024年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
+<p><img src="reference/figures/README-gogoshimafgb-1.png" alt="" width="100%"></p>
+<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。</p>
 <p>Data enables extraction based on city names, former village names, and agricultural community names.</p>
 <p><strong>Note:</strong> This feature is available only for data obtained from FlatGeobuf (Obtaining Data #2).</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d2</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/extract_fude.html">extract_fude</a></span><span class="op">(</span>city <span class="op">=</span> <span class="st">"松山市"</span>, kcity <span class="op">=</span> <span class="st">"興居島"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Simple feature collection with 1690 features and 8 fields</span></span>
+<span><span class="co">#&gt; Simple feature collection with 1691 features and 6 fields</span></span>
 <span><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
 <span><span class="co">#&gt; Dimension:     XY</span></span>
 <span><span class="co">#&gt; Bounding box:  xmin: 132.6373 ymin: 33.87055 xmax: 132.6991 ymax: 33.92544</span></span>
 <span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
 <span><span class="co">#&gt; First 10 features:</span></span>
 <span><span class="co">#&gt;                            polygon_uuid land_type issue_year point_lng</span></span>
-<span><span class="co">#&gt; 1  87a649f2-0385-4daf-81ba-82a61d44dd1b       200       2024  132.6446</span></span>
-<span><span class="co">#&gt; 2  bc56286f-b6a0-48c0-826a-97ce21b50de6       200       2024  132.6447</span></span>
-<span><span class="co">#&gt; 3  417bda37-fd35-44be-9c15-a89ed40eb28d       200       2024  132.6445</span></span>
-<span><span class="co">#&gt; 4  a2823989-8451-4982-9ba4-27dca5f21a38       200       2024  132.6441</span></span>
-<span><span class="co">#&gt; 5  d41c3920-d3ec-4bde-b461-c207d77d9b11       200       2024  132.6437</span></span>
-<span><span class="co">#&gt; 6  78d5397b-1a63-4257-8b01-aa365bfb5138       200       2024  132.6434</span></span>
-<span><span class="co">#&gt; 7  5af7e914-38d6-4e5d-867b-c0ab2d8f904a       200       2024  132.6436</span></span>
-<span><span class="co">#&gt; 8  1b0126bd-6869-4986-a5bf-8c59939ed50d       200       2024  132.6420</span></span>
-<span><span class="co">#&gt; 9  be6c809a-2b57-4a79-b123-1dd6669e0221       200       2024  132.6421</span></span>
-<span><span class="co">#&gt; 10 58f4149a-273b-4b4a-95c9-1ac353580619       200       2024  132.6423</span></span>
-<span><span class="co">#&gt;    point_lat        key land_type_jp local_government_cd</span></span>
-<span><span class="co">#&gt; 1   33.88813 3820102004           畑              382019</span></span>
-<span><span class="co">#&gt; 2   33.88768 3820102004           畑              382019</span></span>
-<span><span class="co">#&gt; 3   33.88746 3820102004           畑              382019</span></span>
-<span><span class="co">#&gt; 4   33.88755 3820102004           畑              382019</span></span>
-<span><span class="co">#&gt; 5   33.88740 3820102004           畑              382019</span></span>
-<span><span class="co">#&gt; 6   33.88729 3820102004           畑              382019</span></span>
-<span><span class="co">#&gt; 7   33.88770 3820102004           畑              382019</span></span>
-<span><span class="co">#&gt; 8   33.88782 3820102004           畑              382019</span></span>
-<span><span class="co">#&gt; 9   33.88792 3820102004           畑              382019</span></span>
-<span><span class="co">#&gt; 10  33.88765 3820102004           畑              382019</span></span>
-<span><span class="co">#&gt;                          geometry</span></span>
-<span><span class="co">#&gt; 1  MULTIPOLYGON (((132.6446 33...</span></span>
-<span><span class="co">#&gt; 2  MULTIPOLYGON (((132.6444 33...</span></span>
-<span><span class="co">#&gt; 3  MULTIPOLYGON (((132.6448 33...</span></span>
-<span><span class="co">#&gt; 4  MULTIPOLYGON (((132.6442 33...</span></span>
-<span><span class="co">#&gt; 5  MULTIPOLYGON (((132.6437 33...</span></span>
-<span><span class="co">#&gt; 6  MULTIPOLYGON (((132.6434 33...</span></span>
-<span><span class="co">#&gt; 7  MULTIPOLYGON (((132.6435 33...</span></span>
-<span><span class="co">#&gt; 8  MULTIPOLYGON (((132.6418 33...</span></span>
-<span><span class="co">#&gt; 9  MULTIPOLYGON (((132.6422 33...</span></span>
-<span><span class="co">#&gt; 10 MULTIPOLYGON (((132.6422 33...</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  5a72b4ef-b5f4-465e-9948-e93142819676       200       2025  132.6446</span></span>
+<span><span class="co">#&gt; 2  c69d86d5-1fb2-4528-a87b-155d88260964       200       2025  132.6447</span></span>
+<span><span class="co">#&gt; 3  627134ea-919c-4769-bd94-be16cb549c5b       200       2025  132.6445</span></span>
+<span><span class="co">#&gt; 4  f2631019-d16e-42f9-8501-75f26515ca9a       200       2025  132.6441</span></span>
+<span><span class="co">#&gt; 5  8fedb70d-4bb9-4447-879b-a0eeabc22915       200       2025  132.6437</span></span>
+<span><span class="co">#&gt; 6  cd235cdf-da51-4ead-ad50-efc6ea1c84cf       200       2025  132.6434</span></span>
+<span><span class="co">#&gt; 7  5853b7a1-62c3-4973-9e79-cabd3da6cdc7       200       2025  132.6436</span></span>
+<span><span class="co">#&gt; 8  5e090780-6d16-4b9e-aca9-c56229851bfc       200       2025  132.6420</span></span>
+<span><span class="co">#&gt; 9  90de4abf-e972-4031-987f-f3391b04b03c       200       2025  132.6421</span></span>
+<span><span class="co">#&gt; 10 e5ade914-c803-42d1-9fa8-0921b98d69b8       200       2025  132.6423</span></span>
+<span><span class="co">#&gt;    point_lat        key                       geometry</span></span>
+<span><span class="co">#&gt; 1   33.88813 3820102004 MULTIPOLYGON (((132.6446 33...</span></span>
+<span><span class="co">#&gt; 2   33.88768 3820102004 MULTIPOLYGON (((132.6444 33...</span></span>
+<span><span class="co">#&gt; 3   33.88746 3820102004 MULTIPOLYGON (((132.6448 33...</span></span>
+<span><span class="co">#&gt; 4   33.88755 3820102004 MULTIPOLYGON (((132.6442 33...</span></span>
+<span><span class="co">#&gt; 5   33.88740 3820102004 MULTIPOLYGON (((132.6437 33...</span></span>
+<span><span class="co">#&gt; 6   33.88729 3820102004 MULTIPOLYGON (((132.6434 33...</span></span>
+<span><span class="co">#&gt; 7   33.88770 3820102004 MULTIPOLYGON (((132.6435 33...</span></span>
+<span><span class="co">#&gt; 8   33.88782 3820102004 MULTIPOLYGON (((132.6418 33...</span></span>
+<span><span class="co">#&gt; 9   33.88792 3820102004 MULTIPOLYGON (((132.6422 33...</span></span>
+<span><span class="co">#&gt; 10  33.88765 3820102004 MULTIPOLYGON (((132.6422 33...</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="review-fude-polygon-data">Review Fude Polygon Data<a class="anchor" aria-label="anchor" href="#review-fude-polygon-data"></a>
 </h3>
 <p>You can review Fude Polygon data in detail.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/shiny_fude.html">shiny_fude</a></span><span class="op">(</span><span class="va">db</span>, community <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co"># shiny::shinyApp(ui = s$ui, server = s$server)</span></span></code></pre></div>
-<p>This feature was heavily inspired by the following website: <a href="https://brendenmsmith.com/blog/shiny_map_filter/" class="external-link uri">https://brendenmsmith.com/blog/shiny_map_filter/</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="using-mapview-package">Using <code>mapview</code> package<a class="anchor" aria-label="anchor" href="#using-mapview-package"></a>
 </h3>
-<p>If you want to use <code><a href="https://rdrr.io/pkg/mapview/man/mapView.html" class="external-link">mapview()</a></code>, do the following.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p>If you want to use <code><a href="https://r-spatial.github.io/mapview/reference/mapView.html" class="external-link">mapview()</a></code>, do the following.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">db1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"伊方町"</span><span class="op">)</span></span>
 <span><span class="va">db2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"八幡浜市"</span><span class="op">)</span></span>
 <span><span class="va">db3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"西予市"</span>, kcity <span class="op">=</span> <span class="st">"三瓶|二木生|三島|双岩"</span><span class="op">)</span></span>
@@ -285,7 +265,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/mapview" class="external-link">mapview</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mapview</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html" class="external-link">mapview</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span>, zcol <span class="op">=</span> <span class="st">"RCOM_NAME"</span>, layer.name <span class="op">=</span> <span class="st">"農業集落名"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">mapview</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/mapview/reference/mapView.html" class="external-link">mapview</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span>, zcol <span class="op">=</span> <span class="st">"RCOM_NAME"</span>, layer.name <span class="op">=</span> <span class="st">"農業集落名"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -317,7 +297,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Takeshi Nishimura <br><small class="roles"> Author, copyright holder, maintainer </small> <a href="https://orcid.org/0000-0003-1761-4300" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Takeshi Nishimura <br><small class="roles"> Author, copyright holder, maintainer </small> <a href="https://orcid.org/0000-0003-1761-4300" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
 
@@ -338,7 +318,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

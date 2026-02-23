@@ -2,36 +2,40 @@
 #'
 #' @description
 #' Prepares a Leaflet map for Fude Polygon data.
+#'
 #' @param data
 #'   A list or data frame containing Fude Polygon data.
 #' @param community
 #'   A logical value indicating whether to overlay community data on the map.
+#'
 #' @return A Leaflet map object with Fude Polygon data with an HTML table.
 #'
 #' @export
-shiny_fude <- function(data, community = FALSE) {
-
+shiny_fude <- function(
+  data,
+  community = FALSE
+) {
   if ("fude" %in% names(data)) {
-      data_fude <- data$fude %>%
-        dplyr::mutate(
-          layerId = .data$polygon_uuid,
-          label = .data$polygon_uuid
-        )
-    } else {
-      data_fude <- data %>%
-        dplyr::mutate(
-          layerId = .data$polygon_uuid,
-          label = .data$RCOM_NAME
-        )
-    }
+    data_fude <- data$fude %>%
+      dplyr::mutate(
+        layerId = .data$polygon_uuid,
+        label = .data$polygon_uuid
+      )
+  } else {
+    data_fude <- data %>%
+      dplyr::mutate(
+        layerId = .data$polygon_uuid,
+        label = .data$RCOM_NAME
+      )
+  }
 
-    if (community && "community" %in% names(data)) {
-      data_community <- data$community %>%
-        dplyr::mutate(
-          community_layerId = .data$RCOM,
-          community_label = .data$RCOM_NAME
-        )
-    }
+  if (community && "community" %in% names(data)) {
+    data_community <- data$community %>%
+      dplyr::mutate(
+        community_layerId = .data$RCOM,
+        community_label = .data$RCOM_NAME
+      )
+  }
 
   ui <- shiny::fluidPage(
     shiny::tags$head(
@@ -54,7 +58,11 @@ shiny_fude <- function(data, community = FALSE) {
     )
   )
 
-  server <- function(input, output, session) {
+  server <- function(
+    input,
+    output,
+    session
+  ) {
     rv <- shiny::reactiveValues(selected_fude = NULL, filtered_data = data_fude)
 
     shiny::observeEvent(input$mapfilter_shape_click, {
@@ -63,7 +71,9 @@ shiny_fude <- function(data, community = FALSE) {
       if (click$id %in% rv$selected_fude) {
         rv$selected_fude <- rv$selected_fude[rv$selected_fude != click$id]
       } else if (click$id == "selected") {
-        rv$selected_fude <- rv$selected_fude[rv$selected_fude != utils::tail(rv$selected_fude, n = 1)]
+        rv$selected_fude <- rv$selected_fude[
+          rv$selected_fude != utils::tail(rv$selected_fude, n = 1)
+        ]
       } else {
         rv$selected_fude <- c(rv$selected_fude, click$id)
       }
@@ -92,13 +102,16 @@ shiny_fude <- function(data, community = FALSE) {
           fillColor = "steelblue",
           color = "black",
           weight = 2,
-          fillOpacity = ifelse(data_fude$polygon_uuid %in% rv$selected_fude, 1, 0.1),
+          fillOpacity = ifelse(
+            data_fude$polygon_uuid %in% rv$selected_fude,
+            1,
+            0.1
+          ),
           highlightOptions = leaflet::highlightOptions(
             fillOpacity = 1,
             bringToFront = TRUE
           )
         )
-
     })
 
     output$mapfilter <- leaflet::renderLeaflet({
@@ -143,17 +156,17 @@ shiny_fude <- function(data, community = FALSE) {
     output$table <- DT::renderDT({
       rv$filtered_data %>%
         sf::st_set_geometry(NULL) %>%
-        dplyr::mutate_if(~inherits(.x, "units"), as.numeric) %>%
+        dplyr::mutate_if(~ inherits(.x, "units"), as.numeric) %>%
         DT::datatable(
-          selection = 'single',  # Allow single row selection
-          filter = 'top',
-          extensions = 'Buttons',
+          selection = "single", # Allow single row selection
+          filter = "top",
+          extensions = "Buttons",
           options = list(
             pageLength = 25,
-            dom = 'Blfrtip',
+            dom = "Blfrtip",
             buttons = list(
-              c('csv', 'excel'),
-              I('colvis')
+              c("csv", "excel"),
+              I("colvis")
             )
           )
         )
@@ -198,13 +211,16 @@ shiny_fude <- function(data, community = FALSE) {
             fillColor = "steelblue",
             color = "black",
             weight = 2,
-            fillOpacity = ifelse(data_fude$polygon_uuid %in% rv$selected_fude, 1, 0.1),
+            fillOpacity = ifelse(
+              data_fude$polygon_uuid %in% rv$selected_fude,
+              1,
+              0.1
+            ),
             highlightOptions = leaflet::highlightOptions(
               fillOpacity = 1,
               bringToFront = TRUE
             )
           )
-
       }
     })
 
@@ -242,12 +258,15 @@ shiny_fude <- function(data, community = FALSE) {
             bringToFront = TRUE
           )
         )
-
     })
-   }
+  }
 
   return(list(ui = ui, server = server))
-
 }
 
-utils::globalVariables(c("layerId", "label", "community_layerId", "community_label"))
+utils::globalVariables(c(
+  "layerId",
+  "label",
+  "community_layerId",
+  "community_label"
+))

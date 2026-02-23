@@ -17,17 +17,17 @@ get_boundary(
 \item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects or one or more strings representing prefecture
 codes.}
 
-\item{year}{The year when the agricultural community boundary data was created.}
+\item{year}{Year when the agricultural community boundary data was created.}
 
-\item{census_year}{The year of the Agricultural and Forestry Census.}
+\item{census_year}{Year of the Agricultural and Forestry Census.}
 
 \item{path}{Path to the ZIP file containing the agricultural community boundary data;
 use a local ZIP file instead of going looking for a ZIP file. Specify a
 directory containing one or more ZIP files, not the ZIP file itself.}
 
-\item{to_wgs84}{logical. Convert JGD2000 to WGS 84.}
+\item{to_wgs84}{Logical. If \code{TRUE}, transform coordinates to WGS 84 (EPSG:4326).}
 
-\item{quiet}{logical. Suppress information about the data to be read.}
+\item{quiet}{If \code{TRUE}, suppress messages about reading progress.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.
@@ -37,7 +37,7 @@ A list of \code{\link[sf:sf]{sf::sf()}} objects.
 boundary data provided by the MAFF.
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path)
 b <- get_boundary(d)

@@ -29,19 +29,18 @@ applicable local government code, it is required.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.
+
+@seealso \code{\link[=read_fude]{read_fude()}}.
 }
 \description{
 \code{combine_fude()} uses the agricultural community boundary data to reduce the
 Fude Polygon data to the community units.
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path, stringsAsFactors = FALSE)
 b <- get_boundary(d)
 db <- combine_fude(d, b, "\u677e\u5c71\u5e02", "\u57ce\u6771", year = 2022)
 \dontshow{\}) # examplesIf}
-}
-\seealso{
-\code{\link[=read_fude]{read_fude()}}.
 }

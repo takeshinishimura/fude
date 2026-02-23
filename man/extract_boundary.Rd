@@ -4,7 +4,13 @@
 \alias{extract_boundary}
 \title{Extract specified agricultural community boundary data}
 \usage{
-extract_boundary(boundary, city = "", kcity = "", community = "", all = FALSE)
+extract_boundary(
+  boundary,
+  city = "",
+  kcity = "",
+  community = "",
+  layer = FALSE
+)
 }
 \arguments{
 \item{boundary}{List of one or more agricultural community boundary data provided by
@@ -22,7 +28,7 @@ to be extracted.}
 \item{community}{String by regular expression. One or more agricultural community name in
 Japanese to be extracted.}
 
-\item{all}{logical.}
+\item{layer}{Logical.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} object(s).

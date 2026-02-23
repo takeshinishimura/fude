@@ -8,7 +8,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Structure of Combined Fude Polygon Data with Agricultural Community Boundary Data
+# Structure of combined Fude Polygon data with agricultural community boundary data
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
 library(fude)
@@ -22,8 +22,7 @@ There are `r length(names(db))` types of objects obtained by `combine_fude()`, a
 names(db)
 ```
 
-
-# The Possible Values for `community` in `combine_fude()` and `extract_boundary()`
+# Possible values for `community` in `combine_fude()` and `extract_boundary()`
 
 ```{r community_in_data, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(dplyr)
@@ -44,7 +43,7 @@ ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) +
 
 **出典**：`r cite_fude(b)$ja`
 
-# The Possible Values for `kcity` in `combine_fude()` and `extract_boundary()`
+# Possible values for `kcity` in `combine_fude()` and `extract_boundary()`
 
 ```{r kcity_in_data, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(paletteer)
