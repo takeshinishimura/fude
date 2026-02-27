@@ -6,20 +6,18 @@ the Fude Polygon data to the community units.
 ## Usage
 
 ``` r
-combine_fude(data, boundary, city, kcity = "", community = "", year = NULL)
+combine_fude(data, boundary, city, kcity = "", rcom = "", year = NULL)
 ```
 
 ## Arguments
 
 - data:
 
-  List of [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html)
-  objects.
+  List of MAFF Fude Polygon data.
 
 - boundary:
 
-  List of one or more agricultural community boundary data provided by
-  the MAFF.
+  List of one or more MAFF agricultural community boundary data.
 
 - city:
 
@@ -31,13 +29,13 @@ combine_fude(data, boundary, city, kcity = "", community = "", year = NULL)
 
 - kcity:
 
-  String by regular expression. One or more former village name in
-  Japanese to be extracted.
+  A regular expression string. One or more former city names (in
+  Japanese) to extract.
 
-- community:
+- rcom:
 
-  String by regular expression. One or more agricultural community name
-  in Japanese to be extracted.
+  A regular expression string. One or more agricultural community names
+  (in Japanese) to extract.
 
 - year:
 

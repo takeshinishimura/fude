@@ -5,10 +5,9 @@
 #' Fude Polygon data to the community units.
 #'
 #' @param data
-#'   List of [sf::sf()] objects.
+#'   List of MAFF Fude Polygon data.
 #' @param boundary
-#'   List of one or more agricultural community boundary data provided by
-#'   the MAFF.
+#'   List of one or more MAFF agricultural community boundary data.
 #' @param city
 #'   A local government name in Japanese to be extracted. In the case of
 #'   overlapping local government names, this must contain the prefecture name
@@ -16,11 +15,11 @@
 #'   "fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO"). Alternatively, it could be
 #'   a 6-digit local government code.
 #' @param kcity
-#'   String by regular expression. One or more former village name in Japanese
-#'   to be extracted.
-#' @param community
-#'   String by regular expression. One or more agricultural community name in
-#'   Japanese to be extracted.
+#'   A regular expression string. One or more former city names (in Japanese)
+#'   to extract.
+#' @param rcom
+#'   A regular expression string. One or more agricultural community names (in
+#'   Japanese) to extract.
 #' @param year
 #'   Year in the column name of the `data`. If there is more than one
 #'   applicable local government code, it is required.
@@ -42,7 +41,7 @@ combine_fude <- function(
   boundary,
   city,
   kcity = "",
-  community = "",
+  rcom = "",
   year = NULL
 ) {
   validate_fude(data)
@@ -52,7 +51,7 @@ combine_fude <- function(
     boundary = boundary,
     city = city,
     kcity = kcity,
-    community = community,
+    rcom = rcom,
     layer = TRUE
   )
 
@@ -60,14 +59,14 @@ combine_fude <- function(
   lg_code <- find_lg_code(location_info$pref, location_info$city)
 
   if ("key" %in% names(data[[1]])) {
-    target_key <- unique(extracted_boundary$community$KEY)
+    target_key <- unique(extracted_boundary$rcom$KEY)
     fude_original <- data[[grepl(
       paste0("_", substr(lg_code, start = 1, stop = 2), "$"),
       names(data)
     )]] |>
       dplyr::filter(.data$key %in% target_key) |>
       dplyr::left_join(
-        extracted_boundary$community |>
+        extracted_boundary$rcom |>
           sf::st_set_geometry(NULL) |>
           dplyr::select(-.data$local_government_cd),
         by = c("key" = "KEY")
@@ -85,8 +84,8 @@ combine_fude <- function(
 
     result <- list(
       fude = fude_original,
-      community = extracted_boundary$community,
-      community_union = extracted_boundary$community_union,
+      rcom = extracted_boundary$rcom,
+      rcom_union = extracted_boundary$rcom_union,
       kcity = extracted_boundary$kcity,
       city = extracted_boundary$city,
       pref = extracted_boundary$pref
@@ -116,7 +115,7 @@ combine_fude <- function(
     target_fude <- data[[data_no]]
     intersection_fude <- target_fude |>
       sf::st_intersection(
-        extracted_boundary$community |>
+        extracted_boundary$rcom |>
           dplyr::select(-.data$local_government_cd)
       )
 
@@ -158,8 +157,8 @@ combine_fude <- function(
     result <- list(
       fude = fude_original,
       fude_split = intersection_fude,
-      community = extracted_boundary$community,
-      community_union = extracted_boundary$community_union,
+      rcom = extracted_boundary$rcom,
+      rcom_union = extracted_boundary$rcom_union,
       kcity = extracted_boundary$kcity,
       city = extracted_boundary$city,
       pref = extracted_boundary$pref
@@ -167,7 +166,7 @@ combine_fude <- function(
   }
 
   message(paste(
-    length(unique(extracted_boundary$community$KEY)),
+    length(unique(extracted_boundary$rcom$KEY)),
     "communities have been extracted."
   ))
 

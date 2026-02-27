@@ -4,6 +4,8 @@
 
 - Added support for processing data without requiring the local
   government code to be pre-written.
+- Renamed the `community` argument to `rcom` in several functions.
+- Added `kcity_code_table` and `city_code_table`.
 
 ## fude 0.3.7
 
@@ -33,7 +35,7 @@ CRAN release: 2023-10-08
 
 CRAN release: 2023-09-19
 
-- Support for polygon data that is not split.
+- Added support for polygon data that is not split.
 
 ## fude 0.3.3
 

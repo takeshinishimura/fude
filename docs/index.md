@@ -110,7 +110,7 @@ boundaries to create enriched spatial analyses or maps.
 #### Characteristics of Data from GeoJSON (Obtaining Data \#1)
 
 ``` r
-db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 library(ggplot2)
 
@@ -182,7 +182,7 @@ notable feature of this format is that each record already includes an
 **accurately assigned agricultural community code**.
 
 ``` r
-db2 <- combine_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+db2 <- combine_fude(d2, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
   geom_sf(data = db2$fude, aes(fill = RCOM_NAME), alpha = .8) +
@@ -241,7 +241,7 @@ You can review Fude Polygon data in detail.
 ``` r
 library(shiny)
 
-s <- shiny_fude(db, community = TRUE)
+s <- shiny_fude(db, rcom = TRUE)
 # shiny::shinyApp(ui = s$ui, server = s$server)
 ```
 

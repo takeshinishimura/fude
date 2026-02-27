@@ -22,7 +22,6 @@ Depends:
 Imports:
     dplyr,
     DT,
-    forcats,
     glue,
     leaflet,
     magrittr,

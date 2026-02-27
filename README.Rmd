@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 The fude package provides utilities to facilitate the handling of the Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word "fude" is a Japanese counter suffix used to denote land parcels.
 
 
-## Obtaining Data
+## Obtaining data
 
 Fude Polygon data can now be downloaded from two different MAFF websites (both available only in Japanese):
 
@@ -48,7 +48,7 @@ devtools::install_github("takeshinishimura/fude")
 
 ## Usage
 
-### Reading Fude Polygon Data
+### Reading Fude Polygon data
 
 There are two ways to load Fude Polygon data, depending on how the data was obtained:
 
@@ -72,7 +72,7 @@ d2 <- read_fude(pref = "愛媛")
 d2 <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
 ```
 
-### Renaming the Local Government Code
+### Renaming the local government code
 
 **Note:** This feature is available only for data obtained from GeoJSON (Obtaining Data #1).
 
@@ -88,7 +88,7 @@ dren <- d |> rename_fude(suffix = TRUE, romaji = "title")
 names(dren)
 ```
 
-### Getting Agricultural Community Boundary Data
+### Getting agricultural community boundary data
 
 Download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website:
 <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/> (available only in Japanese).
@@ -99,14 +99,14 @@ b <- get_boundary(d)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 ```
 
-### Combining Fude Polygons with Agricultural Community Boundaries
+### Combining Fude Polygons with agricultural community boundaries
 
 You can easily combine Fude Polygons with agricultural community boundaries to create enriched spatial analyses or maps.
 
-#### Characteristics of Data from GeoJSON (Obtaining Data #1)
+#### Characteristics of data from GeoJSON (Obtaining data #1)
 
 ```{r gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-db <- combine_fude(d, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 library(ggplot2)
 
@@ -120,7 +120,7 @@ ggplot() +
 
 **出典**：`r cite_fude(db)$ja`
 
-##### Data Assignment
+##### Data assignment
 
 - `db$fude`: Automatically assigns polygons on the boundaries to a community.
 - `db$fude_split`: Provides cleaner boundaries, but polygon data near community borders may be divided.
@@ -155,12 +155,12 @@ db$fude |>
   head()
 ```
 
-#### Characteristics of Data from FlatGeobuf (Obtaining Data #2)
+#### Characteristics of data from FlatGeobuf (Obtaining data #2)
 
 The FlatGeobuf format offers a more efficient alternative to GeoJSON.
 A notable feature of this format is that each record already includes an **accurately assigned agricultural community code**.
 ```{r gogoshimafgb, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-db2 <- combine_fude(d2, b, city = "松山市", community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+db2 <- combine_fude(d2, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
   geom_sf(data = db2$fude, aes(fill = RCOM_NAME), alpha = .8) +
@@ -177,17 +177,23 @@ Data enables extraction based on city names, former village names, and agricultu
 **Note:** This feature is available only for data obtained from FlatGeobuf (Obtaining Data #2).
 
 ```{r message = FALSE}
-d2 |> extract_fude(city = "松山市", kcity = "興居島")
+extract_fude(d2, city = "松山市", kcity = "興居島")
 ```
 
-### Review Fude Polygon Data
+### Review Fude Polygon data
 
 You can review Fude Polygon data in detail.
 ```{r shiny_fude, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(shiny)
 
-s <- shiny_fude(db, community = TRUE)
+s <- shiny_fude(db, rcom = TRUE)
 # shiny::shinyApp(ui = s$ui, server = s$server)
+```
+
+### Itemize the structure of Fude Polygon data
+
+```{r message = FALSE}
+ls_fude(d2)
 ```
 
 ### Using `mapview` package

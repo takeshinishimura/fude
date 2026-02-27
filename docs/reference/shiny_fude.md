@@ -1,11 +1,11 @@
-# Prepare Leaflet Map for Fude Polygon Data
+# Prepare Leaflet map for Fude Polygon data
 
 Prepares a Leaflet map for Fude Polygon data.
 
 ## Usage
 
 ``` r
-shiny_fude(data, community = FALSE)
+shiny_fude(data, height = 1000, rcom = FALSE)
 ```
 
 ## Arguments
@@ -14,7 +14,11 @@ shiny_fude(data, community = FALSE)
 
   A list or data frame containing Fude Polygon data.
 
-- community:
+- height:
+
+  Height of the map.
+
+- rcom:
 
   A logical value indicating whether to overlay community data on the
   map.

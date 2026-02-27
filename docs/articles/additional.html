@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Structure of Combined Fude Polygon Data with Agricultural Community Boundary Data • fude</title>
+<title>Structure of combined Fude Polygon data with agricultural community boundary data • fude</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Structure of Combined Fude Polygon Data with Agricultural Community Boundary Data">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Structure of combined Fude Polygon data with agricultural community boundary data">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -47,11 +47,12 @@
 
 
 
-
-<div class="row">
+<link href="additional_files/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="additional_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="additional_files/d3-4.10.2/d3.min.js"></script><link href="additional_files/collapsibleTree-0.1.6/collapsibleTree.css" rel="stylesheet">
+<script src="additional_files/collapsibleTree-binding-0.1.8/collapsibleTree.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Structure of Combined Fude Polygon Data with Agricultural Community Boundary Data</h1>
+      <h1>Structure of combined Fude Polygon data with agricultural community boundary data</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/takeshinishimura/fude/blob/HEAD/vignettes/articles/additional.Rmd" class="external-link"><code>vignettes/articles/additional.Rmd</code></a></small>
@@ -68,47 +69,84 @@ boundary data<a class="anchor" aria-label="anchor" href="#structure-of-combined-
 as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "fude"            "fude_split"      "community"       "community_union"</span></span>
-<span><span class="co">## [5] "kcity"           "city"            "pref"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "fude"       "fude_split" "rcom"       "rcom_union" "kcity"     </span></span>
+<span><span class="co">## [6] "city"       "pref"</span></span></code></pre>
 </div>
 <div class="section level2">
-<h2 id="possible-values-for-community-in-combine_fude-and-extract_boundary">Possible values for <code>community</code> in
-<code>combine_fude()</code> and <code>extract_boundary()</code><a class="anchor" aria-label="anchor" href="#possible-values-for-community-in-combine_fude-and-extract_boundary"></a>
+<h2 id="possible-values-for-rcom-in-combine_fude-and-extract_boundary">Possible values for <code>rcom</code> in <code>combine_fude()</code>
+and <code>extract_boundary()</code><a class="anchor" aria-label="anchor" href="#possible-values-for-rcom-in-combine_fude-and-extract_boundary"></a>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gluc/data.tree" class="external-link">data.tree</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">b</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="va">b</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"松山"</span>, <span class="va">KCITY_NAME</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pathString <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">PREF_NAME</span>, <span class="va">CITY_NAME</span>, <span class="va">KCITY_NAME</span>, <span class="va">RCOM_NAME</span>, sep <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">data.tree</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.tree/man/as.Node.html" class="external-link">as.Node</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span>limit <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##                              levelName</span></span>
-<span><span class="co">## 1  愛媛県                             </span></span>
-<span><span class="co">## 2   °--松山市                        </span></span>
-<span><span class="co">## 3       °--松山市                    </span></span>
-<span><span class="co">## 4           ¦--土居田                </span></span>
-<span><span class="co">## 5           ¦--針田                  </span></span>
-<span><span class="co">## 6           ¦--小栗第１              </span></span>
-<span><span class="co">## 7           ¦--小栗第２              </span></span>
-<span><span class="co">## 8           ¦--小栗第３              </span></span>
-<span><span class="co">## 9           ¦--藤原第１              </span></span>
-<span><span class="co">## 10          °--... 102 nodes w/ 0 sub</span></span></code></pre>
+<span>  <span class="fu">data.tree</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.tree/man/as.Node.html" class="external-link">as.Node</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tree</span><span class="op">$</span><span class="fu">Do</span><span class="op">(</span>\<span class="op">(</span><span class="va">node</span><span class="op">)</span> <span class="op">{</span><span class="va">node</span><span class="op">$</span><span class="va">n</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="va">node</span><span class="op">$</span><span class="va">isLeaf</span><span class="op">)</span> <span class="cn">NA_integer_</span> <span class="kw">else</span> <span class="va">node</span><span class="op">$</span><span class="va">count</span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="fu">data.tree</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.tree/man/SetFormat.html" class="external-link">SetFormat</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"n"</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="st">"-"</span> <span class="kw">else</span> <span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"n"</span>, limit <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                             levelName   n</span></span>
+<span><span class="co">## 1  愛媛県                               1</span></span>
+<span><span class="co">## 2   °--松山市                          1</span></span>
+<span><span class="co">## 3       °--松山市                    108</span></span>
+<span><span class="co">## 4           ¦--土居田                  -</span></span>
+<span><span class="co">## 5           ¦--針田                    -</span></span>
+<span><span class="co">## 6           ¦--小栗第１                -</span></span>
+<span><span class="co">## 7           ¦--小栗第２                -</span></span>
+<span><span class="co">## 8           ¦--小栗第３                -</span></span>
+<span><span class="co">## 9           ¦--藤原第１                -</span></span>
+<span><span class="co">## 10          ¦--藤原第２                -</span></span>
+<span><span class="co">## 11          ¦--竹原東                  -</span></span>
+<span><span class="co">## 12          ¦--竹原西                  -</span></span>
+<span><span class="co">## 13          ¦--生石南                  -</span></span>
+<span><span class="co">## 14          ¦--生石北                  -</span></span>
+<span><span class="co">## 15          ¦--八代                    -</span></span>
+<span><span class="co">## 16          ¦--南味酒                  -</span></span>
+<span><span class="co">## 17          ¦--南江戸                  -</span></span>
+<span><span class="co">## 18          ¦--朝美１                  -</span></span>
+<span><span class="co">## 19          ¦--朝美２                  -</span></span>
+<span><span class="co">## 20          ¦--朝美３                  -</span></span>
+<span><span class="co">## 21          ¦--宮西                    -</span></span>
+<span><span class="co">## 22          ¦--六軒家                  -</span></span>
+<span><span class="co">## 23          ¦--衣山                    -</span></span>
+<span><span class="co">## 24          ¦--萱町９                  -</span></span>
+<span><span class="co">## 25          ¦--山越                    -</span></span>
+<span><span class="co">## 26          ¦--姫原                    -</span></span>
+<span><span class="co">## 27          ¦--御幸寺                  -</span></span>
+<span><span class="co">## 28          ¦--本町９                  -</span></span>
+<span><span class="co">## 29          ¦--本町８                  -</span></span>
+<span><span class="co">## 30          °--... 82 nodes w/ 0 sub   -</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">b</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"松山"</span>, <span class="va">KCITY_NAME</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">b</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"松山"</span>, <span class="va">KCITY_NAME</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">RCOM_NAME</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">2</span>, family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="additional_files/figure-html/community_in_data-1.png" class="r-plt" alt="" width="1093.75"></p>
+<p><img src="additional_files/figure-html/rcom_in_data-1.png" class="r-plt" alt="" width="1093.75"></p>
 <p><strong>出典</strong>：農林水産省「農業集落境界データ（2020年度）」を加工して作成。</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/AdeelK93/collapsibleTree" class="external-link">collapsibleTree</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">b</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"松山"</span>, <span class="va">CITY_NAME</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">PREF_NAME</span>, <span class="va">CITY_NAME</span>, <span class="va">KCITY_NAME</span>, <span class="va">RCOM_NAME</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/collapsibleTree/man/collapsibleTree.html" class="external-link">collapsibleTree</a></span><span class="op">(</span></span>
+<span>    <span class="va">x</span>,</span>
+<span>    hierarchy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>    root <span class="op">=</span> <span class="st">"・"</span></span>
+<span>  <span class="op">)</span><span class="op">)</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="collapsibleTree html-widget html-fill-item" id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:1093.75px;height:675.988875154512px;"></div>
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"data":{"name":"・","children":[{"name":"愛媛県","children":[{"name":"松山市","children":[{"name":"松山市","children":[{"name":"土居田"},{"name":"針田"},{"name":"小栗第１"},{"name":"小栗第２"},{"name":"小栗第３"},{"name":"藤原第１"},{"name":"藤原第２"},{"name":"竹原東"},{"name":"竹原西"},{"name":"生石南"},{"name":"生石北"},{"name":"八代"},{"name":"南味酒"},{"name":"南江戸"},{"name":"朝美１"},{"name":"朝美２"},{"name":"朝美３"},{"name":"宮西"},{"name":"六軒家"},{"name":"衣山"},{"name":"萱町９"},{"name":"山越"},{"name":"姫原"},{"name":"御幸寺"},{"name":"本町９"},{"name":"本町８"},{"name":"本町７"},{"name":"北味酒"},{"name":"城東"},{"name":"持田"},{"name":"湯渡"},{"name":"枝松"},{"name":"小坂"},{"name":"中村"},{"name":"立花"},{"name":"堀江"},{"name":"東大栗"},{"name":"権現"},{"name":"福角"},{"name":"内宮"},{"name":"勝岡"},{"name":"和気２丁目"},{"name":"和気１丁目"},{"name":"馬木"},{"name":"太山寺"},{"name":"潮見，内宮"},{"name":"平田"},{"name":"谷"},{"name":"吉藤"},{"name":"志津川東"},{"name":"志津川西"},{"name":"高木"},{"name":"安城寺"},{"name":"東長戸"},{"name":"汐見，東長戸"},{"name":"西長戸"},{"name":"久万ノ台"},{"name":"船ケ谷"},{"name":"古三津"},{"name":"中須賀"},{"name":"三津浜北"},{"name":"三津浜南"},{"name":"東山"},{"name":"北山"},{"name":"松ノ木"},{"name":"石風呂"},{"name":"新浜"},{"name":"港山"},{"name":"梅津寺"},{"name":"高浜"},{"name":"土居"},{"name":"仲屋"},{"name":"西側"},{"name":"大正寺"},{"name":"中津"},{"name":"東谷"},{"name":"国松"},{"name":"御産所"},{"name":"別府"},{"name":"清水"},{"name":"松恵"},{"name":"山西"},{"name":"清住"},{"name":"大可賀"},{"name":"北吉田"},{"name":"南吉田"},{"name":"富久"},{"name":"久保田"},{"name":"高岡"},{"name":"東垣生"},{"name":"西垣生"},{"name":"樽味"},{"name":"東野２丁目"},{"name":"東野１丁目"},{"name":"正円寺"},{"name":"畑寺"},{"name":"三町"},{"name":"松末"},{"name":"束本"},{"name":"桑原"},{"name":"祝谷"},{"name":"石手"},{"name":"上市南"},{"name":"上市北"},{"name":"南道後"},{"name":"西町"},{"name":"樋又"},{"name":"湯之町"}]},{"name":"興居島村","children":[{"name":"御手洗"},{"name":"泊"},{"name":"船越"},{"name":"釣島"},{"name":"鷲ケ巣"},{"name":"由良"},{"name":"北浦"},{"name":"門田"},{"name":"馬磯"}]},{"name":"余土村","children":[{"name":"市坪"},{"name":"保免"},{"name":"余戸"}]},{"name":"浮穴村","children":[{"name":"井門"},{"name":"森松"},{"name":"南高井"}]},{"name":"久米村","children":[{"name":"南久米"},{"name":"北久米"},{"name":"福音寺"},{"name":"来住"},{"name":"南土居"},{"name":"高井"},{"name":"南窪田"},{"name":"北窪田"},{"name":"鷹子"}]},{"name":"湯山村","children":[{"name":"溝辺"},{"name":"下高野"},{"name":"上高野"},{"name":"食場"},{"name":"末"},{"name":"宿野々"},{"name":"杉立"},{"name":"柳"},{"name":"玉谷"},{"name":"青波"},{"name":"藤野々"},{"name":"水口"},{"name":"河中"},{"name":"東川"},{"name":"大井野"},{"name":"米野々"},{"name":"福見川，今治谷"},{"name":"川之郷"}]},{"name":"五明村","children":[{"name":"菅沢"},{"name":"城山"},{"name":"柳谷"},{"name":"恩地"},{"name":"梅ノ木"},{"name":"上総"},{"name":"神次郎"}]},{"name":"伊台村","children":[{"name":"下伊台"},{"name":"上伊台"}]},{"name":"小野村","children":[{"name":"小屋峠"},{"name":"駄場"},{"name":"北梅本"},{"name":"大尺寺"},{"name":"大野"},{"name":"向井"},{"name":"南梅本"},{"name":"水泥"},{"name":"平井"},{"name":"畑中"},{"name":"下刈屋"},{"name":"上刈屋"},{"name":"今吉"},{"name":"五楽"}]},{"name":"石井村","children":[{"name":"土居"},{"name":"今在家"},{"name":"北土居"},{"name":"越智"},{"name":"北井門"},{"name":"居相"},{"name":"古川"},{"name":"星岡"},{"name":"東石井"},{"name":"西石井"},{"name":"天山"},{"name":"朝生田"},{"name":"和泉"}]},{"name":"荏原村","children":[{"name":"矢谷"},{"name":"井関"},{"name":"岡本"},{"name":"町組"},{"name":"六町"},{"name":"政友"},{"name":"西組上"},{"name":"西組下"},{"name":"東組"},{"name":"養下"},{"name":"本村"},{"name":"上の原"},{"name":"大橋"},{"name":"小村"},{"name":"一木"},{"name":"中組南"},{"name":"中組北"},{"name":"高尾田"},{"name":"今市上"},{"name":"今市下"},{"name":"上川原"},{"name":"西野"},{"name":"恵原町上"},{"name":"恵原町中"},{"name":"恵原町下"}]},{"name":"坂本村","children":[{"name":"淨瑠璃寺上"},{"name":"淨瑠璃寺中"},{"name":"淨瑠璃寺下"},{"name":"出口"},{"name":"久谷本組"},{"name":"久谷中組"},{"name":"奥久谷"},{"name":"大久保"},{"name":"つづら川"},{"name":"榎"},{"name":"関屋"},{"name":"上関屋"},{"name":"丹波"},{"name":"窪野本組"},{"name":"窪野中組"},{"name":"北谷"},{"name":"桜"},{"name":"宮方"}]},{"name":"浅海村","children":[{"name":"萩原"},{"name":"浅海本谷"},{"name":"浅海原"}]},{"name":"立岩村","children":[{"name":"才ノ原"},{"name":"尾儀原"},{"name":"猿川原"},{"name":"小山田"},{"name":"儀式"},{"name":"庄府"},{"name":"米之野"},{"name":"中村"},{"name":"猿川"},{"name":"猪木"},{"name":"滝本"}]},{"name":"難波村","children":[{"name":"大浦"},{"name":"下難波"},{"name":"中通"},{"name":"上難波"},{"name":"庄"}]},{"name":"正岡村","children":[{"name":"八反地"},{"name":"中西内"},{"name":"中西外下"},{"name":"中西外上"},{"name":"高田"},{"name":"院内"},{"name":"神田"}]},{"name":"北条町","children":[{"name":"辻"},{"name":"土手内"},{"name":"北条"},{"name":"安居島"}]},{"name":"河野村","children":[{"name":"柳原"},{"name":"府中"},{"name":"別府"},{"name":"宮内"},{"name":"善応寺"},{"name":"横谷"},{"name":"九川"},{"name":"牛谷"},{"name":"高山"},{"name":"佐古"},{"name":"常保免"},{"name":"片山"},{"name":"中須賀"},{"name":"夏目"}]},{"name":"粟井村","children":[{"name":"小川"},{"name":"磯河内"},{"name":"鴨之池"},{"name":"和田"},{"name":"河原"},{"name":"安岡"},{"name":"久保"},{"name":"鹿峰"},{"name":"苞木"},{"name":"常竹"},{"name":"本谷"},{"name":"西谷"},{"name":"大西谷"},{"name":"客"},{"name":"麓"},{"name":"平林"},{"name":"小川谷"}]},{"name":"睦野村","children":[{"name":"睦月"},{"name":"野忽那"}]},{"name":"東中島村","children":[{"name":"大浦"},{"name":"小浜"},{"name":"長師"},{"name":"宮野"},{"name":"神浦"}]},{"name":"西中島村","children":[{"name":"粟井"},{"name":"畑里"},{"name":"饒"},{"name":"吉木"},{"name":"熊田"},{"name":"宇和間"}]},{"name":"神和村","children":[{"name":"上怒和"},{"name":"元怒和"},{"name":"津和地"},{"name":"二神"}]}]}]}]},"options":{"hierarchy":["PREF_NAME","CITY_NAME","KCITY_NAME","RCOM_NAME"],"input":null,"attribute":"leafCount","linkLength":null,"fontSize":10,"tooltip":false,"collapsed":true,"zoomable":true,"margin":{"top":20,"bottom":20,"left":30,"right":60},"fill":"lightsteelblue"}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level2">
 <h2 id="possible-values-for-kcity-in-combine_fude-and-extract_boundary">Possible values for <code>kcity</code> in
 <code>combine_fude()</code> and <code>extract_boundary()</code><a class="anchor" aria-label="anchor" href="#possible-values-for-kcity-in-combine_fude-and-extract_boundary"></a>
 </h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://emilhvitfeldt.github.io/paletteer/" class="external-link">paletteer</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">b</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CITY_NAME</span> <span class="op">==</span> <span class="st">"松山市"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>

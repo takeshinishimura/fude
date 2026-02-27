@@ -14,8 +14,7 @@ ls_fude(data)
 
 - data:
 
-  List of [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html)
-  objects.
+  List of MAFF Fude Polygon data.
 
 ## Value
 

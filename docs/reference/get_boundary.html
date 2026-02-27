@@ -47,8 +47,10 @@ boundary data provided by the MAFF.</p>
 <span>  <span class="va">data</span>,</span>
 <span>  year <span class="op">=</span> <span class="fl">2020</span>,</span>
 <span>  census_year <span class="op">=</span> <span class="fl">2020</span>,</span>
+<span>  boundary_type <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  to_wgs84 <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  encoding <span class="op">=</span> <span class="st">"CP932"</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -58,7 +60,7 @@ boundary data provided by the MAFF.</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>List of <code><a href="https://r-spatial.github.io/sf/reference/sf.html" class="external-link">sf::sf()</a></code> objects or one or more strings representing prefecture
+<dd><p>List of one or more MAFF agricultural community boundary data or one or more strings representing prefecture
 codes.</p></dd>
 
 
@@ -70,6 +72,10 @@ codes.</p></dd>
 <dd><p>Year of the Agricultural and Forestry Census.</p></dd>
 
 
+<dt id="arg-boundary-type">boundary_type<a class="anchor" aria-label="anchor" href="#arg-boundary-type"></a></dt>
+<dd><p>Type of boundary data. 1 = agricultural community, 2 = former city , or 3 = city.</p></dd>
+
+
 <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
 <dd><p>Path to the ZIP file containing the agricultural community boundary data;
 use a local ZIP file instead of going looking for a ZIP file. Specify a
@@ -78,6 +84,10 @@ directory containing one or more ZIP files, not the ZIP file itself.</p></dd>
 
 <dt id="arg-to-wgs-">to_wgs84<a class="anchor" aria-label="anchor" href="#arg-to-wgs-"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>, transform coordinates to WGS 84 (EPSG:4326).</p></dd>
+
+
+<dt id="arg-encoding">encoding<a class="anchor" aria-label="anchor" href="#arg-encoding"></a></dt>
+<dd><p>CP932</p></dd>
 
 
 <dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>

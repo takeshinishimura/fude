@@ -2,14 +2,16 @@
 % Please edit documentation in R/shiny_fude.R
 \name{shiny_fude}
 \alias{shiny_fude}
-\title{Prepare Leaflet Map for Fude Polygon Data}
+\title{Prepare Leaflet map for Fude Polygon data}
 \usage{
-shiny_fude(data, community = FALSE)
+shiny_fude(data, height = 1000, rcom = FALSE)
 }
 \arguments{
 \item{data}{A list or data frame containing Fude Polygon data.}
 
-\item{community}{A logical value indicating whether to overlay community data on the map.}
+\item{height}{Height of the map.}
+
+\item{rcom}{A logical value indicating whether to overlay community data on the map.}
 }
 \value{
 A Leaflet map object with Fude Polygon data with an HTML table.

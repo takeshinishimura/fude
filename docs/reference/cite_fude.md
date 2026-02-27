@@ -1,4 +1,4 @@
-# Generate Citation Text for Fude Polygon Data
+# Generate citation text for Fude Polygon data
 
 Generates citation text in Japanese and English for Fude Polygon Data.
 

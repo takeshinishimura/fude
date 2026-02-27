@@ -7,21 +7,14 @@ by
 ## Usage
 
 ``` r
-extract_boundary(
-  boundary,
-  city = "",
-  kcity = "",
-  community = "",
-  layer = FALSE
-)
+extract_boundary(boundary, city = "", kcity = "", rcom = "", layer = FALSE)
 ```
 
 ## Arguments
 
 - boundary:
 
-  List of one or more agricultural community boundary data provided by
-  the MAFF.
+  List of one or more MAFF agricultural community boundary data.
 
 - city:
 
@@ -33,13 +26,13 @@ extract_boundary(
 
 - kcity:
 
-  String by regular expression. One or more former village name in
-  Japanese to be extracted.
+  A regular expression string. One or more former city names (in
+  Japanese) to extract.
 
-- community:
+- rcom:
 
-  String by regular expression. One or more agricultural community name
-  in Japanese to be extracted.
+  A regular expression string. One or more agricultural community names
+  (in Japanese) to extract.
 
 - layer:
 

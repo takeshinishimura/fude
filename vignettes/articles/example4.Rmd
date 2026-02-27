@@ -1,9 +1,9 @@
 ---
-title: "Relationship Between the Residences of Farmers and Their Farmland"
+title: "Relationship between the residences of farmers and their farmland"
 
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Relationship Between the Residences of Farmers and Their Farmland}
+  %\VignetteIndexEntry{Relationship between the residences of farmers and their farmland}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,7 +17,7 @@ b <- get_boundary(d, path = "~", quiet = TRUE)
 ```
 
 You can also visualize the relationship between the residences of farmers and their farmland.
-```{r matsuyama, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+```{r matsuyama, eval = !pkgdown::in_pkgdown(), echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(dplyr)
 library(sf)
 library(osmdata)
@@ -25,7 +25,7 @@ library(ggplot2)
 library(ggmapinset)
 library(ggrepel)
 
-db <- combine_fude(d, b, city = "松山", community = "和気|安城寺|長戸|久万ノ台")
+db <- combine_fude(d, b, city = "松山", rcom = "和気|安城寺|長戸|久万ノ台")
 
 set.seed(200)
 probabilities <- c(0.97, 0.01, 0.005, 0.005, 0.005, 0.005)
@@ -35,8 +35,9 @@ db$fude$farmer = factor(
     names(probabilities),
     nrow(db$fude),
     replace = TRUE,
-    prob = probabilities)
+    prob = probabilities
   )
+)
 
 farm <- db$fude |>
   group_by(farmer) |>
@@ -67,13 +68,15 @@ inset1 <- configure_inset(
     centre = sf::st_geometry(farm)[farm$farmer == "F"],
     scale = 3,
     translation = c(-4, 1),
-    radius = 1, units = "km"
+    radius = 1,
+    units = "km"
   )
 inset2 <- configure_inset(
     centre = sf::st_geometry(farm)[farm$farmer == "E"],
     scale = 3,
     translation = c(4, -3),
-    radius = 1, units = "km"
+    radius = 1,
+    units = "km"
   )
 
 farm$x <- sf::st_coordinates(farm)[, 1]
@@ -105,5 +108,3 @@ ggplot(data = db$fude) +
   theme_void() +
   theme(legend.position = "none")
 ```
-
-**出典**：`r cite_fude(db)$ja`

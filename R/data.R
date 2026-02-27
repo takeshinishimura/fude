@@ -42,6 +42,43 @@
 #'   \item{RCOM_KANA}{Community names in Hiragana}
 #'   \item{RCOM_ROMAJI}{Community names in Romaji}
 #'   \item{local_government_cd}{Local government codes}
-#'   \item{census_year}{The year of the census from which the data is derived}
+#'   \item{census_year}{Year of the census from which the data is derived}
 #' }
-"community_code_table"
+"rcom_code_table"
+
+#' Kcity code/name correspondence table
+#'
+#' A dataset containing codes/names of kcities in Japan.
+#'
+#' @format A data frame with 12,110 rows and 10 variables:
+#' \describe{
+#'   \item{KEY}{Unique kcity codes}
+#'   \item{PREF_NAME}{Prefecture names in Kanji}
+#'   \item{PREF_KANA}{Prefecture names in Hiragana}
+#'   \item{PREF_ROMAJI}{Prefecture names in Romaji}
+#'   \item{CITY_NAME}{City names in Kanji}
+#'   \item{CITY_KANA}{City names in Hiragana}
+#'   \item{CITY_ROMAJI}{City names in Romaji}
+#'   \item{KCITY_NAME}{Former village names in Kanji}
+#'   \item{local_government_cd}{Local government codes}
+#'   \item{census_year}{Year of the census from which the data is derived}
+#' }
+"kcity_code_table"
+
+#' City code/name correspondence table
+#'
+#' A dataset containing codes/names of cities in Japan.
+#'
+#' @format A data frame with 1,905 rows and 9 variables:
+#' \describe{
+#'   \item{KEY}{Unique kcity codes}
+#'   \item{PREF_NAME}{Prefecture names in Kanji}
+#'   \item{PREF_KANA}{Prefecture names in Hiragana}
+#'   \item{PREF_ROMAJI}{Prefecture names in Romaji}
+#'   \item{CITY_NAME}{City names in Kanji}
+#'   \item{CITY_KANA}{City names in Hiragana}
+#'   \item{CITY_ROMAJI}{City names in Romaji}
+#'   \item{local_government_cd}{Local government codes}
+#'   \item{census_year}{Year of the census from which the data is derived}
+#' }
+"city_code_table"

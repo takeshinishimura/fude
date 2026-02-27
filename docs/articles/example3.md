@@ -1,4 +1,4 @@
-# Practical Mapping Examples
+# Practical mapping examples
 
 ## Using `ggforce` package
 
@@ -8,19 +8,23 @@ library(sf)
 library(ggplot2)
 library(ggforce)
 
-db <- combine_fude(d, b, city = "松山市", kcity = "興居島", community = "^(?!釣島)")
+db <- combine_fude(d, b, city = "松山市", kcity = "興居島", rcom = "^(?!釣島)")
 bbox <- sf::st_bbox(db$fude)
 
 ggplot() +
-  geom_sf(data = db$community, fill = NA) +
+  geom_sf(data = db$rcom, fill = NA) +
   geom_sf(data = db$fude, aes(fill = RCOM_ROMAJI)) +
   geom_mark_hull(
     data = db$fude |>
       group_by(RCOM) |>
       mutate(
-        n = gsub("c\\(|\\)", "", 
-                 paste0("Count of Fude: ", n(), "\n",
-                        list(table(land_type))))
+        n = gsub(
+          "c\\(|\\)",
+          "", 
+          paste0(
+            "Count of Fude: ", n(), "\n",
+            list(table(land_type))
+          ))
       ),
     aes(x = point_lng, y = point_lat,
         fill = RCOM_ROMAJI,
@@ -66,20 +70,20 @@ minimap <- ggplot() +
   geom_sf(data = db$city, aes(fill = fill)) +
   geom_sf_text(data = db$city, aes(label = city_kanji), family = "Hiragino Sans") +
   gghighlight(fill == 1) +
-  geom_sf(data = db$community_union, fill = "black", linewidth = 0) +
+  geom_sf(data = db$rcom_union, fill = "black", linewidth = 0) +
   theme_void() +
   theme(panel.background = element_rect(fill = "aliceblue")) +
   scale_fill_manual(values = c("white", "gray"))
 
 mainmap <- ggplot() +
-  geom_sf(data = db$community, fill = "white") +
+  geom_sf(data = db$rcom, fill = "white") +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME)) +
-  geom_point(data = db$community, aes(x = x, y = y), colour = "gray") +
+  geom_point(data = db$rcom, aes(x = x, y = y), colour = "gray") +
   geom_text_repel(
-    data = db$community,
+    data = db$rcom,
     aes(x = x, y = y, label = RCOM_NAME),
-    nudge_x = c(-.01, .01, -.01, -.012, .005, -.01, .01, .01),
-    nudge_y = c(.005, .005, 0, .01, -.005, .01, 0, -.005),
+    nudge_x = c(-.01, .01, -.01, -.01, .005, -.008, .01, .01),
+    nudge_y = c(.005, .005, 0, .01, -.005, .004, 0, -.005),
     min.segment.length = .01,
     segment.color = "gray",
     size = 3,

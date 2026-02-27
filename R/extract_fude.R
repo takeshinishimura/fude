@@ -5,15 +5,15 @@
 #' [read_fude()].
 #'
 #' @param data
-#'   A list of [sf::sf()] objects.
+#'   List of MAFF Fude Polygon data.
 #' @param year
 #'   One or more years to extract.
 #' @param city
-#'   Local government names or codes to extract.
+#'   A local government name or code (6-digit) to extract.
 #' @param kcity
-#'   A regular expression string. One or more former village names (in Japanese)
+#'   A regular expression string. One or more former city names (in Japanese)
 #'   to extract.
-#' @param community
+#' @param rcom
 #'   A regular expression string. One or more agricultural community names (in
 #'   Japanese) to extract.
 #'
@@ -27,7 +27,7 @@ extract_fude <- function(
   year = NULL,
   city = NULL,
   kcity = "",
-  community = ""
+  rcom = ""
 ) {
   validate_fude(data)
 
@@ -38,7 +38,7 @@ extract_fude <- function(
   target_key <- find_key(
     city = city,
     kcity = kcity,
-    community = community
+    rcom = rcom
   )
 
   x <- data |>
@@ -67,7 +67,7 @@ extract_fude <- function(
 find_key <- function(
   city = city,
   kcity = kcity,
-  community = community
+  rcom = rcom
 ) {
   strip_jp_suffix <- function(x) {
     sub("(\u5e02|\u533a|\u753a|\u6751)$", "", x)
@@ -99,7 +99,7 @@ find_key <- function(
   city_kana <- strip_kana_suffix(city_vec)
   city_romaji <- strip_romaji_suffix(city_vec)
 
-  x <- fude::community_code_table |>
+  x <- fude::rcom_code_table |>
     dplyr::filter(
       if (!has_city) {
         TRUE
@@ -114,10 +114,10 @@ find_key <- function(
       } else {
         grepl(kcity, .data$KCITY_NAME, perl = TRUE)
       },
-      if (is.null(community) || length(community) == 0 || !nzchar(community)) {
+      if (is.null(rcom) || length(rcom) == 0 || !nzchar(rcom)) {
         TRUE
       } else {
-        grepl(community, .data$RCOM_NAME, perl = TRUE)
+        grepl(rcom, .data$RCOM_NAME, perl = TRUE)
       }
     ) |>
     dplyr::pull(.data$KEY)

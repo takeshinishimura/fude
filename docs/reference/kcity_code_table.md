@@ -1,20 +1,20 @@
-# Community code/name correspondence table
+# Kcity code/name correspondence table
 
-A dataset containing codes/names of communities in Japan.
+A dataset containing codes/names of kcities in Japan.
 
 ## Usage
 
 ``` r
-community_code_table
+kcity_code_table
 ```
 
 ## Format
 
-A data frame with 149,511 rows and 13 variables:
+A data frame with 12,110 rows and 10 variables:
 
 - KEY:
 
-  Unique community codes
+  Unique kcity codes
 
 - PREF_NAME:
 
@@ -44,22 +44,10 @@ A data frame with 149,511 rows and 13 variables:
 
   Former village names in Kanji
 
-- RCOM_NAME:
-
-  Community names in Kanji
-
-- RCOM_KANA:
-
-  Community names in Hiragana
-
-- RCOM_ROMAJI:
-
-  Community names in Romaji
-
 - local_government_cd:
 
   Local government codes
 
 - census_year:
 
-  The year of the census from which the data is derived
+  Year of the census from which the data is derived

@@ -1,9 +1,9 @@
 ---
-title: "Using `gghighlight` Package"
+title: "Using `gghighlight` package"
 
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Using `gghighlight` Package}
+  %\VignetteIndexEntry{Using `gghighlight` package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,21 +16,15 @@ d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 ```
 
-```{r facet_wrap_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+```{r facet_wrap_saijo, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 library(dplyr)
-library(forcats)
 library(ggplot2)
 library(gghighlight)
 
-db <- combine_fude(d, b, city = "松山市", kcity = "興居島", community = "^(?!釣島)")
-
-db$community <- db$community |>
-  mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))
-db$fude <- db$fude |>
-  mutate(across(c(RCOM_NAME, RCOM_KANA, RCOM_ROMAJI), forcats::fct_rev))
+db <- combine_fude(d, b, city = "西条", kcity = "丹原|田野")
 
 ggplot() +
-  geom_sf(data = db$community, aes(fill = RCOM_NAME), alpha = 0) +
+  geom_sf(data = db$rcom, aes(fill = RCOM_NAME), alpha = 0) +
   geom_sf(data = db$fude, aes(fill = RCOM_NAME), linewidth = 0) +
   gghighlight() +
   facet_wrap(~ RCOM_NAME) +
@@ -43,7 +37,7 @@ ggplot() +
 
 **出典**：`r cite_fude(db)$ja`
 
-```{r facet_wrap_gogoshima_hist, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+```{r facet_wrap_saijo_hist, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 ggplot(data = db$fude, aes(x = a, fill = land_type_jp)) +
   geom_histogram(position = "identity", alpha = .5) +
   labs(x = "面積（a）",

@@ -4,19 +4,19 @@
 \alias{extract_fude}
 \title{Extract specified Fude Polygon data}
 \usage{
-extract_fude(data, year = NULL, city = NULL, kcity = "", community = "")
+extract_fude(data, year = NULL, city = NULL, kcity = "", rcom = "")
 }
 \arguments{
-\item{data}{A list of \code{\link[sf:sf]{sf::sf()}} objects.}
+\item{data}{List of MAFF Fude Polygon data.}
 
 \item{year}{One or more years to extract.}
 
-\item{city}{Local government names or codes to extract.}
+\item{city}{A local government name or code (6-digit) to extract.}
 
-\item{kcity}{A regular expression string. One or more former village names (in Japanese)
+\item{kcity}{A regular expression string. One or more former city names (in Japanese)
 to extract.}
 
-\item{community}{A regular expression string. One or more agricultural community names (in
+\item{rcom}{A regular expression string. One or more agricultural community names (in
 Japanese) to extract.}
 }
 \value{

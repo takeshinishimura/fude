@@ -1,4 +1,4 @@
-# Testing the Functionality
+# Testing the functionality
 
 ## Testing the functionality
 
@@ -14,7 +14,7 @@ db <- combine_fude(
   d,
   b,
   city = "松山市",
-  community = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越"
+  rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越"
 )
 
 db$fude_points <- db$fude |>
@@ -28,7 +28,7 @@ db$fude_points <- db$fude |>
   sf::st_as_sf(crs = 4326)
 
 fude_points_projected <- sf::st_transform(db$fude_points, crs = 6677)
-community_union_projected <- sf::st_transform(db$community_union, crs = 6677)
+rcom_union_projected <- sf::st_transform(db$rcom_union, crs = 6677)
 
 voronoi <- fude_points_projected |>
   sf::st_geometry() |>
@@ -36,7 +36,7 @@ voronoi <- fude_points_projected |>
   sf::st_voronoi() |>
   sf::st_collection_extract(type = "POLYGON") |>
   sf::st_sf(crs = 6677) |>
-  sf::st_intersection(y = sf::st_geometry(community_union_projected)) |>
+  sf::st_intersection(y = sf::st_geometry(rcom_union_projected)) |>
   sf::st_join(y = fude_points_projected) |>
   sf::st_cast("POLYGON") |>
   sf::st_transform(crs = 4326)
@@ -49,7 +49,7 @@ map1 <- ggplot() +
   ) +
   geom_sf(data = db$fude_points |> filter(RCOM_NAME == "泊"), size = .5) +
   geom_sf(
-    data = db$community |> filter(RCOM_NAME == "泊"),
+    data = db$rcom |> filter(RCOM_NAME == "泊"),
     aes(fill = RCOM_NAME),
     alpha = 0,
     linewidth = 1
@@ -65,7 +65,7 @@ map2 <- ggplot() +
   ) +
   geom_sf(data = db$fude_points |> filter(RCOM_NAME == "泊"), size = .5) +
   geom_sf(
-    data = db$community |> filter(RCOM_NAME == "泊"),
+    data = db$rcom |> filter(RCOM_NAME == "泊"),
     aes(fill = RCOM_NAME),
     alpha = 0,
     linewidth = 1
@@ -87,7 +87,7 @@ voronoi$a_voronoi <- as.numeric(units::set_units(voronoi$area_voronoi, "a"))
 ggplot(data = voronoi, aes(x = a_voronoi, fill = land_type_jp)) +
   geom_histogram(position = "identity", alpha = .5) +
   labs(x = "面積（a）", y = "頻度") +
-  facet_wrap(~RCOM_NAME) +
+  facet_wrap(~ RCOM_NAME) +
   labs(fill = "耕地の種類") +
   theme_minimal() +
   theme(text = element_text(family = "Hiragino Sans"))

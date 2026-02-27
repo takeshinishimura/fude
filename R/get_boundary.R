@@ -5,18 +5,22 @@
 #' boundary data provided by the MAFF.
 #'
 #' @param data
-#'   List of [sf::sf()] objects or one or more strings representing prefecture
+#'   List of one or more MAFF agricultural community boundary data or one or more strings representing prefecture
 #'   codes.
 #' @param year
 #'   Year when the agricultural community boundary data was created.
 #' @param census_year
 #'   Year of the Agricultural and Forestry Census.
+#' @param boundary_type
+#'   Type of boundary data. 1 = agricultural community, 2 = former city , or 3 = city.
 #' @param path
 #'   Path to the ZIP file containing the agricultural community boundary data;
 #'   use a local ZIP file instead of going looking for a ZIP file. Specify a
 #'   directory containing one or more ZIP files, not the ZIP file itself.
 #' @param to_wgs84
 #'   Logical. If `TRUE`, transform coordinates to WGS 84 (EPSG:4326).
+#' @param encoding
+#'   CP932
 #' @param quiet
 #'   If `TRUE`, suppress messages about reading progress.
 #'
@@ -32,8 +36,10 @@ get_boundary <- function(
   data,
   year = 2020,
   census_year = 2020,
+  boundary_type = 1,
   path = NULL,
   to_wgs84 = TRUE,
+  encoding = "CP932",
   quiet = FALSE
 ) {
   pref_codes <- fude_to_pref_code(data)
@@ -42,12 +48,13 @@ get_boundary <- function(
     pref_codes,
     \(d) {
       pref_code <- get_pref_code(d)
-      read_boundary(pref_code, year, census_year, quiet, path, to_wgs84)
+      read_boundary(pref_code, year, census_year, boundary_type, path, to_wgs84, encoding, quiet)
     }
   )
 
   names(x) <- sprintf(
-    "MA0001_%s_%s_%s",
+    "MA000%s_%s_%s_%s",
+    boundary_type,
     year,
     census_year,
     sapply(pref_codes, get_pref_code)
@@ -56,10 +63,20 @@ get_boundary <- function(
   return(x)
 }
 
-read_boundary <- function(pref_code, year, census_year, quiet, path, to_wgs84) {
+read_boundary <- function(
+  pref_code,
+  year,
+  census_year,
+  boundary_type,
+  path,
+  to_wgs84,
+  encoding,
+  quiet
+) {
   url <- sprintf(
-    "https://www.machimura.maff.go.jp/shurakudata/%s/ma/MA0001_%s_%s_%s.zip",
+    "https://www.machimura.maff.go.jp/shurakudata/%s/ma/MA000%s_%s_%s_%s.zip",
     census_year,
+    boundary_type,
     year,
     census_year,
     pref_code
@@ -102,20 +119,62 @@ read_boundary <- function(pref_code, year, census_year, quiet, path, to_wgs84) {
   x <- sf::st_read(
     shp_files,
     quiet = quiet,
-    options = "ENCODING=CP932"
+    options = paste0("ENCODING=", encoding)
   ) |>
-    dplyr::left_join(
-      fude::community_code_table |>
-        dplyr::select(
-          .data$KEY,
-          .data$PREF_KANA,
-          .data$PREF_ROMAJI,
-          .data$CITY_KANA,
-          .data$CITY_ROMAJI,
-          .data$RCOM_ROMAJI
+    (\(d) {
+      if (boundary_type == 1) {
+        dplyr::left_join(
+          d,
+          fude::rcom_code_table |>
+            dplyr::select(
+              .data$KEY,
+              .data$PREF_KANA,
+              .data$PREF_ROMAJI,
+              .data$CITY_KANA,
+              .data$CITY_ROMAJI,
+              .data$RCOM_ROMAJI
+            ),
+          by = "KEY"
+        )
+      } else if (boundary_type == 2) {
+        dplyr::left_join(
+          d,
+          fude::kcity_code_table |>
+            dplyr::select(
+              .data$KEY,
+              .data$PREF_KANA,
+              .data$PREF_ROMAJI,
+              .data$CITY_KANA,
+            ),
+          by = "KEY"
+        )
+      } else if (boundary_type == 3) {
+        dplyr::left_join(
+          d,
+          fude::city_code_table |>
+            dplyr::select(
+              .data$KEY,
+              .data$PREF_KANA,
+              .data$PREF_ROMAJI,
+              .data$CITY_KANA,
+            ),
+          by = "KEY"
+        )
+      } else {
+        d
+      }
+    })() |>
+      dplyr::mutate(
+        dplyr::across(
+          dplyr::any_of(c(
+            "PREF_NAME", "PREF_KANA", "PREF_ROMAJI",
+            "CITY_NAME", "CITY_KANA", "CITY_ROMAJI",
+            "KCITY_NAME",
+            "RCOM_NAME", "RCOM_KANA", "RCOM_ROMAJI"
+          )
         ),
-      by = c("KEY" = "KEY")
-    ) |>
+        \(col) factor(col, levels = unique(stats::na.omit(col)))
+    ))|>
     dplyr::mutate(
       boundary_edit_year = year,
       boundary_census_year = census_year
@@ -126,7 +185,7 @@ read_boundary <- function(pref_code, year, census_year, quiet, path, to_wgs84) {
   }
 
   return(x)
-}
+  }
 
 fude_to_lg_code <- function(data) {
   if (is.character(data)) {

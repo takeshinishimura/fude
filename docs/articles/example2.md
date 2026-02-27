@@ -1,4 +1,4 @@
-# Drawing Agricultural Community Boundaries
+# Drawing agricultural community boundaries
 
 ## Drawing agricultural community boundaries
 
@@ -44,7 +44,7 @@ ggplot(data = eb$kcity) +
 ``` r
 ggplot(data = eb$city) +
   geom_sf() +
-  geom_sf(data = eb$community)
+  geom_sf(data = eb$rcom)
 ```
 
 ![](example2_files/figure-html/imabari_uchiko-3.png)
@@ -69,9 +69,9 @@ ggplot() +
     nudge_x = -.025, nudge_y = -.025,
     family = "HiraKakuProN-W3"
   ) +
-  geom_point(data = eb$community_union, aes(x = x, y = y), colour = "black") +
+  geom_point(data = eb$rcom_union, aes(x = x, y = y), colour = "black") +
   geom_text_repel(
-    data = eb$community_union,
+    data = eb$rcom_union,
     aes(x = x, y = y),
     label = "遊子川地区",
     nudge_x = .3, nudge_y = -.025,
@@ -89,12 +89,12 @@ ggplot() +
 ``` r
 eb <- extract_boundary(b, city = "八幡浜市", kcity = "真穴", layer = TRUE)
 
-ggplot(data = eb$community) +
-  geom_sf(data = eb$city |> filter(fill == 1), fill = "gray") +
-  geom_sf_text(data = eb$city |> filter(fill == 1), aes(label = city_kanji), family = "HiraKakuProN-W3") +
-  geom_sf(fill = "ivory") +
+ggplot(data = eb$city |> filter(fill == 1)) +
+  geom_sf(fill = "gray") +
+  geom_sf_text(aes(label = city_kanji), family = "HiraKakuProN-W3") +
+  geom_sf(data = eb$rcom, fill = "ivory") +
 # geom_sf(data = eb$fude, aes(fill = land_type), colour = NA) +
-  geom_sf_label(aes(label = RCOM_NAME), family = "HiraKakuProN-W3") +
+  geom_sf_label(data = eb$rcom, aes(label = RCOM_NAME), family = "HiraKakuProN-W3") +
   theme_void() +
   theme(legend.position = "none")
 ```

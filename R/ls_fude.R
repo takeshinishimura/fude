@@ -5,7 +5,7 @@
 #' order to understand what is included in the list returned by [read_fude()].
 #'
 #' @param data
-#'   List of [sf::sf()] objects.
+#'   List of MAFF Fude Polygon data.
 #'
 #' @returns A data.frame.
 #'

@@ -5,8 +5,7 @@
 #' [get_boundary()].
 #'
 #' @param boundary
-#'   List of one or more agricultural community boundary data provided by
-#'   the MAFF.
+#'   List of one or more MAFF agricultural community boundary data.
 #' @param city
 #'   A local government name in Japanese to be extracted. In the case of
 #'   overlapping local government names, this must contain the prefecture name
@@ -14,11 +13,11 @@
 #'   "fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO"). Alternatively, it could be
 #'   a 6-digit local government code.
 #' @param kcity
-#'   String by regular expression. One or more former village name in Japanese
-#'   to be extracted.
-#' @param community
-#'   String by regular expression. One or more agricultural community name in
-#'   Japanese to be extracted.
+#'   A regular expression string. One or more former city names (in Japanese)
+#'   to extract.
+#' @param rcom
+#'   A regular expression string. One or more agricultural community names (in
+#'   Japanese) to extract.
 #' @param layer
 #'   Logical.
 #'
@@ -31,7 +30,7 @@ extract_boundary <- function(
   boundary,
   city = "",
   kcity = "",
-  community = "",
+  rcom = "",
   layer = FALSE
 ) {
   if (city != "") {
@@ -70,7 +69,7 @@ extract_boundary <- function(
   target_key <- find_key(
     city = city,
     kcity = kcity,
-    community = community
+    rcom = rcom
   )
 
   x <- boundary |>
@@ -87,10 +86,10 @@ extract_boundary <- function(
       RCOM_NAME = dplyr::coalesce(.data$RCOM_NAME, "")
     ) |>
     dplyr::mutate(
-      KCITY_NAME = forcats::fct_inorder(.data$KCITY_NAME),
-      RCOM_NAME = forcats::fct_inorder(.data$RCOM_NAME),
-      RCOM_KANA = forcats::fct_inorder(.data$RCOM_KANA),
-      RCOM_ROMAJI = forcats::fct_inorder(.data$RCOM_ROMAJI)
+      KCITY_NAME = factor(.data$KCITY_NAME, levels = unique(.data$KCITY_NAME)),
+      RCOM_NAME = factor(.data$RCOM_NAME, levels = unique(.data$RCOM_NAME)),
+      RCOM_KANA = factor(.data$RCOM_KANA, levels = unique(.data$RCOM_KANA)),
+      RCOM_ROMAJI = factor(.data$RCOM_ROMAJI, levels = unique(.data$RCOM_ROMAJI))
     ) |>
     add_xy()
 
@@ -220,8 +219,8 @@ extract_boundary <- function(
   if (layer) {
     return(
       list(
-        community = extracted_boundary,
-        community_union = extracted_boundary_union,
+        rcom = extracted_boundary,
+        rcom_union = extracted_boundary_union,
         kcity = kcity_all_map,
         city = city_all_map,
         pref = pref_map

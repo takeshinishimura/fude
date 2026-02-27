@@ -10,8 +10,10 @@ get_boundary(
   data,
   year = 2020,
   census_year = 2020,
+  boundary_type = 1,
   path = NULL,
   to_wgs84 = TRUE,
+  encoding = "CP932",
   quiet = FALSE
 )
 ```
@@ -20,8 +22,8 @@ get_boundary(
 
 - data:
 
-  List of [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html)
-  objects or one or more strings representing prefecture codes.
+  List of one or more MAFF agricultural community boundary data or one
+  or more strings representing prefecture codes.
 
 - year:
 
@@ -30,6 +32,11 @@ get_boundary(
 - census_year:
 
   Year of the Agricultural and Forestry Census.
+
+- boundary_type:
+
+  Type of boundary data. 1 = agricultural community, 2 = former city ,
+  or 3 = city.
 
 - path:
 
@@ -41,6 +48,10 @@ get_boundary(
 - to_wgs84:
 
   Logical. If `TRUE`, transform coordinates to WGS 84 (EPSG:4326).
+
+- encoding:
+
+  CP932
 
 - quiet:
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/cite_fude.R
 \name{cite_fude}
 \alias{cite_fude}
-\title{Generate Citation Text for Fude Polygon Data}
+\title{Generate citation text for Fude Polygon data}
 \usage{
 cite_fude(data)
 }

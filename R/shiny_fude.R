@@ -1,11 +1,13 @@
-#' Prepare Leaflet Map for Fude Polygon Data
+#' Prepare Leaflet map for Fude Polygon data
 #'
 #' @description
 #' Prepares a Leaflet map for Fude Polygon data.
 #'
 #' @param data
 #'   A list or data frame containing Fude Polygon data.
-#' @param community
+#' @param height
+#'   Height of the map.
+#' @param rcom
 #'   A logical value indicating whether to overlay community data on the map.
 #'
 #' @return A Leaflet map object with Fude Polygon data with an HTML table.
@@ -13,27 +15,28 @@
 #' @export
 shiny_fude <- function(
   data,
-  community = FALSE
+  height = 1000,
+  rcom = FALSE
 ) {
   if ("fude" %in% names(data)) {
-    data_fude <- data$fude %>%
+    data_fude <- data$fude |>
       dplyr::mutate(
         layerId = .data$polygon_uuid,
         label = .data$polygon_uuid
       )
   } else {
-    data_fude <- data %>%
+    data_fude <- data |>
       dplyr::mutate(
         layerId = .data$polygon_uuid,
         label = .data$RCOM_NAME
       )
   }
 
-  if (community && "community" %in% names(data)) {
-    data_community <- data$community %>%
+  if (rcom && "rcom" %in% names(data)) {
+    data_rcom <- data$rcom |>
       dplyr::mutate(
-        community_layerId = .data$RCOM,
-        community_label = .data$RCOM_NAME
+        rcom_layerId = .data$RCOM,
+        rcom_label = .data$RCOM_NAME
       )
   }
 
@@ -49,7 +52,7 @@ shiny_fude <- function(
     shiny::titlePanel("Fude Polygon"),
     shiny::sidebarLayout(
       shiny::sidebarPanel(
-        leaflet::leafletOutput("mapfilter", height = 250),
+        leaflet::leafletOutput("mapfilter", height = height),
         shiny::actionButton("clear_selection", "Clear")
       ),
       shiny::mainPanel(
@@ -78,15 +81,15 @@ shiny_fude <- function(
         rv$selected_fude <- c(rv$selected_fude, click$id)
       }
 
-      proxy <- leaflet::leafletProxy("mapfilter", session) %>%
+      proxy <- leaflet::leafletProxy("mapfilter", session) |>
         leaflet::clearShapes()
 
-      if (community) {
-        proxy %>%
+      if (rcom) {
+        proxy |>
           leaflet::addPolygons(
-            data = data_community,
-            layerId = ~community_layerId,
-            label = ~community_label,
+            data = data_rcom,
+            layerId = ~rcom_layerId,
+            label = ~rcom_label,
             fillColor = "gray",
             color = "black",
             weight = 2,
@@ -94,7 +97,7 @@ shiny_fude <- function(
           )
       }
 
-      proxy %>%
+      proxy |>
         leaflet::addPolygons(
           data = data_fude,
           layerId = ~layerId,
@@ -125,12 +128,12 @@ shiny_fude <- function(
         )
       )
 
-      if (community) {
-        proxy <- proxy %>%
+      if (rcom) {
+        proxy <- proxy |>
           leaflet::addPolygons(
-            data = data_community,
-            layerId = ~community_layerId,
-            label = ~community_label,
+            data = data_rcom,
+            layerId = ~rcom_layerId,
+            label = ~rcom_label,
             fillColor = "gray",
             color = "black",
             weight = 2,
@@ -138,7 +141,7 @@ shiny_fude <- function(
           )
       }
 
-      proxy %>%
+      proxy |>
         leaflet::addPolygons(
           layerId = ~layerId,
           label = ~label,
@@ -154,11 +157,11 @@ shiny_fude <- function(
     })
 
     output$table <- DT::renderDT({
-      rv$filtered_data %>%
-        sf::st_set_geometry(NULL) %>%
-        dplyr::mutate_if(~ inherits(.x, "units"), as.numeric) %>%
+      rv$filtered_data |>
+        sf::st_set_geometry(NULL) |>
+        dplyr::mutate_if(~ inherits(.x, "units"), as.numeric) |>
         DT::datatable(
-          selection = "single", # Allow single row selection
+          selection = "single",
           filter = "top",
           extensions = "Buttons",
           options = list(
@@ -174,7 +177,7 @@ shiny_fude <- function(
 
     shiny::observe({
       if (!is.null(rv$selected_fude) && length(rv$selected_fude) > 0) {
-        rv$filtered_data <- data_fude %>%
+        rv$filtered_data <- data_fude |>
           dplyr::filter(layerId %in% rv$selected_fude)
       } else {
         rv$filtered_data <- data_fude
@@ -187,15 +190,15 @@ shiny_fude <- function(
         selected_polygon_uuid <- rv$filtered_data$polygon_uuid[selected_row]
         rv$selected_fude <- selected_polygon_uuid
 
-        proxy <- leaflet::leafletProxy("mapfilter", session) %>%
+        proxy <- leaflet::leafletProxy("mapfilter", session) |>
           leaflet::clearShapes()
 
-        if (community) {
-          proxy %>%
+        if (rcom) {
+          proxy |>
             leaflet::addPolygons(
-              data = data_community,
-              layerId = ~community_layerId,
-              label = ~community_label,
+              data = data_rcom,
+              layerId = ~rcom_layerId,
+              label = ~rcom_label,
               fillColor = "gray",
               color = "black",
               weight = 2,
@@ -203,7 +206,7 @@ shiny_fude <- function(
             )
         }
 
-        proxy %>%
+        proxy |>
           leaflet::addPolygons(
             data = data_fude,
             layerId = ~layerId,
@@ -228,15 +231,15 @@ shiny_fude <- function(
       rv$selected_fude <- NULL
       rv$filtered_data <- data_fude
 
-      proxy <- leaflet::leafletProxy("mapfilter", session) %>%
+      proxy <- leaflet::leafletProxy("mapfilter", session) |>
         leaflet::clearShapes()
 
-      if (community) {
-        proxy %>%
+      if (rcom) {
+        proxy |>
           leaflet::addPolygons(
-            data = data_community,
-            layerId = ~community_layerId,
-            label = ~community_label,
+            data = data_rcom,
+            layerId = ~rcom_layerId,
+            label = ~rcom_label,
             fillColor = "gray",
             color = "black",
             weight = 2,
@@ -244,7 +247,7 @@ shiny_fude <- function(
           )
       }
 
-      proxy %>%
+      proxy |>
         leaflet::addPolygons(
           data = data_fude,
           layerId = ~layerId,
@@ -267,6 +270,6 @@ shiny_fude <- function(
 utils::globalVariables(c(
   "layerId",
   "label",
-  "community_layerId",
-  "community_label"
+  "rcom_layerId",
+  "rcom_label"
 ))

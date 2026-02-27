@@ -7,7 +7,7 @@
 ls_fude(data)
 }
 \arguments{
-\item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
+\item{data}{List of MAFF Fude Polygon data.}
 }
 \value{
 A data.frame.

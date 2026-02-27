@@ -6,16 +6,14 @@
 ## Usage
 
 ``` r
-extract_fude(data, year = NULL, city = NULL, kcity = "", community = "")
+extract_fude(data, year = NULL, city = NULL, kcity = "", rcom = "")
 ```
 
 ## Arguments
 
 - data:
 
-  A list of
-  [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html)
-  objects.
+  List of MAFF Fude Polygon data.
 
 - year:
 
@@ -23,14 +21,14 @@ extract_fude(data, year = NULL, city = NULL, kcity = "", community = "")
 
 - city:
 
-  Local government names or codes to extract.
+  A local government name or code (6-digit) to extract.
 
 - kcity:
 
-  A regular expression string. One or more former village names (in
+  A regular expression string. One or more former city names (in
   Japanese) to extract.
 
-- community:
+- rcom:
 
   A regular expression string. One or more agricultural community names
   (in Japanese) to extract.

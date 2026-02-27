@@ -1,4 +1,4 @@
-# Relationship Between the Residences of Farmers and Their Farmland
+# Relationship between the residences of farmers and their farmland
 
 ## Relationship between the residences of farmers and their farmland
 
@@ -13,7 +13,7 @@ library(ggplot2)
 library(ggmapinset)
 library(ggrepel)
 
-db <- combine_fude(d, b, city = "松山", community = "和気|安城寺|長戸|久万ノ台")
+db <- combine_fude(d, b, city = "松山", rcom = "和気|安城寺|長戸|久万ノ台")
 
 set.seed(200)
 probabilities <- c(0.97, 0.01, 0.005, 0.005, 0.005, 0.005)
@@ -23,8 +23,9 @@ db$fude$farmer = factor(
     names(probabilities),
     nrow(db$fude),
     replace = TRUE,
-    prob = probabilities)
+    prob = probabilities
   )
+)
 
 farm <- db$fude |>
   group_by(farmer) |>
@@ -55,13 +56,15 @@ inset1 <- configure_inset(
     centre = sf::st_geometry(farm)[farm$farmer == "F"],
     scale = 3,
     translation = c(-4, 1),
-    radius = 1, units = "km"
+    radius = 1,
+    units = "km"
   )
 inset2 <- configure_inset(
     centre = sf::st_geometry(farm)[farm$farmer == "E"],
     scale = 3,
     translation = c(4, -3),
-    radius = 1, units = "km"
+    radius = 1,
+    units = "km"
   )
 
 farm$x <- sf::st_coordinates(farm)[, 1]
@@ -93,7 +96,3 @@ ggplot(data = db$fude) +
   theme_void() +
   theme(legend.position = "none")
 ```
-
-![](example4_files/figure-html/matsuyama-1.png)
-
-**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
