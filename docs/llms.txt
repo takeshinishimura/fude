@@ -5,7 +5,7 @@ Fude Polygon data downloadable from the Ministry of Agriculture,
 Forestry and Fisheries (MAFF) website. The word “fude” is a Japanese
 counter suffix used to denote land parcels.
 
-## Obtaining Data
+## Obtaining data
 
 Fude Polygon data can now be downloaded from two different MAFF websites
 (both available only in Japanese):
@@ -33,7 +33,7 @@ devtools::install_github("takeshinishimura/fude")
 
 ## Usage
 
-### Reading Fude Polygon Data
+### Reading Fude Polygon data
 
 There are two ways to load Fude Polygon data, depending on how the data
 was obtained:
@@ -59,7 +59,55 @@ d <- read_fude("~/2022_38.zip")
 d2 <- read_fude(pref = "愛媛")
 ```
 
-### Renaming the Local Government Code
+### Itemizing the structure of Fude Polygon data
+
+``` r
+ls_fude(d)
+#>           name issue_year local_government_cd     n pref_name  city_name
+#> 1  2022_382019       2022              382019 72045    愛媛県     松山市
+#> 2  2022_382027       2022              382027 43396    愛媛県     今治市
+#> 3  2022_382035       2022              382035 61683    愛媛県   宇和島市
+#> 4  2022_382043       2022              382043 37753    愛媛県   八幡浜市
+#> 5  2022_382051       2022              382051 15734    愛媛県   新居浜市
+#> 6  2022_382060       2022              382060 63244    愛媛県     西条市
+#> 7  2022_382078       2022              382078 37570    愛媛県     大洲市
+#> 8  2022_382108       2022              382108 33302    愛媛県     伊予市
+#> 9  2022_382132       2022              382132 34781    愛媛県 四国中央市
+#> 10 2022_382141       2022              382141 73676    愛媛県     西予市
+#> 11 2022_382159       2022              382159 24235    愛媛県     東温市
+#> 12 2022_383562       2022              383562  2195    愛媛県     上島町
+#> 13 2022_383864       2022              383864 22823    愛媛県 久万高原町
+#> 14 2022_384011       2022              384011  8634    愛媛県     松前町
+#> 15 2022_384020       2022              384020  7042    愛媛県     砥部町
+#> 16 2022_384224       2022              384224 27131    愛媛県     内子町
+#> 17 2022_384429       2022              384429 23429    愛媛県     伊方町
+#> 18 2022_384844       2022              384844  9089    愛媛県     松野町
+#> 19 2022_384887       2022              384887 16550    愛媛県     鬼北町
+#> 20 2022_385069       2022              385069 22931    愛媛県     愛南町
+#>        city_romaji
+#> 1    Matsuyama-shi
+#> 2      Imabari-shi
+#> 3      Uwajima-shi
+#> 4   Yawatahama-shi
+#> 5      Niihama-shi
+#> 6        Saijo-shi
+#> 7          Ozu-shi
+#> 8          Iyo-shi
+#> 9  Shikokuchuo-shi
+#> 10       Seiyo-shi
+#> 11        Toon-shi
+#> 12    Kamijima-cho
+#> 13   Kumakogen-cho
+#> 14    Matsumae-cho
+#> 15        Tobe-cho
+#> 16      Uchiko-cho
+#> 17       Ikata-cho
+#> 18     Matsuno-cho
+#> 19      Kihoku-cho
+#> 20       Ainan-cho
+```
+
+### Renaming the local government code
 
 **Note:** This feature is available only for data obtained from GeoJSON
 (Obtaining Data \#1).
@@ -91,7 +139,7 @@ names(dren)
 #> [19] "2022_Kihoku-cho"      "2022_Ainan-cho"
 ```
 
-### Getting Agricultural Community Boundary Data
+### Getting agricultural community boundary data
 
 Download the agricultural community boundary data, which corresponds to
 the Fude Polygon data, from the MAFF website:
@@ -102,12 +150,12 @@ only in Japanese).
 b <- get_boundary(d)
 ```
 
-### Combining Fude Polygons with Agricultural Community Boundaries
+### Combining Fude Polygons with agricultural community boundaries
 
 You can easily combine Fude Polygons with agricultural community
 boundaries to create enriched spatial analyses or maps.
 
-#### Characteristics of Data from GeoJSON (Obtaining Data \#1)
+#### Characteristics of data from GeoJSON (Obtaining data \#1)
 
 ``` r
 db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
@@ -115,7 +163,7 @@ db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門
 library(ggplot2)
 
 ggplot() +
-  geom_sf(data = db$fude, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db$fude, aes(fill = rcom_name), alpha = .8) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
   theme(legend.position = "bottom") +
@@ -126,7 +174,7 @@ ggplot() +
 
 **出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
-##### Data Assignment
+##### Data assignment
 
 - `db$fude`: Automatically assigns polygons on the boundaries to a
   community.
@@ -137,13 +185,13 @@ ggplot() +
 library(patchwork)
 
 fude <- ggplot() +
-  geom_sf(data = db$fude, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db$fude, aes(fill = rcom_name), alpha = .8) +
   theme_void() +
   theme(legend.position = "none") +
   coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
 
 fude_split <- ggplot() +
-  geom_sf(data = db$fude_split, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db$fude_split, aes(fill = rcom_name), alpha = .8) +
   theme_void() +
   theme(legend.position = "none") +
   coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
@@ -164,9 +212,9 @@ library(sf)
 db$fude |>
   filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
   st_drop_geometry() |>
-  select(polygon_uuid, KCITY_NAME, RCOM_NAME, RCOM_ROMAJI) |>
+  select(polygon_uuid, kcity_name, rcom_name, rcom_romaji) |>
   head()
-#>                           polygon_uuid KCITY_NAME RCOM_NAME RCOM_ROMAJI
+#>                           polygon_uuid kcity_name rcom_name rcom_romaji
 #> 1 8085bc47-9af5-440f-89e9-f188d3b95746   興居島村        泊      Tomari
 #> 2 26920da0-b63e-4994-a9eb-175e2982fe21   興居島村      門田      Kadota
 #> 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0aec   興居島村      由良        Yura
@@ -175,7 +223,7 @@ db$fude |>
 #> 6 156a3459-25cb-494c-824f-9ba6b0fb6f23   興居島村      由良        Yura
 ```
 
-#### Characteristics of Data from FlatGeobuf (Obtaining Data \#2)
+#### Characteristics of data from FlatGeobuf (Obtaining data \#2)
 
 The FlatGeobuf format offers a more efficient alternative to GeoJSON. A
 notable feature of this format is that each record already includes an
@@ -185,7 +233,7 @@ notable feature of this format is that each record already includes an
 db2 <- combine_fude(d2, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
-  geom_sf(data = db2$fude, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db2$fude, aes(fill = rcom_name), alpha = .8) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
   theme(legend.position = "bottom") +
@@ -196,14 +244,14 @@ ggplot() +
 
 **出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
-Data enables extraction based on city names, former village names, and
+Data enables extraction based on city names, former city names, and
 agricultural community names.
 
 **Note:** This feature is available only for data obtained from
 FlatGeobuf (Obtaining Data \#2).
 
 ``` r
-d2 |> extract_fude(city = "松山市", kcity = "興居島")
+extract_fude(d2, city = "松山市", kcity = "興居島")
 #> Simple feature collection with 1691 features and 6 fields
 #> Geometry type: MULTIPOLYGON
 #> Dimension:     XY
@@ -234,7 +282,7 @@ d2 |> extract_fude(city = "松山市", kcity = "興居島")
 #> 10  33.88765 3820102004 MULTIPOLYGON (((132.6422 33...
 ```
 
-### Review Fude Polygon Data
+### Review Fude Polygon data
 
 You can review Fude Polygon data in detail.
 
@@ -260,7 +308,7 @@ db <- bind_fude(db1, db2, db3)
 
 library(mapview)
 
-mapview::mapview(db$fude, zcol = "RCOM_NAME", layer.name = "農業集落名")
+mapview::mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
 ```
 
 # Package index

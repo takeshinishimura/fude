@@ -69,6 +69,54 @@ d <- read_fude("~/2022_38.zip")
 d2 <- read_fude(pref = "愛媛")
 ```
 
+### Itemizing the structure of Fude Polygon data
+
+``` r
+ls_fude(d)
+#>           name issue_year local_government_cd     n pref_name  city_name
+#> 1  2022_382019       2022              382019 72045    愛媛県     松山市
+#> 2  2022_382027       2022              382027 43396    愛媛県     今治市
+#> 3  2022_382035       2022              382035 61683    愛媛県   宇和島市
+#> 4  2022_382043       2022              382043 37753    愛媛県   八幡浜市
+#> 5  2022_382051       2022              382051 15734    愛媛県   新居浜市
+#> 6  2022_382060       2022              382060 63244    愛媛県     西条市
+#> 7  2022_382078       2022              382078 37570    愛媛県     大洲市
+#> 8  2022_382108       2022              382108 33302    愛媛県     伊予市
+#> 9  2022_382132       2022              382132 34781    愛媛県 四国中央市
+#> 10 2022_382141       2022              382141 73676    愛媛県     西予市
+#> 11 2022_382159       2022              382159 24235    愛媛県     東温市
+#> 12 2022_383562       2022              383562  2195    愛媛県     上島町
+#> 13 2022_383864       2022              383864 22823    愛媛県 久万高原町
+#> 14 2022_384011       2022              384011  8634    愛媛県     松前町
+#> 15 2022_384020       2022              384020  7042    愛媛県     砥部町
+#> 16 2022_384224       2022              384224 27131    愛媛県     内子町
+#> 17 2022_384429       2022              384429 23429    愛媛県     伊方町
+#> 18 2022_384844       2022              384844  9089    愛媛県     松野町
+#> 19 2022_384887       2022              384887 16550    愛媛県     鬼北町
+#> 20 2022_385069       2022              385069 22931    愛媛県     愛南町
+#>        city_romaji
+#> 1    Matsuyama-shi
+#> 2      Imabari-shi
+#> 3      Uwajima-shi
+#> 4   Yawatahama-shi
+#> 5      Niihama-shi
+#> 6        Saijo-shi
+#> 7          Ozu-shi
+#> 8          Iyo-shi
+#> 9  Shikokuchuo-shi
+#> 10       Seiyo-shi
+#> 11        Toon-shi
+#> 12    Kamijima-cho
+#> 13   Kumakogen-cho
+#> 14    Matsumae-cho
+#> 15        Tobe-cho
+#> 16      Uchiko-cho
+#> 17       Ikata-cho
+#> 18     Matsuno-cho
+#> 19      Kihoku-cho
+#> 20       Ainan-cho
+```
+
 ### Renaming the local government code
 
 **Note:** This feature is available only for data obtained from GeoJSON
@@ -125,7 +173,7 @@ db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門
 library(ggplot2)
 
 ggplot() +
-  geom_sf(data = db$fude, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db$fude, aes(fill = rcom_name), alpha = .8) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
   theme(legend.position = "bottom") +
@@ -147,13 +195,13 @@ ggplot() +
 library(patchwork)
 
 fude <- ggplot() +
-  geom_sf(data = db$fude, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db$fude, aes(fill = rcom_name), alpha = .8) +
   theme_void() +
   theme(legend.position = "none") +
   coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
 
 fude_split <- ggplot() +
-  geom_sf(data = db$fude_split, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db$fude_split, aes(fill = rcom_name), alpha = .8) +
   theme_void() +
   theme(legend.position = "none") +
   coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
@@ -174,9 +222,9 @@ library(sf)
 db$fude |>
   filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
   st_drop_geometry() |>
-  select(polygon_uuid, KCITY_NAME, RCOM_NAME, RCOM_ROMAJI) |>
+  select(polygon_uuid, kcity_name, rcom_name, rcom_romaji) |>
   head()
-#>                           polygon_uuid KCITY_NAME RCOM_NAME RCOM_ROMAJI
+#>                           polygon_uuid kcity_name rcom_name rcom_romaji
 #> 1 8085bc47-9af5-440f-89e9-f188d3b95746   興居島村        泊      Tomari
 #> 2 26920da0-b63e-4994-a9eb-175e2982fe21   興居島村      門田      Kadota
 #> 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0aec   興居島村      由良        Yura
@@ -195,7 +243,7 @@ notable feature of this format is that each record already includes an
 db2 <- combine_fude(d2, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
-  geom_sf(data = db2$fude, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db2$fude, aes(fill = rcom_name), alpha = .8) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
   theme(legend.position = "bottom") +
@@ -206,7 +254,7 @@ ggplot() +
 
 **出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
-Data enables extraction based on city names, former village names, and
+Data enables extraction based on city names, former city names, and
 agricultural community names.
 
 **Note:** This feature is available only for data obtained from
@@ -255,54 +303,6 @@ s <- shiny_fude(db, rcom = TRUE)
 # shiny::shinyApp(ui = s$ui, server = s$server)
 ```
 
-### Itemize the structure of Fude Polygon data
-
-``` r
-ls_fude(d2)
-#>                   name issue_year local_government_cd     n PREF_NAME
-#> 1  MB0001_2025_2020_38       2025              382019 70809    愛媛県
-#> 2  MB0001_2025_2020_38       2025              382027 43440    愛媛県
-#> 3  MB0001_2025_2020_38       2025              382035 61400    愛媛県
-#> 4  MB0001_2025_2020_38       2025              382043 37613    愛媛県
-#> 5  MB0001_2025_2020_38       2025              382051 15174    愛媛県
-#> 6  MB0001_2025_2020_38       2025              382060 61221    愛媛県
-#> 7  MB0001_2025_2020_38       2025              382078 37343    愛媛県
-#> 8  MB0001_2025_2020_38       2025              382108 32762    愛媛県
-#> 9  MB0001_2025_2020_38       2025              382132 34093    愛媛県
-#> 10 MB0001_2025_2020_38       2025              382141 73075    愛媛県
-#> 11 MB0001_2025_2020_38       2025              382159 24245    愛媛県
-#> 12 MB0001_2025_2020_38       2025              383562  2187    愛媛県
-#> 13 MB0001_2025_2020_38       2025              383864 22754    愛媛県
-#> 14 MB0001_2025_2020_38       2025              384011  8530    愛媛県
-#> 15 MB0001_2025_2020_38       2025              384020  6957    愛媛県
-#> 16 MB0001_2025_2020_38       2025              384224 27232    愛媛県
-#> 17 MB0001_2025_2020_38       2025              384429 23216    愛媛県
-#> 18 MB0001_2025_2020_38       2025              384844  9014    愛媛県
-#> 19 MB0001_2025_2020_38       2025              384887 16557    愛媛県
-#> 20 MB0001_2025_2020_38       2025              385069 22867    愛媛県
-#>     CITY_NAME     CITY_ROMAJI
-#> 1      松山市   Matsuyama-shi
-#> 2      今治市     Imabari-shi
-#> 3    宇和島市     Uwajima-shi
-#> 4    八幡浜市  Yawatahama-shi
-#> 5    新居浜市     Niihama-shi
-#> 6      西条市       Saijo-shi
-#> 7      大洲市         Ozu-shi
-#> 8      伊予市         Iyo-shi
-#> 9  四国中央市 Shikokuchuo-shi
-#> 10     西予市       Seiyo-shi
-#> 11     東温市        Toon-shi
-#> 12     上島町    Kamijima-cho
-#> 13 久万高原町   Kumakogen-cho
-#> 14     松前町    Matsumae-cho
-#> 15     砥部町        Tobe-cho
-#> 16     内子町      Uchiko-cho
-#> 17     伊方町       Ikata-cho
-#> 18     松野町     Matsuno-cho
-#> 19     鬼北町      Kihoku-cho
-#> 20     愛南町       Ainan-cho
-```
-
 ### Using `mapview` package
 
 If you want to use `mapview()`, do the following.
@@ -316,5 +316,5 @@ db <- bind_fude(db1, db2, db3)
 
 library(mapview)
 
-mapview::mapview(db$fude, zcol = "RCOM_NAME", layer.name = "農業集落名")
+mapview::mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
 ```

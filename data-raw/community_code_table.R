@@ -77,7 +77,7 @@ process_kana <- function(pref_name, city_name, column) {
 }
 
 pref_romaji_table <- tibble::tibble(
-  PREF_KANA = c(
+  pref_kana = c(
     "\u307b\u3063\u304b\u3044\u3069\u3046",
     "\u3042\u304a\u3082\u308a\u3051\u3093",
     "\u3044\u308f\u3066\u3051\u3093",
@@ -126,7 +126,7 @@ pref_romaji_table <- tibble::tibble(
     "\u304b\u3054\u3057\u307e\u3051\u3093",
     "\u304a\u304d\u306a\u308f\u3051\u3093"
   ),
-  PREF_ROMAJI = c(
+  pref_romaji = c(
     "Hokkaido", "Aomori", "Iwate", "Miyagi", "Akita",
     "Yamagata", "Fukushima", "Ibaraki", "Tochigi", "Gunma",
     "Saitama", "Chiba", "Tokyo", "Kanagawa", "Niigata",
@@ -147,22 +147,25 @@ for (pref_code in sprintf("%02d", 1:47)) {
     sf::st_drop_geometry() |>
     dplyr::rowwise() |>
     dplyr::mutate(
-      PREF_KANA = process_kana(PREF_NAME, CITY_NAME, "pref_kana"),
-      CITY_KANA = process_kana(PREF_NAME, CITY_NAME, "city_kana"),
-      CITY_ROMAJI = process_kana(PREF_NAME, CITY_NAME, "romaji"),
+      pref_kana = process_kana(PREF_NAME, CITY_NAME, "pref_kana"),
+      city_kana = process_kana(PREF_NAME, CITY_NAME, "city_kana"),
+      city_romaji = process_kana(PREF_NAME, CITY_NAME, "romaji"),
       local_government_cd = process_kana(PREF_NAME, CITY_NAME, "lg_code"),
     ) |>
     dplyr::ungroup() |>
-    dplyr::left_join(pref_romaji_table, by = "PREF_KANA") |>
+    dplyr::left_join(pref_romaji_table, by = "pref_kana") |>
     dplyr::mutate(
-      RCOM_ROMAJI = .data$RCOM_KANA |>
+      rcom_romaji = .data$RCOM_KANA |>
         stringi::stri_trans_general("any-latin") |>
         stringi::stri_trans_totitle(),
       census_year = census_year
     ) |>
     dplyr::select(
-      KEY, PREF_NAME, PREF_KANA, PREF_ROMAJI, CITY_NAME, CITY_KANA, CITY_ROMAJI,
-      KCITY_NAME, RCOM_NAME, RCOM_KANA, RCOM_ROMAJI,
+      key = KEY,
+      pref_name = PREF_NAME, pref_kana, pref_romaji,
+      city_name = CITY_NAME, city_kana, city_romaji,
+      kcity_name = KCITY_NAME,
+      rcom_name = RCOM_NAME, rcom_kana = RCOM_KANA, rcom_romaji,
       local_government_cd, census_year
     )
 }
@@ -178,19 +181,21 @@ for (pref_code in sprintf("%02d", 1:47)) {
     sf::st_drop_geometry() |>
     dplyr::rowwise() |>
     dplyr::mutate(
-      PREF_KANA = process_kana(PREF_NAME, CITY_NAME, "pref_kana"),
-      CITY_KANA = process_kana(PREF_NAME, CITY_NAME, "city_kana"),
-      CITY_ROMAJI = process_kana(PREF_NAME, CITY_NAME, "romaji"),
+      pref_kana = process_kana(PREF_NAME, CITY_NAME, "pref_kana"),
+      city_kana = process_kana(PREF_NAME, CITY_NAME, "city_kana"),
+      city_romaji = process_kana(PREF_NAME, CITY_NAME, "romaji"),
       local_government_cd = process_kana(PREF_NAME, CITY_NAME, "lg_code"),
     ) |>
     dplyr::ungroup() |>
-    dplyr::left_join(pref_romaji_table, by = "PREF_KANA") |>
+    dplyr::left_join(pref_romaji_table, by = "pref_kana") |>
     dplyr::mutate(
       census_year = census_year
     ) |>
     dplyr::select(
-      KEY, PREF_NAME, PREF_KANA, PREF_ROMAJI, CITY_NAME, CITY_KANA, CITY_ROMAJI,
-      KCITY_NAME,
+      key = KEY,
+      pref_name = PREF_NAME, pref_kana, pref_romaji,
+      city_name = CITY_NAME, city_kana, city_romaji,
+      kcity_name = KCITY_NAME,
       local_government_cd, census_year
     )
 }
@@ -206,18 +211,20 @@ for (pref_code in sprintf("%02d", 1:47)) {
     sf::st_drop_geometry() |>
     dplyr::rowwise() |>
     dplyr::mutate(
-      PREF_KANA = process_kana(PREF_NAME, CITY_NAME, "pref_kana"),
-      CITY_KANA = process_kana(PREF_NAME, CITY_NAME, "city_kana"),
-      CITY_ROMAJI = process_kana(PREF_NAME, CITY_NAME, "romaji"),
+      pref_kana = process_kana(PREF_NAME, CITY_NAME, "pref_kana"),
+      city_kana = process_kana(PREF_NAME, CITY_NAME, "city_kana"),
+      city_romaji = process_kana(PREF_NAME, CITY_NAME, "romaji"),
       local_government_cd = process_kana(PREF_NAME, CITY_NAME, "lg_code"),
     ) |>
     dplyr::ungroup() |>
-    dplyr::left_join(pref_romaji_table, by = "PREF_KANA") |>
+    dplyr::left_join(pref_romaji_table, by = "pref_kana") |>
     dplyr::mutate(
       census_year = census_year
     ) |>
     dplyr::select(
-      KEY, PREF_NAME, PREF_KANA, PREF_ROMAJI, CITY_NAME, CITY_KANA, CITY_ROMAJI,
+      key = KEY,
+      pref_name = PREF_NAME, pref_kana, pref_romaji,
+      city_name = CITY_NAME, city_kana, city_romaji,
       local_government_cd, census_year
     )
 }

@@ -20,8 +20,8 @@ library(dplyr)
 library(data.tree)
 
 tree <- b[[1]] |>
-  filter(grepl("松山", KCITY_NAME)) |>
-  mutate(pathString = paste(PREF_NAME, CITY_NAME, KCITY_NAME, RCOM_NAME, sep = "/")) |>
+  filter(grepl("松山", kcity_name)) |>
+  mutate(pathString = paste(pref_name, city_name, kcity_name, rcom_name, sep = "/")) |>
   data.tree::as.Node()
 
 tree$Do(\(node) {node$n <- if (node$isLeaf) NA_integer_ else node$count})
@@ -64,9 +64,9 @@ print(tree, "n", limit = 30)
 ``` r
 library(ggplot2)
 
-ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) + 
+ggplot(data = b[[1]] |> filter(grepl("松山", kcity_name))) + 
   geom_sf(fill = NA) +
-  geom_sf_text(aes(label = RCOM_NAME), size = 2, family = "Hiragino Sans") +
+  geom_sf_text(aes(label = rcom_name), size = 2, family = "Hiragino Sans") +
   theme_void()
 ```
 
@@ -78,8 +78,8 @@ ggplot(data = b[[1]] |> filter(grepl("松山", KCITY_NAME))) +
 library(collapsibleTree)
 
 b[[1]] |>
-  filter(grepl("松山", CITY_NAME)) |>
-  distinct(PREF_NAME, CITY_NAME, KCITY_NAME, RCOM_NAME) |>
+  filter(grepl("松山", city_name)) |>
+  distinct(pref_name, city_name, kcity_name, rcom_name) |>
   (\(x) collapsibleTree(
     x,
     hierarchy = names(x),
@@ -92,8 +92,8 @@ b[[1]] |>
 ``` r
 library(paletteer)
 
-ggplot(b[[1]] |> filter(CITY_NAME == "松山市")) +
-  geom_sf(aes(fill = KCITY_NAME), alpha = .8) +
+ggplot(b[[1]] |> filter(city_name == "松山市")) +
+  geom_sf(aes(fill = kcity_name), alpha = .8) +
   theme_void() +
   theme(text = element_text(family = "Hiragino Sans")) +
   paletteer::scale_fill_paletteer_d("Polychrome::kelly")

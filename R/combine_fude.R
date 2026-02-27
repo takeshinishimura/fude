@@ -59,7 +59,7 @@ combine_fude <- function(
   lg_code <- find_lg_code(location_info$pref, location_info$city)
 
   if ("key" %in% names(data[[1]])) {
-    target_key <- unique(extracted_boundary$rcom$KEY)
+    target_key <- unique(extracted_boundary$rcom$key)
     fude_original <- data[[grepl(
       paste0("_", substr(lg_code, start = 1, stop = 2), "$"),
       names(data)
@@ -69,7 +69,7 @@ combine_fude <- function(
         extracted_boundary$rcom |>
           sf::st_set_geometry(NULL) |>
           dplyr::select(-.data$local_government_cd),
-        by = c("key" = "KEY")
+        by = "key"
       ) %>%
       dplyr::mutate(
         centroid = sf::st_sfc(
@@ -166,7 +166,7 @@ combine_fude <- function(
   }
 
   message(paste(
-    length(unique(extracted_boundary$rcom$KEY)),
+    length(unique(extracted_boundary$rcom$key)),
     "communities have been extracted."
   ))
 

@@ -49,11 +49,11 @@ process_ls_fude <- function(
       name = "n"
     ) |>
     dplyr::mutate(
-      PREF_NAME = fude::pref_code_table$pref_kanji[match(
+      pref_name = fude::pref_code_table$pref_kanji[match(
         substr(.data$local_government_cd, 1, 2),
         fude::pref_code_table$pref_code
       )],
-      CITY_NAME = get_lg_name(.data$local_government_cd, romaji = NULL),
-      CITY_ROMAJI = get_lg_name(.data$local_government_cd, romaji = "title")
+      city_name = get_lg_name(.data$local_government_cd, romaji = NULL),
+      city_romaji = get_lg_name(.data$local_government_cd, romaji = "title")
     )
 }

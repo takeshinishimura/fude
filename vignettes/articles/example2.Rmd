@@ -24,9 +24,9 @@ library(ggrepel)
 b <- get_boundary("38", path = "~", quiet = TRUE)
 eb <- extract_boundary(b, city = "松山市", kcity = "浅海|立岩|難波|正岡|北条|河野|粟井")
 
-ggplot(data = eb, aes(fill = KCITY_NAME)) +
+ggplot(data = eb, aes(fill = kcity_name)) +
   geom_sf(alpha = .2) +
-  geom_sf_text(aes(label = RCOM_NAME), size = 2, family = "Hiragino Sans") +
+  geom_sf_text(aes(label = rcom_name), size = 2, family = "Hiragino Sans") +
   theme_void() +
   theme(legend.position = "none")
 ```
@@ -88,7 +88,7 @@ ggplot(data = eb$city |> filter(fill == 1)) +
   geom_sf_text(aes(label = city_kanji), family = "HiraKakuProN-W3") +
   geom_sf(data = eb$rcom, fill = "ivory") +
 # geom_sf(data = eb$fude, aes(fill = land_type), colour = NA) +
-  geom_sf_label(data = eb$rcom, aes(label = RCOM_NAME), family = "HiraKakuProN-W3") +
+  geom_sf_label(data = eb$rcom, aes(label = rcom_name), family = "HiraKakuProN-W3") +
   theme_void() +
   theme(legend.position = "none")
 ```

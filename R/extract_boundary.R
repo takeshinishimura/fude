@@ -61,7 +61,7 @@ extract_boundary <- function(
   } else {
     pref_code <- boundary |>
       dplyr::bind_rows() |>
-      dplyr::pull(.data$PREF) |>
+      dplyr::pull(.data$pref) |>
       unique()
     target_city <- ""
   }
@@ -74,22 +74,22 @@ extract_boundary <- function(
 
   x <- boundary |>
     dplyr::bind_rows() |>
-    dplyr::filter(.data$PREF %in% pref_code) |>
+    dplyr::filter(.data$pref %in% pref_code) |>
     add_local_government_cd_to_df() |>
     sf::st_make_valid()
 
   extracted_boundary <- x |>
-    dplyr::filter(.data$KEY %in% target_key) |>
-    dplyr::arrange(.data$KEY) |>
+    dplyr::filter(.data$key %in% target_key) |>
+    dplyr::arrange(.data$key) |>
     dplyr::mutate(
-      KCITY_NAME = dplyr::coalesce(.data$KCITY_NAME, ""),
-      RCOM_NAME = dplyr::coalesce(.data$RCOM_NAME, "")
+      kcity_name = dplyr::coalesce(.data$kcity_name, ""),
+      rcom_name = dplyr::coalesce(.data$rcom_name, "")
     ) |>
     dplyr::mutate(
-      KCITY_NAME = factor(.data$KCITY_NAME, levels = unique(.data$KCITY_NAME)),
-      RCOM_NAME = factor(.data$RCOM_NAME, levels = unique(.data$RCOM_NAME)),
-      RCOM_KANA = factor(.data$RCOM_KANA, levels = unique(.data$RCOM_KANA)),
-      RCOM_ROMAJI = factor(.data$RCOM_ROMAJI, levels = unique(.data$RCOM_ROMAJI))
+      kcity_name = factor(.data$kcity_name, levels = unique(.data$kcity_name)),
+      rcom_name = factor(.data$rcom_name, levels = unique(.data$rcom_name)),
+      rcom_kana = factor(.data$rcom_kana, levels = unique(.data$rcom_kana)),
+      rcom_romaji = factor(.data$rcom_romaji, levels = unique(.data$rcom_romaji))
     ) |>
     add_xy()
 
@@ -161,12 +161,12 @@ extract_boundary <- function(
     dplyr::mutate(
       KCITY_code = paste(
         .data$local_government_cd,
-        .data$PREF,
-        .data$CITY,
-        .data$KCITY,
-        .data$PREF_NAME,
-        .data$CITY_NAME,
-        .data$KCITY_NAME,
+        .data$pref,
+        .data$city,
+        .data$kcity,
+        .data$pref_name,
+        .data$city_name,
+        .data$kcity_name,
         sep = "_"
       )
     )
@@ -187,16 +187,16 @@ extract_boundary <- function(
       .data$KCITY_code,
       into = c(
         "local_government_cd",
-        "PREF",
-        "CITY",
-        "KCITY",
-        "PREF_NAME",
-        "CITY_NAME",
-        "KCITY_NAME"
+        "pref",
+        "city",
+        "kcity",
+        "pref_name",
+        "city_name",
+        "kcity_name"
       ),
       sep = "_"
     )
-  kcity_df$KCITY_NAME[kcity_df$KCITY_NAME == "NA"] <- NA
+  kcity_df$kcity_name[kcity_df$kcity_name == "NA"] <- NA
   kcity_all_map <- kcity_df |>
     sf::st_set_crs(4326)
 
@@ -204,9 +204,9 @@ extract_boundary <- function(
     kcity_all_map <- kcity_all_map |>
       dplyr::mutate(
         fill = factor(dplyr::if_else(
-          .data$CITY_NAME %in%
+          .data$city_name %in%
             target_city &
-            .data$KCITY_NAME %in% extracted_boundary$KCITY_NAME,
+            .data$kcity_name %in% extracted_boundary$kcity_name,
           1,
           0
         ))

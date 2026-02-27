@@ -12,47 +12,47 @@ rcom_code_table
 
 A data frame with 149,511 rows and 13 variables:
 
-- KEY:
+- key:
 
   Unique community codes
 
-- PREF_NAME:
+- pref_name:
 
   Prefecture names in Kanji
 
-- PREF_KANA:
+- pref_kana:
 
   Prefecture names in Hiragana
 
-- PREF_ROMAJI:
+- pref_romaji:
 
   Prefecture names in Romaji
 
-- CITY_NAME:
+- city_name:
 
   City names in Kanji
 
-- CITY_KANA:
+- city_kana:
 
   City names in Hiragana
 
-- CITY_ROMAJI:
+- city_romaji:
 
   City names in Romaji
 
-- KCITY_NAME:
+- kcity_name:
 
   Former village names in Kanji
 
-- RCOM_NAME:
+- rcom_name:
 
   Community names in Kanji
 
-- RCOM_KANA:
+- rcom_kana:
 
   Community names in Hiragana
 
-- RCOM_ROMAJI:
+- rcom_romaji:
 
   Community names in Romaji
 

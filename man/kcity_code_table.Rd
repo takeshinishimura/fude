@@ -7,14 +7,14 @@
 \format{
 A data frame with 12,110 rows and 10 variables:
 \describe{
-\item{KEY}{Unique kcity codes}
-\item{PREF_NAME}{Prefecture names in Kanji}
-\item{PREF_KANA}{Prefecture names in Hiragana}
-\item{PREF_ROMAJI}{Prefecture names in Romaji}
-\item{CITY_NAME}{City names in Kanji}
-\item{CITY_KANA}{City names in Hiragana}
-\item{CITY_ROMAJI}{City names in Romaji}
-\item{KCITY_NAME}{Former village names in Kanji}
+\item{key}{Unique kcity codes}
+\item{pref_name}{Prefecture names in Kanji}
+\item{pref_kana}{Prefecture names in Hiragana}
+\item{pref_romaji}{Prefecture names in Romaji}
+\item{city_name}{City names in Kanji}
+\item{city_kana}{City names in Hiragana}
+\item{city_romaji}{City names in Romaji}
+\item{kcity_name}{Former city names in Kanji}
 \item{local_government_cd}{Local government codes}
 \item{census_year}{Year of the census from which the data is derived}
 }

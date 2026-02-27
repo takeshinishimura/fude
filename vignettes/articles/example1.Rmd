@@ -24,10 +24,10 @@ library(gghighlight)
 db <- combine_fude(d, b, city = "西条", kcity = "丹原|田野")
 
 ggplot() +
-  geom_sf(data = db$rcom, aes(fill = RCOM_NAME), alpha = 0) +
-  geom_sf(data = db$fude, aes(fill = RCOM_NAME), linewidth = 0) +
+  geom_sf(data = db$rcom, aes(fill = rcom_name), alpha = 0) +
+  geom_sf(data = db$fude, aes(fill = rcom_name), linewidth = 0) +
   gghighlight() +
-  facet_wrap(~ RCOM_NAME) +
+  facet_wrap(~ rcom_name) +
   theme_void() +
   theme(
     legend.position = "none",
@@ -42,7 +42,7 @@ ggplot(data = db$fude, aes(x = a, fill = land_type_jp)) +
   geom_histogram(position = "identity", alpha = .5) +
   labs(x = "面積（a）",
        y = "頻度") +
-  facet_wrap(~ RCOM_NAME) +
+  facet_wrap(~ rcom_name) +
   labs(fill = "耕地の種類") +
   theme_minimal() +
   theme(text = element_text(family = "Hiragino Sans"))

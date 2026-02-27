@@ -72,6 +72,12 @@ d2 <- read_fude(pref = "愛媛")
 d2 <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
 ```
 
+### Itemizing the structure of Fude Polygon data
+
+```{r}
+ls_fude(d)
+```
+
 ### Renaming the local government code
 
 **Note:** This feature is available only for data obtained from GeoJSON (Obtaining Data #1).
@@ -111,7 +117,7 @@ db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門
 library(ggplot2)
 
 ggplot() +
-  geom_sf(data = db$fude, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db$fude, aes(fill = rcom_name), alpha = .8) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
   theme(legend.position = "bottom") +
@@ -128,13 +134,13 @@ ggplot() +
 library(patchwork)
 
 fude <- ggplot() +
-  geom_sf(data = db$fude, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db$fude, aes(fill = rcom_name), alpha = .8) +
   theme_void() +
   theme(legend.position = "none") +
   coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
 
 fude_split <- ggplot() +
-  geom_sf(data = db$fude_split, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db$fude_split, aes(fill = rcom_name), alpha = .8) +
   theme_void() +
   theme(legend.position = "none") +
   coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
@@ -151,7 +157,7 @@ library(sf)
 db$fude |>
   filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
   st_drop_geometry() |>
-  select(polygon_uuid, KCITY_NAME, RCOM_NAME, RCOM_ROMAJI) |>
+  select(polygon_uuid, kcity_name, rcom_name, rcom_romaji) |>
   head()
 ```
 
@@ -163,7 +169,7 @@ A notable feature of this format is that each record already includes an **accur
 db2 <- combine_fude(d2, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
-  geom_sf(data = db2$fude, aes(fill = RCOM_NAME), alpha = .8) +
+  geom_sf(data = db2$fude, aes(fill = rcom_name), alpha = .8) +
   guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
   theme_void() +
   theme(legend.position = "bottom") +
@@ -172,7 +178,7 @@ ggplot() +
 
 **出典**：`r cite_fude(db2)$ja`
 
-Data enables extraction based on city names, former village names, and agricultural community names.
+Data enables extraction based on city names, former city names, and agricultural community names.
 
 **Note:** This feature is available only for data obtained from FlatGeobuf (Obtaining Data #2).
 
@@ -190,12 +196,6 @@ s <- shiny_fude(db, rcom = TRUE)
 # shiny::shinyApp(ui = s$ui, server = s$server)
 ```
 
-### Itemize the structure of Fude Polygon data
-
-```{r message = FALSE}
-ls_fude(d2)
-```
-
 ### Using `mapview` package
 
 If you want to use `mapview()`, do the following.
@@ -208,5 +208,5 @@ db <- bind_fude(db1, db2, db3)
 
 library(mapview)
 
-mapview::mapview(db$fude, zcol = "RCOM_NAME", layer.name = "農業集落名")
+mapview::mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
 ```

@@ -105,22 +105,22 @@ find_key <- function(
         TRUE
       } else {
         ((.data$local_government_cd %in% city_code) |
-          (strip_jp_suffix(.data$CITY_NAME) %in% city_jp) |
-          (strip_kana_suffix(.data$CITY_KANA) %in% city_kana) |
-          (strip_romaji_suffix(.data$CITY_ROMAJI) %in% city_romaji))
+          (strip_jp_suffix(.data$city_name) %in% city_jp) |
+          (strip_kana_suffix(.data$city_kana) %in% city_kana) |
+          (strip_romaji_suffix(.data$city_romaji) %in% city_romaji))
       },
       if (is.null(kcity) || length(kcity) == 0 || !nzchar(kcity)) {
         TRUE
       } else {
-        grepl(kcity, .data$KCITY_NAME, perl = TRUE)
+        grepl(kcity, .data$kcity_name, perl = TRUE)
       },
       if (is.null(rcom) || length(rcom) == 0 || !nzchar(rcom)) {
         TRUE
       } else {
-        grepl(rcom, .data$RCOM_NAME, perl = TRUE)
+        grepl(rcom, .data$rcom_name, perl = TRUE)
       }
     ) |>
-    dplyr::pull(.data$KEY)
+    dplyr::pull(.data$key)
 
   return(x)
 }

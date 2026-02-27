@@ -28,15 +28,15 @@ shiny_fude <- function(
     data_fude <- data |>
       dplyr::mutate(
         layerId = .data$polygon_uuid,
-        label = .data$RCOM_NAME
+        label = .data$rcom_name
       )
   }
 
   if (rcom && "rcom" %in% names(data)) {
     data_rcom <- data$rcom |>
       dplyr::mutate(
-        rcom_layerId = .data$RCOM,
-        rcom_label = .data$RCOM_NAME
+        rcom_layerId = .data$rcom,
+        rcom_label = .data$rcom_name
       )
   }
 

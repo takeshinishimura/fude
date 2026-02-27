@@ -121,44 +121,45 @@ read_boundary <- function(
     quiet = quiet,
     options = paste0("ENCODING=", encoding)
   ) |>
+    dplyr::rename_with(tolower) |>
     (\(d) {
       if (boundary_type == 1) {
         dplyr::left_join(
           d,
           fude::rcom_code_table |>
             dplyr::select(
-              .data$KEY,
-              .data$PREF_KANA,
-              .data$PREF_ROMAJI,
-              .data$CITY_KANA,
-              .data$CITY_ROMAJI,
-              .data$RCOM_ROMAJI
+              .data$key,
+              .data$pref_kana,
+              .data$pref_romaji,
+              .data$city_kana,
+              .data$city_romaji,
+              .data$rcom_romaji
             ),
-          by = "KEY"
+          by = "key"
         )
       } else if (boundary_type == 2) {
         dplyr::left_join(
           d,
           fude::kcity_code_table |>
             dplyr::select(
-              .data$KEY,
-              .data$PREF_KANA,
-              .data$PREF_ROMAJI,
-              .data$CITY_KANA,
+              .data$key,
+              .data$pref_kana,
+              .data$pref_romaji,
+              .data$city_kana,
             ),
-          by = "KEY"
+          by = "key"
         )
       } else if (boundary_type == 3) {
         dplyr::left_join(
           d,
           fude::city_code_table |>
             dplyr::select(
-              .data$KEY,
-              .data$PREF_KANA,
-              .data$PREF_ROMAJI,
-              .data$CITY_KANA,
+              .data$key,
+              .data$pref_kana,
+              .data$pref_romaji,
+              .data$city_kana,
             ),
-          by = "KEY"
+          by = "key"
         )
       } else {
         d
@@ -167,10 +168,10 @@ read_boundary <- function(
       dplyr::mutate(
         dplyr::across(
           dplyr::any_of(c(
-            "PREF_NAME", "PREF_KANA", "PREF_ROMAJI",
-            "CITY_NAME", "CITY_KANA", "CITY_ROMAJI",
-            "KCITY_NAME",
-            "RCOM_NAME", "RCOM_KANA", "RCOM_ROMAJI"
+            "pref_name", "pref_kana", "pref_romaji",
+            "city_name", "city_kana", "city_romaji",
+            "kcity_name",
+            "rcom_name", "rcom_kana", "rcom_romaji"
           )
         ),
         \(col) factor(col, levels = unique(stats::na.omit(col)))

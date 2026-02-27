@@ -12,31 +12,31 @@ city_code_table
 
 A data frame with 1,905 rows and 9 variables:
 
-- KEY:
+- key:
 
-  Unique kcity codes
+  Unique city codes
 
-- PREF_NAME:
+- pref_name:
 
   Prefecture names in Kanji
 
-- PREF_KANA:
+- pref_kana:
 
   Prefecture names in Hiragana
 
-- PREF_ROMAJI:
+- pref_romaji:
 
   Prefecture names in Romaji
 
-- CITY_NAME:
+- city_name:
 
   City names in Kanji
 
-- CITY_KANA:
+- city_kana:
 
   City names in Hiragana
 
-- CITY_ROMAJI:
+- city_romaji:
 
   City names in Romaji
 
