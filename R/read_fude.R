@@ -11,19 +11,20 @@
 #'   Path to a ZIP file containing one or more supported spatial files
 #'   (`.geojson`, `.json`, and `.fgb`).
 #' @param pref
-#'   Prefecture name or JIS prefecture code.
+#'   Prefecture name or a two-digit prefecture code.
 #' @param year
-#'   Year when the Fude Polygon data was created.
-#' @param census_year
-#'   Year of the Agricultural and Forestry Census.
+#'   Year when the Fude Polygon data were created.
+#' @param rcom_year
+#'   Year of the agricultural community boundary data.
 #' @param supplementary
 #'   Logical. If `TRUE`, add supplementary information for each polygon.
 #' @param to_wgs84
 #'   Logical. If `TRUE`, transform coordinates to WGS 84 (EPSG:4326).
 #' @param quiet
-#'   If `TRUE`, suppress messages about reading progress.
+#'   Logical. If `TRUE`, suppress messages about reading progress.
 #'
-#' @returns A list of [sf::sf()] objects.
+#' @returns
+#'   A list of [sf::sf()] objects.
 #'
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
@@ -34,7 +35,7 @@ read_fude <- function(
   path = NULL,
   pref = NULL,
   year = 2025,
-  census_year = 2020,
+  rcom_year = 2020,
   supplementary = FALSE,
   to_wgs84 = TRUE,
   quiet = FALSE
@@ -47,7 +48,7 @@ read_fude <- function(
       if (is.null(pref_code) || is.na(pref_code)) {
         stop("Invalid `pref`.")
       }
-      path <- get_fude(pref_code, year, census_year)
+      path <- get_fude(pref_code, year, rcom_year)
     }
   }
 
@@ -125,13 +126,13 @@ read_fude <- function(
 get_fude <- function(
   pref_code,
   year,
-  census_year
+  rcom_year
 ) {
   url <- sprintf(
     "https://www.machimura.maff.go.jp/shurakudata/%s/mb/MB0001_%s_%s_%s.zip",
-    census_year,
+    rcom_year,
     year,
-    census_year,
+    rcom_year,
     pref_code
   )
 

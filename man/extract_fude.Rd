@@ -7,23 +7,24 @@
 extract_fude(data, year = NULL, city = NULL, kcity = "", rcom = "")
 }
 \arguments{
-\item{data}{List of MAFF Fude Polygon data.}
+\item{data}{Fude Polygon data as returned by \code{\link[=read_fude]{read_fude()}}.}
 
-\item{year}{One or more years to extract.}
+\item{year}{A numeric vector of years to extract.}
 
-\item{city}{A local government name or code (6-digit) to extract.}
+\item{city}{A character vector of local government names or 6-digit local government
+codes to extract.}
 
-\item{kcity}{A regular expression string. One or more former city names (in Japanese)
+\item{kcity}{A regular expression. One or more former municipality names (in Japanese)
 to extract.}
 
-\item{rcom}{A regular expression string. One or more agricultural community names (in
+\item{rcom}{A regular expression. One or more agricultural community names (in
 Japanese) to extract.}
 }
 \value{
-A list of \code{\link[sf:sf]{sf::sf()}} object(s).
+An \code{\link[sf:sf]{sf::sf()}} object.
 }
 \description{
-\code{extract_fude()} extracts the specified data from the list returned by
+\code{extract_fude()} extracts specified subsets of Fude Polygon data returned by
 \code{\link[=read_fude]{read_fude()}}.
 }
 \seealso{

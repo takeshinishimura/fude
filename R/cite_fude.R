@@ -6,32 +6,33 @@
 #' @param data
 #'   A list or data frame containing Fude Polygon data.
 #'
-#' @return A list with two elements: `ja` for Japanese citation text and `en`
+#' @return
+#'   A list with two elements: `ja` for Japanese citation text and `en`
 #'   for English citation text.
 #'
 #' @examples
-#' data <- list(fude = data.frame(issue_year = c(2021, 2020), boundary_edit_year = c(2019, 2020)))
+#' data <- list(fude = data.frame(issue_year = c(2021, 2020), boundary_data_year = c(2019, 2020)))
 #' cite_fude(data)
 #'
 #' @export
 cite_fude <- function(data) {
   if (is.data.frame(data)) {
     issue_year <- unique(data$issue_year)
-    boundary_edit_year <- unique(data$boundary_edit_year)
+    boundary_data_year <- unique(data$boundary_data_year)
   } else if (is.list(data)) {
     issue_year <- unique(
       unlist(
         sapply(data, `[[`, "issue_year")
       )
     )
-    boundary_edit_year <- unique(
+    boundary_data_year <- unique(
       unlist(
-        sapply(data, `[[`, "boundary_edit_year")
+        sapply(data, `[[`, "boundary_data_year")
       )
     )
   }
 
-  if (is.null(issue_year) & is.null(boundary_edit_year)) {
+  if (is.null(issue_year) & is.null(boundary_data_year)) {
     stop("The input data must be Fude Polygon data.")
   }
 
@@ -44,11 +45,11 @@ cite_fude <- function(data) {
       )
     )
   }
-  if (!is.null(boundary_edit_year)) {
+  if (!is.null(boundary_data_year)) {
     parts_ja <- c(
       parts_ja,
       glue::glue(
-        "\u300C\u8FB2\u696D\u96C6\u843D\u5883\u754C\u30C7\u30FC\u30BF\uFF08{paste(sort(boundary_edit_year), collapse = '\uFF0C')}\u5E74\u5EA6\uFF09\u300D"
+        "\u300C\u8FB2\u696D\u96C6\u843D\u5883\u754C\u30C7\u30FC\u30BF\uFF08{paste(sort(boundary_data_year), collapse = '\uFF0C')}\u5E74\u5EA6\uFF09\u300D"
       )
     )
   }
@@ -69,11 +70,11 @@ cite_fude <- function(data) {
       )
     )
   }
-  if (!is.null(boundary_edit_year)) {
+  if (!is.null(boundary_data_year)) {
     parts_en <- c(
       parts_en,
       glue::glue(
-        "'Agricultural Community Boundary Data (FY{paste(sort(boundary_edit_year), collapse = ', ')})'"
+        "'Agricultural Community Boundary Data (FY{paste(sort(boundary_data_year), collapse = ', ')})'"
       )
     )
   }

@@ -8,7 +8,8 @@
 #'   Database lists to be combined. They should all have the same named
 #'   elements.
 #'
-#' @returns A list of [sf::sf()] object(s).
+#' @returns
+#'   A list of [sf::sf()] object(s).
 #'
 #' @seealso [read_fude()], [combine_fude()].
 #'

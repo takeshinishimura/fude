@@ -8,10 +8,11 @@ boundary data provided by the MAFF.
 ``` r
 get_boundary(
   data,
-  year = 2020,
-  census_year = 2020,
+  boundary_data_year = 2020,
+  rcom_year = 2020,
   boundary_type = 1,
   path = NULL,
+  suffix = FALSE,
   to_wgs84 = TRUE,
   encoding = "CP932",
   quiet = FALSE
@@ -22,21 +23,22 @@ get_boundary(
 
 - data:
 
-  List of one or more MAFF agricultural community boundary data or one
-  or more strings representing prefecture codes.
+  Either Fude Polygon data as returned by
+  [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md),
+  or a two-digit prefecture code.
 
-- year:
+- boundary_data_year:
 
-  Year when the agricultural community boundary data was created.
+  Year when the agricultural community boundary data were created.
 
-- census_year:
+- rcom_year:
 
-  Year of the Agricultural and Forestry Census.
+  Year of the agricultural community boundary data.
 
 - boundary_type:
 
-  Type of boundary data. 1 = agricultural community, 2 = former city ,
-  or 3 = city.
+  The type of boundary data: `1` = agricultural community, `2` = former
+  municipality, `3` = municipality.
 
 - path:
 
@@ -45,17 +47,22 @@ get_boundary(
   Specify a directory containing one or more ZIP files, not the ZIP file
   itself.
 
+- suffix:
+
+  Logical. If `FALSE`, suffixes such as "-SHI" and "-KU" in local
+  government names are removed.
+
 - to_wgs84:
 
   Logical. If `TRUE`, transform coordinates to WGS 84 (EPSG:4326).
 
 - encoding:
 
-  CP932
+  Character encoding of the source files (e.g., `"CP932"`).
 
 - quiet:
 
-  If `TRUE`, suppress messages about reading progress.
+  Logical. If `TRUE`, suppress messages about reading progress.
 
 ## Value
 

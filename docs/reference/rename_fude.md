@@ -16,12 +16,12 @@ rename_fude(data, suffix = TRUE, romaji = NULL, quiet = TRUE)
 
 - data:
 
-  List of [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html)
-  objects.
+  Fude Polygon data as returned by
+  [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md).
 
 - suffix:
 
-  logical. If `FALSE`, suffixes such as "SHI" and "KU" in local
+  Logical. If `FALSE`, suffixes such as "-SHI" and "-KU" in local
   government names are removed.
 
 - romaji:
@@ -37,7 +37,7 @@ rename_fude(data, suffix = TRUE, romaji = NULL, quiet = TRUE)
 
 - quiet:
 
-  logical. Suppress information about the data to be read.
+  Logical. Suppress information about the data to be read.
 
 ## Value
 
@@ -54,7 +54,7 @@ objects.
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path, quiet = FALSE)
 #> Reading layer `2021_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpJdhxRh/file9f1a7be8dd15/castle/2021_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpRBKmOX/file139d163b6f611/castle/2021_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
@@ -62,7 +62,7 @@ d <- read_fude(path, quiet = FALSE)
 #> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575
 #> Geodetic CRS:  WGS 84
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpJdhxRh/file9f1a7be8dd15/castle/2022_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpRBKmOX/file139d163b6f611/castle/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
@@ -70,7 +70,7 @@ d <- read_fude(path, quiet = FALSE)
 #> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575
 #> Geodetic CRS:  WGS 84
 #> Reading layer `2022_382078' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpJdhxRh/file9f1a7be8dd15/castle/2022_382078.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpRBKmOX/file139d163b6f611/castle/2022_382078.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON

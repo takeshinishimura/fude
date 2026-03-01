@@ -51,34 +51,31 @@ Fude Polygon data to the community units.</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>List of MAFF Fude Polygon data.</p></dd>
+<dd><p>Fude Polygon data as returned by <code><a href="read_fude.html">read_fude()</a></code>.</p></dd>
 
 
 <dt id="arg-boundary">boundary<a class="anchor" aria-label="anchor" href="#arg-boundary"></a></dt>
-<dd><p>List of one or more MAFF agricultural community boundary data.</p></dd>
+<dd><p>Agricultural community boundary data as returned by <code><a href="get_boundary.html">get_boundary()</a></code>.</p></dd>
 
 
 <dt id="arg-city">city<a class="anchor" aria-label="anchor" href="#arg-city"></a></dt>
-<dd><p>A local government name in Japanese to be extracted. In the case of
-overlapping local government names, this must contain the prefecture name
-in Japanese and the prefecture code in romaji (e.g., "Fuchu-shi, 13",
-"fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO"). Alternatively, it could be
-a 6-digit local government code.</p></dd>
+<dd><p>A character vector of local government names or 6-digit local government
+codes to extract.</p></dd>
 
 
 <dt id="arg-kcity">kcity<a class="anchor" aria-label="anchor" href="#arg-kcity"></a></dt>
-<dd><p>A regular expression string. One or more former city names (in Japanese)
+<dd><p>A regular expression. One or more former municipality names (in Japanese)
 to extract.</p></dd>
 
 
 <dt id="arg-rcom">rcom<a class="anchor" aria-label="anchor" href="#arg-rcom"></a></dt>
-<dd><p>A regular expression string. One or more agricultural community names (in
+<dd><p>A regular expression. One or more agricultural community names (in
 Japanese) to extract.</p></dd>
 
 
 <dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
-<dd><p>Year in the column name of the <code>data</code>. If there is more than one
-applicable local government code, it is required.</p></dd>
+<dd><p>Year in the column name of the <code>data</code>. If there is more than one applicable
+local government code, it is required.</p></dd>
 
 </dl></div>
     <div class="section level2">

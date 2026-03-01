@@ -45,10 +45,11 @@ boundary data provided by the MAFF.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_boundary</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  year <span class="op">=</span> <span class="fl">2020</span>,</span>
-<span>  census_year <span class="op">=</span> <span class="fl">2020</span>,</span>
+<span>  boundary_data_year <span class="op">=</span> <span class="fl">2020</span>,</span>
+<span>  rcom_year <span class="op">=</span> <span class="fl">2020</span>,</span>
 <span>  boundary_type <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  suffix <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  to_wgs84 <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  encoding <span class="op">=</span> <span class="st">"CP932"</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -60,20 +61,23 @@ boundary data provided by the MAFF.</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>List of one or more MAFF agricultural community boundary data or one or more strings representing prefecture
-codes.</p></dd>
+<dd><p>Either Fude Polygon data as returned by <code><a href="read_fude.html">read_fude()</a></code>, or a two-digit
+prefecture code.</p></dd>
 
 
-<dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
-<dd><p>Year when the agricultural community boundary data was created.</p></dd>
+<dt id="arg-boundary-data-year">boundary_data_year<a class="anchor" aria-label="anchor" href="#arg-boundary-data-year"></a></dt>
+<dd><p>Year when the agricultural community boundary data were created.</p></dd>
 
 
-<dt id="arg-census-year">census_year<a class="anchor" aria-label="anchor" href="#arg-census-year"></a></dt>
-<dd><p>Year of the Agricultural and Forestry Census.</p></dd>
+<dt id="arg-rcom-year">rcom_year<a class="anchor" aria-label="anchor" href="#arg-rcom-year"></a></dt>
+<dd><p>Year of the agricultural community boundary data.</p></dd>
 
 
 <dt id="arg-boundary-type">boundary_type<a class="anchor" aria-label="anchor" href="#arg-boundary-type"></a></dt>
-<dd><p>Type of boundary data. 1 = agricultural community, 2 = former city , or 3 = city.</p></dd>
+<dd><p>The type of boundary data:
+<code>1</code> = agricultural community,
+<code>2</code> = former municipality,
+<code>3</code> = municipality.</p></dd>
 
 
 <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
@@ -82,16 +86,21 @@ use a local ZIP file instead of going looking for a ZIP file. Specify a
 directory containing one or more ZIP files, not the ZIP file itself.</p></dd>
 
 
+<dt id="arg-suffix">suffix<a class="anchor" aria-label="anchor" href="#arg-suffix"></a></dt>
+<dd><p>Logical. If <code>FALSE</code>, suffixes such as "-SHI" and "-KU" in local government
+names are removed.</p></dd>
+
+
 <dt id="arg-to-wgs-">to_wgs84<a class="anchor" aria-label="anchor" href="#arg-to-wgs-"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>, transform coordinates to WGS 84 (EPSG:4326).</p></dd>
 
 
 <dt id="arg-encoding">encoding<a class="anchor" aria-label="anchor" href="#arg-encoding"></a></dt>
-<dd><p>CP932</p></dd>
+<dd><p>Character encoding of the source files (e.g., <code>"CP932"</code>).</p></dd>
 
 
 <dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
-<dd><p>If <code>TRUE</code>, suppress messages about reading progress.</p></dd>
+<dd><p>Logical. If <code>TRUE</code>, suppress messages about reading progress.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -15,7 +15,7 @@ read_fude(
   path = NULL,
   pref = NULL,
   year = 2025,
-  census_year = 2020,
+  rcom_year = 2020,
   supplementary = FALSE,
   to_wgs84 = TRUE,
   quiet = FALSE
@@ -31,15 +31,15 @@ read_fude(
 
 - pref:
 
-  Prefecture name or JIS prefecture code.
+  Prefecture name or a two-digit prefecture code.
 
 - year:
 
-  Year when the Fude Polygon data was created.
+  Year when the Fude Polygon data were created.
 
-- census_year:
+- rcom_year:
 
-  Year of the Agricultural and Forestry Census.
+  Year of the agricultural community boundary data.
 
 - supplementary:
 
@@ -51,7 +51,7 @@ read_fude(
 
 - quiet:
 
-  If `TRUE`, suppress messages about reading progress.
+  Logical. If `TRUE`, suppress messages about reading progress.
 
 ## Value
 
@@ -64,7 +64,7 @@ objects.
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path)
 #> Reading layer `2021_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpJdhxRh/file9f1a426aa204/castle/2021_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpRBKmOX/file139d169cea919/castle/2021_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
@@ -72,7 +72,7 @@ d <- read_fude(path)
 #> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575
 #> Geodetic CRS:  WGS 84
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpJdhxRh/file9f1a426aa204/castle/2022_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpRBKmOX/file139d169cea919/castle/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
@@ -80,7 +80,7 @@ d <- read_fude(path)
 #> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575
 #> Geodetic CRS:  WGS 84
 #> Reading layer `2022_382078' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpJdhxRh/file9f1a426aa204/castle/2022_382078.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpRBKmOX/file139d169cea919/castle/2022_382078.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON

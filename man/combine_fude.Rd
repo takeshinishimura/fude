@@ -7,24 +7,21 @@
 combine_fude(data, boundary, city, kcity = "", rcom = "", year = NULL)
 }
 \arguments{
-\item{data}{List of MAFF Fude Polygon data.}
+\item{data}{Fude Polygon data as returned by \code{\link[=read_fude]{read_fude()}}.}
 
-\item{boundary}{List of one or more MAFF agricultural community boundary data.}
+\item{boundary}{Agricultural community boundary data as returned by \code{\link[=get_boundary]{get_boundary()}}.}
 
-\item{city}{A local government name in Japanese to be extracted. In the case of
-overlapping local government names, this must contain the prefecture name
-in Japanese and the prefecture code in romaji (e.g., "Fuchu-shi, 13",
-"fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO"). Alternatively, it could be
-a 6-digit local government code.}
+\item{city}{A character vector of local government names or 6-digit local government
+codes to extract.}
 
-\item{kcity}{A regular expression string. One or more former city names (in Japanese)
+\item{kcity}{A regular expression. One or more former municipality names (in Japanese)
 to extract.}
 
-\item{rcom}{A regular expression string. One or more agricultural community names (in
+\item{rcom}{A regular expression. One or more agricultural community names (in
 Japanese) to extract.}
 
-\item{year}{Year in the column name of the \code{data}. If there is more than one
-applicable local government code, it is required.}
+\item{year}{Year in the column name of the \code{data}. If there is more than one applicable
+local government code, it is required.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.

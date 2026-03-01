@@ -1,110 +1,141 @@
 ---
-title: "Relationship between the residences of farmers and their farmland"
+title: "Practical mapping examples with MAFF data"
 
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Relationship between the residences of farmers and their farmland}
+  %\VignetteIndexEntry{Practical mapping examples with MAFF data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-# Relationship between the residences of farmers and their farmland
+# Mapping MAFF data
 
 ```{r echo = FALSE, warning = FALSE}
 library(fude)
 d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
-b <- get_boundary(d, path = "~", quiet = TRUE)
 ```
 
-You can also visualize the relationship between the residences of farmers and their farmland.
-```{r matsuyama, eval = !pkgdown::in_pkgdown(), echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+```{r ehime1, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
 library(dplyr)
 library(sf)
-library(osmdata)
 library(ggplot2)
-library(ggmapinset)
-library(ggrepel)
 
-db <- combine_fude(d, b, city = "松山", rcom = "和気|安城寺|長戸|久万ノ台")
+b1 <- get_boundary(d, path = "~", boundary_type = 1, quiet = TRUE)
+b2 <- get_boundary(d, path = "~", boundary_type = 2, quiet = TRUE)
+b3 <- get_boundary(d, path = "~", boundary_type = 3, quiet = TRUE)
 
-set.seed(200)
-probabilities <- c(0.97, 0.01, 0.005, 0.005, 0.005, 0.005)
-names(probabilities) <- LETTERS[1:length(probabilities)]
-db$fude$farmer = factor(
-  sample(
-    names(probabilities),
-    nrow(db$fude),
-    replace = TRUE,
-    prob = probabilities
-  )
-)
+e1 <- read_shuraku("~/IA0001_2023_2020_38.xlsx", b1)
+e2 <- read_shuraku("~/IA0001_2023_2020_38.xlsx", b2)
+e3 <- read_shuraku("~/IA0001_2023_2020_38.xlsx", b3)
 
-farm <- db$fude |>
-  group_by(farmer) |>
-  summarise(geometry = sf::st_union(geometry) |> sf::st_centroid()) |>
-  sf::st_set_crs(4326)
+e1$地域類型1次分類 <- factor(e1$地域類型1次分類, levels = sort(unique(na.omit(e1$地域類型1次分類))))
+e2$地域類型1次分類 <- factor(e2$地域類型1次分類, levels = sort(unique(na.omit(e2$地域類型1次分類))))
+e3$地域類型1次分類 <- factor(e3$地域類型1次分類, levels = sort(unique(na.omit(e3$地域類型1次分類))))
 
-farm_radius <- farm |>
-  sf::st_transform(crs = sp::CRS("+init=epsg:32632")) |>
-  sf::st_buffer(dist = units::as_units(1, "km")) |>
-  sf::st_transform(crs = 4326)
-
-bbox <- sf::st_bbox(db$fude)
-
-streets <- bbox |>
-  osmdata::opq() |>
-  osmdata::add_osm_feature(
-    key = "highway", 
-    value = c("motorway", "primary", "secondary", "tertiary", "residential", 
-              "living_street", "unclassified", "service", "footway")) |>
-  osmdata::osmdata_sf()
-
-river <- bbox |>
-  osmdata::opq() |>
-  osmdata::add_osm_feature(key = "waterway", value = "river") |>
-  osmdata::osmdata_sf()
-
-inset1 <- configure_inset(
-    centre = sf::st_geometry(farm)[farm$farmer == "F"],
-    scale = 3,
-    translation = c(-4, 1),
-    radius = 1,
-    units = "km"
-  )
-inset2 <- configure_inset(
-    centre = sf::st_geometry(farm)[farm$farmer == "E"],
-    scale = 3,
-    translation = c(4, -3),
-    radius = 1,
-    units = "km"
-  )
-
-farm$x <- sf::st_coordinates(farm)[, 1]
-farm$y <- sf::st_coordinates(farm)[, 2]
-
-ggplot(data = db$fude) +
-  geom_sf(data = streets$osm_lines, colour = "gray") +
-  geom_sf(data = river$osm_lines, colour = "skyblue") +
-  geom_sf(aes(fill = farmer, colour = farmer), alpha = .5) +
-  geom_sf(data = farm, aes(colour = farmer)) +
-  geom_text_repel(
-    data = farm,
-    aes(x = x, y = y, label = farmer),
-    nudge_x = c(.02, .02, .02, -.01, .02, -.012),
-    nudge_y = c(.01, 0, -.005, -.005, .01, -.005),
-    min.segment.length = 0,
-    segment.color = "black",
-    size = 3,
-    family = "Helvetica"
-  ) +
-  geom_sf_inset(data = streets$osm_lines, colour = "gray", map_base = "none", inset = inset1) +
-  geom_sf_inset(data = river$osm_lines, colour = "skyblue", map_base = "none", inset = inset1) +
-  geom_sf_inset(aes(fill = farmer, colour = farmer), alpha = .5, map_base = "none", inset = inset1) +
-  geom_inset_frame(inset = inset1) +
-  geom_sf_inset(data = streets$osm_lines, colour = "gray", map_base = "none", inset = inset2) +
-  geom_sf_inset(data = river$osm_lines, colour = "skyblue", map_base = "none", inset = inset2) +
-  geom_sf_inset(aes(fill = farmer, colour = farmer), alpha = .5, map_base = "none", inset = inset2) +
-  geom_inset_frame(inset = inset2) +
+ggplot() +
+  geom_sf(data = e1, aes(fill = 地域類型1次分類), alpha = .8) +
   theme_void() +
-  theme(legend.position = "none")
+  theme(text = element_text(family = "Hiragino Sans"))
 ```
+
+**出典**: `r cite_fude(b1)$ja`
+
+```{r ehime2, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+ggplot() +
+  geom_sf(data = e2, aes(fill = 地域類型1次分類), alpha = .8) +
+  theme_void() +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+**出典**: `r cite_fude(b2)$ja`
+
+```{r ehime3, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+ggplot() +
+  geom_sf(data = e3, aes(fill = 地域類型1次分類), alpha = .8) +
+  theme_void() +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+**出典**: `r cite_fude(b3)$ja`
+
+```{r ehime4, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+e1 <- read_shuraku("~/SA1066_2020_2020_38.xlsx", b1)
+e2 <- read_shuraku("~/SA1066_2020_2020_38.xlsx", b2)
+e3 <- read_shuraku("~/SA1066_2020_2020_38.xlsx", b3)
+
+ggplot() +
+  geom_sf(data = e1, aes(fill = `類別作付（栽培）面積_果樹類`)) +
+  scale_fill_gradient(
+    low  = "white",
+    high = "darkorange",
+    na.value = "grey90"
+  ) +
+  theme_void() +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+**出典**: `r cite_fude(b1)$ja`
+
+```{r ehime5, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+ggplot() +
+  geom_sf(data = e2, aes(fill = `類別作付（栽培）面積_果樹類`)) +
+  scale_fill_gradient(
+    low  = "white",
+    high = "darkorange",
+    na.value = "grey90"
+  ) +
+  theme_void() +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+**出典**: `r cite_fude(b2)$ja`
+
+```{r ehime6, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+ggplot() +
+  geom_sf(data = e3, aes(fill = `類別作付（栽培）面積_果樹類`)) +
+  scale_fill_gradient(
+    low  = "white",
+    high = "darkorange",
+    na.value = "grey90"
+  ) +
+  theme_void() +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+**出典**: `r cite_fude(b3)$ja`
+
+```{r ehime7, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+e1 <- read_shuraku("~/SA0001_2010_2010_38.xlsx", b1)
+e2 <- read_shuraku("~/SA0001_2010_2010_38.xlsx", b2)
+e3 <- read_shuraku("~/SA0001_2010_2010_38.xlsx", b3)
+
+library(viridis)
+
+ggplot() +
+  geom_sf(data = e1, aes(fill = `林業経営体`)) +
+  scale_fill_viridis_c(option = "viridis") +
+  theme_void() +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+**出典**: `r cite_fude(b1)$ja`
+
+```{r ehime8, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+ggplot() +
+  geom_sf(data = e2, aes(fill = `林業経営体`)) +
+  scale_fill_viridis_c(option = "viridis") +
+  theme_void() +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+**出典**: `r cite_fude(b2)$ja`
+
+```{r ehime9, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+ggplot() +
+  geom_sf(data = e3, aes(fill = `林業経営体`)) +
+  scale_fill_viridis_c(option = "viridis") +
+  theme_void() +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+**出典**: `r cite_fude(b3)$ja`

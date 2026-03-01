@@ -10,7 +10,8 @@
 #' @param rcom
 #'   A logical value indicating whether to overlay community data on the map.
 #'
-#' @return A Leaflet map object with Fude Polygon data with an HTML table.
+#' @return
+#'   A Leaflet map object with Fude Polygon data with an HTML table.
 #'
 #' @export
 shiny_fude <- function(

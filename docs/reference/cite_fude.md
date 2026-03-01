@@ -22,7 +22,7 @@ English citation text.
 ## Examples
 
 ``` r
-data <- list(fude = data.frame(issue_year = c(2021, 2020), boundary_edit_year = c(2019, 2020)))
+data <- list(fude = data.frame(issue_year = c(2021, 2020), boundary_data_year = c(2019, 2020)))
 cite_fude(data)
 #> $ja
 #> 農林水産省「筆ポリゴンデータ（2020，2021年度公開）」および「農業集落境界データ（2019，2020年度）」を加工して作成。

@@ -1,23 +1,25 @@
 #' Extract specified Fude Polygon data
 #'
 #' @description
-#' `extract_fude()` extracts the specified data from the list returned by
+#' `extract_fude()` extracts specified subsets of Fude Polygon data returned by
 #' [read_fude()].
 #'
 #' @param data
-#'   List of MAFF Fude Polygon data.
+#'   Fude Polygon data as returned by [read_fude()].
 #' @param year
-#'   One or more years to extract.
+#'   A numeric vector of years to extract.
 #' @param city
-#'   A local government name or code (6-digit) to extract.
+#'   A character vector of local government names or 6-digit local government
+#'   codes to extract.
 #' @param kcity
-#'   A regular expression string. One or more former city names (in Japanese)
+#'   A regular expression. One or more former municipality names (in Japanese)
 #'   to extract.
 #' @param rcom
-#'   A regular expression string. One or more agricultural community names (in
+#'   A regular expression. One or more agricultural community names (in
 #'   Japanese) to extract.
 #'
-#' @returns A list of [sf::sf()] object(s).
+#' @returns
+#'   An [sf::sf()] object.
 #'
 #' @seealso [read_fude()].
 #'

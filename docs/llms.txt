@@ -342,6 +342,8 @@ mapview::mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
   : Community code/name correspondence table
 - [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md)
   : Read a Fude Polygon ZIP file
+- [`read_shuraku()`](https://takeshinishimura.github.io/fude/reference/read_shuraku.md)
+  : Read shuraku data
 - [`rename_fude()`](https://takeshinishimura.github.io/fude/reference/rename_fude.md)
   : Rename the Fude Polygon data
 - [`shiny_fude()`](https://takeshinishimura.github.io/fude/reference/shiny_fude.md)
@@ -363,7 +365,9 @@ mapview::mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
   boundaries](https://takeshinishimura.github.io/fude/articles/example2.md):
 - [Practical mapping
   examples](https://takeshinishimura.github.io/fude/articles/example3.md):
+- [Practical mapping examples with MAFF
+  data](https://takeshinishimura.github.io/fude/articles/example4.md):
 - [Relationship between the residences of farmers and their
-  farmland](https://takeshinishimura.github.io/fude/articles/example4.md):
+  farmland](https://takeshinishimura.github.io/fude/articles/example5.md):
 - [Testing the
-  functionality](https://takeshinishimura.github.io/fude/articles/example5.md):
+  functionality](https://takeshinishimura.github.io/fude/articles/example6.md):

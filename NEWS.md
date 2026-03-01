@@ -3,6 +3,10 @@
 * Added support for processing data without requiring the local government code to be pre-written.
 * Renamed the `community` argument to `rcom` in several functions.
 * Added `kcity_code_table` and `city_code_table`.
+* Standardized column names to lowercase.
+* Added support for reading data from the MAFF database “地域の農業を見て・知って・活かすDB” (<https://www.maff.go.jp/j/tokei/census/shuraku_data/>).
+
+* Added the ability to combine with agricultural community boundary data.
 
 # fude 0.3.7
 

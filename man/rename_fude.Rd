@@ -7,9 +7,9 @@
 rename_fude(data, suffix = TRUE, romaji = NULL, quiet = TRUE)
 }
 \arguments{
-\item{data}{List of \code{\link[sf:sf]{sf::sf()}} objects.}
+\item{data}{Fude Polygon data as returned by \code{\link[=read_fude]{read_fude()}}.}
 
-\item{suffix}{logical. If \code{FALSE}, suffixes such as "SHI" and "KU" in local government
+\item{suffix}{Logical. If \code{FALSE}, suffixes such as "-SHI" and "-KU" in local government
 names are removed.}
 
 \item{romaji}{If not \code{NULL}, rename the local government name in romaji instead of
@@ -20,7 +20,7 @@ Japanese. Romanji format is upper case unless specified.
 \item \code{"upper"}: Upper case.
 }}
 
-\item{quiet}{logical. Suppress information about the data to be read.}
+\item{quiet}{Logical. Suppress information about the data to be read.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.

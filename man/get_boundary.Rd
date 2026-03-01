@@ -6,34 +6,41 @@
 \usage{
 get_boundary(
   data,
-  year = 2020,
-  census_year = 2020,
+  boundary_data_year = 2020,
+  rcom_year = 2020,
   boundary_type = 1,
   path = NULL,
+  suffix = FALSE,
   to_wgs84 = TRUE,
   encoding = "CP932",
   quiet = FALSE
 )
 }
 \arguments{
-\item{data}{List of one or more MAFF agricultural community boundary data or one or more strings representing prefecture
-codes.}
+\item{data}{Either Fude Polygon data as returned by \code{\link[=read_fude]{read_fude()}}, or a two-digit
+prefecture code.}
 
-\item{year}{Year when the agricultural community boundary data was created.}
+\item{boundary_data_year}{Year when the agricultural community boundary data were created.}
 
-\item{census_year}{Year of the Agricultural and Forestry Census.}
+\item{rcom_year}{Year of the agricultural community boundary data.}
 
-\item{boundary_type}{Type of boundary data. 1 = agricultural community, 2 = former city , or 3 = city.}
+\item{boundary_type}{The type of boundary data:
+\code{1} = agricultural community,
+\code{2} = former municipality,
+\code{3} = municipality.}
 
 \item{path}{Path to the ZIP file containing the agricultural community boundary data;
 use a local ZIP file instead of going looking for a ZIP file. Specify a
 directory containing one or more ZIP files, not the ZIP file itself.}
 
+\item{suffix}{Logical. If \code{FALSE}, suffixes such as "-SHI" and "-KU" in local government
+names are removed.}
+
 \item{to_wgs84}{Logical. If \code{TRUE}, transform coordinates to WGS 84 (EPSG:4326).}
 
-\item{encoding}{CP932}
+\item{encoding}{Character encoding of the source files (e.g., \code{"CP932"}).}
 
-\item{quiet}{If \code{TRUE}, suppress messages about reading progress.}
+\item{quiet}{Logical. If \code{TRUE}, suppress messages about reading progress.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.

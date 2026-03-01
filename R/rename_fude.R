@@ -6,9 +6,9 @@
 #' make the data human-friendly.
 #'
 #' @param data
-#'   List of [sf::sf()] objects.
+#'   Fude Polygon data as returned by [read_fude()].
 #' @param suffix
-#'   logical. If `FALSE`, suffixes such as "SHI" and "KU" in local government
+#'   Logical. If `FALSE`, suffixes such as "-SHI" and "-KU" in local government
 #'   names are removed.
 #' @param romaji
 #'   If not `NULL`, rename the local government name in romaji instead of
@@ -17,9 +17,10 @@
 #'   - `"lower"`: Lower case.
 #'   - `"upper"`: Upper case.
 #' @param quiet
-#'   logical. Suppress information about the data to be read.
+#'   Logical. Suppress information about the data to be read.
 #'
-#' @returns A list of [sf::sf()] objects.
+#' @returns
+#'   A list of [sf::sf()] objects.
 #'
 #' @seealso [read_fude()].
 #'
@@ -37,6 +38,8 @@ rename_fude <- function(
   romaji = NULL,
   quiet = TRUE
 ) {
+  validate_fude(data)
+
   old_names <- names(data)
   nen <- sub("(_.*)", "_", old_names)
   unique_nen <- unique(nen)
@@ -45,12 +48,7 @@ rename_fude <- function(
   new_names <- get_lg_name(matching_codes, romaji)
 
   if (isFALSE(suffix)) {
-    new_names <- gsub(
-      "-SHI|-KU|-CHO|-MACHI|-SON|-MURA",
-      "",
-      new_names,
-      ignore.case = TRUE
-    )
+    new_names <- remove_romaji_suffix(new_names)
     new_names <- sub("\u5e02(.*)(\u533a$)", "_\\1", new_names)
     new_names <- sub("(\u5e02|\u533a|\u753a|\u6751)$", "", new_names)
   }

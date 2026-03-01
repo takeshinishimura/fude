@@ -8,7 +8,7 @@ read_fude(
   path = NULL,
   pref = NULL,
   year = 2025,
-  census_year = 2020,
+  rcom_year = 2020,
   supplementary = FALSE,
   to_wgs84 = TRUE,
   quiet = FALSE
@@ -18,17 +18,17 @@ read_fude(
 \item{path}{Path to a ZIP file containing one or more supported spatial files
 (\code{.geojson}, \code{.json}, and \code{.fgb}).}
 
-\item{pref}{Prefecture name or JIS prefecture code.}
+\item{pref}{Prefecture name or a two-digit prefecture code.}
 
-\item{year}{Year when the Fude Polygon data was created.}
+\item{year}{Year when the Fude Polygon data were created.}
 
-\item{census_year}{Year of the Agricultural and Forestry Census.}
+\item{rcom_year}{Year of the agricultural community boundary data.}
 
 \item{supplementary}{Logical. If \code{TRUE}, add supplementary information for each polygon.}
 
 \item{to_wgs84}{Logical. If \code{TRUE}, transform coordinates to WGS 84 (EPSG:4326).}
 
-\item{quiet}{If \code{TRUE}, suppress messages about reading progress.}
+\item{quiet}{Logical. If \code{TRUE}, suppress messages about reading progress.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.

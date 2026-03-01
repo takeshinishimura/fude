@@ -7,28 +7,26 @@
 extract_boundary(boundary, city = "", kcity = "", rcom = "", layer = FALSE)
 }
 \arguments{
-\item{boundary}{List of one or more MAFF agricultural community boundary data.}
+\item{boundary}{Agricultural community boundary data as returned by \code{\link[=get_boundary]{get_boundary()}}.}
 
-\item{city}{A local government name in Japanese to be extracted. In the case of
-overlapping local government names, this must contain the prefecture name
-in Japanese and the prefecture code in romaji (e.g., "Fuchu-shi, 13",
-"fuchu 13",  "34 fuchu-shi",  "34, FUCHU-CHO"). Alternatively, it could be
-a 6-digit local government code.}
+\item{city}{A character vector of local government names or 6-digit local government
+codes to extract.}
 
-\item{kcity}{A regular expression string. One or more former city names (in Japanese)
+\item{kcity}{A regular expression. One or more former municipality names (in Japanese)
 to extract.}
 
-\item{rcom}{A regular expression string. One or more agricultural community names (in
+\item{rcom}{A regular expression. One or more agricultural community names (in
 Japanese) to extract.}
 
-\item{layer}{Logical.}
+\item{layer}{Logical. If \code{TRUE}, the returned object includes not only agricultural
+community boundaries but also prefecture and municipality boundaries.}
 }
 \value{
-A list of \code{\link[sf:sf]{sf::sf()}} object(s).
+An \code{\link[sf:sf]{sf::sf()}} object.
 }
 \description{
-\code{extract_boundary()} extracts the specified data from the list returned by
-\code{\link[=get_boundary]{get_boundary()}}.
+\code{extract_boundary()} extracts specified subsets of agricultural community
+boundary data returned by \code{\link[=get_boundary]{get_boundary()}}.
 }
 \seealso{
 \code{\link[=read_fude]{read_fude()}}.

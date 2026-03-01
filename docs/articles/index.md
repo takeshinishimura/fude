@@ -14,7 +14,9 @@
   boundaries](https://takeshinishimura.github.io/fude/articles/example2.md):
 - [Practical mapping
   examples](https://takeshinishimura.github.io/fude/articles/example3.md):
+- [Practical mapping examples with MAFF
+  data](https://takeshinishimura.github.io/fude/articles/example4.md):
 - [Relationship between the residences of farmers and their
-  farmland](https://takeshinishimura.github.io/fude/articles/example4.md):
+  farmland](https://takeshinishimura.github.io/fude/articles/example5.md):
 - [Testing the
-  functionality](https://takeshinishimura.github.io/fude/articles/example5.md):
+  functionality](https://takeshinishimura.github.io/fude/articles/example6.md):

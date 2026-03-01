@@ -7,10 +7,10 @@
 ls_fude(data)
 }
 \arguments{
-\item{data}{List of MAFF Fude Polygon data.}
+\item{data}{Fude Polygon data as returned by \code{\link[=read_fude]{read_fude()}}.}
 }
 \value{
-A data.frame.
+A data frame.
 }
 \description{
 \code{ls_fude()} lists the year and the local government names (or codes) in

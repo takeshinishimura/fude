@@ -14,11 +14,12 @@ ls_fude(data)
 
 - data:
 
-  List of MAFF Fude Polygon data.
+  Fude Polygon data as returned by
+  [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md).
 
 ## Value
 
-A data.frame.
+A data frame.
 
 ## See also
 

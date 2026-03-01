@@ -5,9 +5,10 @@
 #' order to understand what is included in the list returned by [read_fude()].
 #'
 #' @param data
-#'   List of MAFF Fude Polygon data.
+#'   Fude Polygon data as returned by [read_fude()].
 #'
-#' @returns A data.frame.
+#' @returns
+#'   A data frame.
 #'
 #' @seealso [read_fude()].
 #'
