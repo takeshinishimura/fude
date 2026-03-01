@@ -45,7 +45,7 @@ combine_fude <- function(
   validate_fude(data)
   data <- add_local_government_cd(data)
 
-  extracted_boundary <- extract_boundary(
+  extracted <- extract_boundary(
     boundary = boundary,
     city = city,
     kcity = kcity,
@@ -57,14 +57,14 @@ combine_fude <- function(
   lg_code <- find_lg_code(location_info$pref, location_info$city)
 
   if ("key" %in% names(data[[1]])) {
-    target_key <- unique(extracted_boundary$rcom$key)
+    target_key <- unique(extracted$rcom$key)
     fude_original <- data[[grepl(
       paste0("_", substr(lg_code, start = 1, stop = 2), "$"),
       names(data)
     )]] |>
       dplyr::filter(.data$key %in% target_key) |>
       dplyr::left_join(
-        extracted_boundary$rcom |>
+        extracted$rcom |>
           sf::st_set_geometry(NULL) |>
           dplyr::select(-.data$local_government_cd),
         by = "key"
@@ -82,11 +82,11 @@ combine_fude <- function(
 
     result <- list(
       fude = fude_original,
-      rcom = extracted_boundary$rcom,
-      rcom_union = extracted_boundary$rcom_union,
-      kcity = extracted_boundary$kcity,
-      city = extracted_boundary$city,
-      pref = extracted_boundary$pref
+      rcom = extracted$rcom,
+      rcom_union = extracted$rcom_union,
+      kcity = extracted$kcity,
+      city = extracted$city,
+      pref = extracted$pref
     )
   } else {
     local_government_cd <- unlist(
@@ -113,7 +113,7 @@ combine_fude <- function(
     target_fude <- data[[data_no]]
     intersection_fude <- target_fude |>
       sf::st_intersection(
-        extracted_boundary$rcom |>
+        extracted$rcom |>
           dplyr::select(-.data$local_government_cd)
       )
 
@@ -155,16 +155,16 @@ combine_fude <- function(
     result <- list(
       fude = fude_original,
       fude_split = intersection_fude,
-      rcom = extracted_boundary$rcom,
-      rcom_union = extracted_boundary$rcom_union,
-      kcity = extracted_boundary$kcity,
-      city = extracted_boundary$city,
-      pref = extracted_boundary$pref
+      rcom = extracted$rcom,
+      rcom_union = extracted$rcom_union,
+      kcity = extracted$kcity,
+      city = extracted$city,
+      pref = extracted$pref
     )
   }
 
   message(paste(
-    length(unique(extracted_boundary$rcom$key)),
+    length(unique(extracted$rcom$key)),
     "communities have been extracted."
   ))
 

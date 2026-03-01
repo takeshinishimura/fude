@@ -76,7 +76,7 @@ library(cowplot)
 
 minimap <- ggplot() +
   geom_sf(data = db$city, aes(fill = fill)) +
-  geom_sf_text(data = db$city, aes(label = city_kanji), family = "Hiragino Sans") +
+  geom_sf_text(data = db$city, aes(label = city_name), family = "Hiragino Sans") +
   gghighlight(fill == 1) +
   geom_sf(data = db$rcom_union, fill = "black", linewidth = 0) +
   theme_void() +

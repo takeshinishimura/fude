@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_ikasudb.R
 \name{read_ikasudb}
 \alias{read_ikasudb}
-\title{Read shuraku data}
+\title{Read a shuraku Excel file}
 \usage{
 read_ikasudb(boundary, path, na = c("-", "…"), zero = TRUE)
 }
@@ -20,5 +20,5 @@ read_ikasudb(boundary, path, na = c("-", "…"), zero = TRUE)
 An \code{\link[sf:sf]{sf::sf()}} object.
 }
 \description{
-\code{read_ikasudb()} reads shuraku Excel files provided by MAFF.
+\code{read_ikasudb()} reads a shuraku Excel file provided by MAFF.
 }

@@ -30,7 +30,7 @@
 - [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md)
   : Read a Fude Polygon ZIP file
 - [`read_ikasudb()`](https://takeshinishimura.github.io/fude/reference/read_ikasudb.md)
-  : Read shuraku data
+  : Read a shuraku Excel file
 - [`rename_fude()`](https://takeshinishimura.github.io/fude/reference/rename_fude.md)
   : Rename the Fude Polygon data
 - [`shiny_fude()`](https://takeshinishimura.github.io/fude/reference/shiny_fude.md)

@@ -234,7 +234,7 @@ read_boundary <- function(
     )
 
   if (isFALSE(suffix)) {
-    x$city_romaji <- remove_romaji_suffix(x$city_romaji)
+    levels(x$city_romaji) <- remove_romaji_suffix(levels(x$city_romaji))
   }
 
   if (sf::st_crs(x)$epsg != 4326 && isTRUE(to_wgs84)) {
@@ -311,10 +311,12 @@ get_pref_code <- function(data) {
 }
 
 remove_romaji_suffix <- function(x) {
-  gsub(
-    "-SHI|-KU|-CHO|-MACHI|-SON|-MURA",
-    "",
-    x,
-    ignore.case = TRUE
+  tolower(
+    gsub(
+      "-SHI|-KU|-CHO|-MACHI|-SON|-MURA",
+      "",
+      x,
+      ignore.case = TRUE
+    )
   )
 }

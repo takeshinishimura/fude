@@ -10,10 +10,6 @@
 #'   A list with two elements: `ja` for Japanese citation text and `en`
 #'   for English citation text.
 #'
-#' @examples
-#' data <- list(fude = data.frame(issue_year = c(2021, 2020), boundary_data_year = c(2019, 2020)))
-#' cite_fude(data)
-#'
 #' @export
 cite_fude <- function(data) {
   if (is.data.frame(data)) {

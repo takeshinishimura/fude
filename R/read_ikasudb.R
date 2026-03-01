@@ -1,7 +1,7 @@
-#' Read shuraku data
+#' Read a shuraku Excel file
 #'
 #' @description
-#' `read_ikasudb()` reads shuraku Excel files provided by MAFF.
+#' `read_ikasudb()` reads a shuraku Excel file provided by MAFF.
 #'
 #' @param boundary
 #'   Agricultural community boundary data as returned by [get_boundary()].

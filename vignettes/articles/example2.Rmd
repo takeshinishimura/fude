@@ -33,16 +33,26 @@ ggplot(data = eb, aes(fill = kcity_name)) +
 
 **出典**：`r cite_fude(eb)$ja`
 
-```{r imabari_uchiko, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-eb <- extract_boundary(b, city = "今治|内子", layer = TRUE)
+```{r idai1, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+eb <- extract_boundary(b, city = "松山", rcom = "伊台|菅沢", layer = TRUE)
 
 ggplot(data = eb$city) +
   geom_sf(aes(fill = fill))
+```
+
+**出典**：`r cite_fude(eb)$ja`
+
+```{r idai2, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 ggplot(data = eb$kcity) +
   geom_sf(aes(fill = fill))
-ggplot(data = eb$city) +
-  geom_sf() +
-  geom_sf(data = eb$rcom)
+```
+
+**出典**：`r cite_fude(eb)$ja`
+
+```{r idai3, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+ggplot() +
+  geom_sf(data = eb$city) +
+  geom_sf(data = eb$rcom, aes(fill = rcom_name))
 ```
 
 **出典**：`r cite_fude(eb)$ja`
@@ -60,7 +70,7 @@ ggplot() +
   geom_sf(data = eb$kcity |> filter(fill == 1), fill = "black") +
   geom_sf_text(
     data = eb$city |> filter(fill == 1),
-    aes(label = city_kanji),
+    aes(label = city_name),
     size = 3,
     nudge_x = -.025, nudge_y = -.025,
     family = "HiraKakuProN-W3"
@@ -85,7 +95,7 @@ eb <- extract_boundary(b, city = "八幡浜市", kcity = "真穴", layer = TRUE)
 
 ggplot(data = eb$city |> filter(fill == 1)) +
   geom_sf(fill = "gray") +
-  geom_sf_text(aes(label = city_kanji), family = "HiraKakuProN-W3") +
+  geom_sf_text(aes(label = city_name), family = "HiraKakuProN-W3") +
   geom_sf(data = eb$rcom, fill = "ivory") +
 # geom_sf(data = eb$fude, aes(fill = land_type), colour = NA) +
   geom_sf_label(data = eb$rcom, aes(label = rcom_name), family = "HiraKakuProN-W3") +

@@ -77,27 +77,29 @@ extract_boundary <- function(
     add_local_government_cd_to_df() |>
     sf::st_make_valid()
 
-  extracted_boundary <- x |>
+  extracted <- x |>
     dplyr::filter(.data$key %in% target_key) |>
     dplyr::arrange(.data$key) |>
     dplyr::mutate(
-      kcity_name = dplyr::coalesce(.data$kcity_name, ""),
-      rcom_name = dplyr::coalesce(.data$rcom_name, "")
-    ) |>
-    dplyr::mutate(
-      kcity_name = factor(.data$kcity_name, levels = unique(.data$kcity_name)),
-      rcom_name = factor(.data$rcom_name, levels = unique(.data$rcom_name)),
-      rcom_kana = factor(.data$rcom_kana, levels = unique(.data$rcom_kana)),
-      rcom_romaji = factor(.data$rcom_romaji, levels = unique(.data$rcom_romaji))
+      pref_name = droplevels(.data$pref_name),
+      city_name = droplevels(.data$city_name),
+      kcity_name = droplevels(.data$kcity_name),
+      rcom_name = droplevels(.data$rcom_name),
+      pref_kana = droplevels(.data$pref_kana),
+      city_kana = droplevels(.data$city_kana),
+      rcom_kana = droplevels(.data$rcom_kana),
+      pref_romaji = droplevels(.data$pref_romaji),
+      city_romaji = droplevels(.data$city_romaji),
+      rcom_romaji = droplevels(.data$rcom_romaji)
     ) |>
     add_xy()
 
-  extracted_boundary_union <- extracted_boundary |>
+  extracted_union <- extracted |>
     sf::st_union() |>
     sf::st_sf() |>
     dplyr::mutate(
       local_government_cd = paste0(
-        unique(extracted_boundary$local_government_cd),
+        unique(extracted$local_government_cd),
         collapse = "/"
       )
     ) |>
@@ -116,119 +118,108 @@ extract_boundary <- function(
     add_xy()
 
   unique_local_government_cd <- unique(x$local_government_cd)
+
   geometries <- purrr::map(
     unique_local_government_cd,
     \(d) {
-      x |>
-        dplyr::filter(grepl(d, .data$local_government_cd)) |>
-        sf::st_union() |>
-        sf::st_geometry() %>%
-        .[[1]]
+      sf::st_geometry(
+        x |>
+          dplyr::filter(.data$local_government_cd == d) |>
+          sf::st_union()
+      )[[1]]
     }
-  ) %>%
-    do.call(sf::st_sfc, .)
-  city_df <- sf::st_sf(
+  )
+
+  city_map <- sf::st_sf(
     local_government_cd = unique_local_government_cd,
     geometry = geometries
   ) |>
-    sf::st_set_crs(4326)
-  city_ls <- fude::lg_code_table |>
-    dplyr::filter(.data$lg_code %in% unique_local_government_cd) |>
-    dplyr::select(
-      local_government_cd = .data$lg_code,
-      .data$pref_kanji,
-      .data$city_kanji,
-      .data$romaji
-    )
-  city_all_map <- dplyr::inner_join(
-    city_df,
-    city_ls,
-    by = "local_government_cd"
-  )
-
-  if (city != "") {
-    city_all_map <- city_all_map |>
-      dplyr::mutate(
-        fill = factor(dplyr::if_else(.data$city_kanji %in% target_city, 1, 0))
-      )
-  }
-
-  city_all_map <- city_all_map |>
+    sf::st_set_crs(4326) |>
+    dplyr::left_join(
+      fude::city_code_table |>
+        dplyr::select(
+          .data$key,
+          .data$pref_name, .data$city_name,
+          .data$pref_kana, .data$city_kana,
+          .data$pref_romaji, .data$city_romaji,
+          .data$local_government_cd
+        ),
+      by = "local_government_cd"
+    ) |>
     add_xy()
 
-  x_KCITY_code <- x |>
-    dplyr::mutate(
-      KCITY_code = paste(
-        .data$local_government_cd,
-        .data$pref,
-        .data$city,
-        .data$kcity,
-        .data$pref_name,
-        .data$city_name,
-        .data$kcity_name,
-        sep = "_"
-      )
-    )
-  unique_KCITY <- unique(x_KCITY_code$KCITY_code)
-  geometries <- purrr::map(
-    unique_KCITY,
-    \(d) {
-      x_KCITY_code |>
-        dplyr::filter(grepl(d, .data$KCITY_code)) |>
-        sf::st_union() |>
-        sf::st_geometry() %>%
-        .[[1]]
-    }
-  ) %>%
-    do.call(sf::st_sfc, .)
-  kcity_df <- sf::st_sf(KCITY_code = unique_KCITY, geometry = geometries) |>
-    tidyr::separate(
-      .data$KCITY_code,
-      into = c(
-        "local_government_cd",
-        "pref",
-        "city",
-        "kcity",
-        "pref_name",
-        "city_name",
-        "kcity_name"
-      ),
-      sep = "_"
-    )
-  kcity_df$kcity_name[kcity_df$kcity_name == "NA"] <- NA
-  kcity_all_map <- kcity_df |>
-    sf::st_set_crs(4326)
-
   if (city != "") {
-    kcity_all_map <- kcity_all_map |>
+    city_map <- city_map |>
       dplyr::mutate(
         fill = factor(dplyr::if_else(
-          .data$city_name %in%
-            target_city &
-            .data$kcity_name %in% extracted_boundary$kcity_name,
+          .data$city_name %in% target_city,
           1,
           0
         ))
       )
   }
 
-  kcity_all_map <- kcity_all_map |>
+  x_kcity_code <- x |>
+    dplyr::mutate(
+      kcity_code = paste0(
+        .data$pref,
+        .data$city,
+        .data$kcity
+      )
+    )
+  unique_kcity_code <- unique(x_kcity_code$kcity_code)
+  geometries <- purrr::map(
+    unique_kcity_code,
+    \(d) {
+      sf::st_geometry(
+        x_kcity_code |>
+          dplyr::filter(.data$kcity_code == d) |>
+          sf::st_union()
+      )[[1]]
+    }
+  )
+
+  kcity_map <- sf::st_sf(
+    key = paste0(unique_kcity_code, "000"),
+    geometry = geometries
+  ) |>
+    sf::st_set_crs(4326) |>
+    dplyr::left_join(
+      fude::kcity_code_table |>
+        dplyr::select(
+          .data$key,
+          .data$pref_name, .data$city_name, .data$kcity_name,
+          .data$pref_kana, .data$city_kana,
+          .data$pref_romaji, .data$city_romaji,
+          .data$local_government_cd
+        ),
+      by = "key"
+    ) |>
     add_xy()
+
+  if (city != "") {
+    kcity_map <- kcity_map |>
+      dplyr::mutate(
+        fill = factor(dplyr::if_else(
+          .data$kcity_name %in% extracted$kcity_name,
+          1,
+          0
+        ))
+      )
+  }
 
   if (layer) {
     return(
       list(
-        rcom = extracted_boundary,
-        rcom_union = extracted_boundary_union,
-        kcity = kcity_all_map,
-        city = city_all_map,
+        rcom = extracted,
+        rcom_union = extracted_union,
+        kcity = kcity_map,
+        city = city_map,
         pref = pref_map
       )
     )
   } else {
-    return(
-      extracted_boundary
-    )
+    return(extracted)
   }
 }
 

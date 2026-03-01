@@ -46,7 +46,8 @@ combine_fude(data, boundary, city, kcity = "", rcom = "", year = NULL)
 A list of [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html)
 objects.
 
-@seealso
+## See also
+
 [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md).
 
 ## Examples

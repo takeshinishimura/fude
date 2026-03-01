@@ -83,15 +83,6 @@ find_key <- function(
     )
   }
 
-  strip_romaji_suffix <- function(x) {
-    tolower(gsub(
-      "-SHI|-KU|-CHO|-MACHI|-SON|-MURA",
-      "",
-      x,
-      ignore.case = TRUE
-    ))
-  }
-
   has_city <- !(is.null(city) || length(city) == 0 || all(!nzchar(city)))
 
   city_vec <- if (has_city) city[nzchar(city)] else character()
@@ -99,7 +90,7 @@ find_key <- function(
   city_code <- city_vec[grepl("^\\d+$", city_vec)]
   city_jp <- strip_jp_suffix(city_vec)
   city_kana <- strip_kana_suffix(city_vec)
-  city_romaji <- strip_romaji_suffix(city_vec)
+  city_romaji <- remove_romaji_suffix(city_vec)
 
   x <- fude::rcom_code_table |>
     dplyr::filter(
@@ -109,7 +100,7 @@ find_key <- function(
         ((.data$local_government_cd %in% city_code) |
           (strip_jp_suffix(.data$city_name) %in% city_jp) |
           (strip_kana_suffix(.data$city_kana) %in% city_kana) |
-          (strip_romaji_suffix(.data$city_romaji) %in% city_romaji))
+          (remove_romaji_suffix(.data$city_romaji)) %in% city_romaji)
       },
       if (is.null(kcity) || length(kcity) == 0 || !nzchar(kcity)) {
         TRUE

@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 The fude package provides utilities to facilitate the handling of the Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word "fude" is a Japanese counter suffix used to denote land parcels.
 
 
-## Obtain Data
+## Obtain data
 Fude Polygon data can now be downloaded from two different MAFF websites (both available only in Japanese):
 
 1. **GeoJSON format**:  
@@ -32,7 +32,7 @@ Fude Polygon data can now be downloaded from two different MAFF websites (both a
 2. **FlatGeobuf format**:  
    <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/mb/>
 
-## Install the Package
+## Install the package
 
 You can install the released version of fude from CRAN with:
 ```r
@@ -47,7 +47,7 @@ devtools::install_github("takeshinishimura/fude")
 
 ## Usage
 
-### Read Fude Polygon Data
+### Read Fude Polygon data
 
 There are two ways to load Fude Polygon data, depending on how the data was obtained:
 
@@ -71,13 +71,13 @@ d2 <- read_fude(pref = "愛媛")
 d2 <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
 ```
 
-### Inspect the Structure of Fude Polygon Data
+### Inspect the structure of Fude Polygon data
 
 ```{r}
 ls_fude(d)
 ```
 
-### Rename the Local Government Code
+### Rename the local government code
 
 **Note:** This feature is available only for data obtained from GeoJSON (Obtaining Data #1).
 
@@ -93,7 +93,7 @@ dren <- d |> rename_fude(suffix = TRUE, romaji = "title")
 names(dren)
 ```
 
-### Get Agricultural Community Boundary Data
+### Get agricultural community boundary data
 
 Download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website:
 <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/> (available only in Japanese).
@@ -104,11 +104,11 @@ b <- get_boundary(d)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 ```
 
-### Combine Fude Polygons with Agricultural Community Boundaries
+### Combine Fude Polygons with agricultural community boundaries
 
 You can easily combine Fude Polygons with agricultural community boundaries to create enriched spatial analyses or maps.
 
-#### GeoJSON Data Characteristics (Obtain Data #1)
+#### GeoJSON data characteristics (obtain data #1)
 
 ```{r gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
 db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
@@ -160,7 +160,7 @@ db$fude |>
   head()
 ```
 
-#### FlatGeobuf Data Characteristics (Obtain Data #2)
+#### FlatGeobuf data characteristics (obtain data #2)
 
 The FlatGeobuf format offers a more efficient alternative to GeoJSON.
 A notable feature of this format is that each record already includes an **accurately assigned agricultural community code**.
@@ -185,7 +185,7 @@ Data enables extraction based on city names, former city names, and agricultural
 extract_fude(d2, city = "松山市", kcity = "興居島")
 ```
 
-### Explore Fude Polygon Data
+### Explore Fude Polygon data
 
 You can explore Fude Polygon data interactively.
 ```{r warning = FALSE, message = FALSE}
@@ -195,11 +195,12 @@ s <- shiny_fude(db, rcom = TRUE)
 # shiny::shinyApp(ui = s$ui, server = s$server)
 ```
 
-### Read Data from the MAFF Database
+### Read data from the MAFF database
 
-You can read data from the MAFF database [地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/).
+You can read data from the MAFF database ([地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/)).
 ```{r}
 b1 <- get_boundary(d2, path = "~", boundary_type = 1, quiet = TRUE)
+b2 <- get_boundary(d2, path = "~", boundary_type = 2, quiet = TRUE)
 b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
 
 m3 <- read_ikasudb(b3, "~/IA0001_2023_2020_38.xlsx")
@@ -207,11 +208,9 @@ m3 <- read_ikasudb(b3, "~/IA0001_2023_2020_38.xlsx")
 m1 <- b1 |> 
   read_ikasudb("~/SA1009_2020_2020_38.xlsx") |>
   read_ikasudb("~/GC0001_2019_2020_38.xlsx")
-
-names(m1)
 ```
 
-### Use the `mapview` Package
+### Use the `mapview` package
 
 If you want to use `mapview()`, do the following.
 ```{r eval = FALSE}

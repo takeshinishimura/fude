@@ -1,6 +1,6 @@
-# Read shuraku data
+# Read a shuraku Excel file
 
-`read_ikasudb()` reads shuraku Excel files provided by MAFF.
+`read_ikasudb()` reads a shuraku Excel file provided by MAFF.
 
 ## Usage
 

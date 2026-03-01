@@ -26,30 +26,34 @@ ggplot(data = eb, aes(fill = kcity_name)) +
 **出典**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
-eb <- extract_boundary(b, city = "今治|内子", layer = TRUE)
+eb <- extract_boundary(b, city = "松山", rcom = "伊台|菅沢", layer = TRUE)
 
 ggplot(data = eb$city) +
   geom_sf(aes(fill = fill))
 ```
 
-![](example2_files/figure-html/imabari_uchiko-1.png)
+![](example2_files/figure-html/idai1-1.png)
+
+**出典**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
 ggplot(data = eb$kcity) +
   geom_sf(aes(fill = fill))
 ```
 
-![](example2_files/figure-html/imabari_uchiko-2.png)
+![](example2_files/figure-html/idai2-1.png)
+
+**出典**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
-ggplot(data = eb$city) +
-  geom_sf() +
-  geom_sf(data = eb$rcom)
+ggplot() +
+  geom_sf(data = eb$city) +
+  geom_sf(data = eb$rcom, aes(fill = rcom_name))
 ```
 
-![](example2_files/figure-html/imabari_uchiko-3.png)
+![](example2_files/figure-html/idai3-1.png)
 
-**出典**：農林水産省「農業集落境界データ（年度）」を加工して作成。
+**出典**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
 eb <- extract_boundary(b, city = "西予市", kcity = "遊子川", layer = TRUE)
@@ -64,7 +68,7 @@ ggplot() +
   geom_sf(data = eb$kcity |> filter(fill == 1), fill = "black") +
   geom_sf_text(
     data = eb$city |> filter(fill == 1),
-    aes(label = city_kanji),
+    aes(label = city_name),
     size = 3,
     nudge_x = -.025, nudge_y = -.025,
     family = "HiraKakuProN-W3"
@@ -91,7 +95,7 @@ eb <- extract_boundary(b, city = "八幡浜市", kcity = "真穴", layer = TRUE)
 
 ggplot(data = eb$city |> filter(fill == 1)) +
   geom_sf(fill = "gray") +
-  geom_sf_text(aes(label = city_kanji), family = "HiraKakuProN-W3") +
+  geom_sf_text(aes(label = city_name), family = "HiraKakuProN-W3") +
   geom_sf(data = eb$rcom, fill = "ivory") +
 # geom_sf(data = eb$fude, aes(fill = land_type), colour = NA) +
   geom_sf_label(data = eb$rcom, aes(label = rcom_name), family = "HiraKakuProN-W3") +
