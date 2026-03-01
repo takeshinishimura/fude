@@ -2,6 +2,9 @@
 
 ## Mapping MAFF data
 
+Read data from the MAFF database
+[地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/).
+
 ``` r
 library(dplyr)
 library(sf)
@@ -11,16 +14,16 @@ b1 <- get_boundary(d, path = "~", boundary_type = 1, quiet = TRUE)
 b2 <- get_boundary(d, path = "~", boundary_type = 2, quiet = TRUE)
 b3 <- get_boundary(d, path = "~", boundary_type = 3, quiet = TRUE)
 
-e1 <- read_shuraku("~/IA0001_2023_2020_38.xlsx", b1)
-e2 <- read_shuraku("~/IA0001_2023_2020_38.xlsx", b2)
-e3 <- read_shuraku("~/IA0001_2023_2020_38.xlsx", b3)
+m1 <- read_ikasudb(b1, "~/IA0001_2023_2020_38.xlsx")
+m2 <- read_ikasudb(b2, "~/IA0001_2023_2020_38.xlsx")
+m3 <- read_ikasudb(b3, "~/IA0001_2023_2020_38.xlsx")
 
-e1$地域類型1次分類 <- factor(e1$地域類型1次分類, levels = sort(unique(na.omit(e1$地域類型1次分類))))
-e2$地域類型1次分類 <- factor(e2$地域類型1次分類, levels = sort(unique(na.omit(e2$地域類型1次分類))))
-e3$地域類型1次分類 <- factor(e3$地域類型1次分類, levels = sort(unique(na.omit(e3$地域類型1次分類))))
+m1$地域類型1次分類 <- factor(m1$地域類型1次分類, levels = sort(unique(na.omit(m1$地域類型1次分類))))
+m2$地域類型1次分類 <- factor(m2$地域類型1次分類, levels = sort(unique(na.omit(m2$地域類型1次分類))))
+m3$地域類型1次分類 <- factor(m3$地域類型1次分類, levels = sort(unique(na.omit(m3$地域類型1次分類))))
 
 ggplot() +
-  geom_sf(data = e1, aes(fill = 地域類型1次分類), alpha = .8) +
+  geom_sf(data = m1, aes(fill = 地域類型1次分類), alpha = .8) +
   theme_void() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
@@ -31,7 +34,7 @@ ggplot() +
 
 ``` r
 ggplot() +
-  geom_sf(data = e2, aes(fill = 地域類型1次分類), alpha = .8) +
+  geom_sf(data = m2, aes(fill = 地域類型1次分類), alpha = .8) +
   theme_void() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
@@ -42,7 +45,7 @@ ggplot() +
 
 ``` r
 ggplot() +
-  geom_sf(data = e3, aes(fill = 地域類型1次分類), alpha = .8) +
+  geom_sf(data = m3, aes(fill = 地域類型1次分類), alpha = .8) +
   theme_void() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
@@ -52,12 +55,12 @@ ggplot() +
 **出典**: 農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
-e1 <- read_shuraku("~/SA1066_2020_2020_38.xlsx", b1)
-e2 <- read_shuraku("~/SA1066_2020_2020_38.xlsx", b2)
-e3 <- read_shuraku("~/SA1066_2020_2020_38.xlsx", b3)
+m1 <- read_ikasudb(b1, "~/SA1066_2020_2020_38.xlsx")
+m2 <- read_ikasudb(b2, "~/SA1066_2020_2020_38.xlsx")
+m3 <- read_ikasudb(b3, "~/SA1066_2020_2020_38.xlsx")
 
 ggplot() +
-  geom_sf(data = e1, aes(fill = `類別作付（栽培）面積_果樹類`)) +
+  geom_sf(data = m1, aes(fill = `類別作付（栽培）面積_果樹類`)) +
   scale_fill_gradient(
     low  = "white",
     high = "darkorange",
@@ -73,7 +76,7 @@ ggplot() +
 
 ``` r
 ggplot() +
-  geom_sf(data = e2, aes(fill = `類別作付（栽培）面積_果樹類`)) +
+  geom_sf(data = m2, aes(fill = `類別作付（栽培）面積_果樹類`)) +
   scale_fill_gradient(
     low  = "white",
     high = "darkorange",
@@ -89,7 +92,7 @@ ggplot() +
 
 ``` r
 ggplot() +
-  geom_sf(data = e3, aes(fill = `類別作付（栽培）面積_果樹類`)) +
+  geom_sf(data = m3, aes(fill = `類別作付（栽培）面積_果樹類`)) +
   scale_fill_gradient(
     low  = "white",
     high = "darkorange",
@@ -100,47 +103,5 @@ ggplot() +
 ```
 
 ![](example4_files/figure-html/ehime6-1.png)
-
-**出典**: 農林水産省「農業集落境界データ（2020年度）」を加工して作成。
-
-``` r
-e1 <- read_shuraku("~/SA0001_2010_2010_38.xlsx", b1)
-e2 <- read_shuraku("~/SA0001_2010_2010_38.xlsx", b2)
-e3 <- read_shuraku("~/SA0001_2010_2010_38.xlsx", b3)
-
-library(viridis)
-
-ggplot() +
-  geom_sf(data = e1, aes(fill = `林業経営体`)) +
-  scale_fill_viridis_c(option = "viridis") +
-  theme_void() +
-  theme(text = element_text(family = "Hiragino Sans"))
-```
-
-![](example4_files/figure-html/ehime7-1.png)
-
-**出典**: 農林水産省「農業集落境界データ（2020年度）」を加工して作成。
-
-``` r
-ggplot() +
-  geom_sf(data = e2, aes(fill = `林業経営体`)) +
-  scale_fill_viridis_c(option = "viridis") +
-  theme_void() +
-  theme(text = element_text(family = "Hiragino Sans"))
-```
-
-![](example4_files/figure-html/ehime8-1.png)
-
-**出典**: 農林水産省「農業集落境界データ（2020年度）」を加工して作成。
-
-``` r
-ggplot() +
-  geom_sf(data = e3, aes(fill = `林業経営体`)) +
-  scale_fill_viridis_c(option = "viridis") +
-  theme_void() +
-  theme(text = element_text(family = "Hiragino Sans"))
-```
-
-![](example4_files/figure-html/ehime9-1.png)
 
 **出典**: 農林水産省「農業集落境界データ（2020年度）」を加工して作成。

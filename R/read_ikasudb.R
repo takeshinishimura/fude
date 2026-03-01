@@ -1,12 +1,12 @@
 #' Read shuraku data
 #'
 #' @description
-#' `read_shuraku()` reads shuraku Excel files provided by MAFF.
+#' `read_ikasudb()` reads shuraku Excel files provided by MAFF.
 #'
-#' @param path
-#'   Path to an `.xlsx` file.
 #' @param boundary
 #'   Agricultural community boundary data as returned by [get_boundary()].
+#' @param path
+#'   Path to an `.xlsx` file.
 #' @param na
 #'   Character vector of strings to interpret as missing values. Defaults to
 #'   `c("-", "\u2026")`.
@@ -17,9 +17,9 @@
 #'   An [sf::sf()] object.
 #'
 #' @export
-read_shuraku <- function(
-  path,
+read_ikasudb <- function(
   boundary,
+  path,
   na = c("-", "\u2026"),
   zero = TRUE
 ) {

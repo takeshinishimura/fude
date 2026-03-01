@@ -54,7 +54,7 @@
 
 <p>The fude package provides utilities to facilitate the handling of the Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word “fude” is a Japanese counter suffix used to denote land parcels.</p>
 <div class="section level2">
-<h2 id="obtaining-data">Obtaining data<a class="anchor" aria-label="anchor" href="#obtaining-data"></a>
+<h2 id="obtain-data">Obtain Data<a class="anchor" aria-label="anchor" href="#obtain-data"></a>
 </h2>
 <p>Fude Polygon data can now be downloaded from two different MAFF websites (both available only in Japanese):</p>
 <ol style="list-style-type: decimal">
@@ -63,7 +63,7 @@
 </ol>
 </div>
 <div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+<h2 id="install-the-package">Install the Package<a class="anchor" aria-label="anchor" href="#install-the-package"></a>
 </h2>
 <p>You can install the released version of fude from CRAN with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -77,7 +77,7 @@
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <div class="section level3">
-<h3 id="reading-fude-polygon-data">Reading Fude Polygon data<a class="anchor" aria-label="anchor" href="#reading-fude-polygon-data"></a>
+<h3 id="read-fude-polygon-data">Read Fude Polygon Data<a class="anchor" aria-label="anchor" href="#read-fude-polygon-data"></a>
 </h3>
 <p>There are two ways to load Fude Polygon data, depending on how the data was obtained:</p>
 <ol style="list-style-type: decimal">
@@ -97,7 +97,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <code class="sourceCode R"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span>pref <span class="op">=</span> <span class="st">"愛媛"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="itemizing-the-structure-of-fude-polygon-data">Itemizing the structure of Fude Polygon data<a class="anchor" aria-label="anchor" href="#itemizing-the-structure-of-fude-polygon-data"></a>
+<h3 id="inspect-the-structure-of-fude-polygon-data">Inspect the Structure of Fude Polygon Data<a class="anchor" aria-label="anchor" href="#inspect-the-structure-of-fude-polygon-data"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ls_fude.html">ls_fude</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
@@ -145,7 +145,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span><span class="co">#&gt; 20       Ainan-cho</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="renaming-the-local-government-code">Renaming the local government code<a class="anchor" aria-label="anchor" href="#renaming-the-local-government-code"></a>
+<h3 id="rename-the-local-government-code">Rename the Local Government Code<a class="anchor" aria-label="anchor" href="#rename-the-local-government-code"></a>
 </h3>
 <p><strong>Note:</strong> This feature is available only for data obtained from GeoJSON (Obtaining Data #1).</p>
 <p>Convert local government codes into Japanese municipality names for easier management.</p>
@@ -170,18 +170,18 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span><span class="co">#&gt; [19] "2022_Kihoku-cho"      "2022_Ainan-cho"</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="getting-agricultural-community-boundary-data">Getting agricultural community boundary data<a class="anchor" aria-label="anchor" href="#getting-agricultural-community-boundary-data"></a>
+<h3 id="get-agricultural-community-boundary-data">Get Agricultural Community Boundary Data<a class="anchor" aria-label="anchor" href="#get-agricultural-community-boundary-data"></a>
 </h3>
 <p>Download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website: <a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/" class="external-link uri">https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/</a> (available only in Japanese).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="combining-fude-polygons-with-agricultural-community-boundaries">Combining Fude Polygons with agricultural community boundaries<a class="anchor" aria-label="anchor" href="#combining-fude-polygons-with-agricultural-community-boundaries"></a>
+<h3 id="combine-fude-polygons-with-agricultural-community-boundaries">Combine Fude Polygons with Agricultural Community Boundaries<a class="anchor" aria-label="anchor" href="#combine-fude-polygons-with-agricultural-community-boundaries"></a>
 </h3>
 <p>You can easily combine Fude Polygons with agricultural community boundaries to create enriched spatial analyses or maps.</p>
 <div class="section level4">
-<h4 id="characteristics-of-data-from-geojson-obtaining-data-1">Characteristics of data from GeoJSON (Obtaining data #1)<a class="anchor" aria-label="anchor" href="#characteristics-of-data-from-geojson-obtaining-data-1"></a>
+<h4 id="geojson-data-characteristics-obtain-data-1">GeoJSON Data Characteristics (Obtain Data #1)<a class="anchor" aria-label="anchor" href="#geojson-data-characteristics-obtain-data-1"></a>
 </h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"松山市"</span>, rcom <span class="op">=</span> <span class="st">"由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越"</span><span class="op">)</span></span>
@@ -242,7 +242,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 </div>
 </div>
 <div class="section level4">
-<h4 id="characteristics-of-data-from-flatgeobuf-obtaining-data-2">Characteristics of data from FlatGeobuf (Obtaining data #2)<a class="anchor" aria-label="anchor" href="#characteristics-of-data-from-flatgeobuf-obtaining-data-2"></a>
+<h4 id="flatgeobuf-data-characteristics-obtain-data-2">FlatGeobuf Data Characteristics (Obtain Data #2)<a class="anchor" aria-label="anchor" href="#flatgeobuf-data-characteristics-obtain-data-2"></a>
 </h4>
 <p>The FlatGeobuf format offers a more efficient alternative to GeoJSON. A notable feature of this format is that each record already includes an <strong>accurately assigned agricultural community code</strong>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -291,9 +291,9 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 </div>
 </div>
 <div class="section level3">
-<h3 id="review-fude-polygon-data">Review Fude Polygon data<a class="anchor" aria-label="anchor" href="#review-fude-polygon-data"></a>
+<h3 id="explore-fude-polygon-data">Explore Fude Polygon Data<a class="anchor" aria-label="anchor" href="#explore-fude-polygon-data"></a>
 </h3>
-<p>You can review Fude Polygon data in detail.</p>
+<p>You can explore Fude Polygon data interactively.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span>
 <span></span>
@@ -301,10 +301,92 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span><span class="co"># shiny::shinyApp(ui = s$ui, server = s$server)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="using-mapview-package">Using <code>mapview</code> package<a class="anchor" aria-label="anchor" href="#using-mapview-package"></a>
+<h3 id="read-data-from-the-maff-database">Read Data from the MAFF Database<a class="anchor" aria-label="anchor" href="#read-data-from-the-maff-database"></a>
+</h3>
+<p>You can read data from the MAFF database <a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/" class="external-link">地域の農業を見て・知って・活かすDB</a>.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">b1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span>, path <span class="op">=</span> <span class="st">"~"</span>, boundary_type <span class="op">=</span> <span class="fl">1</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">b3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span>, path <span class="op">=</span> <span class="st">"~"</span>, boundary_type <span class="op">=</span> <span class="fl">3</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">m3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_ikasudb.html">read_ikasudb</a></span><span class="op">(</span><span class="va">b3</span>, <span class="st">"~/IA0001_2023_2020_38.xlsx"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">m1</span> <span class="op">&lt;-</span> <span class="va">b1</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="reference/read_ikasudb.html">read_ikasudb</a></span><span class="op">(</span><span class="st">"~/SA1009_2020_2020_38.xlsx"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/read_ikasudb.html">read_ikasudb</a></span><span class="op">(</span><span class="st">"~/GC0001_2019_2020_38.xlsx"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "key"                                              </span></span>
+<span><span class="co">#&gt;  [2] "pref"                                             </span></span>
+<span><span class="co">#&gt;  [3] "city"                                             </span></span>
+<span><span class="co">#&gt;  [4] "kcity"                                            </span></span>
+<span><span class="co">#&gt;  [5] "rcom"                                             </span></span>
+<span><span class="co">#&gt;  [6] "pref_name"                                        </span></span>
+<span><span class="co">#&gt;  [7] "city_name"                                        </span></span>
+<span><span class="co">#&gt;  [8] "kcity_name"                                       </span></span>
+<span><span class="co">#&gt;  [9] "rcom_name"                                        </span></span>
+<span><span class="co">#&gt; [10] "pref_kana"                                        </span></span>
+<span><span class="co">#&gt; [11] "city_kana"                                        </span></span>
+<span><span class="co">#&gt; [12] "rcom_kana"                                        </span></span>
+<span><span class="co">#&gt; [13] "pref_romaji"                                      </span></span>
+<span><span class="co">#&gt; [14] "city_romaji"                                      </span></span>
+<span><span class="co">#&gt; [15] "rcom_romaji"                                      </span></span>
+<span><span class="co">#&gt; [16] "hinintei"                                         </span></span>
+<span><span class="co">#&gt; [17] "boundary_data_year"                               </span></span>
+<span><span class="co">#&gt; [18] "rcom_year"                                        </span></span>
+<span><span class="co">#&gt; [19] "合計"                                             </span></span>
+<span><span class="co">#&gt; [20] "法人化している_計"                                </span></span>
+<span><span class="co">#&gt; [21] "法人化している_農事組合法人"                      </span></span>
+<span><span class="co">#&gt; [22] "法人化している_会社_小計"                         </span></span>
+<span><span class="co">#&gt; [23] "法人化している_会社_株式会社"                     </span></span>
+<span><span class="co">#&gt; [24] "法人化している_会社_合名・合資会社"               </span></span>
+<span><span class="co">#&gt; [25] "法人化している_会社_合同会社"                     </span></span>
+<span><span class="co">#&gt; [26] "法人化している_会社_相互会社"                     </span></span>
+<span><span class="co">#&gt; [27] "法人化している_各種団体_小計"                     </span></span>
+<span><span class="co">#&gt; [28] "法人化している_各種団体_農協"                     </span></span>
+<span><span class="co">#&gt; [29] "法人化している_各種団体_森林組合"                 </span></span>
+<span><span class="co">#&gt; [30] "法人化している_各種団体_その他の各種団体"         </span></span>
+<span><span class="co">#&gt; [31] "法人化している_その他の法人"                      </span></span>
+<span><span class="co">#&gt; [32] "地方公共団体・財産区"                             </span></span>
+<span><span class="co">#&gt; [33] "法人化していない"                                 </span></span>
+<span><span class="co">#&gt; [34] "法人化していない_個人経営体"                      </span></span>
+<span><span class="co">#&gt; [35] "組織数"                                           </span></span>
+<span><span class="co">#&gt; [36] "広域活動組織"                                     </span></span>
+<span><span class="co">#&gt; [37] "地域資源保全プラン策定組織"                       </span></span>
+<span><span class="co">#&gt; [38] "農業者人数"                                       </span></span>
+<span><span class="co">#&gt; [39] "農業者団体数"                                     </span></span>
+<span><span class="co">#&gt; [40] "農業者以外人数"                                   </span></span>
+<span><span class="co">#&gt; [41] "農業者以外団体数"                                 </span></span>
+<span><span class="co">#&gt; [42] "活動計画_協定農用地_計"                           </span></span>
+<span><span class="co">#&gt; [43] "活動計画_協定農用地_田"                           </span></span>
+<span><span class="co">#&gt; [44] "活動計画_協定農用地_畑"                           </span></span>
+<span><span class="co">#&gt; [45] "活動計画_協定農用地_草地"                         </span></span>
+<span><span class="co">#&gt; [46] "活動計画_協定農用地_うち遊休農地面積"             </span></span>
+<span><span class="co">#&gt; [47] "活動計画_協定農用地_うち中山間との重複面積"       </span></span>
+<span><span class="co">#&gt; [48] "活動計画_農地維持支払_水路"                       </span></span>
+<span><span class="co">#&gt; [49] "活動計画_農地維持支払_農道"                       </span></span>
+<span><span class="co">#&gt; [50] "活動計画_農地維持支払_ため池"                     </span></span>
+<span><span class="co">#&gt; [51] "活動計画_農地維持支払_対象農用地_計"              </span></span>
+<span><span class="co">#&gt; [52] "活動計画_農地維持支払_対象農用地_田"              </span></span>
+<span><span class="co">#&gt; [53] "活動計画_農地維持支払_対象農用地_畑"              </span></span>
+<span><span class="co">#&gt; [54] "活動計画_農地維持支払_対象農用地_草地"            </span></span>
+<span><span class="co">#&gt; [55] "活動計画_資源向上支払（共同）_対象農用地_計"      </span></span>
+<span><span class="co">#&gt; [56] "活動計画_資源向上支払（共同）_対象農用地_田"      </span></span>
+<span><span class="co">#&gt; [57] "活動計画_資源向上支払（共同）_対象農用地_畑"      </span></span>
+<span><span class="co">#&gt; [58] "活動計画_資源向上支払（共同）_対象農用地_草地"    </span></span>
+<span><span class="co">#&gt; [59] "活動計画_資源向上支払（長寿命化）_対象農用地_計"  </span></span>
+<span><span class="co">#&gt; [60] "活動計画_資源向上支払（長寿命化）_対象農用地_田"  </span></span>
+<span><span class="co">#&gt; [61] "活動計画_資源向上支払（長寿命化）_対象農用地_畑"  </span></span>
+<span><span class="co">#&gt; [62] "活動計画_資源向上支払（長寿命化）_対象農用地_草地"</span></span>
+<span><span class="co">#&gt; [63] "活動計画_資源向上支払（長寿命化）_水路"           </span></span>
+<span><span class="co">#&gt; [64] "活動計画_資源向上支払（長寿命化）_農道"           </span></span>
+<span><span class="co">#&gt; [65] "活動計画_資源向上支払（長寿命化）_ため池"         </span></span>
+<span><span class="co">#&gt; [66] "geometry"</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="use-the-mapview-package">Use the <code>mapview</code> Package<a class="anchor" aria-label="anchor" href="#use-the-mapview-package"></a>
 </h3>
 <p>If you want to use <code><a href="https://r-spatial.github.io/mapview/reference/mapView.html" class="external-link">mapview()</a></code>, do the following.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">db1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"伊方町"</span><span class="op">)</span></span>
 <span><span class="va">db2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"八幡浜市"</span><span class="op">)</span></span>
 <span><span class="va">db3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"西予市"</span>, kcity <span class="op">=</span> <span class="st">"三瓶|二木生|三島|双岩"</span><span class="op">)</span></span>

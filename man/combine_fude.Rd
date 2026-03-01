@@ -25,8 +25,6 @@ local government code, it is required.}
 }
 \value{
 A list of \code{\link[sf:sf]{sf::sf()}} objects.
-
-@seealso \code{\link[=read_fude]{read_fude()}}.
 }
 \description{
 \code{combine_fude()} uses the agricultural community boundary data to reduce the
@@ -39,4 +37,7 @@ d <- read_fude(path, stringsAsFactors = FALSE)
 b <- get_boundary(d)
 db <- combine_fude(d, b, "\u677e\u5c71\u5e02", "\u57ce\u6771", year = 2022)
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{\link[=read_fude]{read_fude()}}.
 }

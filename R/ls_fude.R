@@ -1,4 +1,4 @@
-#' Itemize the structure of Fude Polygon data
+#' Inspect the Structure of Fude Polygon Data
 #'
 #' @description
 #' `ls_fude()` lists the year and the local government names (or codes) in

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ls_fude.R
 \name{ls_fude}
 \alias{ls_fude}
-\title{Itemize the structure of Fude Polygon data}
+\title{Inspect the Structure of Fude Polygon Data}
 \usage{
 ls_fude(data)
 }

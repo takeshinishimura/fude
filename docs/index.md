@@ -5,7 +5,7 @@ Fude Polygon data downloadable from the Ministry of Agriculture,
 Forestry and Fisheries (MAFF) website. The word “fude” is a Japanese
 counter suffix used to denote land parcels.
 
-## Obtaining data
+## Obtain Data
 
 Fude Polygon data can now be downloaded from two different MAFF websites
 (both available only in Japanese):
@@ -16,7 +16,7 @@ Fude Polygon data can now be downloaded from two different MAFF websites
 2.  **FlatGeobuf format**:  
     <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/mb/>
 
-## Installation
+## Install the Package
 
 You can install the released version of fude from CRAN with:
 
@@ -33,7 +33,7 @@ devtools::install_github("takeshinishimura/fude")
 
 ## Usage
 
-### Reading Fude Polygon data
+### Read Fude Polygon Data
 
 There are two ways to load Fude Polygon data, depending on how the data
 was obtained:
@@ -59,7 +59,7 @@ d <- read_fude("~/2022_38.zip")
 d2 <- read_fude(pref = "愛媛")
 ```
 
-### Itemizing the structure of Fude Polygon data
+### Inspect the Structure of Fude Polygon Data
 
 ``` r
 ls_fude(d)
@@ -107,7 +107,7 @@ ls_fude(d)
 #> 20       Ainan-cho
 ```
 
-### Renaming the local government code
+### Rename the Local Government Code
 
 **Note:** This feature is available only for data obtained from GeoJSON
 (Obtaining Data \#1).
@@ -139,7 +139,7 @@ names(dren)
 #> [19] "2022_Kihoku-cho"      "2022_Ainan-cho"
 ```
 
-### Getting agricultural community boundary data
+### Get Agricultural Community Boundary Data
 
 Download the agricultural community boundary data, which corresponds to
 the Fude Polygon data, from the MAFF website:
@@ -150,12 +150,12 @@ only in Japanese).
 b <- get_boundary(d)
 ```
 
-### Combining Fude Polygons with agricultural community boundaries
+### Combine Fude Polygons with Agricultural Community Boundaries
 
 You can easily combine Fude Polygons with agricultural community
 boundaries to create enriched spatial analyses or maps.
 
-#### Characteristics of data from GeoJSON (Obtaining data \#1)
+#### GeoJSON Data Characteristics (Obtain Data \#1)
 
 ``` r
 db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
@@ -223,7 +223,7 @@ db$fude |>
 #> 6 156a3459-25cb-494c-824f-9ba6b0fb6f23   興居島村      由良        Yura
 ```
 
-#### Characteristics of data from FlatGeobuf (Obtaining data \#2)
+#### FlatGeobuf Data Characteristics (Obtain Data \#2)
 
 The FlatGeobuf format offers a more efficient alternative to GeoJSON. A
 notable feature of this format is that each record already includes an
@@ -282,9 +282,9 @@ extract_fude(d2, city = "松山市", kcity = "興居島")
 #> 10  33.88765 3820102004 MULTIPOLYGON (((132.6422 33...
 ```
 
-### Review Fude Polygon data
+### Explore Fude Polygon Data
 
-You can review Fude Polygon data in detail.
+You can explore Fude Polygon data interactively.
 
 ``` r
 library(shiny)
@@ -293,7 +293,91 @@ s <- shiny_fude(db, rcom = TRUE)
 # shiny::shinyApp(ui = s$ui, server = s$server)
 ```
 
-### Using `mapview` package
+### Read Data from the MAFF Database
+
+You can read data from the MAFF database
+[地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/).
+
+``` r
+b1 <- get_boundary(d2, path = "~", boundary_type = 1, quiet = TRUE)
+b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
+
+m3 <- read_ikasudb(b3, "~/IA0001_2023_2020_38.xlsx")
+
+m1 <- b1 |> 
+  read_ikasudb("~/SA1009_2020_2020_38.xlsx") |>
+  read_ikasudb("~/GC0001_2019_2020_38.xlsx")
+
+names(m1)
+#>  [1] "key"                                              
+#>  [2] "pref"                                             
+#>  [3] "city"                                             
+#>  [4] "kcity"                                            
+#>  [5] "rcom"                                             
+#>  [6] "pref_name"                                        
+#>  [7] "city_name"                                        
+#>  [8] "kcity_name"                                       
+#>  [9] "rcom_name"                                        
+#> [10] "pref_kana"                                        
+#> [11] "city_kana"                                        
+#> [12] "rcom_kana"                                        
+#> [13] "pref_romaji"                                      
+#> [14] "city_romaji"                                      
+#> [15] "rcom_romaji"                                      
+#> [16] "hinintei"                                         
+#> [17] "boundary_data_year"                               
+#> [18] "rcom_year"                                        
+#> [19] "合計"                                             
+#> [20] "法人化している_計"                                
+#> [21] "法人化している_農事組合法人"                      
+#> [22] "法人化している_会社_小計"                         
+#> [23] "法人化している_会社_株式会社"                     
+#> [24] "法人化している_会社_合名・合資会社"               
+#> [25] "法人化している_会社_合同会社"                     
+#> [26] "法人化している_会社_相互会社"                     
+#> [27] "法人化している_各種団体_小計"                     
+#> [28] "法人化している_各種団体_農協"                     
+#> [29] "法人化している_各種団体_森林組合"                 
+#> [30] "法人化している_各種団体_その他の各種団体"         
+#> [31] "法人化している_その他の法人"                      
+#> [32] "地方公共団体・財産区"                             
+#> [33] "法人化していない"                                 
+#> [34] "法人化していない_個人経営体"                      
+#> [35] "組織数"                                           
+#> [36] "広域活動組織"                                     
+#> [37] "地域資源保全プラン策定組織"                       
+#> [38] "農業者人数"                                       
+#> [39] "農業者団体数"                                     
+#> [40] "農業者以外人数"                                   
+#> [41] "農業者以外団体数"                                 
+#> [42] "活動計画_協定農用地_計"                           
+#> [43] "活動計画_協定農用地_田"                           
+#> [44] "活動計画_協定農用地_畑"                           
+#> [45] "活動計画_協定農用地_草地"                         
+#> [46] "活動計画_協定農用地_うち遊休農地面積"             
+#> [47] "活動計画_協定農用地_うち中山間との重複面積"       
+#> [48] "活動計画_農地維持支払_水路"                       
+#> [49] "活動計画_農地維持支払_農道"                       
+#> [50] "活動計画_農地維持支払_ため池"                     
+#> [51] "活動計画_農地維持支払_対象農用地_計"              
+#> [52] "活動計画_農地維持支払_対象農用地_田"              
+#> [53] "活動計画_農地維持支払_対象農用地_畑"              
+#> [54] "活動計画_農地維持支払_対象農用地_草地"            
+#> [55] "活動計画_資源向上支払（共同）_対象農用地_計"      
+#> [56] "活動計画_資源向上支払（共同）_対象農用地_田"      
+#> [57] "活動計画_資源向上支払（共同）_対象農用地_畑"      
+#> [58] "活動計画_資源向上支払（共同）_対象農用地_草地"    
+#> [59] "活動計画_資源向上支払（長寿命化）_対象農用地_計"  
+#> [60] "活動計画_資源向上支払（長寿命化）_対象農用地_田"  
+#> [61] "活動計画_資源向上支払（長寿命化）_対象農用地_畑"  
+#> [62] "活動計画_資源向上支払（長寿命化）_対象農用地_草地"
+#> [63] "活動計画_資源向上支払（長寿命化）_水路"           
+#> [64] "活動計画_資源向上支払（長寿命化）_農道"           
+#> [65] "活動計画_資源向上支払（長寿命化）_ため池"         
+#> [66] "geometry"
+```
+
+### Use the `mapview` Package
 
 If you want to use
 [`mapview()`](https://r-spatial.github.io/mapview/reference/mapView.html),

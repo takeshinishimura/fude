@@ -24,7 +24,7 @@
 #' @returns
 #'   A list of [sf::sf()] objects.
 #'
-#'  @seealso [read_fude()].
+#' @seealso [read_fude()].
 #'
 #' @examplesIf interactive()
 #' path <- system.file("extdata", "castle.zip", package = "fude")

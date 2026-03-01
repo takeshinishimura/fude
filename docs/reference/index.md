@@ -22,14 +22,14 @@
 - [`lg_code_table`](https://takeshinishimura.github.io/fude/reference/lg_code_table.md)
   : Local government code/name correspondence table
 - [`ls_fude()`](https://takeshinishimura.github.io/fude/reference/ls_fude.md)
-  : Itemize the structure of Fude Polygon data
+  : Inspect the Structure of Fude Polygon Data
 - [`pref_code_table`](https://takeshinishimura.github.io/fude/reference/pref_code_table.md)
   : Prefecture code/name correspondence table
 - [`rcom_code_table`](https://takeshinishimura.github.io/fude/reference/rcom_code_table.md)
   : Community code/name correspondence table
 - [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md)
   : Read a Fude Polygon ZIP file
-- [`read_shuraku()`](https://takeshinishimura.github.io/fude/reference/read_shuraku.md)
+- [`read_ikasudb()`](https://takeshinishimura.github.io/fude/reference/read_ikasudb.md)
   : Read shuraku data
 - [`rename_fude()`](https://takeshinishimura.github.io/fude/reference/rename_fude.md)
   : Rename the Fude Polygon data
