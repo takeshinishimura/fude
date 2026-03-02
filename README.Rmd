@@ -198,10 +198,10 @@ s <- shiny_fude(db, rcom = TRUE)
 ### Read data from the MAFF database
 
 You can read data from the MAFF database ([地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/)).
-```{r}
-b1 <- get_boundary(d2, path = "~", boundary_type = 1, quiet = TRUE)
-b2 <- get_boundary(d2, path = "~", boundary_type = 2, quiet = TRUE)
-b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
+```{r message = FALSE}
+b1 <- get_boundary(d2, path = "~", boundary_type = 1)
+b2 <- get_boundary(d2, path = "~", boundary_type = 2)
+b3 <- get_boundary(d2, path = "~", boundary_type = 3)
 
 m3 <- read_ikasudb(b3, "~/IA0001_2023_2020_38.xlsx")
 
@@ -222,5 +222,5 @@ db <- bind_fude(db1, db2, db3)
 
 library(mapview)
 
-mapview::mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
+mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
 ```

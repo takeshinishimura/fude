@@ -309,9 +309,36 @@ You can read data from the MAFF database
 ([地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/)).
 
 ``` r
-b1 <- get_boundary(d2, path = "~", boundary_type = 1, quiet = TRUE)
-b2 <- get_boundary(d2, path = "~", boundary_type = 2, quiet = TRUE)
-b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
+b1 <- get_boundary(d2, path = "~", boundary_type = 1)
+#> options:        ENCODING=CP932 
+#> Reading layer `rcom' from data source 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmpy41kPm/MA0001_2020_2020_38/rcom.shp' 
+#>   using driver `ESRI Shapefile'
+#> Simple feature collection with 3302 features and 11 fields
+#> Geometry type: MULTIPOLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: 132.0123 ymin: 32.88498 xmax: 133.6928 ymax: 34.30165
+#> Geodetic CRS:  JGD2000
+b2 <- get_boundary(d2, path = "~", boundary_type = 2)
+#> options:        ENCODING=CP932 
+#> Reading layer `kcity' from data source 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmpy41kPm/MA0002_2020_2020_38/kcity.shp' 
+#>   using driver `ESRI Shapefile'
+#> Simple feature collection with 271 features and 8 fields
+#> Geometry type: MULTIPOLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: 132.0123 ymin: 32.88498 xmax: 133.6928 ymax: 34.30165
+#> Geodetic CRS:  JGD2000
+b3 <- get_boundary(d2, path = "~", boundary_type = 3)
+#> options:        ENCODING=CP932 
+#> Reading layer `city' from data source 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmpy41kPm/MA0003_2020_2020_38/city.shp' 
+#>   using driver `ESRI Shapefile'
+#> Simple feature collection with 20 features and 6 fields
+#> Geometry type: MULTIPOLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: 132.0123 ymin: 32.88498 xmax: 133.6928 ymax: 34.30165
+#> Geodetic CRS:  JGD2000
 
 m3 <- read_ikasudb(b3, "~/IA0001_2023_2020_38.xlsx")
 
@@ -333,5 +360,5 @@ db <- bind_fude(db1, db2, db3)
 
 library(mapview)
 
-mapview::mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
+mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
 ```
