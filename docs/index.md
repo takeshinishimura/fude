@@ -63,48 +63,29 @@ d2 <- read_fude(pref = "愛媛")
 
 ``` r
 ls_fude(d)
-#>           name issue_year local_government_cd     n pref_name  city_name
-#> 1  2022_382019       2022              382019 72045    愛媛県     松山市
-#> 2  2022_382027       2022              382027 43396    愛媛県     今治市
-#> 3  2022_382035       2022              382035 61683    愛媛県   宇和島市
-#> 4  2022_382043       2022              382043 37753    愛媛県   八幡浜市
-#> 5  2022_382051       2022              382051 15734    愛媛県   新居浜市
-#> 6  2022_382060       2022              382060 63244    愛媛県     西条市
-#> 7  2022_382078       2022              382078 37570    愛媛県     大洲市
-#> 8  2022_382108       2022              382108 33302    愛媛県     伊予市
-#> 9  2022_382132       2022              382132 34781    愛媛県 四国中央市
-#> 10 2022_382141       2022              382141 73676    愛媛県     西予市
-#> 11 2022_382159       2022              382159 24235    愛媛県     東温市
-#> 12 2022_383562       2022              383562  2195    愛媛県     上島町
-#> 13 2022_383864       2022              383864 22823    愛媛県 久万高原町
-#> 14 2022_384011       2022              384011  8634    愛媛県     松前町
-#> 15 2022_384020       2022              384020  7042    愛媛県     砥部町
-#> 16 2022_384224       2022              384224 27131    愛媛県     内子町
-#> 17 2022_384429       2022              384429 23429    愛媛県     伊方町
-#> 18 2022_384844       2022              384844  9089    愛媛県     松野町
-#> 19 2022_384887       2022              384887 16550    愛媛県     鬼北町
-#> 20 2022_385069       2022              385069 22931    愛媛県     愛南町
-#>        city_romaji
-#> 1    Matsuyama-shi
-#> 2      Imabari-shi
-#> 3      Uwajima-shi
-#> 4   Yawatahama-shi
-#> 5      Niihama-shi
-#> 6        Saijo-shi
-#> 7          Ozu-shi
-#> 8          Iyo-shi
-#> 9  Shikokuchuo-shi
-#> 10       Seiyo-shi
-#> 11        Toon-shi
-#> 12    Kamijima-cho
-#> 13   Kumakogen-cho
-#> 14    Matsumae-cho
-#> 15        Tobe-cho
-#> 16      Uchiko-cho
-#> 17       Ikata-cho
-#> 18     Matsuno-cho
-#> 19      Kihoku-cho
-#> 20       Ainan-cho
+#> # A tibble: 20 × 7
+#>    name     issue_year local_government_cd     n pref_name city_name city_romaji
+#>    <chr>         <int> <chr>               <int> <chr>     <chr>     <chr>      
+#>  1 2022_38…       2022 382019              72045 愛媛県    松山市    Matsuyama-…
+#>  2 2022_38…       2022 382027              43396 愛媛県    今治市    Imabari-shi
+#>  3 2022_38…       2022 382035              61683 愛媛県    宇和島市  Uwajima-shi
+#>  4 2022_38…       2022 382043              37753 愛媛県    八幡浜市  Yawatahama…
+#>  5 2022_38…       2022 382051              15734 愛媛県    新居浜市  Niihama-shi
+#>  6 2022_38…       2022 382060              63244 愛媛県    西条市    Saijo-shi  
+#>  7 2022_38…       2022 382078              37570 愛媛県    大洲市    Ozu-shi    
+#>  8 2022_38…       2022 382108              33302 愛媛県    伊予市    Iyo-shi    
+#>  9 2022_38…       2022 382132              34781 愛媛県    四国中央市…… Shikokuchu…
+#> 10 2022_38…       2022 382141              73676 愛媛県    西予市    Seiyo-shi  
+#> 11 2022_38…       2022 382159              24235 愛媛県    東温市    Toon-shi   
+#> 12 2022_38…       2022 383562               2195 愛媛県    上島町    Kamijima-c…
+#> 13 2022_38…       2022 383864              22823 愛媛県    久万高原町…… Kumakogen-…
+#> 14 2022_38…       2022 384011               8634 愛媛県    松前町    Matsumae-c…
+#> 15 2022_38…       2022 384020               7042 愛媛県    砥部町    Tobe-cho   
+#> 16 2022_38…       2022 384224              27131 愛媛県    内子町    Uchiko-cho 
+#> 17 2022_38…       2022 384429              23429 愛媛県    伊方町    Ikata-cho  
+#> 18 2022_38…       2022 384844               9089 愛媛県    松野町    Matsuno-cho
+#> 19 2022_38…       2022 384887              16550 愛媛県    鬼北町    Kihoku-cho 
+#> 20 2022_38…       2022 385069              22931 愛媛県    愛南町    Ainan-cho
 ```
 
 ### Rename the local government code
@@ -214,13 +195,15 @@ db$fude |>
   st_drop_geometry() |>
   select(polygon_uuid, kcity_name, rcom_name, rcom_romaji) |>
   head()
-#>                           polygon_uuid kcity_name rcom_name rcom_romaji
-#> 1 8085bc47-9af5-440f-89e9-f188d3b95746   興居島村        泊      Tomari
-#> 2 26920da0-b63e-4994-a9eb-175e2982fe21   興居島村      門田      Kadota
-#> 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0aec   興居島村      由良        Yura
-#> 4 ea130038-7035-4cf3-b71c-091783090d74   興居島村      船越   Funakoshi
-#> 5 4aba8229-1b14-4eab-8a91-e10d9e841180   興居島村      船越   Funakoshi
-#> 6 156a3459-25cb-494c-824f-9ba6b0fb6f23   興居島村      由良        Yura
+#> # A tibble: 6 × 4
+#>   polygon_uuid                         kcity_name rcom_name rcom_romaji
+#>   <chr>                                <fct>      <fct>     <fct>      
+#> 1 8085bc47-9af5-440f-89e9-f188d3b95746 興居島村   泊        Tomari     
+#> 2 26920da0-b63e-4994-a9eb-175e2982fe21 興居島村   門田      Kadota     
+#> 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0aec 興居島村   由良      Yura       
+#> 4 ea130038-7035-4cf3-b71c-091783090d74 興居島村   船越      Funakoshi  
+#> 5 4aba8229-1b14-4eab-8a91-e10d9e841180 興居島村   船越      Funakoshi  
+#> 6 156a3459-25cb-494c-824f-9ba6b0fb6f23 興居島村   由良      Yura
 ```
 
 #### FlatGeobuf data characteristics (obtain data \#2)
@@ -256,30 +239,22 @@ extract_fude(d2, city = "松山市", kcity = "興居島")
 #> Geometry type: MULTIPOLYGON
 #> Dimension:     XY
 #> Bounding box:  xmin: 132.6373 ymin: 33.87055 xmax: 132.6991 ymax: 33.92544
-#> Geodetic CRS:  WGS 84
-#> First 10 features:
-#>                            polygon_uuid land_type issue_year point_lng
-#> 1  5a72b4ef-b5f4-465e-9948-e93142819676       200       2025  132.6446
-#> 2  c69d86d5-1fb2-4528-a87b-155d88260964       200       2025  132.6447
-#> 3  627134ea-919c-4769-bd94-be16cb549c5b       200       2025  132.6445
-#> 4  f2631019-d16e-42f9-8501-75f26515ca9a       200       2025  132.6441
-#> 5  8fedb70d-4bb9-4447-879b-a0eeabc22915       200       2025  132.6437
-#> 6  cd235cdf-da51-4ead-ad50-efc6ea1c84cf       200       2025  132.6434
-#> 7  5853b7a1-62c3-4973-9e79-cabd3da6cdc7       200       2025  132.6436
-#> 8  5e090780-6d16-4b9e-aca9-c56229851bfc       200       2025  132.6420
-#> 9  90de4abf-e972-4031-987f-f3391b04b03c       200       2025  132.6421
-#> 10 e5ade914-c803-42d1-9fa8-0921b98d69b8       200       2025  132.6423
-#>    point_lat        key                       geometry
-#> 1   33.88813 3820102004 MULTIPOLYGON (((132.6446 33...
-#> 2   33.88768 3820102004 MULTIPOLYGON (((132.6444 33...
-#> 3   33.88746 3820102004 MULTIPOLYGON (((132.6448 33...
-#> 4   33.88755 3820102004 MULTIPOLYGON (((132.6442 33...
-#> 5   33.88740 3820102004 MULTIPOLYGON (((132.6437 33...
-#> 6   33.88729 3820102004 MULTIPOLYGON (((132.6434 33...
-#> 7   33.88770 3820102004 MULTIPOLYGON (((132.6435 33...
-#> 8   33.88782 3820102004 MULTIPOLYGON (((132.6418 33...
-#> 9   33.88792 3820102004 MULTIPOLYGON (((132.6422 33...
-#> 10  33.88765 3820102004 MULTIPOLYGON (((132.6422 33...
+#> Geodetic CRS:  JGD2000
+#> # A tibble: 1,691 × 7
+#>    polygon_uuid                   land_type issue_year point_lng point_lat key  
+#>  * <chr>                              <dbl>      <dbl>     <dbl>     <dbl> <chr>
+#>  1 5a72b4ef-b5f4-465e-9948-e9314…       200       2025      133.      33.9 3820…
+#>  2 c69d86d5-1fb2-4528-a87b-155d8…       200       2025      133.      33.9 3820…
+#>  3 627134ea-919c-4769-bd94-be16c…       200       2025      133.      33.9 3820…
+#>  4 f2631019-d16e-42f9-8501-75f26…       200       2025      133.      33.9 3820…
+#>  5 8fedb70d-4bb9-4447-879b-a0eea…       200       2025      133.      33.9 3820…
+#>  6 cd235cdf-da51-4ead-ad50-efc6e…       200       2025      133.      33.9 3820…
+#>  7 5853b7a1-62c3-4973-9e79-cabd3…       200       2025      133.      33.9 3820…
+#>  8 5e090780-6d16-4b9e-aca9-c5622…       200       2025      133.      33.9 3820…
+#>  9 90de4abf-e972-4031-987f-f3391…       200       2025      133.      33.9 3820…
+#> 10 e5ade914-c803-42d1-9fa8-0921b…       200       2025      133.      33.9 3820…
+#> # ℹ 1,681 more rows
+#> # ℹ 1 more variable: geometry <MULTIPOLYGON [°]>
 ```
 
 ### Explore Fude Polygon data
@@ -299,9 +274,9 @@ You can read data from the MAFF database
 ([地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/)).
 
 ``` r
-b1 <- get_boundary(d2, path = "~", boundary_type = 1, quiet = TRUE)
-b2 <- get_boundary(d2, path = "~", boundary_type = 2, quiet = TRUE)
-b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
+b1 <- get_boundary(d2, path = "~", boundary_type = 1)
+b2 <- get_boundary(d2, path = "~", boundary_type = 2)
+b3 <- get_boundary(d2, path = "~", boundary_type = 3)
 
 m3 <- read_ikasudb(b3, "~/IA0001_2023_2020_38.xlsx")
 
@@ -322,8 +297,9 @@ db2 <- combine_fude(d, b, city = "八幡浜市")
 db3 <- combine_fude(d, b, city = "西予市", kcity = "三瓶|二木生|三島|双岩")
 
 db <- bind_fude(db1, db2, db3)
+db$fude <- sf::st_transform(db$fude, crs = 3857)
 
 library(mapview)
 
-mapview::mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
+mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
 ```

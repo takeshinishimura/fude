@@ -22,7 +22,6 @@ knitr::opts_chunk$set(
 
 The fude package provides utilities to facilitate the handling of the Fude Polygon data downloadable from the Ministry of Agriculture, Forestry and Fisheries (MAFF) website. The word "fude" is a Japanese counter suffix used to denote land parcels.
 
-
 ## Obtain data
 Fude Polygon data can now be downloaded from two different MAFF websites (both available only in Japanese):
 
@@ -129,7 +128,7 @@ ggplot() +
 
 - `db$fude`: Automatically assigns polygons on the boundaries to a community.
 - `db$fude_split`: Provides cleaner boundaries, but polygon data near community borders may be divided.
-```{r nosplit_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+```{r nosplit_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
 library(patchwork)
 
 fude <- ggplot() +
@@ -219,6 +218,7 @@ db2 <- combine_fude(d, b, city = "八幡浜市")
 db3 <- combine_fude(d, b, city = "西予市", kcity = "三瓶|二木生|三島|双岩")
 
 db <- bind_fude(db1, db2, db3)
+db$fude <- sf::st_transform(db$fude, crs = 3857)
 
 library(mapview)
 

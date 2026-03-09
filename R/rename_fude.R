@@ -57,14 +57,13 @@ rename_fude <- function(
   new_names <- paste0(nen, new_names)
   new_names[nochange] <- old_names[nochange]
 
-  x <- data
-  names(x) <- new_names
+  names(data) <- new_names
 
   if (isFALSE(quiet)) {
     message(paste(paste0(old_names, " -> ", new_names), collapse = "\n"))
   }
 
-  return(x)
+  return(data)
 }
 
 get_lg_name <- function(

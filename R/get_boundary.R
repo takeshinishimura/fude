@@ -46,7 +46,7 @@ get_boundary <- function(
   boundary_type = 1,
   path = NULL,
   suffix = FALSE,
-  to_wgs84 = TRUE,
+  to_wgs84 = FALSE,
   encoding = "CP932",
   quiet = FALSE
 ) {
@@ -55,9 +55,8 @@ get_boundary <- function(
   x <- lapply(
     pref_codes,
     \(d) {
-      pref_code <- get_pref_code(d)
       read_boundary(
-        pref_code,
+        get_pref_code(d),
         boundary_data_year,
         rcom_year,
         boundary_type,
@@ -68,15 +67,16 @@ get_boundary <- function(
         quiet
       )
     }
-  )
-
-  names(x) <- sprintf(
-    "MA000%s_%s_%s_%s",
-    boundary_type,
-    boundary_data_year,
-    rcom_year,
-    sapply(pref_codes, get_pref_code)
-  )
+  ) |>
+    stats::setNames(
+      sprintf(
+        "MA000%s_%s_%s_%s",
+        boundary_type,
+        boundary_data_year,
+        rcom_year,
+        sapply(pref_codes, get_pref_code)
+      )
+    )
 
   return(x)
 }
@@ -135,7 +135,7 @@ read_boundary <- function(
     ))
   }
 
-  x <- sf::st_read(
+  x <- sf::read_sf(
     shp_files,
     quiet = quiet,
     options = paste0("ENCODING=", encoding)
@@ -172,8 +172,8 @@ read_boundary <- function(
             dplyr::select(
               .data$key,
               .data$pref_kana,
-              .data$pref_romaji,
               .data$city_kana,
+              .data$pref_romaji,
               .data$city_romaji,
               .data$rcom_romaji
             ),
@@ -186,8 +186,8 @@ read_boundary <- function(
             dplyr::select(
               .data$key,
               .data$pref_kana,
-              .data$pref_romaji,
               .data$city_kana,
+              .data$pref_romaji,
               .data$city_romaji,
             ),
           by = "key"
@@ -199,8 +199,8 @@ read_boundary <- function(
             dplyr::select(
               .data$key,
               .data$pref_kana,
-              .data$pref_romaji,
               .data$city_kana,
+              .data$pref_romaji,
               .data$city_romaji,
             ),
           by = "key"
@@ -250,7 +250,7 @@ fude_to_lg_code <- function(data) {
   }
 
   if (is.data.frame(data)) {
-    if (!"local_government_cd" %in% names(data)) {
+    if (!("local_government_cd" %in% names(data))) {
       return(character())
     }
     return(data[["local_government_cd"]])
@@ -264,7 +264,7 @@ fude_to_lg_code <- function(data) {
           if (!is.data.frame(d)) {
             return(NULL)
           }
-          if (!"local_government_cd" %in% names(d)) {
+          if (!("local_government_cd" %in% names(d))) {
             return(NULL)
           }
           d[["local_government_cd"]]

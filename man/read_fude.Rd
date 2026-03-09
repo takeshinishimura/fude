@@ -10,7 +10,7 @@ read_fude(
   year = 2025,
   rcom_year = 2020,
   supplementary = FALSE,
-  to_wgs84 = TRUE,
+  to_wgs84 = FALSE,
   quiet = FALSE
 )
 }

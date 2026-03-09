@@ -3,10 +3,13 @@
 ## Using `gghighlight` package
 
 ``` r
+library(fude)
 library(dplyr)
 library(ggplot2)
 library(gghighlight)
 
+d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
+b <- get_boundary(d, path = "~", quiet = TRUE)
 db <- combine_fude(d, b, city = "西条", kcity = "丹原|田野")
 
 ggplot() +

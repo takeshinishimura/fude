@@ -28,10 +28,9 @@
 #'
 #' @examplesIf interactive()
 #' path <- system.file("extdata", "castle.zip", package = "fude")
-#' d <- read_fude(path, stringsAsFactors = FALSE)
+#' d <- read_fude(path)
 #' b <- get_boundary(d)
 #' db <- combine_fude(d, b, "\u677e\u5c71\u5e02", "\u57ce\u6771", year = 2022)
-#' @importFrom magrittr %>%
 #'
 #' @export
 combine_fude <- function(
@@ -45,6 +44,15 @@ combine_fude <- function(
   validate_fude(data)
   data <- add_local_government_cd(data)
 
+  x <- data |>
+    dplyr::bind_rows()
+
+  crs <- sf::st_crs(x)
+
+  if (sf::st_crs(x)$epsg != sf::st_crs(dplyr::bind_rows(boundary))$epsg) {
+    stop("crs are inconsistent.")
+  }
+
   extracted <- extract_boundary(
     boundary = boundary,
     city = city,
@@ -56,27 +64,24 @@ combine_fude <- function(
   location_info <- find_pref_name(city)
   lg_code <- find_lg_code(location_info$pref, location_info$city)
 
-  if ("key" %in% names(data[[1]])) {
+  if ("key" %in% names(x)) {
     target_key <- unique(extracted$rcom$key)
-    fude_original <- data[[grepl(
-      paste0("_", substr(lg_code, start = 1, stop = 2), "$"),
-      names(data)
-    )]] |>
+
+    join_data <- extracted$rcom |>
+      sf::st_set_geometry(NULL) |>
+      dplyr::select(!.data$local_government_cd)
+
+    fude_original <- x |>
       dplyr::filter(.data$key %in% target_key) |>
-      dplyr::left_join(
-        extracted$rcom |>
-          sf::st_set_geometry(NULL) |>
-          dplyr::select(-.data$local_government_cd),
-        by = "key"
-      ) %>%
+      dplyr::left_join(join_data, by = "key") |>
       dplyr::mutate(
         centroid = sf::st_sfc(
           purrr::map2(
             .data$point_lng,
             .data$point_lat,
-            ~ sf::st_point(c(.x, .y))
+            \(lng, lat) sf::st_point(c(lng, lat))
           ),
-          crs = sf::st_crs(.)
+          crs = crs
         )
       )
 
@@ -114,7 +119,7 @@ combine_fude <- function(
     intersection_fude <- target_fude |>
       sf::st_intersection(
         extracted$rcom |>
-          dplyr::select(-.data$local_government_cd)
+          dplyr::select(!.data$local_government_cd)
       )
 
     fude_original <- target_fude[
@@ -129,19 +134,19 @@ combine_fude <- function(
     )
 
     fude_selected <- fude_filtered |>
-      dplyr::select(-dplyr::one_of(common_cols)) |>
+      dplyr::select(!dplyr::one_of(common_cols)) |>
       sf::st_set_geometry(NULL)
 
     fude_original <- fude_original |>
-      dplyr::left_join(fude_selected, by = "polygon_uuid") %>%
+      dplyr::left_join(fude_selected, by = "polygon_uuid") |>
       dplyr::mutate(
         centroid = sf::st_sfc(
           purrr::map2(
             .data$point_lng,
             .data$point_lat,
-            ~ sf::st_point(c(.x, .y))
+            \(lng, lat) sf::st_point(c(lng, lat))
           ),
-          crs = sf::st_crs(.)
+          crs = sf::st_crs(fude_original)
         )
       )
 
@@ -162,11 +167,6 @@ combine_fude <- function(
       pref = extracted$pref
     )
   }
-
-  message(paste(
-    length(unique(extracted$rcom$key)),
-    "communities have been extracted."
-  ))
 
   return(result)
 }

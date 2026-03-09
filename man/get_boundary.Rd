@@ -11,7 +11,7 @@ get_boundary(
   boundary_type = 1,
   path = NULL,
   suffix = FALSE,
-  to_wgs84 = TRUE,
+  to_wgs84 = FALSE,
   encoding = "CP932",
   quiet = FALSE
 )

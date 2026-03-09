@@ -55,7 +55,7 @@ objects.
 ``` r
 if (FALSE) { # interactive()
 path <- system.file("extdata", "castle.zip", package = "fude")
-d <- read_fude(path, stringsAsFactors = FALSE)
+d <- read_fude(path)
 b <- get_boundary(d)
 db <- combine_fude(d, b, "\u677e\u5c71\u5e02", "\u57ce\u6771", year = 2022)
 }

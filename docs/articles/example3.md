@@ -3,11 +3,14 @@
 ## Using `ggforce` package
 
 ``` r
+library(fude)
 library(dplyr)
 library(sf)
 library(ggplot2)
 library(ggforce)
 
+d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
+b <- get_boundary(d, path = "~", quiet = TRUE)
 db <- combine_fude(d, b, city = "松山市", kcity = "興居島", rcom = "^(?!釣島)")
 bbox <- sf::st_bbox(db$fude)
 
@@ -60,14 +63,12 @@ If you want to be particular about the details of the map, for example,
 execute the following code.
 
 ``` r
-library(sf)
-library(ggplot2)
 library(gghighlight)
 library(ggrepel)
 library(cowplot)
 
 minimap <- ggplot() +
-  geom_sf(data = db$city, aes(fill = fill)) +
+  geom_sf(data = db$city, aes(fill = fill), color = NA) +
   geom_sf_text(data = db$city, aes(label = city_name), family = "Hiragino Sans") +
   gghighlight(fill == 1) +
   geom_sf(data = db$rcom_union, fill = "black", linewidth = 0) +
@@ -93,20 +94,23 @@ mainmap <- ggplot() +
   theme(legend.position = "none")
 
 bbox <- sf::st_bbox(db$city[db$city$fill == 1, ])
+bbox_rcom <- sf::st_bbox(db$rcom)
 
 ggdraw(mainmap) +
   draw_plot(
     {
       minimap +
         geom_rect(
-          aes(xmin = bbox$xmin, xmax = bbox$xmax,
-              ymin = bbox$ymin, ymax = bbox$ymax),
+          aes(
+            xmin = bbox_rcom$xmin, xmax = bbox_rcom$xmax,
+            ymin = bbox_rcom$ymin, ymax = bbox_rcom$ymax
+          ),
           fill = NA,
           colour = "black",
           size = .5
         ) +
         coord_sf(
-          xlim = bbox[c("xmin", "xmax")],
+          xlim = bbox[c("xmin", "xmax")] + c(-.2, .2),
           ylim = bbox[c("ymin", "ymax")],
           expand = FALSE
         ) +

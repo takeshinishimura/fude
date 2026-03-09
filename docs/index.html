@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">fude</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,48 +101,29 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ls_fude.html">ls_fude</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
-<span><span class="co">#&gt;           name issue_year local_government_cd     n pref_name  city_name</span></span>
-<span><span class="co">#&gt; 1  2022_382019       2022              382019 72045    愛媛県     松山市</span></span>
-<span><span class="co">#&gt; 2  2022_382027       2022              382027 43396    愛媛県     今治市</span></span>
-<span><span class="co">#&gt; 3  2022_382035       2022              382035 61683    愛媛県   宇和島市</span></span>
-<span><span class="co">#&gt; 4  2022_382043       2022              382043 37753    愛媛県   八幡浜市</span></span>
-<span><span class="co">#&gt; 5  2022_382051       2022              382051 15734    愛媛県   新居浜市</span></span>
-<span><span class="co">#&gt; 6  2022_382060       2022              382060 63244    愛媛県     西条市</span></span>
-<span><span class="co">#&gt; 7  2022_382078       2022              382078 37570    愛媛県     大洲市</span></span>
-<span><span class="co">#&gt; 8  2022_382108       2022              382108 33302    愛媛県     伊予市</span></span>
-<span><span class="co">#&gt; 9  2022_382132       2022              382132 34781    愛媛県 四国中央市</span></span>
-<span><span class="co">#&gt; 10 2022_382141       2022              382141 73676    愛媛県     西予市</span></span>
-<span><span class="co">#&gt; 11 2022_382159       2022              382159 24235    愛媛県     東温市</span></span>
-<span><span class="co">#&gt; 12 2022_383562       2022              383562  2195    愛媛県     上島町</span></span>
-<span><span class="co">#&gt; 13 2022_383864       2022              383864 22823    愛媛県 久万高原町</span></span>
-<span><span class="co">#&gt; 14 2022_384011       2022              384011  8634    愛媛県     松前町</span></span>
-<span><span class="co">#&gt; 15 2022_384020       2022              384020  7042    愛媛県     砥部町</span></span>
-<span><span class="co">#&gt; 16 2022_384224       2022              384224 27131    愛媛県     内子町</span></span>
-<span><span class="co">#&gt; 17 2022_384429       2022              384429 23429    愛媛県     伊方町</span></span>
-<span><span class="co">#&gt; 18 2022_384844       2022              384844  9089    愛媛県     松野町</span></span>
-<span><span class="co">#&gt; 19 2022_384887       2022              384887 16550    愛媛県     鬼北町</span></span>
-<span><span class="co">#&gt; 20 2022_385069       2022              385069 22931    愛媛県     愛南町</span></span>
-<span><span class="co">#&gt;        city_romaji</span></span>
-<span><span class="co">#&gt; 1    Matsuyama-shi</span></span>
-<span><span class="co">#&gt; 2      Imabari-shi</span></span>
-<span><span class="co">#&gt; 3      Uwajima-shi</span></span>
-<span><span class="co">#&gt; 4   Yawatahama-shi</span></span>
-<span><span class="co">#&gt; 5      Niihama-shi</span></span>
-<span><span class="co">#&gt; 6        Saijo-shi</span></span>
-<span><span class="co">#&gt; 7          Ozu-shi</span></span>
-<span><span class="co">#&gt; 8          Iyo-shi</span></span>
-<span><span class="co">#&gt; 9  Shikokuchuo-shi</span></span>
-<span><span class="co">#&gt; 10       Seiyo-shi</span></span>
-<span><span class="co">#&gt; 11        Toon-shi</span></span>
-<span><span class="co">#&gt; 12    Kamijima-cho</span></span>
-<span><span class="co">#&gt; 13   Kumakogen-cho</span></span>
-<span><span class="co">#&gt; 14    Matsumae-cho</span></span>
-<span><span class="co">#&gt; 15        Tobe-cho</span></span>
-<span><span class="co">#&gt; 16      Uchiko-cho</span></span>
-<span><span class="co">#&gt; 17       Ikata-cho</span></span>
-<span><span class="co">#&gt; 18     Matsuno-cho</span></span>
-<span><span class="co">#&gt; 19      Kihoku-cho</span></span>
-<span><span class="co">#&gt; 20       Ainan-cho</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 20 × 7</span></span>
+<span><span class="co">#&gt;    name     issue_year local_government_cd     n pref_name city_name city_romaji</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;               &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;      </span></span>
+<span><span class="co">#&gt;  1 2022_38…       2022 382019              72045 愛媛県    松山市    Matsuyama-…</span></span>
+<span><span class="co">#&gt;  2 2022_38…       2022 382027              43396 愛媛県    今治市    Imabari-shi</span></span>
+<span><span class="co">#&gt;  3 2022_38…       2022 382035              61683 愛媛県    宇和島市  Uwajima-shi</span></span>
+<span><span class="co">#&gt;  4 2022_38…       2022 382043              37753 愛媛県    八幡浜市  Yawatahama…</span></span>
+<span><span class="co">#&gt;  5 2022_38…       2022 382051              15734 愛媛県    新居浜市  Niihama-shi</span></span>
+<span><span class="co">#&gt;  6 2022_38…       2022 382060              63244 愛媛県    西条市    Saijo-shi  </span></span>
+<span><span class="co">#&gt;  7 2022_38…       2022 382078              37570 愛媛県    大洲市    Ozu-shi    </span></span>
+<span><span class="co">#&gt;  8 2022_38…       2022 382108              33302 愛媛県    伊予市    Iyo-shi    </span></span>
+<span><span class="co">#&gt;  9 2022_38…       2022 382132              34781 愛媛県    四国中央市…… Shikokuchu…</span></span>
+<span><span class="co">#&gt; 10 2022_38…       2022 382141              73676 愛媛県    西予市    Seiyo-shi  </span></span>
+<span><span class="co">#&gt; 11 2022_38…       2022 382159              24235 愛媛県    東温市    Toon-shi   </span></span>
+<span><span class="co">#&gt; 12 2022_38…       2022 383562               2195 愛媛県    上島町    Kamijima-c…</span></span>
+<span><span class="co">#&gt; 13 2022_38…       2022 383864              22823 愛媛県    久万高原町…… Kumakogen-…</span></span>
+<span><span class="co">#&gt; 14 2022_38…       2022 384011               8634 愛媛県    松前町    Matsumae-c…</span></span>
+<span><span class="co">#&gt; 15 2022_38…       2022 384020               7042 愛媛県    砥部町    Tobe-cho   </span></span>
+<span><span class="co">#&gt; 16 2022_38…       2022 384224              27131 愛媛県    内子町    Uchiko-cho </span></span>
+<span><span class="co">#&gt; 17 2022_38…       2022 384429              23429 愛媛県    伊方町    Ikata-cho  </span></span>
+<span><span class="co">#&gt; 18 2022_38…       2022 384844               9089 愛媛県    松野町    Matsuno-cho</span></span>
+<span><span class="co">#&gt; 19 2022_38…       2022 384887              16550 愛媛県    鬼北町    Kihoku-cho </span></span>
+<span><span class="co">#&gt; 20 2022_38…       2022 385069              22931 愛媛県    愛南町    Ainan-cho</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="rename-the-local-government-code">Rename the local government code<a class="anchor" aria-label="anchor" href="#rename-the-local-government-code"></a>
@@ -232,13 +213,15 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">polygon_uuid</span>, <span class="va">kcity_name</span>, <span class="va">rcom_name</span>, <span class="va">rcom_romaji</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                           polygon_uuid kcity_name rcom_name rcom_romaji</span></span>
-<span><span class="co">#&gt; 1 8085bc47-9af5-440f-89e9-f188d3b95746   興居島村        泊      Tomari</span></span>
-<span><span class="co">#&gt; 2 26920da0-b63e-4994-a9eb-175e2982fe21   興居島村      門田      Kadota</span></span>
-<span><span class="co">#&gt; 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0aec   興居島村      由良        Yura</span></span>
-<span><span class="co">#&gt; 4 ea130038-7035-4cf3-b71c-091783090d74   興居島村      船越   Funakoshi</span></span>
-<span><span class="co">#&gt; 5 4aba8229-1b14-4eab-8a91-e10d9e841180   興居島村      船越   Funakoshi</span></span>
-<span><span class="co">#&gt; 6 156a3459-25cb-494c-824f-9ba6b0fb6f23   興居島村      由良        Yura</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   polygon_uuid                         kcity_name rcom_name rcom_romaji</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                                &lt;fct&gt;      &lt;fct&gt;     &lt;fct&gt;      </span></span>
+<span><span class="co">#&gt; 1 8085bc47-9af5-440f-89e9-f188d3b95746 興居島村   泊        Tomari     </span></span>
+<span><span class="co">#&gt; 2 26920da0-b63e-4994-a9eb-175e2982fe21 興居島村   門田      Kadota     </span></span>
+<span><span class="co">#&gt; 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0aec 興居島村   由良      Yura       </span></span>
+<span><span class="co">#&gt; 4 ea130038-7035-4cf3-b71c-091783090d74 興居島村   船越      Funakoshi  </span></span>
+<span><span class="co">#&gt; 5 4aba8229-1b14-4eab-8a91-e10d9e841180 興居島村   船越      Funakoshi  </span></span>
+<span><span class="co">#&gt; 6 156a3459-25cb-494c-824f-9ba6b0fb6f23 興居島村   由良      Yura</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level4">
@@ -264,30 +247,22 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
 <span><span class="co">#&gt; Dimension:     XY</span></span>
 <span><span class="co">#&gt; Bounding box:  xmin: 132.6373 ymin: 33.87055 xmax: 132.6991 ymax: 33.92544</span></span>
-<span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
-<span><span class="co">#&gt; First 10 features:</span></span>
-<span><span class="co">#&gt;                            polygon_uuid land_type issue_year point_lng</span></span>
-<span><span class="co">#&gt; 1  5a72b4ef-b5f4-465e-9948-e93142819676       200       2025  132.6446</span></span>
-<span><span class="co">#&gt; 2  c69d86d5-1fb2-4528-a87b-155d88260964       200       2025  132.6447</span></span>
-<span><span class="co">#&gt; 3  627134ea-919c-4769-bd94-be16cb549c5b       200       2025  132.6445</span></span>
-<span><span class="co">#&gt; 4  f2631019-d16e-42f9-8501-75f26515ca9a       200       2025  132.6441</span></span>
-<span><span class="co">#&gt; 5  8fedb70d-4bb9-4447-879b-a0eeabc22915       200       2025  132.6437</span></span>
-<span><span class="co">#&gt; 6  cd235cdf-da51-4ead-ad50-efc6ea1c84cf       200       2025  132.6434</span></span>
-<span><span class="co">#&gt; 7  5853b7a1-62c3-4973-9e79-cabd3da6cdc7       200       2025  132.6436</span></span>
-<span><span class="co">#&gt; 8  5e090780-6d16-4b9e-aca9-c56229851bfc       200       2025  132.6420</span></span>
-<span><span class="co">#&gt; 9  90de4abf-e972-4031-987f-f3391b04b03c       200       2025  132.6421</span></span>
-<span><span class="co">#&gt; 10 e5ade914-c803-42d1-9fa8-0921b98d69b8       200       2025  132.6423</span></span>
-<span><span class="co">#&gt;    point_lat        key                       geometry</span></span>
-<span><span class="co">#&gt; 1   33.88813 3820102004 MULTIPOLYGON (((132.6446 33...</span></span>
-<span><span class="co">#&gt; 2   33.88768 3820102004 MULTIPOLYGON (((132.6444 33...</span></span>
-<span><span class="co">#&gt; 3   33.88746 3820102004 MULTIPOLYGON (((132.6448 33...</span></span>
-<span><span class="co">#&gt; 4   33.88755 3820102004 MULTIPOLYGON (((132.6442 33...</span></span>
-<span><span class="co">#&gt; 5   33.88740 3820102004 MULTIPOLYGON (((132.6437 33...</span></span>
-<span><span class="co">#&gt; 6   33.88729 3820102004 MULTIPOLYGON (((132.6434 33...</span></span>
-<span><span class="co">#&gt; 7   33.88770 3820102004 MULTIPOLYGON (((132.6435 33...</span></span>
-<span><span class="co">#&gt; 8   33.88782 3820102004 MULTIPOLYGON (((132.6418 33...</span></span>
-<span><span class="co">#&gt; 9   33.88792 3820102004 MULTIPOLYGON (((132.6422 33...</span></span>
-<span><span class="co">#&gt; 10  33.88765 3820102004 MULTIPOLYGON (((132.6422 33...</span></span></code></pre></div>
+<span><span class="co">#&gt; Geodetic CRS:  JGD2000</span></span>
+<span><span class="co">#&gt; # A tibble: 1,691 × 7</span></span>
+<span><span class="co">#&gt;    polygon_uuid                   land_type issue_year point_lng point_lat key  </span></span>
+<span><span class="co">#&gt;  * &lt;chr&gt;                              &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt;  1 5a72b4ef-b5f4-465e-9948-e9314…       200       2025      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  2 c69d86d5-1fb2-4528-a87b-155d8…       200       2025      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  3 627134ea-919c-4769-bd94-be16c…       200       2025      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  4 f2631019-d16e-42f9-8501-75f26…       200       2025      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  5 8fedb70d-4bb9-4447-879b-a0eea…       200       2025      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  6 cd235cdf-da51-4ead-ad50-efc6e…       200       2025      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  7 5853b7a1-62c3-4973-9e79-cabd3…       200       2025      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  8 5e090780-6d16-4b9e-aca9-c5622…       200       2025      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  9 90de4abf-e972-4031-987f-f3391…       200       2025      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt; 10 e5ade914-c803-42d1-9fa8-0921b…       200       2025      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt; # ℹ 1,681 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: geometry &lt;MULTIPOLYGON [°]&gt;</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -305,9 +280,9 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 </h3>
 <p>You can read data from the MAFF database (<a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/" class="external-link">地域の農業を見て・知って・活かすDB</a>).</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">b1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span>, path <span class="op">=</span> <span class="st">"~"</span>, boundary_type <span class="op">=</span> <span class="fl">1</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">b2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span>, path <span class="op">=</span> <span class="st">"~"</span>, boundary_type <span class="op">=</span> <span class="fl">2</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">b3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span>, path <span class="op">=</span> <span class="st">"~"</span>, boundary_type <span class="op">=</span> <span class="fl">3</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">b1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span>, path <span class="op">=</span> <span class="st">"~"</span>, boundary_type <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">b2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span>, path <span class="op">=</span> <span class="st">"~"</span>, boundary_type <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">b3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span>, path <span class="op">=</span> <span class="st">"~"</span>, boundary_type <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">m3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_ikasudb.html">read_ikasudb</a></span><span class="op">(</span><span class="va">b3</span>, <span class="st">"~/IA0001_2023_2020_38.xlsx"</span><span class="op">)</span></span>
 <span></span>
@@ -325,10 +300,11 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span><span class="va">db3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"西予市"</span>, kcity <span class="op">=</span> <span class="st">"三瓶|二木生|三島|双岩"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bind_fude.html">bind_fude</a></span><span class="op">(</span><span class="va">db1</span>, <span class="va">db2</span>, <span class="va">db3</span><span class="op">)</span></span>
+<span><span class="va">db</span><span class="op">$</span><span class="va">fude</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span>, crs <span class="op">=</span> <span class="fl">3857</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/mapview" class="external-link">mapview</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mapview</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/mapview/reference/mapView.html" class="external-link">mapview</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span>, zcol <span class="op">=</span> <span class="st">"rcom_name"</span>, layer.name <span class="op">=</span> <span class="st">"農業集落名"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://r-spatial.github.io/mapview/reference/mapView.html" class="external-link">mapview</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span>, zcol <span class="op">=</span> <span class="st">"rcom_name"</span>, layer.name <span class="op">=</span> <span class="st">"農業集落名"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>

@@ -6,6 +6,7 @@ You can also visualize the relationship between the residences of
 farmers and their farmland.
 
 ``` r
+library(fude)
 library(dplyr)
 library(sf)
 library(osmdata)
@@ -13,6 +14,8 @@ library(ggplot2)
 library(ggmapinset)
 library(ggrepel)
 
+d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
+b <- get_boundary(d, path = "~", quiet = TRUE)
 db <- combine_fude(d, b, city = "松山", rcom = "和気|安城寺|長戸|久万ノ台")
 
 set.seed(200)
@@ -28,8 +31,7 @@ db$fude$farmer = factor(
 )
 
 farm <- db$fude |>
-  group_by(farmer) |>
-  summarise(geometry = sf::st_union(geometry) |> sf::st_centroid()) |>
+  summarise(geometry = sf::st_union(geometry) |> sf::st_centroid(), .by = farmer) |>
   sf::st_set_crs(4326)
 
 farm_radius <- farm |>

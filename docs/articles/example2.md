@@ -6,6 +6,7 @@ This package may be beneficial, especially for R beginners, when simply
 wanting to draw agricultural community boundaries.
 
 ``` r
+library(fude)
 library(dplyr)
 library(ggplot2)
 library(gghighlight)

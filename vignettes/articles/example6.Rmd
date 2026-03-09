@@ -10,26 +10,18 @@ vignette: >
 
 # Testing the functionality
 
-```{r echo = FALSE, warning = FALSE}
-library(fude)
-d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
-b <- get_boundary(d, path = "~", quiet = TRUE)
-```
-
 ## `st_voronoi()`
 
 ```{r voronoi, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+library(fude)
 library(dplyr)
 library(ggplot2)
 library(sf)
 library(patchwork)
 
-db <- combine_fude(
-  d,
-  b,
-  city = "松山市",
-  rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越"
-)
+d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
+b <- get_boundary(d, path = "~", quiet = TRUE)
+db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 db$fude_points <- db$fude |>
   sf::st_drop_geometry() |>

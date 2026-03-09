@@ -10,12 +10,9 @@ vignette: >
 
 # Drawing agricultural community boundaries
 
-```{r echo = FALSE, warning = FALSE}
-library(fude)
-```
-
 This package may be beneficial, especially for R beginners, when simply wanting to draw agricultural community boundaries.
 ```{r houjou, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+library(fude)
 library(dplyr)
 library(ggplot2)
 library(gghighlight)

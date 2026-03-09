@@ -22,9 +22,7 @@ Depends:
 Imports:
     dplyr,
     DT,
-    glue,
     leaflet,
-    magrittr,
     purrr,
     readxl,
     sf,

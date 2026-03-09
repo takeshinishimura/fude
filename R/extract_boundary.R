@@ -94,6 +94,17 @@ extract_boundary <- function(
     ) |>
     add_xy()
 
+  if (isFALSE(layer)) {
+    message(paste(
+      nrow(extracted),
+      "communities have been extracted."
+    ))
+
+    return(extracted)
+  }
+
+  crs <- sf::st_crs(extracted)
+
   extracted_union <- extracted |>
     sf::st_union() |>
     sf::st_sf() |>
@@ -113,7 +124,7 @@ extract_boundary <- function(
     pref_code = fude_to_pref_code(x),
     geometry = geometries
   ) |>
-    sf::st_set_crs(4326) |>
+    sf::st_set_crs(crs) |>
     dplyr::left_join(fude::pref_code_table, by = "pref_code") |>
     add_xy()
 
@@ -134,7 +145,7 @@ extract_boundary <- function(
     local_government_cd = unique_local_government_cd,
     geometry = geometries
   ) |>
-    sf::st_set_crs(4326) |>
+    sf::st_set_crs(crs) |>
     dplyr::left_join(
       fude::city_code_table |>
         dplyr::select(
@@ -183,12 +194,13 @@ extract_boundary <- function(
     key = paste0(unique_kcity_code, "000"),
     geometry = geometries
   ) |>
-    sf::st_set_crs(4326) |>
+    sf::st_set_crs(crs) |>
     dplyr::left_join(
       fude::kcity_code_table |>
         dplyr::select(
           .data$key,
-          .data$pref_name, .data$city_name, .data$kcity_name,
+          .data$pref_name, .data$city_name,
+          .data$kcity_name,
           .data$pref_kana, .data$city_kana,
           .data$pref_romaji, .data$city_romaji,
           .data$local_government_cd
@@ -208,19 +220,20 @@ extract_boundary <- function(
       )
   }
 
-  if (layer) {
-    return(
-      list(
-        rcom = extracted,
-        rcom_union = extracted_union,
-        kcity = kcity_map,
-        city = city_map,
-        pref = pref_map
-      )
+  message(paste(
+    nrow(extracted),
+    "communities have been extracted."
+  ))
+
+  return(
+    list(
+      rcom = extracted,
+      rcom_union = extracted_union,
+      kcity = kcity_map,
+      city = city_map,
+      pref = pref_map
     )
-  } else {
-    return(extracted)
-  }
+  )
 }
 
 find_pref_name <- function(city) {
@@ -252,7 +265,7 @@ find_pref_name <- function(city) {
 
       if (sum(matching_idx) == 1) {
         pref_kanji <- fude::pref_code_table$pref_kanji[matching_idx]
-        city_kanji <- gsub(glue::glue("^{pref_kanji}|\\s|\u3000"), "", city)
+        city_kanji <- gsub(paste0("^", pref_kanji, "|\\s|\u3000"), "", city)
       } else {
         pref_kanji <- NULL
         city_kanji <- city
@@ -325,12 +338,18 @@ find_lg_code <- function(pref, city) {
 }
 
 add_xy <- function(data) {
-  centroid <- sf::st_coordinates(sf::st_centroid(sf::st_geometry(data)))
+  coords <- suppressWarnings(
+    sf::st_coordinates(
+      sf::st_point_on_surface(
+        data
+      )
+    )
+  )
 
   data |>
     dplyr::mutate(
-      x = centroid[, 1],
-      y = centroid[, 2]
+      x = coords[, "X"],
+      y = coords[, "Y"]
     )
 }
 

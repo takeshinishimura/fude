@@ -5,17 +5,15 @@
 ### `st_voronoi()`
 
 ``` r
+library(fude)
 library(dplyr)
 library(ggplot2)
 library(sf)
 library(patchwork)
 
-db <- combine_fude(
-  d,
-  b,
-  city = "松山市",
-  rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越"
-)
+d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
+b <- get_boundary(d, path = "~", quiet = TRUE)
+db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 db$fude_points <- db$fude |>
   sf::st_drop_geometry() |>
@@ -123,7 +121,7 @@ lw <- spdep::nb2listw(nb, style = "W", zero.policy = TRUE)
     ## alternative hypothesis: greater
     ## sample estimates:
     ## Moran I statistic       Expectation          Variance 
-    ##      0.2303867195     -0.0006510417      0.0002350355
+    ##      0.2303838689     -0.0006510417      0.0002350355
 
 ``` r
 localmoran <- spdep::localmoran(voronoi$a, listw = lw)
@@ -208,7 +206,7 @@ lw1 <- spdep::nb2listw(nb1, style = "W")
     ## alternative hypothesis: greater
     ## sample estimates:
     ## Moran I statistic       Expectation          Variance 
-    ##      0.2315772329     -0.0006506181      0.0002868963
+    ##      0.2315732305     -0.0006506181      0.0002868963
 
 ``` r
 lw2 <- spdep::nb2listw(nb2, style = "W")
@@ -225,7 +223,7 @@ lw2 <- spdep::nb2listw(nb2, style = "W")
     ## alternative hypothesis: greater
     ## sample estimates:
     ## Moran I statistic       Expectation          Variance 
-    ##      0.2254977438     -0.0006506181      0.0002855370
+    ##      0.2254942699     -0.0006506181      0.0002855370
 
 ``` r
 localmoran <- spdep::localmoran(db$fude_points$a, listw = lw1)

@@ -68,7 +68,7 @@ read_ikasudb <- function(
     dplyr::left_join(
       dplyr::select(
         x,
-        -c(.data$pref_name, .data$city_name, .data$kcity_name, .data$rcom_name)
+        !(.data$pref_name:.data$rcom_name)
       ),
       by = by
     )

@@ -37,7 +37,7 @@ read_fude <- function(
   year = 2025,
   rcom_year = 2020,
   supplementary = FALSE,
-  to_wgs84 = TRUE,
+  to_wgs84 = FALSE,
   quiet = FALSE
 ) {
   if (is.null(path)) {
@@ -74,11 +74,11 @@ read_fude <- function(
   )
 
   if (length(geojson_files) > 0) {
-    x <- lapply(geojson_files, sf::st_read, quiet = quiet)
+    x <- lapply(geojson_files, sf::read_sf, quiet = quiet)
     names(x) <- gsub("^.*/|\\.json$|\\.geojson$", "", geojson_files)
   } else {
     if (length(flatgeobuf_files) > 0) {
-      x <- lapply(flatgeobuf_files, sf::st_read, quiet = quiet)
+      x <- lapply(flatgeobuf_files, sf::read_sf, quiet = quiet)
       names(x) <- gsub("^.*/|\\.fgb$", "", flatgeobuf_files)
     } else {
       stop("No GeoJSON or FlatGeobuf format file found in ", path, ".")
@@ -107,8 +107,10 @@ read_fude <- function(
       \(d) {
         # pref_code <- regmatches(i, regexpr("(?<=\\d{4}_)\\d{2}", i, perl = TRUE))
         # crs <- get_plane_rectangular_cs(pref_code)
-        # d$area <- sf::st_area(d[[i]] |> sf::st_transform(crs = crs))
-        d$area <- sf::st_area(d)
+        crs <- 2443
+        d$area <- d |>
+          sf::st_transform(crs = crs) |>
+          sf::st_area()
         d$a <- as.numeric(units::set_units(d$area, "a"))
 
         d
@@ -119,6 +121,8 @@ read_fude <- function(
   if (to_wgs84) {
     x <- purrr::map(x, \(d) sf::st_transform(d, crs = 4326))
   }
+  
+  x <- purrr::map(x, \(d) sf::st_transform(d, crs = 4612))
 
   return(x)
 }
@@ -247,11 +251,11 @@ get_plane_rectangular_cs <- function(pref_code) {
 
 validate_fude <- function(data) {
   if (is.data.frame(data)) {
-    if (!"polygon_uuid" %in% names(data)) {
+    if (!("polygon_uuid" %in% names(data))) {
       stop("The data frame must contain a 'polygon_uuid' column.")
     }
   } else if (is.list(data)) {
-    if (!"polygon_uuid" %in% names(data[[1]])) {
+    if (!("polygon_uuid" %in% names(data[[1]]))) {
       stop(
         "The first data frame in the list must contain a 'polygon_uuid' column."
       )

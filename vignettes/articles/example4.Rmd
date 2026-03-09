@@ -12,14 +12,12 @@ vignette: >
 
 Read data from the MAFF database [地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/){target="_blank"}.
 
-```{r echo = FALSE, warning = FALSE}
+```{r ehime1, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
 library(fude)
-d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
-```
-
-```{r ehime1, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
 library(sf)
 library(ggplot2)
+
+d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
 
 b1 <- get_boundary(d, path = "~", boundary_type = 1, quiet = TRUE)
 b2 <- get_boundary(d, path = "~", boundary_type = 2, quiet = TRUE)
@@ -41,7 +39,7 @@ ggplot() +
 
 **出典**: `r cite_fude(b1)$ja`
 
-```{r ehime2, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+```{r ehime2, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
 ggplot() +
   geom_sf(data = m2, aes(fill = 地域類型1次分類), alpha = .8) +
   theme_void() +
@@ -50,7 +48,7 @@ ggplot() +
 
 **出典**: `r cite_fude(b2)$ja`
 
-```{r ehime3, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+```{r ehime3, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
 ggplot() +
   geom_sf(data = m3, aes(fill = 地域類型1次分類), alpha = .8) +
   theme_void() +
@@ -59,13 +57,13 @@ ggplot() +
 
 **出典**: `r cite_fude(b3)$ja`
 
-```{r ehime4, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+```{r ehime4, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
 m1 <- read_ikasudb(b1, "~/SA1066_2020_2020_38.xlsx")
 m2 <- read_ikasudb(b2, "~/SA1066_2020_2020_38.xlsx")
 m3 <- read_ikasudb(b3, "~/SA1066_2020_2020_38.xlsx")
 
 ggplot() +
-  geom_sf(data = m1, aes(fill = `類別作付（栽培）面積_果樹類`)) +
+  geom_sf(data = m1, aes(fill = `類別作付（栽培）面積_果樹類`), color = "grey60") +
   scale_fill_gradient(
     low  = "white",
     high = "darkorange",
@@ -77,9 +75,9 @@ ggplot() +
 
 **出典**: `r cite_fude(b1)$ja`
 
-```{r ehime5, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+```{r ehime5, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
 ggplot() +
-  geom_sf(data = m2, aes(fill = `類別作付（栽培）面積_果樹類`)) +
+  geom_sf(data = m2, aes(fill = `類別作付（栽培）面積_果樹類`), color = "grey60") +
   scale_fill_gradient(
     low  = "white",
     high = "darkorange",
@@ -91,9 +89,9 @@ ggplot() +
 
 **出典**: `r cite_fude(b2)$ja`
 
-```{r ehime6, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 12, fig.height = 8}
+```{r ehime6, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
 ggplot() +
-  geom_sf(data = m3, aes(fill = `類別作付（栽培）面積_果樹類`)) +
+  geom_sf(data = m3, aes(fill = `類別作付（栽培）面積_果樹類`), color = "grey60") +
   scale_fill_gradient(
     low  = "white",
     high = "darkorange",
@@ -104,3 +102,36 @@ ggplot() +
 ```
 
 **出典**: `r cite_fude(b3)$ja`
+
+```{r toon, eval = FALSE}
+m1 <- b1 |>
+  read_ikasudb("~/GC0001_2019_2020_38.xlsx")
+
+library(mapview)
+
+mapview(m1, zcol = "組織数")
+
+t1 <- extract_boundary(m1, city = "東温")
+
+mapview(t1, zcol = "組織数")
+```
+
+```{r all_cols, dpi = 150, fig.width = 6, fig.height = 4, fig.show = "asis"}
+m1 <- b1 |>
+  read_ikasudb("~/GC0001_2019_2020_38.xlsx")
+
+for (i in setdiff(names(m1), names(b1[[1]]))) {
+  p <- ggplot() +
+    geom_sf(data = m1, aes(fill = .data[[i]]), color = "grey60") +
+    scale_fill_gradient(
+      low  = "white",
+      high = "darkblue",
+      na.value = "grey90"
+    ) +
+    theme_void() +
+    theme(text = element_text(family = "Hiragino Sans"))
+
+  print(p)
+  # ggsave(paste0(i, ".png"), p)
+}
+```

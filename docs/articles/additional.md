@@ -2,6 +2,14 @@
 
 ## Structure of combined Fude Polygon data with agricultural community boundary data
 
+``` r
+library(fude)
+
+d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
+b <- get_boundary(d, path = "~", quiet = TRUE)
+db <- combine_fude(d, b, city = "松山市", kcity = "浅海")
+```
+
 There are 7 types of objects obtained by
 [`combine_fude()`](https://takeshinishimura.github.io/fude/reference/combine_fude.md),
 as follows:
@@ -24,7 +32,7 @@ tree <- b[[1]] |>
   mutate(pathString = paste(pref_name, city_name, kcity_name, rcom_name, sep = "/")) |>
   data.tree::as.Node()
 
-tree$Do(\(node) {node$n <- if (node$isLeaf) NA_integer_ else node$count})
+tree$Do(\(x) {x$n <- if (x$isLeaf) NA_integer_ else x$count})
 data.tree::SetFormat(tree, "n", \(x) if (is.na(x)) "-" else x)
 print(tree, "n", limit = 30)
 ```

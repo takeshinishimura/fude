@@ -17,7 +17,7 @@ read_fude(
   year = 2025,
   rcom_year = 2020,
   supplementary = FALSE,
-  to_wgs84 = TRUE,
+  to_wgs84 = FALSE,
   quiet = FALSE
 )
 ```
@@ -64,7 +64,7 @@ objects.
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path)
 #> Reading layer `2021_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpbJpaQf/filecdccbc4cf9b/castle/2021_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpisqW1g/file1443744e284ea/castle/2021_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
@@ -72,7 +72,7 @@ d <- read_fude(path)
 #> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575
 #> Geodetic CRS:  WGS 84
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpbJpaQf/filecdccbc4cf9b/castle/2022_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpisqW1g/file1443744e284ea/castle/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
@@ -80,7 +80,7 @@ d <- read_fude(path)
 #> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575
 #> Geodetic CRS:  WGS 84
 #> Reading layer `2022_382078' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpbJpaQf/filecdccbc4cf9b/castle/2022_382078.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpisqW1g/file1443744e284ea/castle/2022_382078.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
