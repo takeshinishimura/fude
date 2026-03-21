@@ -97,10 +97,12 @@ find_key <- function(
       if (!has_city) {
         TRUE
       } else {
-        ((.data$local_government_cd %in% city_code) |
+        (
+          (.data$local_government_cd %in% city_code) |
           (strip_jp_suffix(.data$city_name) %in% city_jp) |
           (strip_kana_suffix(.data$city_kana) %in% city_kana) |
-          (remove_romaji_suffix(.data$city_romaji)) %in% city_romaji)
+          (remove_romaji_suffix(.data$city_romaji)) %in% city_romaji
+        )
       },
       if (is.null(kcity) || length(kcity) == 0 || !nzchar(kcity)) {
         TRUE

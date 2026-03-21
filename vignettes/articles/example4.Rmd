@@ -12,24 +12,16 @@ vignette: >
 
 Read data from the MAFF database [地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/){target="_blank"}.
 
-```{r ehime1, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
+```{r ikasu1, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
 library(fude)
-library(sf)
 library(ggplot2)
 
 d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
 
 b1 <- get_boundary(d, path = "~", boundary_type = 1, quiet = TRUE)
-b2 <- get_boundary(d, path = "~", boundary_type = 2, quiet = TRUE)
-b3 <- get_boundary(d, path = "~", boundary_type = 3, quiet = TRUE)
-
 m1 <- read_ikasudb(b1, "~/IA0001_2023_2020_38.xlsx")
-m2 <- read_ikasudb(b2, "~/IA0001_2023_2020_38.xlsx")
-m3 <- read_ikasudb(b3, "~/IA0001_2023_2020_38.xlsx")
 
-m1$地域類型1次分類 <- factor(m1$地域類型1次分類, levels = sort(unique(na.omit(m1$地域類型1次分類))))
-m2$地域類型1次分類 <- factor(m2$地域類型1次分類, levels = sort(unique(na.omit(m2$地域類型1次分類))))
-m3$地域類型1次分類 <- factor(m3$地域類型1次分類, levels = sort(unique(na.omit(m3$地域類型1次分類))))
+m1$地域類型1次分類 <- factor(m1$地域類型1次分類, labels = c("都市的地域", "平地農業地域", "中間農業地域", "山間農業地域"))
 
 ggplot() +
   geom_sf(data = m1, aes(fill = 地域類型1次分類), alpha = .8) +
@@ -37,30 +29,40 @@ ggplot() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
 
-**出典**: `r cite_fude(b1)$ja`
+**資料**：`r cite_fude(m1)$ja`
 
-```{r ehime2, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
+```{r ikasu2, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
+b2 <- get_boundary(d, path = "~", boundary_type = 2, quiet = TRUE)
+m2 <- read_ikasudb(b2, "~/IA0001_2023_2020_38.xlsx")
+
+m2$地域類型1次分類 <- factor(m2$地域類型1次分類, labels = c("都市的地域", "平地農業地域", "中間農業地域", "山間農業地域"))
+
 ggplot() +
   geom_sf(data = m2, aes(fill = 地域類型1次分類), alpha = .8) +
   theme_void() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
 
-**出典**: `r cite_fude(b2)$ja`
+**資料**：`r cite_fude(m2)$ja`
 
-```{r ehime3, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
+```{r ikasu3, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
+b3 <- get_boundary(d, path = "~", boundary_type = 3, quiet = TRUE)
+m3 <- read_ikasudb(b3, "~/IA0001_2023_2020_38.xlsx")
+
+m3$地域類型1次分類 <- factor(m3$地域類型1次分類, levels = 1:4, labels = c("都市的地域", "平地農業地域", "中間農業地域", "山間農業地域"))
+
 ggplot() +
   geom_sf(data = m3, aes(fill = 地域類型1次分類), alpha = .8) +
   theme_void() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
 
-**出典**: `r cite_fude(b3)$ja`
+**資料**：`r cite_fude(m3)$ja`
 
-```{r ehime4, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
+```{r kajumenseki1, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
+library(ggtext)
+
 m1 <- read_ikasudb(b1, "~/SA1066_2020_2020_38.xlsx")
-m2 <- read_ikasudb(b2, "~/SA1066_2020_2020_38.xlsx")
-m3 <- read_ikasudb(b3, "~/SA1066_2020_2020_38.xlsx")
 
 ggplot() +
   geom_sf(data = m1, aes(fill = `類別作付（栽培）面積_果樹類`), color = "grey60") +
@@ -69,13 +71,17 @@ ggplot() +
     high = "darkorange",
     na.value = "grey90"
   ) +
+  labs(caption = paste0("**資料**：", cite_fude(m1)$ja)) +
   theme_void() +
-  theme(text = element_text(family = "Hiragino Sans"))
+  theme(
+    plot.caption = element_markdown(size = 7, hjust = 0),
+    text = element_text(family = "Hiragino Sans")
+  )
 ```
 
-**出典**: `r cite_fude(b1)$ja`
+```{r kajumenseki2, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
+m2 <- read_ikasudb(b2, "~/SA1066_2020_2020_38.xlsx")
 
-```{r ehime5, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
 ggplot() +
   geom_sf(data = m2, aes(fill = `類別作付（栽培）面積_果樹類`), color = "grey60") +
   scale_fill_gradient(
@@ -83,13 +89,17 @@ ggplot() +
     high = "darkorange",
     na.value = "grey90"
   ) +
+  labs(caption = paste0("**資料**：", cite_fude(m2)$ja)) +
   theme_void() +
-  theme(text = element_text(family = "Hiragino Sans"))
+  theme(
+    plot.caption = element_markdown(size = 7, hjust = 0),
+    text = element_text(family = "Hiragino Sans")
+  )
 ```
 
-**出典**: `r cite_fude(b2)$ja`
+```{r kajumenseki3, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
+m3 <- read_ikasudb(b3, "~/SA1066_2020_2020_38.xlsx")
 
-```{r ehime6, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
 ggplot() +
   geom_sf(data = m3, aes(fill = `類別作付（栽培）面積_果樹類`), color = "grey60") +
   scale_fill_gradient(
@@ -97,11 +107,13 @@ ggplot() +
     high = "darkorange",
     na.value = "grey90"
   ) +
+  labs(caption = paste0("**資料**：", cite_fude(m3)$ja)) +
   theme_void() +
-  theme(text = element_text(family = "Hiragino Sans"))
+  theme(
+    plot.caption = element_markdown(size = 7, hjust = 0),
+    text = element_text(family = "Hiragino Sans")
+  )
 ```
-
-**出典**: `r cite_fude(b3)$ja`
 
 ```{r toon, eval = FALSE}
 m1 <- b1 |>
@@ -128,8 +140,12 @@ for (i in setdiff(names(m1), names(b1[[1]]))) {
       high = "darkblue",
       na.value = "grey90"
     ) +
+    labs(caption = paste0("**資料**：", cite_fude(m1)$ja)) +
     theme_void() +
-    theme(text = element_text(family = "Hiragino Sans"))
+    theme(
+      plot.caption = element_markdown(size = 7, hjust = 0),
+      text = element_text(family = "Hiragino Sans")
+    )
 
   print(p)
   # ggsave(paste0(i, ".png"), p)

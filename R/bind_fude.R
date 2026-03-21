@@ -23,28 +23,29 @@
 bind_fude <- function(...) {
   databases <- list(...)
 
-  all_names <- purrr::reduce(
-    databases,
-    \(db1, db2) {
-      union(names(db1), names(db2))
-    }
+  all_names <- unique(
+    unlist(
+      lapply(databases, names)
+    )
   )
 
-  x <- purrr::map(
+  x <- lapply(
     all_names,
-    \(current_name) {
-      relevant_dbs <- purrr::map(
+    \(x) {
+      relevant_dbs <- lapply(
         databases,
         \(d) {
-          if (current_name %in% names(d)) {
-            return(d[[current_name]])
+          if (x %in% names(d)) {
+            return(d[[x]])
           } else {
             return(NULL)
           }
         }
       )
 
-      tmp <- do.call(dplyr::bind_rows, purrr::discard(relevant_dbs, is.null))
+      tmp <- dplyr::bind_rows(
+        relevant_dbs[!sapply(relevant_dbs, is.null)]
+      )
 
       if (is.null(tmp) || nrow(tmp) == 0) {
         return(NULL)

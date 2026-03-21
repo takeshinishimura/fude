@@ -42,12 +42,9 @@ combine_fude <- function(
   year = NULL
 ) {
   validate_fude(data)
-  data <- add_local_government_cd(data)
 
   x <- data |>
     dplyr::bind_rows()
-
-  crs <- sf::st_crs(x)
 
   if (sf::st_crs(x)$epsg != sf::st_crs(dplyr::bind_rows(boundary))$epsg) {
     stop("crs are inconsistent.")
@@ -61,6 +58,8 @@ combine_fude <- function(
     layer = TRUE
   )
 
+  crs <- sf::st_crs(extracted$rcom)
+
   location_info <- find_pref_name(city)
   lg_code <- find_lg_code(location_info$pref, location_info$city)
 
@@ -68,18 +67,18 @@ combine_fude <- function(
     target_key <- unique(extracted$rcom$key)
 
     join_data <- extracted$rcom |>
-      sf::st_set_geometry(NULL) |>
-      dplyr::select(!.data$local_government_cd)
+      sf::st_set_geometry(NULL)
 
     fude_original <- x |>
       dplyr::filter(.data$key %in% target_key) |>
       dplyr::left_join(join_data, by = "key") |>
       dplyr::mutate(
         centroid = sf::st_sfc(
-          purrr::map2(
+          mapply(
+            \(lng, lat) sf::st_point(c(lng, lat)),
             .data$point_lng,
             .data$point_lat,
-            \(lng, lat) sf::st_point(c(lng, lat))
+            SIMPLIFY = FALSE
           ),
           crs = crs
         )
@@ -95,7 +94,7 @@ combine_fude <- function(
     )
   } else {
     local_government_cd <- unlist(
-      lapply(names(data), function(i) unique(data[[i]]$local_government_cd))
+      lapply(names(data), \(i) unique(data[[i]]$local_government_cd))
     )
 
     data_no <- which(local_government_cd %in% lg_code)
@@ -118,8 +117,7 @@ combine_fude <- function(
     target_fude <- data[[data_no]]
     intersection_fude <- target_fude |>
       sf::st_intersection(
-        extracted$rcom |>
-          dplyr::select(!.data$local_government_cd)
+        extracted$rcom
       )
 
     fude_original <- target_fude[
@@ -141,10 +139,11 @@ combine_fude <- function(
       dplyr::left_join(fude_selected, by = "polygon_uuid") |>
       dplyr::mutate(
         centroid = sf::st_sfc(
-          purrr::map2(
+          mapply(
+            \(lng, lat) sf::st_point(c(lng, lat)),
             .data$point_lng,
             .data$point_lat,
-            \(lng, lat) sf::st_point(c(lng, lat))
+            SIMPLIFY = FALSE
           ),
           crs = sf::st_crs(fude_original)
         )

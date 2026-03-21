@@ -13,9 +13,17 @@
 #' @export
 cite_fude <- function(data) {
   if (is.data.frame(data)) {
-    issue_year <- unique(data$issue_year)
-    boundary_data_year <- unique(data$boundary_data_year)
-  } else if (is.list(data)) {
+    issue_year <- if ("polygon_uuid" %in% names(data)) {
+      unique(data$issue_year)
+    } else {
+      NULL
+    }
+    boundary_data_year <- if ("boundary_data_year" %in% names(data)) {
+      unique(data$boundary_data_year)
+    } else {
+      NULL
+    }
+    } else if (is.list(data)) {
     issue_year <- unique(
       unlist(
         sapply(data, `[[`, "issue_year")

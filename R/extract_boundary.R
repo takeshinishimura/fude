@@ -35,7 +35,7 @@ extract_boundary <- function(
   if (city != "") {
     city_list <- strsplit(city, "\\|")[[1]]
 
-    target_city_list <- purrr::map(
+    target_city_list <- lapply(
       city_list,
       \(d) {
         location_info <- find_pref_name(d)
@@ -55,10 +55,10 @@ extract_boundary <- function(
       }
     )
 
-    target_city <- purrr::map_chr(target_city_list, "target_city")
-    pref_code <- purrr::map_chr(target_city_list, "pref_code")[1]
+    target_city <- vapply(target_city_list, `[[`, character(1), "target_city")
+    target_pref_code <- vapply(target_city_list, `[[`, character(1), "pref_code")[1]
   } else {
-    pref_code <- boundary |>
+    target_pref_code <- boundary |>
       dplyr::bind_rows() |>
       dplyr::pull(.data$pref) |>
       unique()
@@ -72,9 +72,23 @@ extract_boundary <- function(
   )
 
   x <- boundary |>
-    dplyr::bind_rows() |>
-    dplyr::filter(.data$pref %in% pref_code) |>
-    add_local_government_cd_to_df() |>
+    dplyr::bind_rows()
+
+  if (!any(target_key %in% x$key)) {
+    target_key <- unique(sub("\\d{3}$", "000", target_key))# boundary_type == 2
+
+    if (!any(target_key %in% x$key)) {
+      target_key <- unique(sub("\\d{5}$", "00000", target_key))# boundary_type == 3
+
+      if (!any(target_key %in% x$key)) {
+        stop("Can't find the target boundary.")
+      }
+    }
+  }
+
+  x <- x |>
+    dplyr::filter(.data$pref %in% target_pref_code) |>
+  # add_local_government_cd_to_df() |>
     sf::st_make_valid()
 
   extracted <- x |>
@@ -95,10 +109,11 @@ extract_boundary <- function(
     add_xy()
 
   if (isFALSE(layer)) {
-    message(paste(
-      nrow(extracted),
-      "communities have been extracted."
-    ))
+    message(
+      nrow(extracted), " ",
+      if (!any(extracted$rcom == "000")) "communities" else "municipalities",
+      " have been extracted."
+    )
 
     return(extracted)
   }
@@ -107,13 +122,9 @@ extract_boundary <- function(
 
   extracted_union <- extracted |>
     sf::st_union() |>
-    sf::st_sf() |>
-    dplyr::mutate(
-      local_government_cd = paste0(
-        unique(extracted$local_government_cd),
-        collapse = "/"
-      )
-    ) |>
+    sf::st_sf(geometry = _) |>
+    dplyr::as_tibble() |>
+    sf::st_as_sf() |>
     add_xy()
 
   geometries <- x |>
@@ -128,21 +139,21 @@ extract_boundary <- function(
     dplyr::left_join(fude::pref_code_table, by = "pref_code") |>
     add_xy()
 
-  unique_local_government_cd <- unique(x$local_government_cd)
+  all_city <- unique(x$city)
 
-  geometries <- purrr::map(
-    unique_local_government_cd,
+  geometries <- lapply(
+    all_city,
     \(d) {
       sf::st_geometry(
         x |>
-          dplyr::filter(.data$local_government_cd == d) |>
+          dplyr::filter(.data$city == d) |>
           sf::st_union()
       )[[1]]
     }
   )
 
   city_map <- sf::st_sf(
-    local_government_cd = unique_local_government_cd,
+    local_government_cd = unique(modulus11(x$key)),
     geometry = geometries
   ) |>
     sf::st_set_crs(crs) |>
@@ -157,18 +168,19 @@ extract_boundary <- function(
         ),
       by = "local_government_cd"
     ) |>
-    add_xy()
-
-  if (city != "") {
-    city_map <- city_map |>
-      dplyr::mutate(
-        fill = factor(dplyr::if_else(
-          .data$city_name %in% target_city,
+    dplyr::select(-.data$local_government_cd) |>
+    dplyr::mutate(
+      fill = factor(
+        dplyr::if_else(
+          .data$city_name %in% extracted$city_name,
           1,
           0
-        ))
+        )
       )
-  }
+    ) |>
+    dplyr::as_tibble() |>
+    sf::st_as_sf() |>
+    add_xy()
 
   x_kcity_code <- x |>
     dplyr::mutate(
@@ -179,7 +191,7 @@ extract_boundary <- function(
       )
     )
   unique_kcity_code <- unique(x_kcity_code$kcity_code)
-  geometries <- purrr::map(
+  geometries <- lapply(
     unique_kcity_code,
     \(d) {
       sf::st_geometry(
@@ -202,28 +214,28 @@ extract_boundary <- function(
           .data$pref_name, .data$city_name,
           .data$kcity_name,
           .data$pref_kana, .data$city_kana,
-          .data$pref_romaji, .data$city_romaji,
-          .data$local_government_cd
+          .data$pref_romaji, .data$city_romaji
         ),
       by = "key"
     ) |>
-    add_xy()
-
-  if (city != "") {
-    kcity_map <- kcity_map |>
-      dplyr::mutate(
-        fill = factor(dplyr::if_else(
+    dplyr::mutate(
+      fill = factor(
+        dplyr::if_else(
           .data$kcity_name %in% extracted$kcity_name,
           1,
           0
-        ))
+        )
       )
-  }
+    ) |>
+    dplyr::as_tibble() |>
+    sf::st_as_sf() |>
+    add_xy()
 
-  message(paste(
-    nrow(extracted),
-    "communities have been extracted."
-  ))
+  message(
+    nrow(extracted), " ",
+    if (!any(extracted$rcom == "000")) "communities" else "municipalities",
+    " have been extracted."
+  )
 
   return(
     list(

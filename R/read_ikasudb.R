@@ -30,7 +30,7 @@ read_ikasudb <- function(
   )
   common_cols_lower <- tolower(common_cols_upper)
 
-  x <- readxl::read_excel(
+  new_df <- readxl::read_excel(
     path,
     na = na
   ) |>
@@ -53,24 +53,13 @@ read_ikasudb <- function(
       }
     ))
 
-  b <- dplyr::bind_rows(boundary)
-  nb <- names(b)
-
-  by <- if ("rcom" %in% nb) {
-    c("key", "pref", "city", "kcity", "rcom")
-  } else if ("kcity" %in% nb) {
-    c("key", "pref", "city", "kcity")
-  } else {
-    c("key", "pref", "city")
-  }
-
-  x <- b |>
+  x <- dplyr::bind_rows(boundary) |>
     dplyr::left_join(
       dplyr::select(
-        x,
+        new_df,
         !(.data$pref_name:.data$rcom_name)
       ),
-      by = by
+      by = c("key", "pref", "city", "kcity", "rcom")
     )
 
   return(x)

@@ -86,10 +86,9 @@ read_fude <- function(
   }
 
   validate_fude(x)
-  # x <- add_local_government_cd(x)
 
   if (supplementary) {
-    x <- purrr::map(
+    x <- lapply(
       x,
       \(d) {
         d$land_type <- factor(d$land_type, levels = c(100, 200))
@@ -101,8 +100,7 @@ read_fude <- function(
         d
       }
     )
-
-    x <- purrr::map(
+    x <- lapply(
       x,
       \(d) {
         # pref_code <- regmatches(i, regexpr("(?<=\\d{4}_)\\d{2}", i, perl = TRUE))
@@ -119,10 +117,10 @@ read_fude <- function(
   }
 
   if (to_wgs84) {
-    x <- purrr::map(x, \(d) sf::st_transform(d, crs = 4326))
+    x <- lapply(x, sf::st_transform, crs = 4326)
   }
   
-  x <- purrr::map(x, \(d) sf::st_transform(d, crs = 4612))
+  x <- lapply(x, sf::st_transform, crs = 4612)
 
   return(x)
 }
