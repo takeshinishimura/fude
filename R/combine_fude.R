@@ -1,30 +1,31 @@
-#' Combine the Fude Polygon data with the agricultural community boundary data
+#' Combine Fude Polygon data with agricultural community boundary data
 #'
 #' @description
-#' `combine_fude()` uses the agricultural community boundary data to reduce the
-#' Fude Polygon data to the community units.
+#' `combine_fude()` combines Fude Polygon data with agricultural community
+#' boundary data and returns the polygons associated with the specified
+#' municipality, former municipality, and/or agricultural community.
 #'
 #' @param data
-#'   Fude Polygon data as returned by [read_fude()].
+#'   A Fude Polygon data object returned by [read_fude()].
 #' @param boundary
-#'   Agricultural community boundary data as returned by [get_boundary()].
+#'   Agricultural community boundary data returned by [get_boundary()].
 #' @param city
-#'   A character vector of local government names or 6-digit local government
-#'   codes to extract.
+#'   A character vector of municipality names or local government codes used to
+#'   identify target municipalities. If `NULL`, all municipalities are kept.
 #' @param kcity
-#'   A regular expression. One or more former municipality names (in Japanese)
-#'   to extract.
+#'   A character vector of regular expression patterns used to match former
+#'   municipality names in Japanese.
 #' @param rcom
-#'   A regular expression. One or more agricultural community names (in
-#'   Japanese) to extract.
+#'   A character vector of regular expression patterns used to match agricultural
+#'   community names in Japanese.
 #' @param year
-#'   Year in the column name of the `data`. If there is more than one applicable
-#'   local government code, it is required.
+#'   Numeric scalar or `NULL`. When multiple Fude Polygon datasets match the
+#'   specified municipality, `year` is used to choose the target dataset.
 #'
 #' @returns
-#'   A list of [sf::sf()] objects.
+#'   A named list of [sf::sf()] objects.
 #'
-#' @seealso [read_fude()].
+#' @seealso [read_fude()], [get_boundary()]
 #'
 #' @examplesIf interactive()
 #' path <- system.file("extdata", "castle.zip", package = "fude")
@@ -43,11 +44,18 @@ combine_fude <- function(
 ) {
   validate_fude(data)
 
-  x <- data |>
-    dplyr::bind_rows()
+  x <- if (is.data.frame(data)) {
+    data
+  } else if (is.list(data)) {
+    dplyr::bind_rows(data)
+  } else {
+    stop("`data` must be a data.frame or a list.")
+  }
 
-  if (sf::st_crs(x)$epsg != sf::st_crs(dplyr::bind_rows(boundary))$epsg) {
-    stop("crs are inconsistent.")
+  boundary_all <- dplyr::bind_rows(boundary)
+
+  if (sf::st_crs(x)$epsg != sf::st_crs(boundary_all)$epsg) {
+    stop("CRS of `data` and `boundary` are inconsistent.")
   }
 
   extracted <- extract_boundary(
@@ -58,7 +66,7 @@ combine_fude <- function(
     layer = TRUE
   )
 
-  crs <- sf::st_crs(extracted$rcom)
+  boundary_crs <- sf::st_crs(extracted$rcom)
 
   location_info <- find_pref_name(city)
   lg_code <- find_lg_code(location_info$pref, location_info$city)
@@ -80,7 +88,7 @@ combine_fude <- function(
             .data$point_lat,
             SIMPLIFY = FALSE
           ),
-          crs = crs
+          crs = boundary_crs
         )
       )
 
@@ -94,35 +102,37 @@ combine_fude <- function(
     )
   } else {
     local_government_cd <- unlist(
-      lapply(names(data), \(i) unique(data[[i]]$local_government_cd))
+      lapply(data, \(i) unique(i$local_government_cd)),
+      use.names = FALSE
     )
 
     data_no <- which(local_government_cd %in% lg_code)
+
     if (length(data_no) != 1) {
       if (is.null(year)) {
         stop(
-          "Specify the year since there are multiple applicable local government codes."
+          "Specify `year` because multiple applicable local government codes were found."
         )
-      } else {
-        data_no <- data_no[which(
-          as.character(year) == sub("(_.*)", "", names(data)[data_no])
-        )]
+      }
 
-        if (length(data_no) == 0) {
-          stop("Specify the correct year.")
-        }
+      target_names <- names(data)[data_no]
+      matched <- sub("(_.*)", "", target_names) == as.character(year)
+      data_no <- data_no[matched]
+
+      if (length(data_no) != 1) {
+        stop("Specify the correct `year`.")
       }
     }
 
     target_fude <- data[[data_no]]
+
     intersection_fude <- target_fude |>
-      sf::st_intersection(
-        extracted$rcom
-      )
+      sf::st_intersection(extracted$rcom)
 
     fude_original <- target_fude[
       target_fude$polygon_uuid %in% unique(intersection_fude$polygon_uuid),
     ]
+
     fude_filtered <- intersection_fude |>
       dplyr::filter(!duplicated(.data$polygon_uuid))
 
@@ -132,7 +142,7 @@ combine_fude <- function(
     )
 
     fude_selected <- fude_filtered |>
-      dplyr::select(!dplyr::one_of(common_cols)) |>
+      dplyr::select(-dplyr::any_of(common_cols)) |>
       sf::st_set_geometry(NULL)
 
     fude_original <- fude_original |>

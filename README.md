@@ -69,7 +69,7 @@ d <- read_fude("~/2022_38.zip")
 d2 <- read_fude(pref = "愛媛")
 ```
 
-### Inspect the structure of Fude Polygon data
+### List the contents of Fude Polygon data
 
 ``` r
 ls_fude(d)
@@ -149,7 +149,11 @@ boundaries to create enriched spatial analyses or maps.
 #### GeoJSON data characteristics (obtain data \#1)
 
 ``` r
-db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+library(sf)
+
+db <- d |>
+  lapply(st_transform, crs = 4612) |>
+  combine_fude(b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 library(ggplot2)
 
@@ -198,7 +202,6 @@ following command.
 
 ``` r
 library(dplyr)
-library(sf)
 
 db$fude |>
   filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
@@ -275,7 +278,7 @@ You can explore Fude Polygon data interactively.
 library(shiny)
 
 s <- shiny_fude(db, rcom = TRUE)
-# shiny::shinyApp(ui = s$ui, server = s$server)
+# shinyApp(ui = s$ui, server = s$server)
 ```
 
 ### Read data from the MAFF database

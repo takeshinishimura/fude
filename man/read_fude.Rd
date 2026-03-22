@@ -2,43 +2,51 @@
 % Please edit documentation in R/read_fude.R
 \name{read_fude}
 \alias{read_fude}
-\title{Read a Fude Polygon ZIP file}
+\title{Read Fude Polygon data from a ZIP file}
 \usage{
 read_fude(
   path = NULL,
   pref = NULL,
   year = 2025,
   rcom_year = 2020,
+  crs = NULL,
   supplementary = FALSE,
-  to_wgs84 = FALSE,
   quiet = FALSE
 )
 }
 \arguments{
-\item{path}{Path to a ZIP file containing one or more supported spatial files
-(\code{.geojson}, \code{.json}, and \code{.fgb}).}
+\item{path}{Path to a ZIP file containing one or more supported spatial files. If \code{NULL},
+the file is downloaded automatically from the MAFF website using \code{pref},
+\code{year}, and \code{rcom_year}.}
 
-\item{pref}{Prefecture name or a two-digit prefecture code.}
+\item{pref}{Prefecture name or prefecture code used when downloading data. Ignored if
+\code{path} is supplied.}
 
-\item{year}{Year when the Fude Polygon data were created.}
+\item{year}{The Fude Polygon data year used in the download file name.}
 
-\item{rcom_year}{Year of the agricultural community boundary data.}
+\item{rcom_year}{The agricultural community boundary year used in the download file name.}
 
-\item{supplementary}{Logical. If \code{TRUE}, add supplementary information for each polygon.}
+\item{crs}{Coordinate reference system to transform the output layers to. If \code{NULL}, the
+original CRS is kept.}
 
-\item{to_wgs84}{Logical. If \code{TRUE}, transform coordinates to WGS 84 (EPSG:4326).}
+\item{supplementary}{Logical. If \code{TRUE}, add supplementary columns such as land-use labels and
+polygon area.}
 
-\item{quiet}{Logical. If \code{TRUE}, suppress messages about reading progress.}
+\item{quiet}{Logical. If \code{TRUE}, suppress messages during download and reading.}
 }
 \value{
-A list of \code{\link[sf:sf]{sf::sf()}} objects.
+A named list of \code{\link[sf:sf]{sf::sf()}} objects.
 }
 \description{
 \code{read_fude()} reads MAFF Fude Polygon data from a ZIP file and returns the
-layers as a list of \code{\link[sf:sf]{sf::sf()}} objects. The ZIP may contain one or more spatial
-data files such as \strong{GeoJSON} (\code{.json} or \code{.geojson}) and \strong{FlatGeobuf}
-(\code{.fgb}). The function also works with ZIP files you created, as long as
-the original filenames are unchanged.
+layers as a named list of \code{\link[sf:sf]{sf::sf()}} objects. If \code{path} is not supplied, the
+function downloads the ZIP file for the specified prefecture and year using
+\code{pref}, \code{year}, and \code{rcom_year}.
+
+The ZIP archive may contain one or more supported spatial files in GeoJSON
+(\code{.json} or \code{.geojson}) or FlatGeobuf (\code{.fgb}) format. The function also
+works with ZIP files created manually, provided that the original file names
+are preserved.
 }
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")

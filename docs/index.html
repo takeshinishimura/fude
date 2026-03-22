@@ -97,7 +97,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <code class="sourceCode R"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span>pref <span class="op">=</span> <span class="st">"愛媛"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="inspect-the-structure-of-fude-polygon-data">Inspect the structure of Fude Polygon data<a class="anchor" aria-label="anchor" href="#inspect-the-structure-of-fude-polygon-data"></a>
+<h3 id="list-the-contents-of-fude-polygon-data">List the contents of Fude Polygon data<a class="anchor" aria-label="anchor" href="#list-the-contents-of-fude-polygon-data"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ls_fude.html">ls_fude</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
@@ -165,7 +165,11 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <h4 id="geojson-data-characteristics-obtain-data-1">GeoJSON data characteristics (obtain data #1)<a class="anchor" aria-label="anchor" href="#geojson-data-characteristics-obtain-data-1"></a>
 </h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"松山市"</span>, rcom <span class="op">=</span> <span class="st">"由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">st_transform</span>, crs <span class="op">=</span> <span class="fl">4612</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">b</span>, city <span class="op">=</span> <span class="st">"松山市"</span>, rcom <span class="op">=</span> <span class="st">"由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
@@ -206,7 +210,6 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <p>If you need to adjust this automatic assignment, you will need to write custom code. The rows that require attention can be identified with the following command.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">db</span><span class="op">$</span><span class="va">fude</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">polygon_uuid</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude_split</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">polygon_uuid</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">polygon_uuid</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -273,7 +276,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/shiny_fude.html">shiny_fude</a></span><span class="op">(</span><span class="va">db</span>, rcom <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co"># shiny::shinyApp(ui = s$ui, server = s$server)</span></span></code></pre></div>
+<span><span class="co"># shinyApp(ui = s$ui, server = s$server)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="read-data-from-the-maff-database">Read data from the MAFF database<a class="anchor" aria-label="anchor" href="#read-data-from-the-maff-database"></a>

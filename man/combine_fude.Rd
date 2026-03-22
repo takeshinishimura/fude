@@ -2,33 +2,34 @@
 % Please edit documentation in R/combine_fude.R
 \name{combine_fude}
 \alias{combine_fude}
-\title{Combine the Fude Polygon data with the agricultural community boundary data}
+\title{Combine Fude Polygon data with agricultural community boundary data}
 \usage{
 combine_fude(data, boundary, city, kcity = "", rcom = "", year = NULL)
 }
 \arguments{
-\item{data}{Fude Polygon data as returned by \code{\link[=read_fude]{read_fude()}}.}
+\item{data}{A Fude Polygon data object returned by \code{\link[=read_fude]{read_fude()}}.}
 
-\item{boundary}{Agricultural community boundary data as returned by \code{\link[=get_boundary]{get_boundary()}}.}
+\item{boundary}{Agricultural community boundary data returned by \code{\link[=get_boundary]{get_boundary()}}.}
 
-\item{city}{A character vector of local government names or 6-digit local government
-codes to extract.}
+\item{city}{A character vector of municipality names or local government codes used to
+identify target municipalities. If \code{NULL}, all municipalities are kept.}
 
-\item{kcity}{A regular expression. One or more former municipality names (in Japanese)
-to extract.}
+\item{kcity}{A character vector of regular expression patterns used to match former
+municipality names in Japanese.}
 
-\item{rcom}{A regular expression. One or more agricultural community names (in
-Japanese) to extract.}
+\item{rcom}{A character vector of regular expression patterns used to match agricultural
+community names in Japanese.}
 
-\item{year}{Year in the column name of the \code{data}. If there is more than one applicable
-local government code, it is required.}
+\item{year}{Numeric scalar or \code{NULL}. When multiple Fude Polygon datasets match the
+specified municipality, \code{year} is used to choose the target dataset.}
 }
 \value{
-A list of \code{\link[sf:sf]{sf::sf()}} objects.
+A named list of \code{\link[sf:sf]{sf::sf()}} objects.
 }
 \description{
-\code{combine_fude()} uses the agricultural community boundary data to reduce the
-Fude Polygon data to the community units.
+\code{combine_fude()} combines Fude Polygon data with agricultural community
+boundary data and returns the polygons associated with the specified
+municipality, former municipality, and/or agricultural community.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
@@ -39,5 +40,5 @@ db <- combine_fude(d, b, "\u677e\u5c71\u5e02", "\u57ce\u6771", year = 2022)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link[=read_fude]{read_fude()}}.
+\code{\link[=read_fude]{read_fude()}}, \code{\link[=get_boundary]{get_boundary()}}
 }

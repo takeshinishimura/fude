@@ -1,6 +1,7 @@
-# Read a shuraku Excel file
+# Read a shuraku excel file
 
-`read_ikasudb()` reads a shuraku Excel file provided by MAFF.
+`read_ikasudb()` reads a shuraku Excel file provided by MAFF and joins
+its tabular contents to agricultural community boundary data.
 
 ## Usage
 
@@ -12,8 +13,9 @@ read_ikasudb(boundary, path, na = c("-", "…"), zero = TRUE)
 
 - boundary:
 
-  Agricultural community boundary data as returned by
+  Agricultural community boundary data, typically returned by
   [`get_boundary()`](https://takeshinishimura.github.io/fude/reference/get_boundary.md).
+  This can be a single boundary object or a list of boundary objects.
 
 - path:
 
@@ -26,9 +28,14 @@ read_ikasudb(boundary, path, na = c("-", "…"), zero = TRUE)
 
 - zero:
 
-  Logical. If `TRUE`, treat masked values (`"x"` and `"X"`) as zero.
+  Logical. If `TRUE`, treat masked values (`"x"` and `"X"`) as zero
+  before numeric conversion.
 
 ## Value
 
-An [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html)
-object.
+An [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html) object
+created by joining the Excel data to `boundary`.
+
+## See also
+
+[`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md)

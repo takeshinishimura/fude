@@ -1,20 +1,25 @@
-#' Read a shuraku Excel file
+#' Read a shuraku excel file
 #'
 #' @description
-#' `read_ikasudb()` reads a shuraku Excel file provided by MAFF.
+#' `read_ikasudb()` reads a shuraku Excel file provided by MAFF and joins its
+#' tabular contents to agricultural community boundary data.
 #'
 #' @param boundary
-#'   Agricultural community boundary data as returned by [get_boundary()].
+#'   Agricultural community boundary data, typically returned by [get_boundary()].
+#'   This can be a single boundary object or a list of boundary objects.
 #' @param path
 #'   Path to an `.xlsx` file.
 #' @param na
 #'   Character vector of strings to interpret as missing values. Defaults to
 #'   `c("-", "\u2026")`.
 #' @param zero
-#'   Logical. If `TRUE`, treat masked values (`"x"` and `"X"`) as zero.
+#'   Logical. If `TRUE`, treat masked values (`"x"` and `"X"`) as zero before
+#'   numeric conversion.
 #'
 #' @returns
-#'   An [sf::sf()] object.
+#'   An [sf::sf()] object created by joining the Excel data to `boundary`.
+#'
+#' @seealso [read_fude()]
 #'
 #' @export
 read_ikasudb <- function(
@@ -35,31 +40,52 @@ read_ikasudb <- function(
     na = na
   ) |>
     dplyr::rename_with(tolower, dplyr::any_of(common_cols_upper)) |>
-    dplyr::mutate(dplyr::across(
-      .cols = dplyr::where(is.character) & !dplyr::any_of(common_cols_lower),
-      .fns = \(col) {
-        col2 <- trimws(col)
+    dplyr::mutate(
+      dplyr::across(
+        .cols = dplyr::where(is.character) & !dplyr::any_of(common_cols_lower),
+        .fns = \(col) {
+          col2 <- trimws(col)
 
-        if (isTRUE(zero)) {
-          col2[col2 %in% c("x", "X")] <- "0"
+          if (isTRUE(zero)) {
+            col2[col2 %in% c("x", "X")] <- "0"
+          }
+
+          col_no_na <- col2[!is.na(col2)]
+
+          if (length(col_no_na) > 0 && all(grepl("^\\d+(\\.\\d+)?$", col_no_na))) {
+            as.numeric(col2)
+          } else {
+            col2
+          }
         }
+      )
+    )
 
-        col_no_na <- col2[!is.na(col2)]
-        if (length(col_no_na) > 0 && all(grepl("^\\d+(\\.\\d+)?$", col_no_na))) {
-          as.numeric(col2)
-        } else {
-          col
-        }
-      }
-    ))
+  boundary_df <- dplyr::bind_rows(boundary)
 
-  x <- dplyr::bind_rows(boundary) |>
+  join_keys <- c("key", "pref", "city", "kcity", "rcom")
+  missing_boundary <- setdiff(join_keys, names(boundary_df))
+  missing_new_df <- setdiff(join_keys, names(new_df))
+
+  if (length(missing_boundary) > 0) {
+    stop("`boundary` is missing required columns: ",
+         paste(missing_boundary, collapse = ", "))
+  }
+
+  if (length(missing_new_df) > 0) {
+    stop("Input file is missing required columns: ",
+         paste(missing_new_df, collapse = ", "))
+  }
+
+  drop_cols <- intersect(
+    c("pref_name", "city_name", "kcity_name", "rcom_name"),
+    names(new_df)
+  )
+
+  x <- boundary_df |>
     dplyr::left_join(
-      dplyr::select(
-        new_df,
-        !(.data$pref_name:.data$rcom_name)
-      ),
-      by = c("key", "pref", "city", "kcity", "rcom")
+      dplyr::select(new_df, -dplyr::any_of(drop_cols)),
+      by = join_keys
     )
 
   return(x)

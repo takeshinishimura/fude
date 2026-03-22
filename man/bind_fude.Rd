@@ -2,20 +2,21 @@
 % Please edit documentation in R/bind_fude.R
 \name{bind_fude}
 \alias{bind_fude}
-\title{Bind multiple Fude Polygon data}
+\title{Bind multiple Fude Polygon data objects}
 \usage{
 bind_fude(...)
 }
 \arguments{
-\item{...}{Database lists to be combined. They should all have the same named
-elements.}
+\item{...}{Two or more Fude Polygon data objects to combine. Named elements that appear
+in multiple inputs are row-bound into a single \code{\link[sf:sf]{sf::sf()}} object.}
 }
 \value{
-A list of \code{\link[sf:sf]{sf::sf()}} object(s).
+A named list of \code{\link[sf:sf]{sf::sf()}} objects.
 }
 \description{
-\code{bind_fude()} binds a list of polygon data. It also binds a list of data
-combined by \code{\link[=combine_fude]{combine_fude()}}.
+\code{bind_fude()} combines multiple Fude Polygon data objects by binding elements
+with the same names across inputs. It can also be used on objects that have
+already been combined by \code{\link[=combine_fude]{combine_fude()}}.
 }
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")
@@ -25,5 +26,5 @@ bind_fude(d1, d2)
 
 }
 \seealso{
-\code{\link[=read_fude]{read_fude()}}, \code{\link[=combine_fude]{combine_fude()}}.
+\code{\link[=combine_fude]{combine_fude()}}
 }

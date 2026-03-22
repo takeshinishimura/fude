@@ -53,9 +53,9 @@ ggplot() +
 
 ![](example3_files/figure-html/gogoshima_en-1.png)
 
-**Source**: Created by processing the Ministry of Agriculture, Forestry
-and Fisheries, ‘Fude Polygon Data (released in FY2025)’ and
-‘Agricultural Community Boundary Data (FY2020)’.
+**Source**: Created by processing data from the Ministry of Agriculture,
+Forestry and Fisheries, “Fude Polygon Data (released in FY 2025)” and
+“Agricultural Community Boundary Data (FY 2020)”.
 
 ## Displaying a wide area map with `cowplot`
 

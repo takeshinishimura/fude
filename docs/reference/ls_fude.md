@@ -1,8 +1,10 @@
-# Inspect the Structure of Fude Polygon Data
+# List the contents of Fude Polygon data
 
-`ls_fude()` lists the year and the local government names (or codes) in
-order to understand what is included in the list returned by
+`ls_fude()` summarizes the contents of a Fude Polygon data object
+returned by
 [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md).
+It reports the data name, issue year, local government code, number of
+records, and corresponding prefecture and municipality names.
 
 ## Usage
 
@@ -14,13 +16,14 @@ ls_fude(data)
 
 - data:
 
-  Fude Polygon data as returned by
+  A Fude Polygon data object returned by
   [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md).
 
 ## Value
 
-A data frame.
+A data frame with one row per combination of data name, issue year, and
+local government code.
 
 ## See also
 
-[`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md).
+[`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md)

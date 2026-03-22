@@ -10,7 +10,6 @@ library(fude)
 library(ggplot2)
 
 d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
-
 b1 <- get_boundary(d, path = "~", boundary_type = 1, quiet = TRUE)
 m1 <- read_ikasudb(b1, "~/IA0001_2023_2020_38.xlsx")
 

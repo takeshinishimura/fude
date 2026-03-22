@@ -2,20 +2,22 @@
 % Please edit documentation in R/ls_fude.R
 \name{ls_fude}
 \alias{ls_fude}
-\title{Inspect the Structure of Fude Polygon Data}
+\title{List the contents of Fude Polygon data}
 \usage{
 ls_fude(data)
 }
 \arguments{
-\item{data}{Fude Polygon data as returned by \code{\link[=read_fude]{read_fude()}}.}
+\item{data}{A Fude Polygon data object returned by \code{\link[=read_fude]{read_fude()}}.}
 }
 \value{
-A data frame.
+A data frame with one row per combination of data name, issue year, and local
+government code.
 }
 \description{
-\code{ls_fude()} lists the year and the local government names (or codes) in
-order to understand what is included in the list returned by \code{\link[=read_fude]{read_fude()}}.
+\code{ls_fude()} summarizes the contents of a Fude Polygon data object returned by
+\code{\link[=read_fude]{read_fude()}}. It reports the data name, issue year, local government code,
+number of records, and corresponding prefecture and municipality names.
 }
 \seealso{
-\code{\link[=read_fude]{read_fude()}}.
+\code{\link[=read_fude]{read_fude()}}
 }

@@ -121,7 +121,7 @@ lw <- spdep::nb2listw(nb, style = "W", zero.policy = TRUE)
     ## alternative hypothesis: greater
     ## sample estimates:
     ## Moran I statistic       Expectation          Variance 
-    ##      0.2303838689     -0.0006510417      0.0002350355
+    ##      0.2303868599     -0.0006510417      0.0002350355
 
 ``` r
 localmoran <- spdep::localmoran(voronoi$a, listw = lw)
@@ -206,7 +206,7 @@ lw1 <- spdep::nb2listw(nb1, style = "W")
     ## alternative hypothesis: greater
     ## sample estimates:
     ## Moran I statistic       Expectation          Variance 
-    ##      0.2315732305     -0.0006506181      0.0002868963
+    ##      0.2315774216     -0.0006506181      0.0002868963
 
 ``` r
 lw2 <- spdep::nb2listw(nb2, style = "W")
@@ -223,7 +223,7 @@ lw2 <- spdep::nb2listw(nb2, style = "W")
     ## alternative hypothesis: greater
     ## sample estimates:
     ## Moran I statistic       Expectation          Variance 
-    ##      0.2254942699     -0.0006506181      0.0002855370
+    ##      0.2254979130     -0.0006506181      0.0002855370
 
 ``` r
 localmoran <- spdep::localmoran(db$fude_points$a, listw = lw1)

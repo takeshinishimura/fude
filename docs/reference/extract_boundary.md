@@ -1,8 +1,9 @@
 # Extract specified agricultural community boundary data
 
-`extract_boundary()` extracts specified subsets of agricultural
-community boundary data returned by
-[`get_boundary()`](https://takeshinishimura.github.io/fude/reference/get_boundary.md).
+`extract_boundary()` extracts subsets of agricultural community boundary
+data returned by
+[`get_boundary()`](https://takeshinishimura.github.io/fude/reference/get_boundary.md)
+by municipality, former municipality, and/or agricultural community.
 
 ## Usage
 
@@ -14,34 +15,38 @@ extract_boundary(boundary, city = "", kcity = "", rcom = "", layer = FALSE)
 
 - boundary:
 
-  Agricultural community boundary data as returned by
+  Agricultural community boundary data returned by
   [`get_boundary()`](https://takeshinishimura.github.io/fude/reference/get_boundary.md).
 
 - city:
 
-  A character vector of local government names or 6-digit local
-  government codes to extract.
+  A character vector of municipality names or local government codes
+  used to identify target municipalities. If `NULL`, all municipalities
+  are kept.
 
 - kcity:
 
-  A regular expression. One or more former municipality names (in
-  Japanese) to extract.
+  A character vector of regular expression patterns used to match former
+  municipality names in Japanese.
 
 - rcom:
 
-  A regular expression. One or more agricultural community names (in
-  Japanese) to extract.
+  A character vector of regular expression patterns used to match
+  agricultural community names in Japanese.
 
 - layer:
 
-  Logical. If `TRUE`, the returned object includes not only agricultural
-  community boundaries but also prefecture and municipality boundaries.
+  Logical. If `TRUE`, return a list containing extracted agricultural
+  community boundaries together with former municipality, municipality,
+  and prefecture boundary layers.
 
 ## Value
 
-An [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html)
-object.
+If `layer = FALSE`, an
+[`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html) object.
+If `layer = TRUE`, a named list of
+[`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html) objects.
 
 ## See also
 
-[`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md).
+[`get_boundary()`](https://takeshinishimura.github.io/fude/reference/get_boundary.md)

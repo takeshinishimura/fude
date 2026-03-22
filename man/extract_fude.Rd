@@ -2,31 +2,33 @@
 % Please edit documentation in R/extract_fude.R
 \name{extract_fude}
 \alias{extract_fude}
-\title{Extract specified Fude Polygon data}
+\title{Extract a subset of Fude Polygon data}
 \usage{
 extract_fude(data, year = NULL, city = NULL, kcity = "", rcom = "")
 }
 \arguments{
-\item{data}{Fude Polygon data as returned by \code{\link[=read_fude]{read_fude()}}.}
+\item{data}{A Fude Polygon data object returned by \code{\link[=read_fude]{read_fude()}}. \code{data} may be a single
+data frame or a list of data frames.}
 
-\item{year}{A numeric vector of years to extract.}
+\item{year}{A numeric vector of issue years to extract. If \code{NULL}, all years are kept.}
 
-\item{city}{A character vector of local government names or 6-digit local government
-codes to extract.}
+\item{city}{A character vector of municipality names or local government codes used to
+identify target municipalities. If \code{NULL}, all municipalities are kept.}
 
-\item{kcity}{A regular expression. One or more former municipality names (in Japanese)
-to extract.}
+\item{kcity}{A character vector of regular expression patterns used to match former
+municipality names in Japanese.}
 
-\item{rcom}{A regular expression. One or more agricultural community names (in
-Japanese) to extract.}
+\item{rcom}{A character vector of regular expression patterns used to match agricultural
+community names in Japanese.}
 }
 \value{
-An \code{\link[sf:sf]{sf::sf()}} object.
+An \code{\link[sf:sf]{sf::sf()}} object containing the extracted subset.
 }
 \description{
-\code{extract_fude()} extracts specified subsets of Fude Polygon data returned by
-\code{\link[=read_fude]{read_fude()}}.
+\code{extract_fude()} extracts a subset of Fude Polygon data returned by
+\code{\link[=read_fude]{read_fude()}} by year, municipality, former municipality, and/or
+agricultural community.
 }
 \seealso{
-\code{\link[=read_fude]{read_fude()}}.
+\code{\link[=read_fude]{read_fude()}}
 }

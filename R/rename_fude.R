@@ -1,35 +1,36 @@
-#' Rename the Fude Polygon data
+#' Rename Fude Polygon data
 #'
 #' @description
-#' `rename_fude()` renames the 6-digit local government code of the list
-#' returned by [read_fude()] to the corresponding Japanese name in order to
-#' make the data human-friendly.
+#' `rename_fude()` renames the elements of a Fude Polygon data object returned
+#' by [read_fude()] by replacing local government codes in the element names
+#' with corresponding municipality names, making the object easier to read.
 #'
 #' @param data
-#'   Fude Polygon data as returned by [read_fude()].
+#'   A Fude Polygon data object returned by [read_fude()].
 #' @param suffix
-#'   Logical. If `FALSE`, suffixes such as "-SHI" and "-KU" in local government
-#'   names are removed.
+#'   Logical. If `FALSE`, municipality suffixes are removed from renamed element
+#'   names. For example, Japanese suffixes such as `"市"`, `"区"`, `"町"`, and
+#'   `"村"` are removed, and romaji suffixes such as `"-shi"` and `"-ku"` are
+#'   also removed when `romaji` is used.
 #' @param romaji
-#'   If not `NULL`, rename the local government name in romaji instead of
-#'   Japanese. Romanji format is upper case unless specified.
-#'   - `"title"`: Title case.
-#'   - `"lower"`: Lower case.
-#'   - `"upper"`: Upper case.
+#'   Character scalar or `NULL`. If `NULL`, Japanese municipality names are used.
+#'   Otherwise, municipality names are converted to romaji. Supported values are:
+#'   `"upper"` for upper case, `"title"` for title case, and `"lower"` for lower
+#'   case.
 #' @param quiet
-#'   Logical. Suppress information about the data to be read.
+#'   Logical. If `FALSE`, print the mapping from old names to new names.
 #'
 #' @returns
-#'   A list of [sf::sf()] objects.
+#'   A Fude Polygon data object with renamed elements.
 #'
-#' @seealso [read_fude()].
+#' @seealso [read_fude()]
 #'
 #' @examples
 #' path <- system.file("extdata", "castle.zip", package = "fude")
 #' d <- read_fude(path, quiet = FALSE)
 #' d2 <- rename_fude(d)
 #' d2 <- rename_fude(d, suffix = FALSE)
-#' d2 <- d |> rename_fude(romaji = "upper")
+#' d2 <- rename_fude(d, romaji = "upper")
 #'
 #' @export
 rename_fude <- function(
@@ -41,9 +42,13 @@ rename_fude <- function(
   validate_fude(data)
 
   old_names <- names(data)
-  nen <- sub("(_.*)", "_", old_names)
-  unique_nen <- unique(nen)
-  matching_codes <- sub(paste(unique_nen, collapse = "|"), "", old_names)
+
+  if (is.null(old_names)) {
+    stop("`data` must have names.")
+  }
+
+  nen <- sub("^([^_]*_).*$", "\\1", old_names)
+  matching_codes <- sub("^[^_]*_", "", old_names)
 
   new_names <- get_lg_name(matching_codes, romaji)
 
@@ -77,17 +82,15 @@ get_lg_name <- function(
   } else {
     x <- fude::lg_code_table$romaji[matching_idx]
 
-    if (romaji == "lower") {
+    if (identical(romaji, "lower")) {
       x <- tolower(x)
-    } else {
-      if (romaji == "title") {
-        unique_string <- "uniquestring"
-        tmp <- gsub("-", unique_string, x)
-        tmp <- sub("_", " ", tmp)
-        x <- tools::toTitleCase(tolower(tmp))
-        x <- gsub(unique_string, "-", x)
-        x <- sub(" ", "_", x)
-      }
+    } else if (identical(romaji, "title")) {
+      unique_string <- "uniquestring"
+      tmp <- gsub("-", unique_string, x)
+      tmp <- gsub("_", " ", tmp)
+      x <- tools::toTitleCase(tolower(tmp))
+      x <- gsub(unique_string, "-", x)
+      x <- gsub(" ", "_", x)
     }
   }
 

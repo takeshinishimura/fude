@@ -7,27 +7,30 @@
 extract_boundary(boundary, city = "", kcity = "", rcom = "", layer = FALSE)
 }
 \arguments{
-\item{boundary}{Agricultural community boundary data as returned by \code{\link[=get_boundary]{get_boundary()}}.}
+\item{boundary}{Agricultural community boundary data returned by \code{\link[=get_boundary]{get_boundary()}}.}
 
-\item{city}{A character vector of local government names or 6-digit local government
-codes to extract.}
+\item{city}{A character vector of municipality names or local government codes used to
+identify target municipalities. If \code{NULL}, all municipalities are kept.}
 
-\item{kcity}{A regular expression. One or more former municipality names (in Japanese)
-to extract.}
+\item{kcity}{A character vector of regular expression patterns used to match former
+municipality names in Japanese.}
 
-\item{rcom}{A regular expression. One or more agricultural community names (in
-Japanese) to extract.}
+\item{rcom}{A character vector of regular expression patterns used to match agricultural
+community names in Japanese.}
 
-\item{layer}{Logical. If \code{TRUE}, the returned object includes not only agricultural
-community boundaries but also prefecture and municipality boundaries.}
+\item{layer}{Logical. If \code{TRUE}, return a list containing extracted agricultural community
+boundaries together with former municipality, municipality, and prefecture
+boundary layers.}
 }
 \value{
-An \code{\link[sf:sf]{sf::sf()}} object.
+If \code{layer = FALSE}, an \code{\link[sf:sf]{sf::sf()}} object. If \code{layer = TRUE}, a named list of
+\code{\link[sf:sf]{sf::sf()}} objects.
 }
 \description{
-\code{extract_boundary()} extracts specified subsets of agricultural community
-boundary data returned by \code{\link[=get_boundary]{get_boundary()}}.
+\code{extract_boundary()} extracts subsets of agricultural community boundary data
+returned by \code{\link[=get_boundary]{get_boundary()}} by municipality, former municipality, and/or
+agricultural community.
 }
 \seealso{
-\code{\link[=read_fude]{read_fude()}}.
+\code{\link[=get_boundary]{get_boundary()}}
 }

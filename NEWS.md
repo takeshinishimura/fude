@@ -1,5 +1,7 @@
 # fude (development version)
 
+* Improved handling of coordinate reference systems (CRS) to ensure consistent spatial operations.
+
 # fude 0.4.0
 
 * Added support for processing data without requiring the local government code to be pre-written.

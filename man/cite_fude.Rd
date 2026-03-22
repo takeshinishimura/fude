@@ -7,12 +7,14 @@
 cite_fude(data)
 }
 \arguments{
-\item{data}{A list or data frame containing Fude Polygon data.}
+\item{data}{A Fude Polygon data object, boundary data object, or a data frame/list
+containing \code{issue_year} and/or \code{boundary_data_year}.}
 }
 \value{
-A list with two elements: \code{ja} for Japanese citation text and \code{en}
-for English citation text.
+A list with two elements: \code{ja} for Japanese citation text and \code{en} for
+English citation text.
 }
 \description{
-Generates citation text in Japanese and English for Fude Polygon Data.
+\code{cite_fude()} generates citation text in Japanese and English from Fude
+Polygon data and related boundary data.
 }

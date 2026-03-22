@@ -2,20 +2,26 @@
 % Please edit documentation in R/shiny_fude.R
 \name{shiny_fude}
 \alias{shiny_fude}
-\title{Prepare Leaflet map for Fude Polygon data}
+\title{Prepare a Shiny Leaflet viewer for Fude Polygon data}
 \usage{
 shiny_fude(data, height = 1000, rcom = FALSE)
 }
 \arguments{
-\item{data}{A list or data frame containing Fude Polygon data.}
+\item{data}{A Fude Polygon data object, or a list containing \code{fude} and \code{rcom} elements.
+If \code{rcom = TRUE}, \code{data} must contain both polygon data in \code{data$fude} and
+agricultural community boundary data in \code{data$rcom}.}
 
-\item{height}{Height of the map.}
+\item{height}{Height of the map passed to \code{\link[leaflet:map-shiny]{leaflet::leafletOutput()}}.}
 
-\item{rcom}{A logical value indicating whether to overlay community data on the map.}
+\item{rcom}{Logical. If \code{TRUE}, overlay agricultural community boundaries on the map.}
 }
 \value{
-A Leaflet map object with Fude Polygon data with an HTML table.
+A list with two elements: \code{ui}, a Shiny UI object, and \code{server}, a Shiny
+server function.
 }
 \description{
-Prepares a Leaflet map for Fude Polygon data.
+\code{shiny_fude()} prepares a Shiny user interface and server function for
+interactive visualization of Fude Polygon data with \code{leaflet} and \code{DT}.
+The map supports polygon selection, optional agricultural community boundary
+overlays, and a linked attribute table.
 }

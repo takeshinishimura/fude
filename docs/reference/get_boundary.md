@@ -1,7 +1,9 @@
-# Get the agricultural community boundary data
+# Get agricultural community boundary data
 
-`get_boundary()` downloads and reads one or more agricultural community
-boundary data provided by the MAFF.
+`get_boundary()` downloads and reads one or more MAFF agricultural
+community boundary datasets and returns them as a named list of
+[`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html) objects.
+The target prefectures are determined from `data`.
 
 ## Usage
 
@@ -13,7 +15,7 @@ get_boundary(
   boundary_type = 1,
   path = NULL,
   suffix = FALSE,
-  to_wgs84 = FALSE,
+  crs = NULL,
   encoding = "CP932",
   quiet = FALSE
 )
@@ -23,51 +25,51 @@ get_boundary(
 
 - data:
 
-  Either Fude Polygon data as returned by
+  Either a Fude Polygon data object returned by
   [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md),
-  or a two-digit prefecture code.
+  or a prefecture code or Japanese prefecture name.
 
 - boundary_data_year:
 
-  Year when the agricultural community boundary data were created.
+  The year of the boundary dataset.
 
 - rcom_year:
 
-  Year of the agricultural community boundary data.
+  The agricultural community reference year used in the MAFF file name.
 
 - boundary_type:
 
-  The type of boundary data: `1` = agricultural community, `2` = former
-  municipality, `3` = municipality.
+  Integer specifying the boundary level to read: `1` for agricultural
+  community, `2` for former municipality, and `3` for municipality.
 
 - path:
 
-  Path to the ZIP file containing the agricultural community boundary
-  data; use a local ZIP file instead of going looking for a ZIP file.
-  Specify a directory containing one or more ZIP files, not the ZIP file
-  itself.
+  Path to a directory containing boundary ZIP files. If `NULL`, ZIP
+  files are downloaded automatically.
 
 - suffix:
 
-  Logical. If `FALSE`, suffixes such as "-SHI" and "-KU" in local
-  government names are removed.
+  Logical. If `FALSE`, suffixes are removed from romaji municipality
+  names, such as `"-shi"` and `"-ku"`.
 
-- to_wgs84:
+- crs:
 
-  Logical. If `TRUE`, transform coordinates to WGS 84 (EPSG:4326).
+  Coordinate reference system to transform the output data to. If
+  `NULL`, the source CRS is kept.
 
 - encoding:
 
-  Character encoding of the source files (e.g., `"CP932"`).
+  Character encoding of the source shapefile attributes, such as
+  `"CP932"`.
 
 - quiet:
 
-  Logical. If `TRUE`, suppress messages about reading progress.
+  Logical. If `TRUE`, suppress messages during download and reading.
 
 ## Value
 
-A list of [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html)
-objects.
+A named list of
+[`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html) objects.
 
 ## Examples
 

@@ -175,7 +175,7 @@
 <span><span class="co">## alternative hypothesis: greater</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## Moran I statistic       Expectation          Variance </span></span>
-<span><span class="co">##      0.2303838689     -0.0006510417      0.0002350355</span></span></code></pre>
+<span><span class="co">##      0.2303868599     -0.0006510417      0.0002350355</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">localmoran</span> <span class="op">&lt;-</span> <span class="fu">spdep</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/localmoran.html" class="external-link">localmoran</a></span><span class="op">(</span><span class="va">voronoi</span><span class="op">$</span><span class="va">a</span>, listw <span class="op">=</span> <span class="va">lw</span><span class="op">)</span></span>
 <span><span class="va">localmoran_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">localmoran</span><span class="op">)</span></span>
@@ -250,7 +250,7 @@
 <span><span class="co">## alternative hypothesis: greater</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## Moran I statistic       Expectation          Variance </span></span>
-<span><span class="co">##      0.2315732305     -0.0006506181      0.0002868963</span></span></code></pre>
+<span><span class="co">##      0.2315774216     -0.0006506181      0.0002868963</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lw2</span> <span class="op">&lt;-</span> <span class="fu">spdep</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/nb2listw.html" class="external-link">nb2listw</a></span><span class="op">(</span><span class="va">nb2</span>, style <span class="op">=</span> <span class="st">"W"</span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">moran_test2</span> <span class="op">&lt;-</span> <span class="fu">spdep</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/moran.test.html" class="external-link">moran.test</a></span><span class="op">(</span><span class="va">voronoi</span><span class="op">$</span><span class="va">a</span>, listw <span class="op">=</span> <span class="va">lw2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -264,7 +264,7 @@
 <span><span class="co">## alternative hypothesis: greater</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## Moran I statistic       Expectation          Variance </span></span>
-<span><span class="co">##      0.2254942699     -0.0006506181      0.0002855370</span></span></code></pre>
+<span><span class="co">##      0.2254979130     -0.0006506181      0.0002855370</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">localmoran</span> <span class="op">&lt;-</span> <span class="fu">spdep</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/localmoran.html" class="external-link">localmoran</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude_points</span><span class="op">$</span><span class="va">a</span>, listw <span class="op">=</span> <span class="va">lw1</span><span class="op">)</span></span>
 <span><span class="va">localmoran_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">localmoran</span><span class="op">)</span></span>

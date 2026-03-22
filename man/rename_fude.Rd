@@ -2,42 +2,41 @@
 % Please edit documentation in R/rename_fude.R
 \name{rename_fude}
 \alias{rename_fude}
-\title{Rename the Fude Polygon data}
+\title{Rename Fude Polygon data}
 \usage{
 rename_fude(data, suffix = TRUE, romaji = NULL, quiet = TRUE)
 }
 \arguments{
-\item{data}{Fude Polygon data as returned by \code{\link[=read_fude]{read_fude()}}.}
+\item{data}{A Fude Polygon data object returned by \code{\link[=read_fude]{read_fude()}}.}
 
-\item{suffix}{Logical. If \code{FALSE}, suffixes such as "-SHI" and "-KU" in local government
-names are removed.}
+\item{suffix}{Logical. If \code{FALSE}, municipality suffixes are removed from renamed element
+names. For example, Japanese suffixes such as \code{"市"}, \code{"区"}, \code{"町"}, and
+\code{"村"} are removed, and romaji suffixes such as \code{"-shi"} and \code{"-ku"} are
+also removed when \code{romaji} is used.}
 
-\item{romaji}{If not \code{NULL}, rename the local government name in romaji instead of
-Japanese. Romanji format is upper case unless specified.
-\itemize{
-\item \code{"title"}: Title case.
-\item \code{"lower"}: Lower case.
-\item \code{"upper"}: Upper case.
-}}
+\item{romaji}{Character scalar or \code{NULL}. If \code{NULL}, Japanese municipality names are used.
+Otherwise, municipality names are converted to romaji. Supported values are:
+\code{"upper"} for upper case, \code{"title"} for title case, and \code{"lower"} for lower
+case.}
 
-\item{quiet}{Logical. Suppress information about the data to be read.}
+\item{quiet}{Logical. If \code{FALSE}, print the mapping from old names to new names.}
 }
 \value{
-A list of \code{\link[sf:sf]{sf::sf()}} objects.
+A Fude Polygon data object with renamed elements.
 }
 \description{
-\code{rename_fude()} renames the 6-digit local government code of the list
-returned by \code{\link[=read_fude]{read_fude()}} to the corresponding Japanese name in order to
-make the data human-friendly.
+\code{rename_fude()} renames the elements of a Fude Polygon data object returned
+by \code{\link[=read_fude]{read_fude()}} by replacing local government codes in the element names
+with corresponding municipality names, making the object easier to read.
 }
 \examples{
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path, quiet = FALSE)
 d2 <- rename_fude(d)
 d2 <- rename_fude(d, suffix = FALSE)
-d2 <- d |> rename_fude(romaji = "upper")
+d2 <- rename_fude(d, romaji = "upper")
 
 }
 \seealso{
-\code{\link[=read_fude]{read_fude()}}.
+\code{\link[=read_fude]{read_fude()}}
 }

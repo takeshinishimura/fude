@@ -2,6 +2,9 @@
 
 ## fude (development version)
 
+- Improved handling of coordinate reference systems (CRS) to ensure
+  consistent spatial operations.
+
 ## fude 0.4.0
 
 CRAN release: 2026-03-01

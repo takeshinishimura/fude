@@ -2,23 +2,29 @@
 % Please edit documentation in R/read_ikasudb.R
 \name{read_ikasudb}
 \alias{read_ikasudb}
-\title{Read a shuraku Excel file}
+\title{Read a shuraku excel file}
 \usage{
 read_ikasudb(boundary, path, na = c("-", "…"), zero = TRUE)
 }
 \arguments{
-\item{boundary}{Agricultural community boundary data as returned by \code{\link[=get_boundary]{get_boundary()}}.}
+\item{boundary}{Agricultural community boundary data, typically returned by \code{\link[=get_boundary]{get_boundary()}}.
+This can be a single boundary object or a list of boundary objects.}
 
 \item{path}{Path to an \code{.xlsx} file.}
 
 \item{na}{Character vector of strings to interpret as missing values. Defaults to
 \code{c("-", "\\u2026")}.}
 
-\item{zero}{Logical. If \code{TRUE}, treat masked values (\code{"x"} and \code{"X"}) as zero.}
+\item{zero}{Logical. If \code{TRUE}, treat masked values (\code{"x"} and \code{"X"}) as zero before
+numeric conversion.}
 }
 \value{
-An \code{\link[sf:sf]{sf::sf()}} object.
+An \code{\link[sf:sf]{sf::sf()}} object created by joining the Excel data to \code{boundary}.
 }
 \description{
-\code{read_ikasudb()} reads a shuraku Excel file provided by MAFF.
+\code{read_ikasudb()} reads a shuraku Excel file provided by MAFF and joins its
+tabular contents to agricultural community boundary data.
+}
+\seealso{
+\code{\link[=read_fude]{read_fude()}}
 }

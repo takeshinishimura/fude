@@ -1,10 +1,10 @@
-# Rename the Fude Polygon data
+# Rename Fude Polygon data
 
-`rename_fude()` renames the 6-digit local government code of the list
+`rename_fude()` renames the elements of a Fude Polygon data object
 returned by
 [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md)
-to the corresponding Japanese name in order to make the data
-human-friendly.
+by replacing local government codes in the element names with
+corresponding municipality names, making the object easier to read.
 
 ## Usage
 
@@ -16,37 +16,34 @@ rename_fude(data, suffix = TRUE, romaji = NULL, quiet = TRUE)
 
 - data:
 
-  Fude Polygon data as returned by
+  A Fude Polygon data object returned by
   [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md).
 
 - suffix:
 
-  Logical. If `FALSE`, suffixes such as "-SHI" and "-KU" in local
-  government names are removed.
+  Logical. If `FALSE`, municipality suffixes are removed from renamed
+  element names. For example, Japanese suffixes such as `"市"`, `"区"`,
+  `"町"`, and `"村"` are removed, and romaji suffixes such as `"-shi"`
+  and `"-ku"` are also removed when `romaji` is used.
 
 - romaji:
 
-  If not `NULL`, rename the local government name in romaji instead of
-  Japanese. Romanji format is upper case unless specified.
-
-  - `"title"`: Title case.
-
-  - `"lower"`: Lower case.
-
-  - `"upper"`: Upper case.
+  Character scalar or `NULL`. If `NULL`, Japanese municipality names are
+  used. Otherwise, municipality names are converted to romaji. Supported
+  values are: `"upper"` for upper case, `"title"` for title case, and
+  `"lower"` for lower case.
 
 - quiet:
 
-  Logical. Suppress information about the data to be read.
+  Logical. If `FALSE`, print the mapping from old names to new names.
 
 ## Value
 
-A list of [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html)
-objects.
+A Fude Polygon data object with renamed elements.
 
 ## See also
 
-[`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md).
+[`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md)
 
 ## Examples
 
@@ -54,7 +51,7 @@ objects.
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path, quiet = FALSE)
 #> Reading layer `2021_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmp2N0y4h/file7d5415f0e458/castle/2021_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmpmdzi8p/filefa4749d2c3aa/castle/2021_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
@@ -62,7 +59,7 @@ d <- read_fude(path, quiet = FALSE)
 #> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575
 #> Geodetic CRS:  WGS 84
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmp2N0y4h/file7d5415f0e458/castle/2022_382019.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmpmdzi8p/filefa4749d2c3aa/castle/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
@@ -70,7 +67,7 @@ d <- read_fude(path, quiet = FALSE)
 #> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575
 #> Geodetic CRS:  WGS 84
 #> Reading layer `2022_382078' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmp2N0y4h/file7d5415f0e458/castle/2022_382078.json' 
+#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/Rtmpmdzi8p/filefa4749d2c3aa/castle/2022_382078.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
@@ -79,5 +76,5 @@ d <- read_fude(path, quiet = FALSE)
 #> Geodetic CRS:  WGS 84
 d2 <- rename_fude(d)
 d2 <- rename_fude(d, suffix = FALSE)
-d2 <- d |> rename_fude(romaji = "upper")
+d2 <- rename_fude(d, romaji = "upper")
 ```

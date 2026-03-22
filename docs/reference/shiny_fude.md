@@ -1,6 +1,9 @@
-# Prepare Leaflet map for Fude Polygon data
+# Prepare a Shiny Leaflet viewer for Fude Polygon data
 
-Prepares a Leaflet map for Fude Polygon data.
+`shiny_fude()` prepares a Shiny user interface and server function for
+interactive visualization of Fude Polygon data with `leaflet` and `DT`.
+The map supports polygon selection, optional agricultural community
+boundary overlays, and a linked attribute table.
 
 ## Usage
 
@@ -12,17 +15,21 @@ shiny_fude(data, height = 1000, rcom = FALSE)
 
 - data:
 
-  A list or data frame containing Fude Polygon data.
+  A Fude Polygon data object, or a list containing `fude` and `rcom`
+  elements. If `rcom = TRUE`, `data` must contain both polygon data in
+  `data$fude` and agricultural community boundary data in `data$rcom`.
 
 - height:
 
-  Height of the map.
+  Height of the map passed to
+  [`leaflet::leafletOutput()`](https://rstudio.github.io/leaflet/reference/map-shiny.html).
 
 - rcom:
 
-  A logical value indicating whether to overlay community data on the
+  Logical. If `TRUE`, overlay agricultural community boundaries on the
   map.
 
 ## Value
 
-A Leaflet map object with Fude Polygon data with an HTML table.
+A list with two elements: `ui`, a Shiny UI object, and `server`, a Shiny
+server function.

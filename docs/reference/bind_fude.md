@@ -1,7 +1,8 @@
-# Bind multiple Fude Polygon data
+# Bind multiple Fude Polygon data objects
 
-`bind_fude()` binds a list of polygon data. It also binds a list of data
-combined by
+`bind_fude()` combines multiple Fude Polygon data objects by binding
+elements with the same names across inputs. It can also be used on
+objects that have already been combined by
 [`combine_fude()`](https://takeshinishimura.github.io/fude/reference/combine_fude.md).
 
 ## Usage
@@ -14,18 +15,18 @@ bind_fude(...)
 
 - ...:
 
-  Database lists to be combined. They should all have the same named
-  elements.
+  Two or more Fude Polygon data objects to combine. Named elements that
+  appear in multiple inputs are row-bound into a single
+  [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html) object.
 
 ## Value
 
-A list of [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html)
-object(s).
+A named list of
+[`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html) objects.
 
 ## See also
 
-[`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md),
-[`combine_fude()`](https://takeshinishimura.github.io/fude/reference/combine_fude.md).
+[`combine_fude()`](https://takeshinishimura.github.io/fude/reference/combine_fude.md)
 
 ## Examples
 
@@ -39,7 +40,7 @@ bind_fude(d1, d2)
 #> Geometry type: POLYGON
 #> Dimension:     XY
 #> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575
-#> Geodetic CRS:  JGD2000
+#> Geodetic CRS:  WGS 84
 #> # A tibble: 1 × 8
 #>   polygon_uuid    X_color X_opacity X_weight X_fillColor X_fillOpacity
 #>   <chr>           <chr>       <dbl>    <int> <chr>               <dbl>
@@ -51,7 +52,7 @@ bind_fude(d1, d2)
 #> Geometry type: POLYGON
 #> Dimension:     XY
 #> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575
-#> Geodetic CRS:  JGD2000
+#> Geodetic CRS:  WGS 84
 #> # A tibble: 1 × 8
 #>   polygon_uuid    X_color X_opacity X_weight X_fillColor X_fillOpacity
 #>   <chr>           <chr>       <dbl>    <int> <chr>               <dbl>
@@ -63,7 +64,7 @@ bind_fude(d1, d2)
 #> Geometry type: POLYGON
 #> Dimension:     XY
 #> Bounding box:  xmin: 132.541 ymin: 33.50931 xmax: 132.5415 ymax: 33.50966
-#> Geodetic CRS:  JGD2000
+#> Geodetic CRS:  WGS 84
 #> # A tibble: 1 × 8
 #>   polygon_uuid    X_color X_opacity X_weight X_fillColor X_fillOpacity
 #>   <chr>           <chr>       <dbl>    <int> <chr>               <dbl>

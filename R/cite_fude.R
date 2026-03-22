@@ -1,46 +1,82 @@
 #' Generate citation text for Fude Polygon data
 #'
 #' @description
-#' Generates citation text in Japanese and English for Fude Polygon Data.
+#' `cite_fude()` generates citation text in Japanese and English from Fude
+#' Polygon data and related boundary data.
 #'
 #' @param data
-#'   A list or data frame containing Fude Polygon data.
+#'   A Fude Polygon data object, boundary data object, or a data frame/list
+#'   containing `issue_year` and/or `boundary_data_year`.
 #'
-#' @return
-#'   A list with two elements: `ja` for Japanese citation text and `en`
-#'   for English citation text.
+#' @returns
+#'   A list with two elements: `ja` for Japanese citation text and `en` for
+#'   English citation text.
 #'
 #' @export
 cite_fude <- function(data) {
+  issue_year <- NULL
+  boundary_data_year <- NULL
+
   if (is.data.frame(data)) {
-    issue_year <- if ("polygon_uuid" %in% names(data)) {
-      unique(data$issue_year)
-    } else {
-      NULL
+    if ("issue_year" %in% names(data)) {
+      issue_year <- unique(stats::na.omit(data$issue_year))
     }
-    boundary_data_year <- if ("boundary_data_year" %in% names(data)) {
-      unique(data$boundary_data_year)
-    } else {
-      NULL
+    if ("boundary_data_year" %in% names(data)) {
+      boundary_data_year <- unique(stats::na.omit(data$boundary_data_year))
     }
-    } else if (is.list(data)) {
+  } else if (is.list(data)) {
     issue_year <- unique(
-      unlist(
-        sapply(data, `[[`, "issue_year")
+      stats::na.omit(
+        unlist(
+          lapply(
+            data,
+            \(x) {
+              if (is.data.frame(x) && "issue_year" %in% names(x)) {
+                x[["issue_year"]]
+              } else {
+                NULL
+              }
+            }
+          ),
+          use.names = FALSE
+        )
       )
     )
+
     boundary_data_year <- unique(
-      unlist(
-        sapply(data, `[[`, "boundary_data_year")
+      stats::na.omit(
+        unlist(
+          lapply(
+            data,
+            \(x) {
+              if (is.data.frame(x) && "boundary_data_year" %in% names(x)) {
+                x[["boundary_data_year"]]
+              } else {
+                NULL
+              }
+            }
+          ),
+          use.names = FALSE
+        )
       )
     )
+
+    if (length(issue_year) == 0) {
+      issue_year <- NULL
+    }
+    if (length(boundary_data_year) == 0) {
+      boundary_data_year <- NULL
+    }
+  } else {
+    stop("The input data must be a data.frame or a list.")
   }
 
-  if (is.null(issue_year) & is.null(boundary_data_year)) {
-    stop("The input data must be Fude Polygon data.")
+  if (is.null(issue_year) && is.null(boundary_data_year)) {
+    stop("The input data must contain `issue_year` and/or `boundary_data_year`.")
   }
 
-  parts_ja <- c()
+  parts_ja <- character()
+
   if (!is.null(issue_year)) {
     parts_ja <- c(
       parts_ja,
@@ -51,6 +87,7 @@ cite_fude <- function(data) {
       )
     )
   }
+
   if (!is.null(boundary_data_year)) {
     parts_ja <- c(
       parts_ja,
@@ -61,56 +98,53 @@ cite_fude <- function(data) {
       )
     )
   }
+
   combined_parts_ja <- if (length(parts_ja) > 1) {
     paste(parts_ja, collapse = "\u304A\u3088\u3073")
-  } else if (length(parts_ja) == 1) {
-    parts_ja
   } else {
-    ""
+    parts_ja
   }
 
-  parts_en <- c()
+  parts_en <- character()
+
   if (!is.null(issue_year)) {
     parts_en <- c(
       parts_en,
       paste0(
-        "'Fude Polygon Data (released in FY",
+        "\"Fude Polygon Data (released in FY ",
         paste(sort(issue_year), collapse = ", "),
-        ")'"
+        ")\""
       )
     )
   }
+
   if (!is.null(boundary_data_year)) {
     parts_en <- c(
       parts_en,
       paste0(
-        "'Agricultural Community Boundary Data (FY",
+        "\"Agricultural Community Boundary Data (FY ",
         paste(sort(boundary_data_year), collapse = ", "),
-        ")'"
+        ")\""
       )
     )
   }
+
   combined_parts_en <- if (length(parts_en) > 1) {
     paste(parts_en, collapse = " and ")
-  } else if (length(parts_en) == 1) {
-    parts_en
   } else {
-    ""
+    parts_en
   }
 
-  x <- list(
+  list(
     ja = paste0(
       "\u8FB2\u6797\u6C34\u7523\u7701",
       combined_parts_ja,
       "\u3092\u52A0\u5DE5\u3057\u3066\u4F5C\u6210\u3002"
     ),
     en = paste0(
-      "Created by processing the Ministry of Agriculture, Forestry and Fisheries",
-      ifelse(combined_parts_en != "", ", ", ""),
-      combined_parts_en,
+      "Created by processing data from the Ministry of Agriculture, Forestry and Fisheries",
+      if (length(combined_parts_en) > 0) paste0(", ", combined_parts_en) else "",
       "."
     )
   )
-
-  return(x)
 }

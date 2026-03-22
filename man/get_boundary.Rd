@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_boundary.R
 \name{get_boundary}
 \alias{get_boundary}
-\title{Get the agricultural community boundary data}
+\title{Get agricultural community boundary data}
 \usage{
 get_boundary(
   data,
@@ -11,43 +11,42 @@ get_boundary(
   boundary_type = 1,
   path = NULL,
   suffix = FALSE,
-  to_wgs84 = FALSE,
+  crs = NULL,
   encoding = "CP932",
   quiet = FALSE
 )
 }
 \arguments{
-\item{data}{Either Fude Polygon data as returned by \code{\link[=read_fude]{read_fude()}}, or a two-digit
-prefecture code.}
+\item{data}{Either a Fude Polygon data object returned by \code{\link[=read_fude]{read_fude()}}, or a prefecture
+code or Japanese prefecture name.}
 
-\item{boundary_data_year}{Year when the agricultural community boundary data were created.}
+\item{boundary_data_year}{The year of the boundary dataset.}
 
-\item{rcom_year}{Year of the agricultural community boundary data.}
+\item{rcom_year}{The agricultural community reference year used in the MAFF file name.}
 
-\item{boundary_type}{The type of boundary data:
-\code{1} = agricultural community,
-\code{2} = former municipality,
-\code{3} = municipality.}
+\item{boundary_type}{Integer specifying the boundary level to read: \code{1} for agricultural
+community, \code{2} for former municipality, and \code{3} for municipality.}
 
-\item{path}{Path to the ZIP file containing the agricultural community boundary data;
-use a local ZIP file instead of going looking for a ZIP file. Specify a
-directory containing one or more ZIP files, not the ZIP file itself.}
+\item{path}{Path to a directory containing boundary ZIP files. If \code{NULL}, ZIP files are
+downloaded automatically.}
 
-\item{suffix}{Logical. If \code{FALSE}, suffixes such as "-SHI" and "-KU" in local government
-names are removed.}
+\item{suffix}{Logical. If \code{FALSE}, suffixes are removed from romaji municipality names,
+such as \code{"-shi"} and \code{"-ku"}.}
 
-\item{to_wgs84}{Logical. If \code{TRUE}, transform coordinates to WGS 84 (EPSG:4326).}
+\item{crs}{Coordinate reference system to transform the output data to. If \code{NULL}, the
+source CRS is kept.}
 
-\item{encoding}{Character encoding of the source files (e.g., \code{"CP932"}).}
+\item{encoding}{Character encoding of the source shapefile attributes, such as \code{"CP932"}.}
 
-\item{quiet}{Logical. If \code{TRUE}, suppress messages about reading progress.}
+\item{quiet}{Logical. If \code{TRUE}, suppress messages during download and reading.}
 }
 \value{
-A list of \code{\link[sf:sf]{sf::sf()}} objects.
+A named list of \code{\link[sf:sf]{sf::sf()}} objects.
 }
 \description{
-\code{get_boundary()} downloads and reads one or more agricultural community
-boundary data provided by the MAFF.
+\code{get_boundary()} downloads and reads one or more MAFF agricultural community
+boundary datasets and returns them as a named list of \code{\link[sf:sf]{sf::sf()}} objects.
+The target prefectures are determined from \code{data}.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}

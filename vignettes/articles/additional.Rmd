@@ -14,7 +14,7 @@ vignette: >
 library(fude)
 
 d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
-b <- get_boundary(d, path = "~", quiet = TRUE)
+b <- get_boundary(d, path = "~", crs = 4326, quiet = TRUE)
 db <- combine_fude(d, b, city = "松山市", kcity = "浅海")
 ```
 

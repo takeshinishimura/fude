@@ -1,7 +1,8 @@
-# Combine the Fude Polygon data with the agricultural community boundary data
+# Combine Fude Polygon data with agricultural community boundary data
 
-`combine_fude()` uses the agricultural community boundary data to reduce
-the Fude Polygon data to the community units.
+`combine_fude()` combines Fude Polygon data with agricultural community
+boundary data and returns the polygons associated with the specified
+municipality, former municipality, and/or agricultural community.
 
 ## Usage
 
@@ -13,42 +14,45 @@ combine_fude(data, boundary, city, kcity = "", rcom = "", year = NULL)
 
 - data:
 
-  Fude Polygon data as returned by
+  A Fude Polygon data object returned by
   [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md).
 
 - boundary:
 
-  Agricultural community boundary data as returned by
+  Agricultural community boundary data returned by
   [`get_boundary()`](https://takeshinishimura.github.io/fude/reference/get_boundary.md).
 
 - city:
 
-  A character vector of local government names or 6-digit local
-  government codes to extract.
+  A character vector of municipality names or local government codes
+  used to identify target municipalities. If `NULL`, all municipalities
+  are kept.
 
 - kcity:
 
-  A regular expression. One or more former municipality names (in
-  Japanese) to extract.
+  A character vector of regular expression patterns used to match former
+  municipality names in Japanese.
 
 - rcom:
 
-  A regular expression. One or more agricultural community names (in
-  Japanese) to extract.
+  A character vector of regular expression patterns used to match
+  agricultural community names in Japanese.
 
 - year:
 
-  Year in the column name of the `data`. If there is more than one
-  applicable local government code, it is required.
+  Numeric scalar or `NULL`. When multiple Fude Polygon datasets match
+  the specified municipality, `year` is used to choose the target
+  dataset.
 
 ## Value
 
-A list of [`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html)
-objects.
+A named list of
+[`sf::sf()`](https://r-spatial.github.io/sf/reference/sf.html) objects.
 
 ## See also
 
-[`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md).
+[`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md),
+[`get_boundary()`](https://takeshinishimura.github.io/fude/reference/get_boundary.md)
 
 ## Examples
 
