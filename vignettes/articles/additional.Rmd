@@ -14,8 +14,19 @@ vignette: >
 library(fude)
 
 d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
-b <- get_boundary(d, path = "~", crs = 4326, quiet = TRUE)
-db <- combine_fude(d, b, city = "松山市", kcity = "浅海")
+b <- get_boundary(d, path = "~", quiet = TRUE)
+
+d2 <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
+```
+
+## GeoJSON data characteristics (obtain data #1)
+
+```{r echo = TRUE, warning = FALSE, message = FALSE}
+library(sf)
+
+db <- d |>
+  lapply(st_transform, crs = 4612) |>
+  combine_fude(b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 ```
 
 There are `r length(names(db))` types of objects obtained by `combine_fude()`, as follows:
@@ -23,10 +34,75 @@ There are `r length(names(db))` types of objects obtained by `combine_fude()`, a
 names(db)
 ```
 
+```{r gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+library(ggplot2)
+
+ggplot() +
+  geom_sf(data = db$fude, aes(fill = rcom_romaji), alpha = .8) +
+  guides(fill = guide_legend(reverse = TRUE, title = "Agricultural community")) +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+**Source**: `r cite_fude(db)$en`
+
+### Data assignment
+
+- `db$fude`: Automatically assigns polygons on the boundaries to a community.
+- `db$fude_split`: Provides cleaner boundaries, but polygon data near community borders may be divided.
+```{r nosplit_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
+library(patchwork)
+
+fude <- ggplot() +
+  geom_sf(data = db$fude, aes(fill = rcom_romaji), alpha = .8) +
+  theme_void() +
+  theme(legend.position = "none") +
+  coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
+
+fude_split <- ggplot() +
+  geom_sf(data = db$fude_split, aes(fill = rcom_romaji), alpha = .8) +
+  theme_void() +
+  theme(legend.position = "none") +
+  coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
+
+fude + fude_split
+```
+
+**Source**: `r cite_fude(db)$en`
+
+If you need to adjust this automatic assignment, you will need to write custom code.
+The rows that require attention can be identified with the following command.
+```{r message = FALSE}
+library(dplyr)
+
+db$fude |>
+  filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
+  st_drop_geometry() |>
+  select(polygon_uuid, kcity_name, rcom_name, rcom_romaji) |>
+  head()
+```
+
+## FlatGeobuf data characteristics (obtain data #2)
+
+The FlatGeobuf format offers a more efficient alternative to GeoJSON.
+A notable feature of this format is that each record already includes an **accurately assigned agricultural community code**.
+```{r gogoshimafgb, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+db <- combine_fude(d2, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+
+ggplot() +
+  geom_sf(data = db$fude, aes(fill = rcom_romaji), alpha = .8) +
+  guides(fill = guide_legend(reverse = TRUE, title = "Agricultural community")) +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  theme(text = element_text(family = "Hiragino Sans"))
+```
+
+**Source**: `r cite_fude(db)$en`
+
 # Possible values for `rcom` in `combine_fude()` and `extract_boundary()`
 
 ```{r rcom_in_data, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-library(dplyr)
 library(data.tree)
 
 tree <- b[[1]] |>
@@ -37,8 +113,6 @@ tree <- b[[1]] |>
 tree$Do(\(x) {x$n <- if (x$isLeaf) NA_integer_ else x$count})
 data.tree::SetFormat(tree, "n", \(x) if (is.na(x)) "-" else x)
 print(tree, "n", limit = 30)
-
-library(ggplot2)
 
 ggplot(data = b[[1]] |> filter(grepl("松山", kcity_name))) + 
   geom_sf(fill = NA) +

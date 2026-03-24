@@ -21,13 +21,13 @@ Depends:
     R (>= 4.1.0)
 Imports:
     dplyr,
-    DT,
-    leaflet,
     readxl,
     sf,
-    shiny,
     units
 Suggests: 
+    DT,
+    leaflet,
+    shiny,
     testthat (>= 3.0.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

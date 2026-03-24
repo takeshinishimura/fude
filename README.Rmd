@@ -70,7 +70,7 @@ d2 <- read_fude(pref = "愛媛")
 d2 <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
 ```
 
-### List the contents of Fude Polygon data
+### List the contents of Fude Polygon datal
 
 ```{r}
 ls_fude(d)
@@ -82,14 +82,14 @@ ls_fude(d)
 
 Convert local government codes into Japanese municipality names for easier management.
 ```{r}
-dren <- rename_fude(d)
-names(dren)
+dro <- rename_fude(d)
+names(dro)
 ```
 
 You can also rename the columns to Romaji instead of Japanese.
 ```{r}
-dren <- d |> rename_fude(suffix = TRUE, romaji = "title")
-names(dren)
+dro <- d |>
+  rename_fude(suffix = TRUE, romaji = "title", quiet = FALSE)
 ```
 
 ### Get agricultural community boundary data
@@ -107,16 +107,10 @@ b <- get_boundary(d, path = "~", quiet = TRUE)
 
 You can easily combine Fude Polygons with agricultural community boundaries to create enriched spatial analyses or maps.
 
-#### GeoJSON data characteristics (obtain data #1)
-
 ```{r gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-library(sf)
-
-db <- d |>
-  lapply(st_transform, crs = 4612) |>
-  combine_fude(b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
-
 library(ggplot2)
+
+db <- combine_fude(d2, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
   geom_sf(data = db$fude, aes(fill = rcom_name), alpha = .8) +
@@ -128,58 +122,7 @@ ggplot() +
 
 **出典**：`r cite_fude(db)$ja`
 
-##### Data assignment
-
-- `db$fude`: Automatically assigns polygons on the boundaries to a community.
-- `db$fude_split`: Provides cleaner boundaries, but polygon data near community borders may be divided.
-```{r nosplit_gogoshima, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
-library(patchwork)
-
-fude <- ggplot() +
-  geom_sf(data = db$fude, aes(fill = rcom_name), alpha = .8) +
-  theme_void() +
-  theme(legend.position = "none") +
-  coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
-
-fude_split <- ggplot() +
-  geom_sf(data = db$fude_split, aes(fill = rcom_name), alpha = .8) +
-  theme_void() +
-  theme(legend.position = "none") +
-  coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
-
-fude + fude_split
-```
-
-If you need to adjust this automatic assignment, you will need to write custom code.
-The rows that require attention can be identified with the following command.
-```{r message = FALSE}
-library(dplyr)
-
-db$fude |>
-  filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
-  st_drop_geometry() |>
-  select(polygon_uuid, kcity_name, rcom_name, rcom_romaji) |>
-  head()
-```
-
-#### FlatGeobuf data characteristics (obtain data #2)
-
-The FlatGeobuf format offers a more efficient alternative to GeoJSON.
-A notable feature of this format is that each record already includes an **accurately assigned agricultural community code**.
-```{r gogoshimafgb, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
-db2 <- combine_fude(d2, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
-
-ggplot() +
-  geom_sf(data = db2$fude, aes(fill = rcom_name), alpha = .8) +
-  guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
-  theme_void() +
-  theme(legend.position = "bottom") +
-  theme(text = element_text(family = "Hiragino Sans"))
-```
-
-**出典**：`r cite_fude(db2)$ja`
-
-Data enables extraction based on city names, former city names, and agricultural community names.
+Data enables extraction based on municipality names, former municipality names, and agricultural community names.
 
 **Note:** This feature is available only for data obtained from FlatGeobuf (Obtaining Data #2).
 
@@ -200,17 +143,28 @@ s <- shiny_fude(db, rcom = TRUE)
 ### Read data from the MAFF database
 
 You can read data from the MAFF database ([地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/)).
-```{r eval = FALSE}
-b1 <- get_boundary(d2, path = "~", boundary_type = 1)
-b2 <- get_boundary(d2, path = "~", boundary_type = 2)
-b3 <- get_boundary(d2, path = "~", boundary_type = 3)
+```{r ikasu, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150}
+library(dplyr)
 
-m3 <- read_ikasudb(b3, "~/IA0001_2023_2020_38.xlsx")
+b1 <- get_boundary(d2, path = "~", boundary_type = 1, quiet = TRUE)
+b2 <- get_boundary(d2, path = "~", boundary_type = 2, quiet = TRUE)
+b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
 
-m1 <- b1 |> 
+m1 <- b1 |>
+  read_ikasudb("~/IA0001_2023_2020_38.xlsx") |>
   read_ikasudb("~/SA1009_2020_2020_38.xlsx") |>
-  read_ikasudb("~/GC0001_2019_2020_38.xlsx")
+  read_ikasudb("~/GC0001_2019_2020_38.xlsx") |>
+  mutate(
+    地域類型1次分類 = factor(地域類型1次分類, labels = c("都市的地域", "平地農業地域", "中間農業地域", "山間農業地域"))
+  )
+
+ggplot() +
+  geom_sf(data = m1, aes(fill = 地域類型1次分類), alpha = .8) +
+  theme_void() +
+  theme(text = element_text(family = "Hiragino Sans"))
 ```
+
+**資料**：`r cite_fude(m1)$ja`
 
 ### Use the `mapview` package
 

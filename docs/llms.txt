@@ -59,7 +59,7 @@ d <- read_fude("~/2022_38.zip")
 d2 <- read_fude(pref = "愛媛")
 ```
 
-### List the contents of Fude Polygon data
+### List the contents of Fude Polygon datal
 
 ``` r
 ls_fude(d)
@@ -97,8 +97,8 @@ Convert local government codes into Japanese municipality names for
 easier management.
 
 ``` r
-dren <- rename_fude(d)
-names(dren)
+dro <- rename_fude(d)
+names(dro)
 #>  [1] "2022_松山市"     "2022_今治市"     "2022_宇和島市"   "2022_八幡浜市"  
 #>  [5] "2022_新居浜市"   "2022_西条市"     "2022_大洲市"     "2022_伊予市"    
 #>  [9] "2022_四国中央市" "2022_西予市"     "2022_東温市"     "2022_上島町"    
@@ -109,15 +109,28 @@ names(dren)
 You can also rename the columns to Romaji instead of Japanese.
 
 ``` r
-dren <- d |> rename_fude(suffix = TRUE, romaji = "title")
-names(dren)
-#>  [1] "2022_Matsuyama-shi"   "2022_Imabari-shi"     "2022_Uwajima-shi"    
-#>  [4] "2022_Yawatahama-shi"  "2022_Niihama-shi"     "2022_Saijo-shi"      
-#>  [7] "2022_Ozu-shi"         "2022_Iyo-shi"         "2022_Shikokuchuo-shi"
-#> [10] "2022_Seiyo-shi"       "2022_Toon-shi"        "2022_Kamijima-cho"   
-#> [13] "2022_Kumakogen-cho"   "2022_Matsumae-cho"    "2022_Tobe-cho"       
-#> [16] "2022_Uchiko-cho"      "2022_Ikata-cho"       "2022_Matsuno-cho"    
-#> [19] "2022_Kihoku-cho"      "2022_Ainan-cho"
+dro <- d |>
+  rename_fude(suffix = TRUE, romaji = "title", quiet = FALSE)
+#> 2022_382019 -> 2022_Matsuyama-shi
+#> 2022_382027 -> 2022_Imabari-shi
+#> 2022_382035 -> 2022_Uwajima-shi
+#> 2022_382043 -> 2022_Yawatahama-shi
+#> 2022_382051 -> 2022_Niihama-shi
+#> 2022_382060 -> 2022_Saijo-shi
+#> 2022_382078 -> 2022_Ozu-shi
+#> 2022_382108 -> 2022_Iyo-shi
+#> 2022_382132 -> 2022_Shikokuchuo-shi
+#> 2022_382141 -> 2022_Seiyo-shi
+#> 2022_382159 -> 2022_Toon-shi
+#> 2022_383562 -> 2022_Kamijima-cho
+#> 2022_383864 -> 2022_Kumakogen-cho
+#> 2022_384011 -> 2022_Matsumae-cho
+#> 2022_384020 -> 2022_Tobe-cho
+#> 2022_384224 -> 2022_Uchiko-cho
+#> 2022_384429 -> 2022_Ikata-cho
+#> 2022_384844 -> 2022_Matsuno-cho
+#> 2022_384887 -> 2022_Kihoku-cho
+#> 2022_385069 -> 2022_Ainan-cho
 ```
 
 ### Get agricultural community boundary data
@@ -136,16 +149,10 @@ b <- get_boundary(d)
 You can easily combine Fude Polygons with agricultural community
 boundaries to create enriched spatial analyses or maps.
 
-#### GeoJSON data characteristics (obtain data \#1)
-
 ``` r
-library(sf)
-
-db <- d |>
-  lapply(st_transform, crs = 4612) |>
-  combine_fude(b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
-
 library(ggplot2)
+
+db <- combine_fude(d2, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
   geom_sf(data = db$fude, aes(fill = rcom_name), alpha = .8) +
@@ -157,81 +164,10 @@ ggplot() +
 
 ![](reference/figures/README-gogoshima-1.png)
 
-**出典**：農林水産省「筆ポリゴンデータ（2022年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
-
-##### Data assignment
-
-- `db$fude`: Automatically assigns polygons on the boundaries to a
-  community.
-- `db$fude_split`: Provides cleaner boundaries, but polygon data near
-  community borders may be divided.
-
-``` r
-library(patchwork)
-
-fude <- ggplot() +
-  geom_sf(data = db$fude, aes(fill = rcom_name), alpha = .8) +
-  theme_void() +
-  theme(legend.position = "none") +
-  coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
-
-fude_split <- ggplot() +
-  geom_sf(data = db$fude_split, aes(fill = rcom_name), alpha = .8) +
-  theme_void() +
-  theme(legend.position = "none") +
-  coord_sf(xlim = c(132.658, 132.678), ylim = c(33.887, 33.902))
-
-fude + fude_split
-```
-
-![](reference/figures/README-nosplit_gogoshima-1.png)
-
-If you need to adjust this automatic assignment, you will need to write
-custom code. The rows that require attention can be identified with the
-following command.
-
-``` r
-library(dplyr)
-
-db$fude |>
-  filter(polygon_uuid %in% (db$fude_split |> filter(duplicated(polygon_uuid)) |> pull(polygon_uuid))) |>
-  st_drop_geometry() |>
-  select(polygon_uuid, kcity_name, rcom_name, rcom_romaji) |>
-  head()
-#> # A tibble: 6 × 4
-#>   polygon_uuid                         kcity_name rcom_name rcom_romaji
-#>   <chr>                                <fct>      <fct>     <fct>      
-#> 1 8085bc47-9af5-440f-89e9-f188d3b95746 興居島村   泊        Tomari     
-#> 2 26920da0-b63e-4994-a9eb-175e2982fe21 興居島村   門田      Kadota     
-#> 3 ac2e7293-6c2f-4feb-a95f-4729dc8d0aec 興居島村   由良      Yura       
-#> 4 ea130038-7035-4cf3-b71c-091783090d74 興居島村   船越      Funakoshi  
-#> 5 4aba8229-1b14-4eab-8a91-e10d9e841180 興居島村   船越      Funakoshi  
-#> 6 156a3459-25cb-494c-824f-9ba6b0fb6f23 興居島村   由良      Yura
-```
-
-#### FlatGeobuf data characteristics (obtain data \#2)
-
-The FlatGeobuf format offers a more efficient alternative to GeoJSON. A
-notable feature of this format is that each record already includes an
-**accurately assigned agricultural community code**.
-
-``` r
-db2 <- combine_fude(d2, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
-
-ggplot() +
-  geom_sf(data = db2$fude, aes(fill = rcom_name), alpha = .8) +
-  guides(fill = guide_legend(reverse = TRUE, title = "興居島の集落別耕地")) +
-  theme_void() +
-  theme(legend.position = "bottom") +
-  theme(text = element_text(family = "Hiragino Sans"))
-```
-
-![](reference/figures/README-gogoshimafgb-1.png)
-
 **出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
-Data enables extraction based on city names, former city names, and
-agricultural community names.
+Data enables extraction based on municipality names, former municipality
+names, and agricultural community names.
 
 **Note:** This feature is available only for data obtained from
 FlatGeobuf (Obtaining Data \#2).
@@ -277,16 +213,29 @@ You can read data from the MAFF database
 ([地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/)).
 
 ``` r
-b1 <- get_boundary(d2, path = "~", boundary_type = 1)
-b2 <- get_boundary(d2, path = "~", boundary_type = 2)
-b3 <- get_boundary(d2, path = "~", boundary_type = 3)
+library(dplyr)
 
-m3 <- read_ikasudb(b3, "~/IA0001_2023_2020_38.xlsx")
+b1 <- get_boundary(d2, path = "~", boundary_type = 1, quiet = TRUE)
+b2 <- get_boundary(d2, path = "~", boundary_type = 2, quiet = TRUE)
+b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
 
-m1 <- b1 |> 
+m1 <- b1 |>
+  read_ikasudb("~/IA0001_2023_2020_38.xlsx") |>
   read_ikasudb("~/SA1009_2020_2020_38.xlsx") |>
-  read_ikasudb("~/GC0001_2019_2020_38.xlsx")
+  read_ikasudb("~/GC0001_2019_2020_38.xlsx") |>
+  mutate(
+    地域類型1次分類 = factor(地域類型1次分類, labels = c("都市的地域", "平地農業地域", "中間農業地域", "山間農業地域"))
+  )
+
+ggplot() +
+  geom_sf(data = m1, aes(fill = 地域類型1次分類), alpha = .8) +
+  theme_void() +
+  theme(text = element_text(family = "Hiragino Sans"))
 ```
+
+![](reference/figures/README-ikasu-1.png)
+
+**資料**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ### Use the `mapview` package
 

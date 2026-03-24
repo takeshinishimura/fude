@@ -25,6 +25,16 @@ shiny_fude <- function(
   height = 1000,
   rcom = FALSE
 ) {
+  if (!requireNamespace("shiny", quietly = TRUE)) {
+    stop("Package `shiny` is required for `shiny_fude()`.")
+  }
+  if (!requireNamespace("leaflet", quietly = TRUE)) {
+    stop("Package `leaflet` is required for `shiny_fude()`.")
+  }
+  if (!requireNamespace("DT", quietly = TRUE)) {
+    stop("Package `DT` is required for `shiny_fude()`.")
+  }
+
   if (is.list(data) && "fude" %in% names(data)) {
     data_fude <- data$fude
   } else if (is.data.frame(data)) {

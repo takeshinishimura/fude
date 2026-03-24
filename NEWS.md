@@ -1,5 +1,6 @@
 # fude (development version)
 
+* Reduced the number of packages listed in `Imports` and minimized optional package dependencies where possible.
 * Improved handling of coordinate reference systems (CRS) to ensure consistent spatial operations.
 
 # fude 0.4.0

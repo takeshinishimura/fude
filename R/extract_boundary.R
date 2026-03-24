@@ -311,7 +311,7 @@ find_lg_code <- function(pref, city) {
 add_xy <- function(data) {
   coords <- suppressWarnings(
     sf::st_coordinates(
-      sf::st_point_on_surface(data)
+      sf::st_centroid(data)
     )
   )
 
