@@ -186,7 +186,22 @@ read_boundary <- function(
       }
     })() |>
     (\(d) {
-      if (boundary_type == 1) {
+      if (boundary_type == 1 && !("rcom_kana" %in% names(d))) {
+        d |>
+          dplyr::left_join(
+            fude::rcom_code_table |>
+              dplyr::select(
+                .data$key,
+                .data$pref_kana,
+                .data$city_kana,
+                .data$rcom_kana,
+                .data$pref_romaji,
+                .data$city_romaji,
+                .data$rcom_romaji
+              ),
+            by = "key"
+          )
+      } else if (boundary_type == 1) {
         d |>
           dplyr::left_join(
             fude::rcom_code_table |>
@@ -246,7 +261,7 @@ read_boundary <- function(
       .data$pref_name, .data$city_name, .data$kcity_name, .data$rcom_name,
       .data$pref_kana, .data$city_kana, .data$rcom_kana,
       .data$pref_romaji, .data$city_romaji, .data$rcom_romaji,
-      .data$hinintei,
+      dplyr::any_of("hinintei"),
       .data$geometry
     ) |>
     dplyr::mutate(
@@ -304,8 +319,11 @@ fude_to_pref_code <- function(data) {
   data <- add_local_government_cd(data)
   local_government_cd <- fude_to_lg_code(data)
 
-  x <- unique(substr(local_government_cd, start = 1, stop = 2))
-  x <- unique(stats::na.omit(x))
+  x <- local_government_cd |>
+    substr(start = 1, stop = 2) |>
+    stats::na.omit() |>
+    unique()
+
   x <- x[nzchar(x)]
 
   return(x)

@@ -1,5 +1,7 @@
 # fude (development version)
 
+- Added support for reading boundary data from 2010 and 2015.
+
 # fude 0.4.1
 
 * Reduced the number of packages listed in `Imports` and minimized optional package dependencies where possible.
