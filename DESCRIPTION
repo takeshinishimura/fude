@@ -1,7 +1,7 @@
 Package: fude
 Type: Package
 Title: Utilities for Fude Polygon
-Version: 0.4.0.9000
+Version: 0.4.1
 Authors@R: 
     person(given = "Takeshi",
            family = "Nishimura",
@@ -21,6 +21,7 @@ Depends:
     R (>= 4.1.0)
 Imports:
     dplyr,
+    readr,
     readxl,
     sf,
     units

@@ -1,7 +1,8 @@
-# fude (development version)
+# fude 0.4.1
 
 * Reduced the number of packages listed in `Imports` and minimized optional package dependencies where possible.
 * Improved handling of coordinate reference systems (CRS) to ensure consistent spatial operations.
+* Added support for reading CSV files in addition to Excel files in `read_ikasudb()`.
 
 # fude 0.4.0
 
