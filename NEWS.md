@@ -1,3 +1,5 @@
+# fude (development version)
+
 # fude 0.4.1
 
 * Reduced the number of packages listed in `Imports` and minimized optional package dependencies where possible.
