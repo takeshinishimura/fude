@@ -9,9 +9,8 @@
 #'   A Fude Polygon data object returned by [read_fude()].
 #' @param suffix
 #'   Logical. If `FALSE`, municipality suffixes are removed from renamed element
-#'   names. For example, Japanese suffixes such as `"市"`, `"区"`, `"町"`, and
-#'   `"村"` are removed, and romaji suffixes such as `"-shi"` and `"-ku"` are
-#'   also removed when `romaji` is used.
+#'   names. For example, romaji suffixes such as `"-shi"` and `"-ku"` are removed
+#'   when `romaji` is used.
 #' @param romaji
 #'   Character scalar or `NULL`. If `NULL`, Japanese municipality names are used.
 #'   Otherwise, municipality names are converted to romaji. Supported values are:

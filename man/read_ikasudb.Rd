@@ -10,7 +10,7 @@ read_ikasudb(boundary, path, na = c("-", "…"), zero = TRUE)
 \item{boundary}{Agricultural community boundary data, typically returned by \code{\link[=get_boundary]{get_boundary()}}.
 This can be a single boundary object or a list of boundary objects.}
 
-\item{path}{Path to an \code{.xlsx} file.}
+\item{path}{Path to an \code{.xlsx} file provided by MAFF or a \code{.csv} file}
 
 \item{na}{Character vector of strings to interpret as missing values. Defaults to
 \code{c("-", "\\u2026")}.}

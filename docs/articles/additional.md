@@ -142,8 +142,8 @@ data.tree::SetFormat(tree, "n", \(x) if (is.na(x)) "-" else x)
 print(tree, "n", limit = 30)
 ```
 
-    ##                             levelName   n
-    ## 1  愛媛県                               1
+    ##                            levelName   n
+    ## 1  愛媛県                              1
     ## 2   °--松山市                          1
     ## 3       °--松山市                    108
     ## 4           ¦--土居田                  -

@@ -11,7 +11,7 @@ with corresponding municipality names, making the object easier to read."></head
 
     <a class="navbar-brand me-2" href="../index.html">fude</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,9 +59,8 @@ with corresponding municipality names, making the object easier to read.</p>
 
 <dt id="arg-suffix">suffix<a class="anchor" aria-label="anchor" href="#arg-suffix"></a></dt>
 <dd><p>Logical. If <code>FALSE</code>, municipality suffixes are removed from renamed element
-names. For example, Japanese suffixes such as <code>"市"</code>, <code>"区"</code>, <code>"町"</code>, and
-<code>"村"</code> are removed, and romaji suffixes such as <code>"-shi"</code> and <code>"-ku"</code> are
-also removed when <code>romaji</code> is used.</p></dd>
+names. For example, romaji suffixes such as <code>"-shi"</code> and <code>"-ku"</code> are removed
+when <code>romaji</code> is used.</p></dd>
 
 
 <dt id="arg-romaji">romaji<a class="anchor" aria-label="anchor" href="#arg-romaji"></a></dt>
@@ -89,7 +88,7 @@ case.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"castle.zip"</span>, package <span class="op">=</span> <span class="st">"fude"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_fude.html">read_fude</a></span><span class="op">(</span><span class="va">path</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Reading layer `2021_382019' from data source </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpOMB1AB/file3df029cb6545/castle/2021_382019.json' </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/34/cc5j3spj0xs23b_r3j27pcr00000gn/T/RtmpEgZVzG/file395454a73dc1/castle/2021_382019.json' </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   using driver `GeoJSON'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 7 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POLYGON</span>
@@ -97,7 +96,7 @@ case.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Reading layer `2022_382019' from data source </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpOMB1AB/file3df029cb6545/castle/2022_382019.json' </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/34/cc5j3spj0xs23b_r3j27pcr00000gn/T/RtmpEgZVzG/file395454a73dc1/castle/2022_382019.json' </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   using driver `GeoJSON'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 7 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POLYGON</span>
@@ -105,7 +104,7 @@ case.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Reading layer `2022_382078' from data source </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpOMB1AB/file3df029cb6545/castle/2022_382078.json' </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `/private/var/folders/34/cc5j3spj0xs23b_r3j27pcr00000gn/T/RtmpEgZVzG/file395454a73dc1/castle/2022_382078.json' </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   using driver `GeoJSON'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 1 feature and 7 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POLYGON</span>

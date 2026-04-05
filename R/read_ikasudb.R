@@ -8,7 +8,7 @@
 #'   Agricultural community boundary data, typically returned by [get_boundary()].
 #'   This can be a single boundary object or a list of boundary objects.
 #' @param path
-#'   Path to an `.xlsx` file.
+#'   Path to an `.xlsx` file provided by MAFF or a `.csv` file
 #' @param na
 #'   Character vector of strings to interpret as missing values. Defaults to
 #'   `c("-", "\u2026")`.
@@ -35,9 +35,20 @@ read_ikasudb <- function(
   )
   common_cols_lower <- tolower(common_cols_upper)
 
-  new_df <- readxl::read_excel(
-    path,
-    na = na
+  path_ext <- tolower(tools::file_ext(path))
+
+  new_df <- switch(
+    path_ext,
+    "xlsx" = readxl::read_excel(
+      path,
+      na = na
+    ),
+    "csv" = readr::read_csv(
+      file = path,
+      na = na,
+      col_types = "ccccc"
+    ),
+    stop("`path` must have extension '.xlsx' or '.csv'.")
   ) |>
     dplyr::rename_with(tolower, dplyr::any_of(common_cols_upper)) |>
     dplyr::mutate(
@@ -68,13 +79,17 @@ read_ikasudb <- function(
   missing_new_df <- setdiff(join_keys, names(new_df))
 
   if (length(missing_boundary) > 0) {
-    stop("`boundary` is missing required columns: ",
-         paste(missing_boundary, collapse = ", "))
+    stop(
+      "`boundary` is missing required columns: ",
+      paste(missing_boundary, collapse = ", ")
+    )
   }
 
   if (length(missing_new_df) > 0) {
-    stop("Input file is missing required columns: ",
-         paste(missing_new_df, collapse = ", "))
+    stop(
+      "Input file is missing required columns: ",
+      paste(missing_new_df, collapse = ", ")
+    )
   }
 
   drop_cols <- intersect(

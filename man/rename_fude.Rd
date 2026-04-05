@@ -10,9 +10,8 @@ rename_fude(data, suffix = TRUE, romaji = NULL, quiet = TRUE)
 \item{data}{A Fude Polygon data object returned by \code{\link[=read_fude]{read_fude()}}.}
 
 \item{suffix}{Logical. If \code{FALSE}, municipality suffixes are removed from renamed element
-names. For example, Japanese suffixes such as \code{"市"}, \code{"区"}, \code{"町"}, and
-\code{"村"} are removed, and romaji suffixes such as \code{"-shi"} and \code{"-ku"} are
-also removed when \code{romaji} is used.}
+names. For example, romaji suffixes such as \code{"-shi"} and \code{"-ku"} are removed
+when \code{romaji} is used.}
 
 \item{romaji}{Character scalar or \code{NULL}. If \code{NULL}, Japanese municipality names are used.
 Otherwise, municipality names are converted to romaji. Supported values are:

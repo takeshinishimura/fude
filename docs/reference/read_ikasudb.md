@@ -19,7 +19,7 @@ read_ikasudb(boundary, path, na = c("-", "…"), zero = TRUE)
 
 - path:
 
-  Path to an `.xlsx` file.
+  Path to an `.xlsx` file provided by MAFF or a `.csv` file
 
 - na:
 

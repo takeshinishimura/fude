@@ -22,9 +22,8 @@ rename_fude(data, suffix = TRUE, romaji = NULL, quiet = TRUE)
 - suffix:
 
   Logical. If `FALSE`, municipality suffixes are removed from renamed
-  element names. For example, Japanese suffixes such as `"市"`, `"区"`,
-  `"町"`, and `"村"` are removed, and romaji suffixes such as `"-shi"`
-  and `"-ku"` are also removed when `romaji` is used.
+  element names. For example, romaji suffixes such as `"-shi"` and
+  `"-ku"` are removed when `romaji` is used.
 
 - romaji:
 
@@ -51,7 +50,7 @@ A Fude Polygon data object with renamed elements.
 path <- system.file("extdata", "castle.zip", package = "fude")
 d <- read_fude(path, quiet = FALSE)
 #> Reading layer `2021_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpOMB1AB/file3df029cb6545/castle/2021_382019.json' 
+#>   `/private/var/folders/34/cc5j3spj0xs23b_r3j27pcr00000gn/T/RtmpEgZVzG/file395454a73dc1/castle/2021_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
@@ -59,7 +58,7 @@ d <- read_fude(path, quiet = FALSE)
 #> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575
 #> Geodetic CRS:  WGS 84
 #> Reading layer `2022_382019' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpOMB1AB/file3df029cb6545/castle/2022_382019.json' 
+#>   `/private/var/folders/34/cc5j3spj0xs23b_r3j27pcr00000gn/T/RtmpEgZVzG/file395454a73dc1/castle/2022_382019.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
@@ -67,7 +66,7 @@ d <- read_fude(path, quiet = FALSE)
 #> Bounding box:  xmin: 132.7653 ymin: 33.84506 xmax: 132.7662 ymax: 33.84575
 #> Geodetic CRS:  WGS 84
 #> Reading layer `2022_382078' from data source 
-#>   `/private/var/folders/33/1nmp7drn6c56394qxrzb2cth0000gn/T/RtmpOMB1AB/file3df029cb6545/castle/2022_382078.json' 
+#>   `/private/var/folders/34/cc5j3spj0xs23b_r3j27pcr00000gn/T/RtmpEgZVzG/file395454a73dc1/castle/2022_382078.json' 
 #>   using driver `GeoJSON'
 #> Simple feature collection with 1 feature and 7 fields
 #> Geometry type: POLYGON
