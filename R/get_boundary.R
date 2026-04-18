@@ -267,10 +267,12 @@ read_boundary <- function(
     dplyr::mutate(
       boundary_data_year = boundary_data_year,
       rcom_year = rcom_year
-    )
+    ) |>
+    dplyr::arrange(.data$key)
 
   if (isFALSE(suffix) && "city_romaji" %in% names(x)) {
-    levels(x$city_romaji) <- remove_romaji_suffix(levels(x$city_romaji))
+    levels(x$city_romaji) <- levels(x$city_romaji) |>
+      remove_romaji_suffix()
   }
 
   if (!is.null(crs) && sf::st_crs(x)$epsg != crs) {
@@ -336,20 +338,20 @@ get_pref_code <- function(data) {
     data_chr <- sprintf("%02d", as.integer(data_chr))
   }
 
-  if (data_chr %in% fude::pref_code_table$pref_code) {
+  if (data_chr %in% fude::pref_code_table$pref) {
     x <- data_chr
-  } else if (data_chr %in% fude::pref_code_table$pref_kanji) {
-    x <- fude::pref_code_table$pref_code[
-      match(data_chr, fude::pref_code_table$pref_kanji)
+  } else if (data_chr %in% fude::pref_code_table$pref_name) {
+    x <- fude::pref_code_table$pref[
+      match(data_chr, fude::pref_code_table$pref_name)
     ]
   } else if (
     data_chr %in%
-      sub("(\u90FD|\u5E9C|\u770C)$", "", fude::pref_code_table$pref_kanji)
+      sub("(\u90FD|\u5E9C|\u770C)$", "", fude::pref_code_table$pref_name)
   ) {
-    x <- fude::pref_code_table$pref_code[
+    x <- fude::pref_code_table$pref[
       match(
         data_chr,
-        sub("(\u90FD|\u5E9C|\u770C)$", "", fude::pref_code_table$pref_kanji)
+        sub("(\u90FD|\u5E9C|\u770C)$", "", fude::pref_code_table$pref_name)
       )
     ]
   } else {
@@ -360,12 +362,10 @@ get_pref_code <- function(data) {
 }
 
 remove_romaji_suffix <- function(x) {
-  tolower(
-    gsub(
-      "-SHI|-KU|-CHO|-MACHI|-SON|-MURA",
-      "",
-      x,
-      ignore.case = TRUE
-    )
+  gsub(
+    "-SHI|-KU|-CHO|-MACHI|-SON|-MURA",
+    "",
+    x,
+    ignore.case = TRUE
   )
 }

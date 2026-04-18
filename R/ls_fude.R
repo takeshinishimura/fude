@@ -61,10 +61,10 @@ process_ls_fude <- function(
       name = "n"
     ) |>
     dplyr::mutate(
-      pref_name = fude::pref_code_table$pref_kanji[
+      pref_name = fude::pref_code_table$pref_name[
         match(
           substr(.data$local_government_cd, 1, 2),
-          fude::pref_code_table$pref_code
+          fude::pref_code_table$pref
         )
       ],
       city_name = get_lg_name(.data$local_government_cd, romaji = NULL),

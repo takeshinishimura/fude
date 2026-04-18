@@ -21,12 +21,14 @@ Fude Polygon data can now be downloaded from two different MAFF websites
 You can install the released version of fude from CRAN with:
 
 ``` r
+
 install.packages("fude")
 ```
 
 Or the development version from GitHub with:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("takeshinishimura/fude")
 ```
@@ -44,6 +46,7 @@ was obtained:
     file saved on your computer without unzipping it.
 
 ``` r
+
 library(fude)
 d <- read_fude("~/2022_38.zip")
 ```
@@ -56,12 +59,14 @@ d <- read_fude("~/2022_38.zip")
     loaded.
 
 ``` r
+
 d2 <- read_fude(pref = "愛媛")
 ```
 
 ### List the contents of Fude Polygon datal
 
 ``` r
+
 ls_fude(d)
 #> # A tibble: 20 × 7
 #>    name     issue_year local_government_cd     n pref_name city_name city_romaji
@@ -97,6 +102,7 @@ Convert local government codes into Japanese municipality names for
 easier management.
 
 ``` r
+
 dro <- rename_fude(d)
 names(dro)
 #>  [1] "2022_松山市"     "2022_今治市"     "2022_宇和島市"   "2022_八幡浜市"  
@@ -109,6 +115,7 @@ names(dro)
 You can also rename the columns to Romaji instead of Japanese.
 
 ``` r
+
 dro <- d |>
   rename_fude(suffix = TRUE, romaji = "title", quiet = FALSE)
 #> 2022_382019 -> 2022_Matsuyama-shi
@@ -141,6 +148,7 @@ the Fude Polygon data, from the MAFF website:
 only in Japanese).
 
 ``` r
+
 b <- get_boundary(d)
 ```
 
@@ -150,6 +158,7 @@ You can easily combine Fude Polygons with agricultural community
 boundaries to create enriched spatial analyses or maps.
 
 ``` r
+
 library(ggplot2)
 
 db <- combine_fude(d2, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
@@ -173,6 +182,7 @@ names, and agricultural community names.
 FlatGeobuf (Obtaining Data \#2).
 
 ``` r
+
 extract_fude(d2, city = "松山市", kcity = "興居島")
 #> Simple feature collection with 1691 features and 6 fields
 #> Geometry type: MULTIPOLYGON
@@ -201,6 +211,7 @@ extract_fude(d2, city = "松山市", kcity = "興居島")
 You can explore Fude Polygon data interactively.
 
 ``` r
+
 library(shiny)
 
 s <- shiny_fude(db, rcom = TRUE)
@@ -213,6 +224,7 @@ You can read data from the MAFF database
 ([地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/)).
 
 ``` r
+
 library(dplyr)
 
 b1 <- get_boundary(d2, path = "~", boundary_type = 1, quiet = TRUE)
@@ -244,6 +256,7 @@ If you want to use
 do the following.
 
 ``` r
+
 db1 <- combine_fude(d, b, city = "伊方町")
 db2 <- combine_fude(d, b, city = "八幡浜市")
 db3 <- combine_fude(d, b, city = "西予市", kcity = "三瓶|二木生|三島|双岩")

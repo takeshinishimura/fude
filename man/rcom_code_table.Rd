@@ -19,7 +19,7 @@ A data frame with 149,511 rows and 13 variables:
 \item{rcom_kana}{Community names in Hiragana}
 \item{rcom_romaji}{Community names in Romaji}
 \item{local_government_cd}{Local government codes}
-\item{census_year}{Year of the census from which the data is derived}
+\item{rcom_year}{Agricultural community reference year}
 }
 }
 \usage{

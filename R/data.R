@@ -19,8 +19,10 @@
 #'
 #' @format A data frame with 47 rows and 2 variables:
 #' \describe{
-#'   \item{pref_code}{Prefecture codes}
-#'   \item{pref_kanji}{Prefecture names in Kanji}
+#'   \item{pref}{Prefecture codes}
+#'   \item{pref_name}{Prefecture names in Kanji}
+#'   \item{pref_kana}{Prefecture names in Hiragana}
+#'   \item{pref_romaji}{Prefecture names in Romaji}
 #' }
 "pref_code_table"
 
@@ -42,7 +44,7 @@
 #'   \item{rcom_kana}{Community names in Hiragana}
 #'   \item{rcom_romaji}{Community names in Romaji}
 #'   \item{local_government_cd}{Local government codes}
-#'   \item{census_year}{Year of the census from which the data is derived}
+#'   \item{rcom_year}{Agricultural community reference year}
 #' }
 "rcom_code_table"
 
@@ -61,7 +63,7 @@
 #'   \item{city_romaji}{City names in Romaji}
 #'   \item{kcity_name}{Former city names in Kanji}
 #'   \item{local_government_cd}{Local government codes}
-#'   \item{census_year}{Year of the census from which the data is derived}
+#'   \item{rcom_year}{Agricultural community reference year}
 #' }
 "kcity_code_table"
 
@@ -79,6 +81,6 @@
 #'   \item{city_kana}{City names in Hiragana}
 #'   \item{city_romaji}{City names in Romaji}
 #'   \item{local_government_cd}{Local government codes}
-#'   \item{census_year}{Year of the census from which the data is derived}
+#'   \item{rcom_year}{Agricultural community reference year}
 #' }
 "city_code_table"

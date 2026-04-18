@@ -3,6 +3,7 @@
 ## Using `ggforce` package
 
 ``` r
+
 library(fude)
 library(dplyr)
 library(sf)
@@ -63,6 +64,7 @@ If you want to be particular about the details of the map, for example,
 execute the following code.
 
 ``` r
+
 library(gghighlight)
 library(ggrepel)
 library(cowplot)

@@ -7,8 +7,10 @@
 \format{
 A data frame with 47 rows and 2 variables:
 \describe{
-\item{pref_code}{Prefecture codes}
-\item{pref_kanji}{Prefecture names in Kanji}
+\item{pref}{Prefecture codes}
+\item{pref_name}{Prefecture names in Kanji}
+\item{pref_kana}{Prefecture names in Hiragana}
+\item{pref_romaji}{Prefecture names in Romaji}
 }
 }
 \usage{

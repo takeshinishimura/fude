@@ -3,6 +3,7 @@
 ## Structure of combined Fude Polygon data with agricultural community boundary data
 
 ``` r
+
 library(fude)
 
 d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
@@ -14,6 +15,7 @@ d2 <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
 ### GeoJSON data characteristics (obtain data \#1)
 
 ``` r
+
 library(sf)
 
 db <- d |>
@@ -26,6 +28,7 @@ There are 7 types of objects obtained by
 as follows:
 
 ``` r
+
 names(db)
 ```
 
@@ -33,6 +36,7 @@ names(db)
     ## [6] "city"       "pref"
 
 ``` r
+
 library(ggplot2)
 
 ggplot() +
@@ -57,6 +61,7 @@ Forestry and Fisheries, “Fude Polygon Data (released in FY 2022)” and
   community borders may be divided.
 
 ``` r
+
 library(patchwork)
 
 fude <- ggplot() +
@@ -85,6 +90,7 @@ custom code. The rows that require attention can be identified with the
 following command.
 
 ``` r
+
 library(dplyr)
 
 db$fude |>
@@ -111,6 +117,7 @@ notable feature of this format is that each record already includes an
 **accurately assigned agricultural community code**.
 
 ``` r
+
 db <- combine_fude(d2, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
 ggplot() +
@@ -130,6 +137,7 @@ Forestry and Fisheries, “Fude Polygon Data (released in FY 2025)” and
 ## Possible values for `rcom` in `combine_fude()` and `extract_boundary()`
 
 ``` r
+
 library(data.tree)
 
 tree <- b[[1]] |>
@@ -175,6 +183,7 @@ print(tree, "n", limit = 30)
     ## 30          °--... 82 nodes w/ 0 sub   -
 
 ``` r
+
 ggplot(data = b[[1]] |> filter(grepl("松山", kcity_name))) + 
   geom_sf(fill = NA) +
   geom_sf_text(aes(label = rcom_name), size = 2, family = "Hiragino Sans") +
@@ -186,6 +195,7 @@ ggplot(data = b[[1]] |> filter(grepl("松山", kcity_name))) +
 **出典**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
+
 library(collapsibleTree)
 
 b[[1]] |>
@@ -201,6 +211,7 @@ b[[1]] |>
 ## Possible values for `kcity` in `combine_fude()` and `extract_boundary()`
 
 ``` r
+
 library(paletteer)
 
 ggplot(b[[1]] |> filter(city_name == "松山市")) +

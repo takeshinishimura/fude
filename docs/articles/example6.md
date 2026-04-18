@@ -5,6 +5,7 @@
 ### `st_voronoi()`
 
 ``` r
+
 library(fude)
 library(dplyr)
 library(ggplot2)
@@ -79,6 +80,7 @@ map1 + map2
 **出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
+
 voronoi$area_voronoi <- sf::st_area(voronoi)
 voronoi$a_voronoi <- as.numeric(units::set_units(voronoi$area_voronoi, "a"))
 
@@ -96,6 +98,7 @@ ggplot(data = voronoi, aes(x = a_voronoi, fill = land_type_jp)) +
 ### `spdep::poly2nb()` and `localmoran()`
 
 ``` r
+
 library(spdep)
 
 coords <- sf::st_coordinates(sf::st_centroid(voronoi))
@@ -106,6 +109,7 @@ plot(nb, coords, cex = .01, col = "red")
 ![](example6_files/figure-html/spdep_poly2nb-1.png)
 
 ``` r
+
 lw <- spdep::nb2listw(nb, style = "W", zero.policy = TRUE)
 (moran_test <- spdep::moran.test(voronoi$a, listw = lw))
 ```
@@ -124,6 +128,7 @@ lw <- spdep::nb2listw(nb, style = "W", zero.policy = TRUE)
     ##      0.2303868599     -0.0006510417      0.0002350355
 
 ``` r
+
 localmoran <- spdep::localmoran(voronoi$a, listw = lw)
 localmoran_df <- as.data.frame(localmoran)
 voronoi$Ii <- localmoran_df$Ii
@@ -149,6 +154,7 @@ sum(voronoi$p_values < 0.1, na.rm = TRUE) / nrow(voronoi)
     ## [1] 0.1885566
 
 ``` r
+
 gp <- ggplot() +
   geom_sf(
     data = voronoi,
@@ -178,6 +184,7 @@ gI + gp
 ### `spdep::knn2nb()` and `localmoran()`
 
 ``` r
+
 coords1 <- sf::st_coordinates(db$fude_points)
 nb1 <- spdep::knn2nb(spdep::knearneigh(coords1, k = 4))
 
@@ -192,6 +199,7 @@ plot(nb2, coords2, cex = .010, col = "red")
 ![](example6_files/figure-html/spdep_knn2nb-1.png)
 
 ``` r
+
 lw1 <- spdep::nb2listw(nb1, style = "W")
 (moran_test1 <- spdep::moran.test(db$fude_points$a, listw = lw1))
 ```
@@ -209,6 +217,7 @@ lw1 <- spdep::nb2listw(nb1, style = "W")
     ##      0.2315774216     -0.0006506181      0.0002868963
 
 ``` r
+
 lw2 <- spdep::nb2listw(nb2, style = "W")
 (moran_test2 <- spdep::moran.test(voronoi$a, listw = lw2))
 ```
@@ -226,6 +235,7 @@ lw2 <- spdep::nb2listw(nb2, style = "W")
     ##      0.2254979130     -0.0006506181      0.0002855370
 
 ``` r
+
 localmoran <- spdep::localmoran(db$fude_points$a, listw = lw1)
 localmoran_df <- as.data.frame(localmoran)
 db$fude2 <- db$fude
@@ -252,6 +262,7 @@ sum(db$fude2$p_values < 0.1) / nrow(db$fude2)
     ## [1] 0.1254876
 
 ``` r
+
 gp <- ggplot() +
   geom_sf(
     data = db$fude2,
@@ -279,6 +290,7 @@ gI + gp
 **出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
+
 localmoran <- spdep::localmoran(voronoi$a, listw = lw2)
 localmoran_df <- as.data.frame(localmoran)
 voronoi$Ii <- localmoran_df$Ii
@@ -304,6 +316,7 @@ sum(voronoi$p_values < 0.1) / nrow(voronoi)
     ## [1] 0.1274382
 
 ``` r
+
 gp <- ggplot() +
   geom_sf(
     data = voronoi,

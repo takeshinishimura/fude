@@ -3,6 +3,7 @@
 ## Using `gghighlight` package
 
 ``` r
+
 library(fude)
 library(dplyr)
 library(ggplot2)
@@ -29,6 +30,7 @@ ggplot() +
 **出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
+
 ggplot(data = db$fude, aes(x = a, fill = land_type_jp)) +
   geom_histogram(position = "identity", alpha = .5) +
   labs(x = "面積（a）",

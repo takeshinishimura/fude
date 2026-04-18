@@ -12,10 +12,18 @@ pref_code_table
 
 A data frame with 47 rows and 2 variables:
 
-- pref_code:
+- pref:
 
   Prefecture codes
 
-- pref_kanji:
+- pref_name:
 
   Prefecture names in Kanji
+
+- pref_kana:
+
+  Prefecture names in Hiragana
+
+- pref_romaji:
+
+  Prefecture names in Romaji

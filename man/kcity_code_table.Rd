@@ -16,7 +16,7 @@ A data frame with 12,110 rows and 10 variables:
 \item{city_romaji}{City names in Romaji}
 \item{kcity_name}{Former city names in Kanji}
 \item{local_government_cd}{Local government codes}
-\item{census_year}{Year of the census from which the data is derived}
+\item{rcom_year}{Agricultural community reference year}
 }
 }
 \usage{

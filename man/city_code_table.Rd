@@ -15,7 +15,7 @@ A data frame with 1,905 rows and 9 variables:
 \item{city_kana}{City names in Hiragana}
 \item{city_romaji}{City names in Romaji}
 \item{local_government_cd}{Local government codes}
-\item{census_year}{Year of the census from which the data is derived}
+\item{rcom_year}{Agricultural community reference year}
 }
 }
 \usage{

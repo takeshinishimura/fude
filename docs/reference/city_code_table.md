@@ -44,6 +44,6 @@ A data frame with 1,905 rows and 9 variables:
 
   Local government codes
 
-- census_year:
+- rcom_year:
 
-  Year of the census from which the data is derived
+  Agricultural community reference year

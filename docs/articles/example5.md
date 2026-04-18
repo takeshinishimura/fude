@@ -6,6 +6,7 @@ You can also visualize the relationship between the residences of
 farmers and their farmland.
 
 ``` r
+
 library(fude)
 library(dplyr)
 library(sf)

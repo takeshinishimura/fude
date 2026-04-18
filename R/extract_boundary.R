@@ -108,11 +108,11 @@ extract_boundary <- function(
     sf::st_geometry()
 
   pref_map <- sf::st_sf(
-    pref_code = fude_to_pref_code(x),
+    pref = fude_to_pref_code(x),
     geometry = pref_geometries
   ) |>
     sf::st_set_crs(boundary_crs) |>
-    dplyr::left_join(fude::pref_code_table, by = "pref_code") |>
+    dplyr::left_join(fude::pref_code_table, by = "pref") |>
     add_xy()
 
   all_city <- unique(x$city)
@@ -215,13 +215,13 @@ find_pref_name <- function(city) {
     city_kanji <- fude::lg_code_table$city_kanji[matching_idx]
   } else if (grepl("^[A-Za-z0-9, -]+$", city)) {
     matching_idx <- vapply(
-      fude::pref_code_table$pref_code,
+      fude::pref_code_table$pref,
       \(x) grepl(x, city),
       logical(1)
     )
 
     if (sum(matching_idx) == 1) {
-      pref_kanji <- fude::pref_code_table$pref_kanji[matching_idx]
+      pref_kanji <- fude::pref_code_table$pref_name[matching_idx]
       city_kanji <- toupper(gsub(
         paste0(get_pref_code(pref_kanji), "|,|\\s"),
         "",
@@ -233,13 +233,13 @@ find_pref_name <- function(city) {
     }
   } else {
     matching_idx <- vapply(
-      fude::pref_code_table$pref_kanji,
+      fude::pref_code_table$pref_name,
       \(x) grepl(paste0("^", x), city),
       logical(1)
     )
 
     if (sum(matching_idx) == 1) {
-      pref_kanji <- fude::pref_code_table$pref_kanji[matching_idx]
+      pref_kanji <- fude::pref_code_table$pref_name[matching_idx]
       city_kanji <- gsub(paste0("^", pref_kanji, "|\\s|\u3000"), "", city)
     } else {
       pref_kanji <- NULL

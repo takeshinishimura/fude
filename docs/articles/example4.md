@@ -6,6 +6,7 @@ Read data from the MAFF database
 [地域の農業を見て・知って・活かすDB](https://www.maff.go.jp/j/tokei/census/shuraku_data/).
 
 ``` r
+
 library(fude)
 library(ggplot2)
 
@@ -26,6 +27,7 @@ ggplot() +
 **資料**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
+
 b2 <- get_boundary(d, path = "~", boundary_type = 2, quiet = TRUE)
 m2 <- read_ikasudb(b2, "~/IA0001_2023_2020_38.xlsx")
 
@@ -42,6 +44,7 @@ ggplot() +
 **資料**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
+
 b3 <- get_boundary(d, path = "~", boundary_type = 3, quiet = TRUE)
 m3 <- read_ikasudb(b3, "~/IA0001_2023_2020_38.xlsx")
 
@@ -58,6 +61,7 @@ ggplot() +
 **資料**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
+
 library(ggtext)
 
 m1 <- read_ikasudb(b1, "~/SA1066_2020_2020_38.xlsx")
@@ -80,6 +84,7 @@ ggplot() +
 ![](example4_files/figure-html/kajumenseki1-1.png)
 
 ``` r
+
 m2 <- read_ikasudb(b2, "~/SA1066_2020_2020_38.xlsx")
 
 ggplot() +
@@ -100,6 +105,7 @@ ggplot() +
 ![](example4_files/figure-html/kajumenseki2-1.png)
 
 ``` r
+
 m3 <- read_ikasudb(b3, "~/SA1066_2020_2020_38.xlsx")
 
 ggplot() +
@@ -120,6 +126,7 @@ ggplot() +
 ![](example4_files/figure-html/kajumenseki3-1.png)
 
 ``` r
+
 m1 <- b1 |>
   read_ikasudb("~/GC0001_2019_2020_38.xlsx")
 
@@ -133,6 +140,7 @@ mapview(t1, zcol = "組織数")
 ```
 
 ``` r
+
 m1 <- b1 |>
   read_ikasudb("~/GC0001_2019_2020_38.xlsx")
 

@@ -33,7 +33,7 @@ read_ikasudb <- function(
     "PREF", "CITY", "KCITY", "RCOM",
     "PREF_NAME", "CITY_NAME", "KCITY_NAME", "RCOM_NAME"
   )
-  common_cols_lower <- tolower(common_cols_upper)
+  common_cols <- tolower(common_cols_upper)
 
   path_ext <- tolower(tools::file_ext(path))
 
@@ -53,7 +53,7 @@ read_ikasudb <- function(
     dplyr::rename_with(tolower, dplyr::any_of(common_cols_upper)) |>
     dplyr::mutate(
       dplyr::across(
-        .cols = dplyr::where(is.character) & !dplyr::any_of(common_cols_lower),
+        .cols = dplyr::where(is.character) & !dplyr::any_of(common_cols),
         .fns = \(col) {
           col2 <- trimws(col)
 
@@ -74,7 +74,7 @@ read_ikasudb <- function(
 
   boundary_df <- dplyr::bind_rows(boundary)
 
-  join_keys <- c("key", "pref", "city", "kcity", "rcom")
+  join_keys <- "key"
   missing_boundary <- setdiff(join_keys, names(boundary_df))
   missing_new_df <- setdiff(join_keys, names(new_df))
 
@@ -93,7 +93,7 @@ read_ikasudb <- function(
   }
 
   drop_cols <- intersect(
-    c("pref_name", "city_name", "kcity_name", "rcom_name"),
+    common_cols[common_cols != "key"],
     names(new_df)
   )
 

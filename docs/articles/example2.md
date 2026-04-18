@@ -6,6 +6,7 @@ This package may be beneficial, especially for R beginners, when simply
 wanting to draw agricultural community boundaries.
 
 ``` r
+
 library(fude)
 library(dplyr)
 library(ggplot2)
@@ -26,6 +27,7 @@ ggplot(data = eb, aes(fill = kcity_name)) +
 **出典**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
+
 eb <- extract_boundary(b, city = "", rcom = "大浦", layer = TRUE)
 
 ggplot(data = eb$city) +
@@ -38,6 +40,7 @@ ggplot(data = eb$city) +
 **出典**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
+
 ggplot(data = eb$kcity) +
   geom_sf(aes(fill = fill)) +
   theme_void()
@@ -48,6 +51,7 @@ ggplot(data = eb$kcity) +
 **出典**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
+
 ggplot() +
   geom_sf(data = eb$city) +
   geom_sf(data = eb$rcom, aes(fill = key)) +
@@ -63,6 +67,7 @@ ggplot() +
 **出典**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
+
 eb <- extract_boundary(b, city = "西予市", kcity = "遊子川", layer = TRUE)
 
 ggplot() +
@@ -98,6 +103,7 @@ ggplot() +
 **出典**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
 
 ``` r
+
 eb <- extract_boundary(b, city = "八幡浜市", kcity = "真穴", layer = TRUE)
 
 ggplot(data = eb$city |> filter(fill == 1)) +
