@@ -19,7 +19,7 @@
 #' @returns
 #'   An [sf::sf()] object created by joining the Excel data to `boundary`.
 #'
-#' @seealso [read_fude()]
+#' @seealso [get_boundary()]
 #'
 #' @export
 read_ikasudb <- function(
@@ -28,12 +28,11 @@ read_ikasudb <- function(
   na = c("-", "\u2026"),
   zero = TRUE
 ) {
-  common_cols_upper <- c(
-    "KEY",
-    "PREF", "CITY", "KCITY", "RCOM",
-    "PREF_NAME", "CITY_NAME", "KCITY_NAME", "RCOM_NAME"
+  common_cols <- c(
+    "key",
+    "pref", "city", "kcity", "rcom",
+    "pref_name", "city_name", "kcity_name", "rcom_name"
   )
-  common_cols <- tolower(common_cols_upper)
 
   path_ext <- tolower(tools::file_ext(path))
 
@@ -50,7 +49,7 @@ read_ikasudb <- function(
     ),
     stop("`path` must have extension '.xlsx' or '.csv'.")
   ) |>
-    dplyr::rename_with(tolower, dplyr::any_of(common_cols_upper)) |>
+    dplyr::rename_with(tolower, dplyr::any_of(toupper(common_cols))) |>
     dplyr::mutate(
       dplyr::across(
         .cols = dplyr::where(is.character) & !dplyr::any_of(common_cols),

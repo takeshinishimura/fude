@@ -8,8 +8,9 @@
 #' @param data
 #'   Either a Fude Polygon data object returned by [read_fude()], or a prefecture
 #'   code or Japanese prefecture name.
+
 #' @param boundary_data_year
-#'   The year of the boundary dataset.
+#'   The year of the boundary dataset. If `NULL`, `rcom_year` is used.
 #' @param rcom_year
 #'   The agricultural community reference year used in the MAFF file name.
 #' @param boundary_type
@@ -40,7 +41,7 @@
 #' @export
 get_boundary <- function(
   data,
-  boundary_data_year = 2020,
+  boundary_data_year = NULL,
   rcom_year = 2020,
   boundary_type = 1,
   path = NULL,
@@ -53,6 +54,10 @@ get_boundary <- function(
 
   if (length(pref_codes) == 0) {
     stop("No prefecture code could be determined from `data`.")
+  }
+
+  if (is.null(boundary_data_year)) {
+    boundary_data_year <- rcom_year
   }
 
   x <- lapply(
@@ -190,6 +195,7 @@ read_boundary <- function(
         d |>
           dplyr::left_join(
             fude::rcom_code_table |>
+              dplyr::filter(.data$rcom_year == !!rcom_year) |>
               dplyr::select(
                 .data$key,
                 .data$pref_kana,
@@ -205,6 +211,7 @@ read_boundary <- function(
         d |>
           dplyr::left_join(
             fude::rcom_code_table |>
+              dplyr::filter(.data$rcom_year == !!rcom_year) |>
               dplyr::select(
                 .data$key,
                 .data$pref_kana,
@@ -219,6 +226,7 @@ read_boundary <- function(
         d |>
           dplyr::left_join(
             fude::kcity_code_table |>
+              dplyr::filter(.data$rcom_year == !!rcom_year) |>
               dplyr::select(
                 .data$key,
                 .data$pref_kana,
@@ -232,6 +240,7 @@ read_boundary <- function(
         d |>
           dplyr::left_join(
             fude::city_code_table |>
+              dplyr::filter(.data$rcom_year == !!rcom_year) |>
               dplyr::select(
                 .data$key,
                 .data$pref_kana,

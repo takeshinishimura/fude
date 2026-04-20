@@ -26,5 +26,5 @@ An \code{\link[sf:sf]{sf::sf()}} object created by joining the Excel data to \co
 tabular contents to agricultural community boundary data.
 }
 \seealso{
-\code{\link[=read_fude]{read_fude()}}
+\code{\link[=get_boundary]{get_boundary()}}
 }

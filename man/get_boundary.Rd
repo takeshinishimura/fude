@@ -6,7 +6,7 @@
 \usage{
 get_boundary(
   data,
-  boundary_data_year = 2020,
+  boundary_data_year = NULL,
   rcom_year = 2020,
   boundary_type = 1,
   path = NULL,
@@ -20,7 +20,7 @@ get_boundary(
 \item{data}{Either a Fude Polygon data object returned by \code{\link[=read_fude]{read_fude()}}, or a prefecture
 code or Japanese prefecture name.}
 
-\item{boundary_data_year}{The year of the boundary dataset.}
+\item{boundary_data_year}{The year of the boundary dataset. If \code{NULL}, \code{rcom_year} is used.}
 
 \item{rcom_year}{The agricultural community reference year used in the MAFF file name.}
 
