@@ -95,8 +95,9 @@ find_key <- function(
   city_kana <- strip_kana_suffix(city_vec)
   city_romaji <- remove_romaji_suffix(city_vec)
 
-  x <- fude::rcom_code_table |>
+  x <- fude::rcom_year_id |>
     dplyr::filter(.data$rcom_year == 2020) |>
+    dplyr::left_join(fude::rcom_id_table, by = "id") |>
     dplyr::filter(
       if (length(city_vec) == 0) {
         TRUE

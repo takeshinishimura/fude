@@ -10,7 +10,7 @@ pref_code_table
 
 ## Format
 
-A data frame with 47 rows and 2 variables:
+A data frame with 47 rows and 4 variables:
 
 - pref:
 

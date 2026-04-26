@@ -233,14 +233,17 @@ b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
 
 m1 <- b1 |>
   read_ikasudb("~/IA0001_2023_2020_38.xlsx") |>
-  read_ikasudb("~/SA1009_2020_2020_38.xlsx") |>
-  read_ikasudb("~/GC0001_2019_2020_38.xlsx") |>
   mutate(
-    地域類型1次分類 = factor(地域類型1次分類, labels = c("都市的地域", "平地農業地域", "中間農業地域", "山間農業地域"))
+    地域類型1次分類 = factor(
+      地域類型1次分類,
+      levels = 1:4,
+      labels = c("都市的地域", "平地農業地域", "中間農業地域", "山間農業地域")
+    )
   )
 
 ggplot() +
-  geom_sf(data = m1, aes(fill = 地域類型1次分類), alpha = .8) +
+  geom_sf(data = m1, aes(fill = 地域類型1次分類)) +
+  scale_fill_brewer(palette = "BuGn", na.translate = FALSE) +
   theme_void() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```

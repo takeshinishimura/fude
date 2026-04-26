@@ -134,7 +134,7 @@ extract_boundary <- function(
   ) |>
     sf::st_set_crs(boundary_crs) |>
     dplyr::left_join(
-      fude::city_code_table |>
+      fude::city_id_table |>
         dplyr::select(
           .data$key,
           .data$pref_name, .data$city_name,
@@ -176,7 +176,7 @@ extract_boundary <- function(
   ) |>
     sf::st_set_crs(boundary_crs) |>
     dplyr::left_join(
-      fude::kcity_code_table |>
+      fude::kcity_id_table |>
         dplyr::select(
           .data$key,
           .data$pref_name, .data$city_name,

@@ -38,4 +38,4 @@ created by joining the Excel data to `boundary`.
 
 ## See also
 
-[`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md)
+[`get_boundary()`](https://takeshinishimura.github.io/fude/reference/get_boundary.md)

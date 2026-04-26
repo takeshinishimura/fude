@@ -233,14 +233,17 @@ b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
 
 m1 <- b1 |>
   read_ikasudb("~/IA0001_2023_2020_38.xlsx") |>
-  read_ikasudb("~/SA1009_2020_2020_38.xlsx") |>
-  read_ikasudb("~/GC0001_2019_2020_38.xlsx") |>
   mutate(
-    地域類型1次分類 = factor(地域類型1次分類, labels = c("都市的地域", "平地農業地域", "中間農業地域", "山間農業地域"))
+    地域類型1次分類 = factor(
+      地域類型1次分類,
+      levels = 1:4,
+      labels = c("都市的地域", "平地農業地域", "中間農業地域", "山間農業地域")
+    )
   )
 
 ggplot() +
-  geom_sf(data = m1, aes(fill = 地域類型1次分類), alpha = .8) +
+  geom_sf(data = m1, aes(fill = 地域類型1次分類)) +
+  scale_fill_brewer(palette = "BuGn", na.translate = FALSE) +
   theme_void() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```
@@ -277,8 +280,10 @@ mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
   : Bind multiple Fude Polygon data objects
 - [`cite_fude()`](https://takeshinishimura.github.io/fude/reference/cite_fude.md)
   : Generate citation text for Fude Polygon data
-- [`city_code_table`](https://takeshinishimura.github.io/fude/reference/city_code_table.md)
-  : City code/name correspondence table
+- [`city_id_table`](https://takeshinishimura.github.io/fude/reference/city_id_table.md)
+  : City ID/name correspondence table
+- [`city_year_id`](https://takeshinishimura.github.io/fude/reference/city_year_id.md)
+  : Community year/city ID correspondence table
 - [`combine_fude()`](https://takeshinishimura.github.io/fude/reference/combine_fude.md)
   : Combine Fude Polygon data with agricultural community boundary data
 - [`extract_boundary()`](https://takeshinishimura.github.io/fude/reference/extract_boundary.md)
@@ -287,16 +292,20 @@ mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
   : Extract a subset of Fude Polygon data
 - [`get_boundary()`](https://takeshinishimura.github.io/fude/reference/get_boundary.md)
   : Get agricultural community boundary data
-- [`kcity_code_table`](https://takeshinishimura.github.io/fude/reference/kcity_code_table.md)
-  : Kcity code/name correspondence table
+- [`kcity_id_table`](https://takeshinishimura.github.io/fude/reference/kcity_id_table.md)
+  : Kcity ID/name correspondence table
+- [`kcity_year_id`](https://takeshinishimura.github.io/fude/reference/kcity_year_id.md)
+  : Community year/Kcity ID correspondence table
 - [`lg_code_table`](https://takeshinishimura.github.io/fude/reference/lg_code_table.md)
   : Local government code/name correspondence table
 - [`ls_fude()`](https://takeshinishimura.github.io/fude/reference/ls_fude.md)
   : List the contents of Fude Polygon data
 - [`pref_code_table`](https://takeshinishimura.github.io/fude/reference/pref_code_table.md)
   : Prefecture code/name correspondence table
-- [`rcom_code_table`](https://takeshinishimura.github.io/fude/reference/rcom_code_table.md)
-  : Community code/name correspondence table
+- [`rcom_id_table`](https://takeshinishimura.github.io/fude/reference/rcom_id_table.md)
+  : Community ID/name correspondence table
+- [`rcom_year_id`](https://takeshinishimura.github.io/fude/reference/rcom_year_id.md)
+  : Community year/ID correspondence table
 - [`read_fude()`](https://takeshinishimura.github.io/fude/reference/read_fude.md)
   : Read Fude Polygon data from a ZIP file
 - [`read_ikasudb()`](https://takeshinishimura.github.io/fude/reference/read_ikasudb.md)

@@ -14,10 +14,10 @@ Read data from the MAFF database [地域の農業を見て・知って・活か�
 
 ```{r ikasu1, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
 library(fude)
+library(dplyr)
 library(ggplot2)
 
-d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
-b1 <- get_boundary(d, path = "~", boundary_type = 1, quiet = TRUE)
+b1 <- get_boundary("38", path = "~", boundary_type = 1, quiet = TRUE)
 m1 <- b1 |>
   read_ikasudb("~/IA0001_2023_2020_38.xlsx") |>
   mutate(
@@ -37,7 +37,7 @@ ggplot() +
 **資料**：`r cite_fude(m1)$ja`
 
 ```{r ikasu2, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
-b2 <- get_boundary(d, path = "~", boundary_type = 2, quiet = TRUE)
+b2 <- get_boundary("38", path = "~", boundary_type = 2, quiet = TRUE)
 m2 <- b2 |>
   read_ikasudb("~/IA0001_2023_2020_38.xlsx") |>
   mutate(
@@ -57,7 +57,7 @@ ggplot() +
 **資料**：`r cite_fude(m2)$ja`
 
 ```{r ikasu3, echo = TRUE, warning = FALSE, message = FALSE, dpi = 150, fig.width = 6, fig.height = 4}
-b3 <- get_boundary(d, path = "~", boundary_type = 3, quiet = TRUE)
+b3 <- get_boundary("38", path = "~", boundary_type = 3, quiet = TRUE)
 m3 <- b3 |>
   read_ikasudb("~/IA0001_2023_2020_38.xlsx") |>
   mutate(

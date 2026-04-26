@@ -194,8 +194,9 @@ read_boundary <- function(
       if (boundary_type == 1 && !("rcom_kana" %in% names(d))) {
         d |>
           dplyr::left_join(
-            fude::rcom_code_table |>
+            fude::rcom_year_id |>
               dplyr::filter(.data$rcom_year == !!rcom_year) |>
+              dplyr::left_join(fude::rcom_id_table, by = "id") |>
               dplyr::select(
                 .data$key,
                 .data$pref_kana,
@@ -210,8 +211,9 @@ read_boundary <- function(
       } else if (boundary_type == 1) {
         d |>
           dplyr::left_join(
-            fude::rcom_code_table |>
+            fude::rcom_year_id |>
               dplyr::filter(.data$rcom_year == !!rcom_year) |>
+              dplyr::left_join(fude::rcom_id_table, by = "id") |>
               dplyr::select(
                 .data$key,
                 .data$pref_kana,
@@ -225,8 +227,9 @@ read_boundary <- function(
       } else if (boundary_type == 2) {
         d |>
           dplyr::left_join(
-            fude::kcity_code_table |>
+            fude::kcity_year_id |>
               dplyr::filter(.data$rcom_year == !!rcom_year) |>
+              dplyr::left_join(fude::kcity_id_table, by = "id") |>
               dplyr::select(
                 .data$key,
                 .data$pref_kana,
@@ -239,8 +242,9 @@ read_boundary <- function(
       } else if (boundary_type == 3) {
         d |>
           dplyr::left_join(
-            fude::city_code_table |>
+            fude::city_year_id |>
               dplyr::filter(.data$rcom_year == !!rcom_year) |>
+              dplyr::left_join(fude::city_id_table, by = "id") |>
               dplyr::select(
                 .data$key,
                 .data$pref_kana,

@@ -241,13 +241,29 @@ for (rcom_year in years){
 
 rcom_code_table <- purrr::list_rbind(rcom, names_to = "rcom_year") |>
   dplyr::mutate(rcom_year = as.integer(rcom_year)) |>
-  dplyr::arrange(dplyr::desc(rcom_year)) |>
-  dplyr::distinct(
-    dplyr::across(-c(rcom_year, rcom_name, rcom_kana, rcom_romaji)),
-    .keep_all = TRUE
-  )
+  dplyr::arrange(key, dplyr::desc(rcom_year)) |>
+  tidyr::fill(
+    rcom_kana, rcom_romaji,
+    .direction = "down",
+    .by = c(key, rcom_name)
+  ) |>
+  dplyr::distinct()
 
-usethis::use_data(rcom_code_table, internal = FALSE, overwrite = TRUE)
+rcom_id_table <- rcom_code_table |>
+  dplyr::select(-rcom_year) |>
+  dplyr::distinct() |>
+  dplyr::mutate(id = dplyr::row_number())
+
+rcom_year_id <- rcom_code_table |>
+  dplyr::left_join(
+    rcom_id_table,
+    by = setdiff(names(rcom_id_table), "id"),
+    relationship = "many-to-one"
+  ) |>
+  dplyr::select(rcom_year, id)
+
+usethis::use_data(rcom_id_table, internal = FALSE, overwrite = TRUE)
+usethis::use_data(rcom_year_id, internal = FALSE, overwrite = TRUE)
 
 kcity <- setNames(vector("list", length(years)), as.character(years))
 
@@ -290,13 +306,24 @@ for (rcom_year in years){
 
 kcity_code_table <- purrr::list_rbind(kcity, names_to = "rcom_year") |>
   dplyr::mutate(rcom_year = as.integer(rcom_year)) |>
-  dplyr::arrange(dplyr::desc(rcom_year)) |>
-  dplyr::distinct(
-    dplyr::across(-rcom_year),
-    .keep_all = TRUE
-  )
+  dplyr::arrange(key, dplyr::desc(rcom_year)) |>
+  dplyr::distinct()
 
-usethis::use_data(kcity_code_table, internal = FALSE, overwrite = TRUE)
+kcity_id_table <- kcity_code_table |>
+  dplyr::select(-rcom_year) |>
+  dplyr::distinct() |>
+  dplyr::mutate(id = dplyr::row_number())
+
+kcity_year_id <- kcity_code_table |>
+  dplyr::left_join(
+    kcity_id_table,
+    by = setdiff(names(kcity_id_table), "id"),
+    relationship = "many-to-one"
+  ) |>
+  dplyr::select(rcom_year, id)
+
+usethis::use_data(kcity_id_table, internal = FALSE, overwrite = TRUE)
+usethis::use_data(kcity_year_id, internal = FALSE, overwrite = TRUE)
 
 city <- setNames(vector("list", length(years)), as.character(years))
 
@@ -338,10 +365,21 @@ for (rcom_year in years){
 
 city_code_table <- purrr::list_rbind(city, names_to = "rcom_year") |>
   dplyr::mutate(rcom_year = as.integer(rcom_year)) |>
-  dplyr::arrange(dplyr::desc(rcom_year)) |>
-  dplyr::distinct(
-    dplyr::across(-rcom_year),
-    .keep_all = TRUE
-  )
+  dplyr::arrange(key, dplyr::desc(rcom_year)) |>
+  dplyr::distinct()
 
-usethis::use_data(city_code_table, internal = FALSE, overwrite = TRUE)
+city_id_table <- city_code_table |>
+  dplyr::select(-rcom_year) |>
+  dplyr::distinct() |>
+  dplyr::mutate(id = dplyr::row_number())
+
+city_year_id <- city_code_table |>
+  dplyr::left_join(
+    city_id_table,
+    by = setdiff(names(city_id_table), "id"),
+    relationship = "many-to-one"
+  ) |>
+  dplyr::select(rcom_year, id)
+
+usethis::use_data(city_id_table, internal = FALSE, overwrite = TRUE)
+usethis::use_data(city_year_id, internal = FALSE, overwrite = TRUE)

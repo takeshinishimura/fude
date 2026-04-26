@@ -10,7 +10,7 @@ The target prefectures are determined from `data`.
 ``` r
 get_boundary(
   data,
-  boundary_data_year = 2020,
+  boundary_data_year = NULL,
   rcom_year = 2020,
   boundary_type = 1,
   path = NULL,
@@ -31,7 +31,7 @@ get_boundary(
 
 - boundary_data_year:
 
-  The year of the boundary dataset.
+  The year of the boundary dataset. If `NULL`, `rcom_year` is used.
 
 - rcom_year:
 

@@ -162,6 +162,7 @@ m1 <- b1 |>
 
 ggplot() +
   geom_sf(data = m1, aes(fill = 地域類型1次分類)) +
+  scale_fill_brewer(palette = "BuGn", na.translate = FALSE) +
   theme_void() +
   theme(text = element_text(family = "Hiragino Sans"))
 ```

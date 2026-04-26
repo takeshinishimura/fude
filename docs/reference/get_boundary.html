@@ -48,7 +48,7 @@ The target prefectures are determined from <code>data</code>.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_boundary</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  boundary_data_year <span class="op">=</span> <span class="fl">2020</span>,</span>
+<span>  boundary_data_year <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  rcom_year <span class="op">=</span> <span class="fl">2020</span>,</span>
 <span>  boundary_type <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  path <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -69,7 +69,7 @@ code or Japanese prefecture name.</p></dd>
 
 
 <dt id="arg-boundary-data-year">boundary_data_year<a class="anchor" aria-label="anchor" href="#arg-boundary-data-year"></a></dt>
-<dd><p>The year of the boundary dataset.</p></dd>
+<dd><p>The year of the boundary dataset. If <code>NULL</code>, <code>rcom_year</code> is used.</p></dd>
 
 
 <dt id="arg-rcom-year">rcom_year<a class="anchor" aria-label="anchor" href="#arg-rcom-year"></a></dt>

@@ -5,7 +5,7 @@
 \alias{pref_code_table}
 \title{Prefecture code/name correspondence table}
 \format{
-A data frame with 47 rows and 2 variables:
+A data frame with 47 rows and 4 variables:
 \describe{
 \item{pref}{Prefecture codes}
 \item{pref_name}{Prefecture names in Kanji}
