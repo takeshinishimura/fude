@@ -12,7 +12,7 @@ library(ggplot2)
 library(sf)
 library(patchwork)
 
-d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
+d <- read_fude("~/MB0001_2026_2025_38.zip.001", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 
@@ -77,7 +77,7 @@ map1 + map2
 
 ![](example6_files/figure-html/voronoi-1.png)
 
-**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2026年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
 
 ``` r
 
@@ -121,11 +121,11 @@ lw <- spdep::nb2listw(nb, style = "W", zero.policy = TRUE)
     ## weights: lw  
     ## n reduced by no-neighbour observations  
     ## 
-    ## Moran I statistic standard deviate = 15.07, p-value < 2.2e-16
+    ## Moran I statistic standard deviate = 15.551, p-value < 2.2e-16
     ## alternative hypothesis: greater
     ## sample estimates:
     ## Moran I statistic       Expectation          Variance 
-    ##      0.2303868599     -0.0006510417      0.0002350355
+    ##      0.2355111574     -0.0006393862      0.0002306092
 
 ``` r
 
@@ -151,7 +151,7 @@ voronoi$p_values <- localmoran_df[, "Pr(z != E(Ii))"]
 sum(voronoi$p_values < 0.1, na.rm = TRUE) / nrow(voronoi)
 ```
 
-    ## [1] 0.1885566
+    ## [1] 0.1896552
 
 ``` r
 
@@ -179,7 +179,7 @@ gI + gp
 
 ![](example6_files/figure-html/spdep_poly2nb-2.png)
 
-**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2026年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
 
 ### `spdep::knn2nb()` and `localmoran()`
 
@@ -210,11 +210,11 @@ lw1 <- spdep::nb2listw(nb1, style = "W")
     ## data:  db$fude_points$a  
     ## weights: lw1    
     ## 
-    ## Moran I statistic standard deviate = 13.71, p-value < 2.2e-16
+    ## Moran I statistic standard deviate = 14.219, p-value < 2.2e-16
     ## alternative hypothesis: greater
     ## sample estimates:
     ## Moran I statistic       Expectation          Variance 
-    ##      0.2315774216     -0.0006506181      0.0002868963
+    ##      0.2380790713     -0.0006389776      0.0002818491
 
 ``` r
 
@@ -228,11 +228,11 @@ lw2 <- spdep::nb2listw(nb2, style = "W")
     ## data:  voronoi$a  
     ## weights: lw2    
     ## 
-    ## Moran I statistic standard deviate = 13.383, p-value < 2.2e-16
+    ## Moran I statistic standard deviate = 14.112, p-value < 2.2e-16
     ## alternative hypothesis: greater
     ## sample estimates:
     ## Moran I statistic       Expectation          Variance 
-    ##      0.2254979130     -0.0006506181      0.0002855370
+    ##      0.2356407187     -0.0006389776      0.0002803354
 
 ``` r
 
@@ -259,7 +259,7 @@ db$fude2$p_values <- localmoran_df[, "Pr(z != E(Ii))"]
 sum(db$fude2$p_values < 0.1) / nrow(db$fude2)
 ```
 
-    ## [1] 0.1254876
+    ## [1] 0.1283525
 
 ``` r
 
@@ -287,7 +287,7 @@ gI + gp
 
 ![](example6_files/figure-html/spdep_knn2nb-2.png)
 
-**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2026年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
 
 ``` r
 
@@ -313,7 +313,7 @@ voronoi$p_values <- localmoran_df[, "Pr(z != E(Ii))"]
 sum(voronoi$p_values < 0.1) / nrow(voronoi)
 ```
 
-    ## [1] 0.1274382
+    ## [1] 0.1232439
 
 ``` r
 
@@ -341,4 +341,4 @@ gI + gp
 
 ![](example6_files/figure-html/spdep_knn2nb2-1.png)
 
-**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2026年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。

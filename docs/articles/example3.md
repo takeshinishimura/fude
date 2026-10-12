@@ -10,7 +10,7 @@ library(sf)
 library(ggplot2)
 library(ggforce)
 
-d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
+d <- read_fude("~/MB0001_2026_2025_38.zip.001", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 db <- combine_fude(d, b, city = "松山市", kcity = "興居島", rcom = "^(?!釣島)")
 bbox <- sf::st_bbox(db$fude)
@@ -55,7 +55,7 @@ ggplot() +
 ![](example3_files/figure-html/gogoshima_en-1.png)
 
 **Source**: Created by processing data from the Ministry of Agriculture,
-Forestry and Fisheries, “Fude Polygon Data (released in FY 2025)” and
+Forestry and Fisheries, “Fude Polygon Data (released in FY 2026)” and
 “Agricultural Community Boundary Data (FY 2025)”.
 
 ## Displaying a wide area map with `cowplot`
@@ -127,4 +127,4 @@ ggdraw(mainmap) +
 
 ![](example3_files/figure-html/matsuyama-1.png)
 
-**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2026年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。

@@ -59,7 +59,7 @@
 <p>Fude Polygon data can now be downloaded from two different MAFF websites (both available only in Japanese):</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>GeoJSON format</strong>:<br><a href="https://open.fude.maff.go.jp" class="external-link uri">https://open.fude.maff.go.jp</a></p></li>
-<li><p><strong>FlatGeobuf format</strong>:<br><a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/mb/" class="external-link uri">https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/mb/</a></p></li>
+<li><p><strong>FlatGeobuf format</strong>:<br><a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/2025/mb/" class="external-link uri">https://www.maff.go.jp/j/tokei/census/shuraku_data/2025/mb/</a></p></li>
 </ol>
 </div>
 <div class="section level2">
@@ -166,7 +166,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <div class="section level3">
 <h3 id="get-agricultural-community-boundary-data">Get agricultural community boundary data<a class="anchor" aria-label="anchor" href="#get-agricultural-community-boundary-data"></a>
 </h3>
-<p>Download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website: <a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/" class="external-link uri">https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/</a> (available only in Japanese).</p>
+<p>Download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website: <a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/2025/ma/" class="external-link uri">https://www.maff.go.jp/j/tokei/census/shuraku_data/2025/ma/</a> (available only in Japanese).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -186,30 +186,30 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-gogoshima-1.png" alt="" width="100%"></p>
-<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。</p>
+<p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2026年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。</p>
 <p>Data enables extraction based on municipality names, former municipality names, and agricultural community names.</p>
 <p><strong>Note:</strong> This feature is available only for data obtained from FlatGeobuf (Obtaining Data #2).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/extract_fude.html">extract_fude</a></span><span class="op">(</span><span class="va">d2</span>, city <span class="op">=</span> <span class="st">"松山市"</span>, kcity <span class="op">=</span> <span class="st">"興居島"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Simple feature collection with 1691 features and 6 fields</span></span>
+<span><span class="co">#&gt; Simple feature collection with 1719 features and 6 fields</span></span>
 <span><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
 <span><span class="co">#&gt; Dimension:     XY</span></span>
 <span><span class="co">#&gt; Bounding box:  xmin: 132.6373 ymin: 33.87055 xmax: 132.6991 ymax: 33.92544</span></span>
 <span><span class="co">#&gt; Geodetic CRS:  JGD2000</span></span>
-<span><span class="co">#&gt; # A tibble: 1,691 × 7</span></span>
+<span><span class="co">#&gt; # A tibble: 1,719 × 7</span></span>
 <span><span class="co">#&gt;    polygon_uuid                   land_type issue_year point_lng point_lat key  </span></span>
 <span><span class="co">#&gt;  * &lt;chr&gt;                              &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;</span></span>
-<span><span class="co">#&gt;  1 5a72b4ef-b5f4-465e-9948-e9314…       200       2025      133.      33.9 3820…</span></span>
-<span><span class="co">#&gt;  2 c69d86d5-1fb2-4528-a87b-155d8…       200       2025      133.      33.9 3820…</span></span>
-<span><span class="co">#&gt;  3 627134ea-919c-4769-bd94-be16c…       200       2025      133.      33.9 3820…</span></span>
-<span><span class="co">#&gt;  4 f2631019-d16e-42f9-8501-75f26…       200       2025      133.      33.9 3820…</span></span>
-<span><span class="co">#&gt;  5 8fedb70d-4bb9-4447-879b-a0eea…       200       2025      133.      33.9 3820…</span></span>
-<span><span class="co">#&gt;  6 cd235cdf-da51-4ead-ad50-efc6e…       200       2025      133.      33.9 3820…</span></span>
-<span><span class="co">#&gt;  7 5853b7a1-62c3-4973-9e79-cabd3…       200       2025      133.      33.9 3820…</span></span>
-<span><span class="co">#&gt;  8 5e090780-6d16-4b9e-aca9-c5622…       200       2025      133.      33.9 3820…</span></span>
-<span><span class="co">#&gt;  9 90de4abf-e972-4031-987f-f3391…       200       2025      133.      33.9 3820…</span></span>
-<span><span class="co">#&gt; 10 e5ade914-c803-42d1-9fa8-0921b…       200       2025      133.      33.9 3820…</span></span>
-<span><span class="co">#&gt; # ℹ 1,681 more rows</span></span>
+<span><span class="co">#&gt;  1 766414a4-b6a2-4e94-ad80-7a4c9…       200       2026      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  2 78e4815b-f4c1-46e4-bd73-fb335…       200       2026      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  3 f33d121f-23a2-48a5-9ba1-0b181…       200       2026      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  4 f09e31b1-6f08-49e1-9a87-e5fa1…       200       2026      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  5 73fe9c01-ca49-4e03-ad11-5c869…       200       2026      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  6 b67f6e44-1ed6-4e2a-b1ca-80fbe…       200       2026      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  7 dc3e607a-d3c7-46e5-a643-63281…       200       2026      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  8 4dfd0831-76ad-4404-abc2-53489…       200       2026      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt;  9 fcf27bd2-b2eb-47a4-86be-53d75…       200       2026      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt; 10 051fced3-b768-4d07-91d5-29e2b…       200       2026      133.      33.9 3820…</span></span>
+<span><span class="co">#&gt; # ℹ 1,709 more rows</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: geometry &lt;MULTIPOLYGON [°]&gt;</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -230,8 +230,8 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">b1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span>, path <span class="op">=</span> <span class="st">"~"</span>, boundary_type <span class="op">=</span> <span class="fl">1</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">b2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span>, path <span class="op">=</span> <span class="st">"~"</span>, boundary_type <span class="op">=</span> <span class="fl">2</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">b3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span>, path <span class="op">=</span> <span class="st">"~"</span>, boundary_type <span class="op">=</span> <span class="fl">3</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co"># b2 &lt;- get_boundary(d2, path = "~", boundary_type = 2, quiet = TRUE)</span></span>
+<span><span class="co"># b3 &lt;- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)</span></span>
 <span></span>
 <span><span class="va">m1</span> <span class="op">&lt;-</span> <span class="va">b1</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/read_ikasudb.html">read_ikasudb</a></span><span class="op">(</span><span class="st">"~/IA0001_2023_2020_38.xlsx"</span><span class="op">)</span> <span class="op">|&gt;</span></span>

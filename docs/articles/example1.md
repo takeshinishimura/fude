@@ -9,7 +9,7 @@ library(dplyr)
 library(ggplot2)
 library(gghighlight)
 
-d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
+d <- read_fude("~/MB0001_2026_2025_38.zip.001", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 db <- combine_fude(d, b, city = "西条", kcity = "丹原|田野")
 
@@ -27,7 +27,7 @@ ggplot() +
 
 ![](example1_files/figure-html/facet_wrap_saijo-1.png)
 
-**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2026年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
 
 ``` r
 

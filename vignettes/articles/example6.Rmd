@@ -19,7 +19,7 @@ library(ggplot2)
 library(sf)
 library(patchwork)
 
-d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
+d <- read_fude("~/MB0001_2026_2025_38.zip.001", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 db <- combine_fude(d, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
 

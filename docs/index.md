@@ -14,7 +14,7 @@ Fude Polygon data can now be downloaded from two different MAFF websites
     <https://open.fude.maff.go.jp>
 
 2.  **FlatGeobuf format**:\
-    <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/mb/>
+    <https://www.maff.go.jp/j/tokei/census/shuraku_data/2025/mb/>
 
 ## Install the package
 
@@ -144,7 +144,7 @@ dro <- d |>
 
 Download the agricultural community boundary data, which corresponds to
 the Fude Polygon data, from the MAFF website:
-<https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/ma/> (available
+<https://www.maff.go.jp/j/tokei/census/shuraku_data/2025/ma/> (available
 only in Japanese).
 
 ``` r
@@ -173,7 +173,7 @@ ggplot() +
 
 ![](reference/figures/README-gogoshima-1.png)
 
-**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2026年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
 
 Data enables extraction based on municipality names, former municipality
 names, and agricultural community names.
@@ -184,25 +184,25 @@ FlatGeobuf (Obtaining Data \#2).
 ``` r
 
 extract_fude(d2, city = "松山市", kcity = "興居島")
-#> Simple feature collection with 1691 features and 6 fields
+#> Simple feature collection with 1719 features and 6 fields
 #> Geometry type: MULTIPOLYGON
 #> Dimension:     XY
 #> Bounding box:  xmin: 132.6373 ymin: 33.87055 xmax: 132.6991 ymax: 33.92544
 #> Geodetic CRS:  JGD2000
-#> # A tibble: 1,691 × 7
+#> # A tibble: 1,719 × 7
 #>    polygon_uuid                   land_type issue_year point_lng point_lat key  
 #>  * <chr>                              <dbl>      <dbl>     <dbl>     <dbl> <chr>
-#>  1 5a72b4ef-b5f4-465e-9948-e9314…       200       2025      133.      33.9 3820…
-#>  2 c69d86d5-1fb2-4528-a87b-155d8…       200       2025      133.      33.9 3820…
-#>  3 627134ea-919c-4769-bd94-be16c…       200       2025      133.      33.9 3820…
-#>  4 f2631019-d16e-42f9-8501-75f26…       200       2025      133.      33.9 3820…
-#>  5 8fedb70d-4bb9-4447-879b-a0eea…       200       2025      133.      33.9 3820…
-#>  6 cd235cdf-da51-4ead-ad50-efc6e…       200       2025      133.      33.9 3820…
-#>  7 5853b7a1-62c3-4973-9e79-cabd3…       200       2025      133.      33.9 3820…
-#>  8 5e090780-6d16-4b9e-aca9-c5622…       200       2025      133.      33.9 3820…
-#>  9 90de4abf-e972-4031-987f-f3391…       200       2025      133.      33.9 3820…
-#> 10 e5ade914-c803-42d1-9fa8-0921b…       200       2025      133.      33.9 3820…
-#> # ℹ 1,681 more rows
+#>  1 766414a4-b6a2-4e94-ad80-7a4c9…       200       2026      133.      33.9 3820…
+#>  2 78e4815b-f4c1-46e4-bd73-fb335…       200       2026      133.      33.9 3820…
+#>  3 f33d121f-23a2-48a5-9ba1-0b181…       200       2026      133.      33.9 3820…
+#>  4 f09e31b1-6f08-49e1-9a87-e5fa1…       200       2026      133.      33.9 3820…
+#>  5 73fe9c01-ca49-4e03-ad11-5c869…       200       2026      133.      33.9 3820…
+#>  6 b67f6e44-1ed6-4e2a-b1ca-80fbe…       200       2026      133.      33.9 3820…
+#>  7 dc3e607a-d3c7-46e5-a643-63281…       200       2026      133.      33.9 3820…
+#>  8 4dfd0831-76ad-4404-abc2-53489…       200       2026      133.      33.9 3820…
+#>  9 fcf27bd2-b2eb-47a4-86be-53d75…       200       2026      133.      33.9 3820…
+#> 10 051fced3-b768-4d07-91d5-29e2b…       200       2026      133.      33.9 3820…
+#> # ℹ 1,709 more rows
 #> # ℹ 1 more variable: geometry <MULTIPOLYGON [°]>
 ```
 
@@ -228,8 +228,8 @@ You can read data from the MAFF database
 library(dplyr)
 
 b1 <- get_boundary(d2, path = "~", boundary_type = 1, quiet = TRUE)
-b2 <- get_boundary(d2, path = "~", boundary_type = 2, quiet = TRUE)
-b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
+# b2 <- get_boundary(d2, path = "~", boundary_type = 2, quiet = TRUE)
+# b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
 
 m1 <- b1 |>
   read_ikasudb("~/IA0001_2023_2020_38.xlsx") |>

@@ -7,8 +7,8 @@
 read_fude(
   path = NULL,
   pref = NULL,
-  year = 2025,
-  rcom_year = 2020,
+  year = NULL,
+  rcom_year = NULL,
   crs = NULL,
   supplementary = FALSE,
   quiet = FALSE

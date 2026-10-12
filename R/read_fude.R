@@ -42,8 +42,8 @@
 read_fude <- function(
   path = NULL,
   pref = NULL,
-  year = 2025,
-  rcom_year = 2020,
+  year = NULL,
+  rcom_year = NULL,
   crs = NULL,
   supplementary = FALSE,
   quiet = FALSE
@@ -60,16 +60,28 @@ read_fude <- function(
     }
 
     path <- get_fude(pref_code, year, rcom_year, quiet)
+  } else if (is.null(year)) {
+    filename <- basename(path)
+    pattern_check <- "^(?:MB0001_)?[0-9]{4}"
+    year <- ifelse(
+      grepl(pattern_check, filename),
+      year <- as.integer(sub("^(?:MB0001_)?([0-9]{4}).*$", "\\1", filename)),
+      year <- NA
+    )
   }
 
-  if (!grepl("\\.zip$", path, ignore.case = TRUE)) {
+  if (!grepl("\\.zip$|\\.001$", path, ignore.case = TRUE)) {
     stop(path, " is not a ZIP file.")
   }
 
   exdir <- tempfile()
   on.exit(unlink(exdir, recursive = TRUE), add = TRUE)
 
-  utils::unzip(path, exdir = exdir)
+  if (grepl("zip$", path)) {
+    utils::unzip(path, exdir = exdir)
+  } else {
+    un7zip(path, exdir, quiet)
+  }
 
   geojson_files <- list.files(
     exdir,
@@ -88,10 +100,18 @@ read_fude <- function(
   )
 
   if (length(geojson_files) > 0) {
-    x <- lapply(geojson_files, sf::read_sf, quiet = quiet)
+    x <- lapply(
+      geojson_files,
+      sf::read_sf,
+      quiet = quiet
+    )
     names(x) <- tools::file_path_sans_ext(basename(geojson_files))
   } else if (length(flatgeobuf_files) > 0) {
-    x <- lapply(flatgeobuf_files, sf::read_sf, quiet = quiet)
+    x <- lapply(
+      flatgeobuf_files,
+      sf::read_sf,
+      quiet = quiet
+    )
     names(x) <- tools::file_path_sans_ext(basename(flatgeobuf_files))
   } else {
     stop("No GeoJSON or FlatGeobuf file found in ", path, ".")
@@ -188,7 +208,11 @@ get_fude <- function(
   pref_code <- sprintf("%02d", as.integer(pref_code))
 
   url <- sprintf(
-    "https://www.machimura.maff.go.jp/shurakudata/%s/mb/MB0001_%s_%s_%s.zip",
+    ifelse(
+      year %in% c(2024, 2025),
+      "https://www.machimura.maff.go.jp/shurakudata/%s/mb/MB0001_%s_%s_%s.zip",
+      "https://www.maff.go.jp/j/tokei/census/shuraku_data/%s/mb/MB0001_%s_%s_%s.zip.001"
+    ),
     rcom_year,
     year,
     rcom_year,
@@ -198,10 +222,66 @@ get_fude <- function(
   homepath <- file.path(getwd(), basename(url))
 
   if (!file.exists(homepath)) {
-    utils::download.file(url, homepath, mode = "wb", quiet = quiet)
+    if (grepl("zip$", url)) {
+      utils::download.file(url, homepath, mode = "wb", quiet = quiet)
+    } else {
+      i <- 1
+      while (TRUE) {
+        ext <- sprintf(".%03d", i)
+        current_url <- paste0(sub("\\.001$", "", url), ext)
+        current_path <- paste0(sub("\\.001$", "", homepath), ext)
+
+        if (!file.exists(current_path)) {
+          res <- tryCatch(
+            {
+              utils::download.file(current_url, current_path, mode = "wb", quiet = quiet)
+            },
+            error = function(e) {
+              return(1)
+            }
+          )
+          if (res != 0) {
+            if (file.exists(current_path)) file.remove(current_path)
+            break
+          }
+        }
+      
+        i <- i + 1
+      }
+    }
   }
 
   return(homepath)
+}
+
+un7zip <- function(
+  path,
+  exdir = ".",
+  quiet = FALSE
+) {
+  base_name <- sub("\\.001$", "", path)
+  file.create(base_name)
+
+  i <- 1
+  while (TRUE) {
+    target_file <- sprintf("%s.%03d", base_name, i)
+    if (!file.exists(target_file)) {
+      break
+    }
+
+    if (!quiet) {
+      message(target_file, " ...")
+    }
+    file.append(base_name, target_file)
+
+    i <- i + 1
+  }
+
+  if (!quiet) {
+    message("Merge complete.\n", base_name, " has been created.")
+  }
+
+  utils::unzip(base_name, exdir = exdir)
 }
 
 modulus11 <- function(data) {

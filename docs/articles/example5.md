@@ -15,7 +15,7 @@ library(ggplot2)
 library(ggmapinset)
 library(ggrepel)
 
-d <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE, supplementary = TRUE)
+d <- read_fude("~/MB0001_2026_2025_38.zip.001", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 db <- combine_fude(d, b, city = "松山", rcom = "和気|安城寺|長戸|久万ノ台")
 

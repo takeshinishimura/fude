@@ -1,5 +1,6 @@
 # fude (development version)
 
+- Added support for reading 2026 Fude polygon data.
 - Added support for reading boundary data from 2010, 2015 and 2025.
 
 # fude 0.4.1

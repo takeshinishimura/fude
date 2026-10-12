@@ -16,7 +16,7 @@ library(fude)
 d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 
-d2 <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
+d2 <- read_fude("~/MB0001_2026_2025_38.zip.001", quiet = TRUE)
 ```
 
 ## GeoJSON data characteristics (obtain data #1)

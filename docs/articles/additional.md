@@ -9,7 +9,7 @@ library(fude)
 d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
 b <- get_boundary(d, path = "~", quiet = TRUE)
 
-d2 <- read_fude("~/MB0001_2025_2020_38.zip", quiet = TRUE)
+d2 <- read_fude("~/MB0001_2026_2025_38.zip.001", quiet = TRUE)
 ```
 
 ### GeoJSON data characteristics (obtain data \#1)
@@ -131,7 +131,7 @@ ggplot() +
 ![](additional_files/figure-html/gogoshimafgb-1.png)
 
 **Source**: Created by processing data from the Ministry of Agriculture,
-Forestry and Fisheries, “Fude Polygon Data (released in FY 2025)” and
+Forestry and Fisheries, “Fude Polygon Data (released in FY 2026)” and
 “Agricultural Community Boundary Data (FY 2025)”.
 
 ## Possible values for `rcom` in `combine_fude()` and `extract_boundary()`
