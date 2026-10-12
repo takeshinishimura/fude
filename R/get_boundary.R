@@ -8,7 +8,6 @@
 #' @param data
 #'   Either a Fude Polygon data object returned by [read_fude()], or a prefecture
 #'   code or Japanese prefecture name.
-
 #' @param boundary_data_year
 #'   The year of the boundary dataset. If `NULL`, `rcom_year` is used.
 #' @param rcom_year
@@ -42,7 +41,7 @@
 get_boundary <- function(
   data,
   boundary_data_year = NULL,
-  rcom_year = 2020,
+  rcom_year = 2025,
   boundary_type = 1,
   path = NULL,
   suffix = FALSE,
@@ -103,7 +102,11 @@ read_boundary <- function(
   pref_code <- get_pref_code(pref_code)
 
   url <- sprintf(
-    "https://www.machimura.maff.go.jp/shurakudata/%s/ma/MA000%s_%s_%s_%s.zip",
+    ifelse(
+      rcom_year %in% c(2020, 2015, 2010),
+      "https://www.machimura.maff.go.jp/shurakudata/%s/ma/MA000%s_%s_%s_%s.zip",
+      "https://www.maff.go.jp/j/tokei/census/shuraku_data/%s/ma/MA000%s_%s_%s_%s.zip"
+    ),
     rcom_year,
     boundary_type,
     boundary_data_year,
@@ -153,11 +156,11 @@ read_boundary <- function(
 
   if (length(shp_files) != 1) {
     stop(
-      if (length(shp_files) > 1) {
-        "Multiple shapefiles found."
-      } else {
+      ifelse(
+        length(shp_files) > 1,
+        "Multiple shapefiles found.",
         "No shapefile found in the ZIP archive."
-      }
+      )
     )
   }
 

@@ -83,11 +83,11 @@ extract_boundary <- function(
     ) |>
     add_xy()
 
-  extracted_type <- if (!any(extracted$rcom == "000")) {
-    "communities"
-  } else {
+  extracted_type <- ifelse(
+    !any(extracted$rcom == "000"),
+    "communities",
     "municipalities"
-  }
+  )
 
   if (isFALSE(layer)) {
     message(nrow(extracted), " ", extracted_type, " have been extracted.")

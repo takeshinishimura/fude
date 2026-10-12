@@ -11,7 +11,7 @@ The target prefectures are determined from `data`.
 get_boundary(
   data,
   boundary_data_year = NULL,
-  rcom_year = 2020,
+  rcom_year = 2025,
   boundary_type = 1,
   path = NULL,
   suffix = FALSE,

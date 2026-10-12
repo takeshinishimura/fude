@@ -11,7 +11,7 @@ shiny_fude(data, height = 1000, rcom = FALSE)
 If \code{rcom = TRUE}, \code{data} must contain both polygon data in \code{data$fude} and
 agricultural community boundary data in \code{data$rcom}.}
 
-\item{height}{Height of the map passed to \code{\link[leaflet:map-shiny]{leaflet::leafletOutput()}}.}
+\item{height}{Height of the map passed to \code{\link[leaflet:leafletOutput]{leaflet::leafletOutput()}}.}
 
 \item{rcom}{Logical. If \code{TRUE}, overlay agricultural community boundaries on the map.}
 }

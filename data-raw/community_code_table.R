@@ -7,7 +7,11 @@ library(sf)
 
 read_boundary <- function(boundary_type, boundary_data_year, rcom_year, pref_code, path = "~/ma") {
   url <- sprintf(
-    "https://www.machimura.maff.go.jp/shurakudata/%s/ma/MA000%s_%s_%s_%s.zip",
+    ifelse(
+      rcom_year %in% c(2020, 2015, 2010),
+      "https://www.machimura.maff.go.jp/shurakudata/%s/ma/MA000%s_%s_%s_%s.zip",
+      "https://www.maff.go.jp/j/tokei/census/shuraku_data/%s/ma/MA000%s_%s_%s_%s.zip"
+    ),
     rcom_year,
     boundary_type,
     boundary_data_year,
@@ -45,11 +49,11 @@ read_boundary <- function(boundary_type, boundary_data_year, rcom_year, pref_cod
   sf::st_read(
     shp_files[1],
     quiet = FALSE,
-    options = if (rcom_year %in% c(2010, 2015, 2020)) {
-      "ENCODING=CP932"
-    } else {
+    options = ifelse(
+      rcom_year %in% c(2025, 2020, 2015, 2010),
+      "ENCODING=CP932",
       "ENCODING=UTF-8"
-    }
+    )
   )
 }
 
@@ -188,7 +192,7 @@ modulus11 <- function(data) {
   return(paste0(code5, check_digit))
 }
 
-years <- c(2020, 2015, 2010)
+years <- c(2025, 2020, 2015, 2010)
 rcom <- setNames(vector("list", length(years)), as.character(years))
 
 for (rcom_year in years){

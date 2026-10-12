@@ -20,10 +20,10 @@ counter suffix used to denote land parcels.
 Fude Polygon data can now be downloaded from two different MAFF websites
 (both available only in Japanese):
 
-1.  **GeoJSON format**:  
+1.  **GeoJSON format**:\
     <https://open.fude.maff.go.jp>
 
-2.  **FlatGeobuf format**:  
+2.  **FlatGeobuf format**:\
     <https://www.maff.go.jp/j/tokei/census/shuraku_data/2020/mb/>
 
 ## Install the package
@@ -48,7 +48,7 @@ devtools::install_github("takeshinishimura/fude")
 There are two ways to load Fude Polygon data, depending on how the data
 was obtained:
 
-1.  **From a locally saved ZIP file**:  
+1.  **From a locally saved ZIP file**:\
     This method works for both GeoJSON (from Obtaining Data \#1) and
     FlatGeobuf (from Obtaining Data \#2) formats. You can load a ZIP
     file saved on your computer without unzipping it.
@@ -58,7 +58,7 @@ library(fude)
 d <- read_fude("~/2022_38.zip")
 ```
 
-2.  **By specifying a prefecture name or code**:  
+2.  **By specifying a prefecture name or code**:\
     This method is available only for FlatGeobuf data (from Obtaining
     Data \#2). Provide the name of a prefecture (e.g., “愛媛”) or its
     corresponding prefecture code (e.g., “38”), and the required
@@ -174,7 +174,7 @@ ggplot() +
 
 <img src="man/figures/README-gogoshima-1.png" alt="" width="100%" />
 
-**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。
 
 Data enables extraction based on municipality names, former municipality
 names, and agricultural community names.
@@ -226,8 +226,8 @@ You can read data from the MAFF database
 library(dplyr)
 
 b1 <- get_boundary(d2, path = "~", boundary_type = 1, quiet = TRUE)
-b2 <- get_boundary(d2, path = "~", boundary_type = 2, quiet = TRUE)
-b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
+# b2 <- get_boundary(d2, path = "~", boundary_type = 2, quiet = TRUE)
+# b3 <- get_boundary(d2, path = "~", boundary_type = 3, quiet = TRUE)
 
 m1 <- b1 |>
   read_ikasudb("~/IA0001_2023_2020_38.xlsx") |>
@@ -248,7 +248,7 @@ ggplot() +
 
 <img src="man/figures/README-ikasu-1.png" alt="" width="100%" />
 
-**資料**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
+**資料**：農林水産省「農業集落境界データ（2025年度）」を加工して作成。
 
 ### Use the `mapview` package
 

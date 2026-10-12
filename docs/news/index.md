@@ -2,7 +2,7 @@
 
 ## fude (development version)
 
-- Added support for reading boundary data from 2010 and 2015.
+- Added support for reading boundary data from 2010, 2015 and 2025.
 
 ## fude 0.4.1
 

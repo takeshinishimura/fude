@@ -1,5 +1,5 @@
-pandoc: 3.8.3
-pkgdown: 2.2.0
+pandoc: '3.10'
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   articles/additional: additional.html
@@ -9,7 +9,7 @@ articles:
   articles/example4: example4.html
   articles/example5: example5.html
   articles/example6: example6.html
-last_built: 2026-04-26T01:19Z
+last_built: 2026-10-12T04:31Z
 urls:
   reference: https://takeshinishimura.github.io/fude/reference
   article: https://takeshinishimura.github.io/fude/articles

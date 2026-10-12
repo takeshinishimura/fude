@@ -99,11 +99,11 @@ cite_fude <- function(data) {
     )
   }
 
-  combined_parts_ja <- if (length(parts_ja) > 1) {
-    paste(parts_ja, collapse = "\u304A\u3088\u3073")
-  } else {
+  combined_parts_ja <- ifelse(
+    length(parts_ja) > 1,
+    paste(parts_ja, collapse = "\u304A\u3088\u3073"),
     parts_ja
-  }
+  )
 
   parts_en <- character()
 
@@ -129,11 +129,11 @@ cite_fude <- function(data) {
     )
   }
 
-  combined_parts_en <- if (length(parts_en) > 1) {
-    paste(parts_en, collapse = " and ")
-  } else {
+  combined_parts_en <- ifelse(
+    length(parts_en) > 1,
+    paste(parts_en, collapse = " and "),
     parts_en
-  }
+  )
 
   list(
     ja = paste0(
@@ -143,7 +143,11 @@ cite_fude <- function(data) {
     ),
     en = paste0(
       "Created by processing data from the Ministry of Agriculture, Forestry and Fisheries",
-      if (length(combined_parts_en) > 0) paste0(", ", combined_parts_en) else "",
+      ifelse(
+        length(combined_parts_en) > 0,
+        paste0(", ", combined_parts_en),
+        ""
+      ),
       "."
     )
   )

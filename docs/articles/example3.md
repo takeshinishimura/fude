@@ -56,7 +56,7 @@ ggplot() +
 
 **Source**: Created by processing data from the Ministry of Agriculture,
 Forestry and Fisheries, “Fude Polygon Data (released in FY 2025)” and
-“Agricultural Community Boundary Data (FY 2020)”.
+“Agricultural Community Boundary Data (FY 2025)”.
 
 ## Displaying a wide area map with `cowplot`
 
@@ -127,4 +127,4 @@ ggdraw(mainmap) +
 
 ![](example3_files/figure-html/matsuyama-1.png)
 
-**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2020年度）」を加工して作成。
+**出典**：農林水産省「筆ポリゴンデータ（2025年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。

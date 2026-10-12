@@ -51,7 +51,7 @@ ggplot() +
 
 **Source**: Created by processing data from the Ministry of Agriculture,
 Forestry and Fisheries, “Fude Polygon Data (released in FY 2022)” and
-“Agricultural Community Boundary Data (FY 2020)”.
+“Agricultural Community Boundary Data (FY 2025)”.
 
 #### Data assignment
 
@@ -83,7 +83,7 @@ fude + fude_split
 
 **Source**: Created by processing data from the Ministry of Agriculture,
 Forestry and Fisheries, “Fude Polygon Data (released in FY 2022)” and
-“Agricultural Community Boundary Data (FY 2020)”.
+“Agricultural Community Boundary Data (FY 2025)”.
 
 If you need to adjust this automatic assignment, you will need to write
 custom code. The rows that require attention can be identified with the
@@ -132,7 +132,7 @@ ggplot() +
 
 **Source**: Created by processing data from the Ministry of Agriculture,
 Forestry and Fisheries, “Fude Polygon Data (released in FY 2025)” and
-“Agricultural Community Boundary Data (FY 2020)”.
+“Agricultural Community Boundary Data (FY 2025)”.
 
 ## Possible values for `rcom` in `combine_fude()` and `extract_boundary()`
 
@@ -192,7 +192,7 @@ ggplot(data = b[[1]] |> filter(grepl("松山", kcity_name))) +
 
 ![](additional_files/figure-html/rcom_in_data-1.png)
 
-**出典**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
+**出典**：農林水産省「農業集落境界データ（2025年度）」を加工して作成。
 
 ``` r
 
@@ -223,4 +223,4 @@ ggplot(b[[1]] |> filter(city_name == "松山市")) +
 
 ![](additional_files/figure-html/kcity_in_data-1.png)
 
-**出典**：農林水産省「農業集落境界データ（2020年度）」を加工して作成。
+**出典**：農林水産省「農業集落境界データ（2025年度）」を加工して作成。
