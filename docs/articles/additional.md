@@ -224,3 +224,23 @@ ggplot(b[[1]] |> filter(city_name == "松山市")) +
 ![](additional_files/figure-html/kcity_in_data-1.png)
 
 **出典**：農林水産省「農業集落境界データ（2025年度）」を加工して作成。
+
+## Use the `mapview` package
+
+If you want to use
+[`mapview()`](https://r-spatial.github.io/mapview/reference/mapView.html),
+do the following.
+
+``` r
+
+db1 <- combine_fude(d, b, city = "伊方町")
+db2 <- combine_fude(d, b, city = "八幡浜市")
+db3 <- combine_fude(d, b, city = "西予市", kcity = "三瓶|二木生|三島|双岩")
+
+db <- bind_fude(db1, db2, db3)
+db$fude <- sf::st_transform(db$fude, crs = 3857)
+
+library(mapview)
+
+mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
+```

@@ -60,14 +60,6 @@ read_fude <- function(
     }
 
     path <- get_fude(pref_code, year, rcom_year, quiet)
-  } else if (is.null(year)) {
-    filename <- basename(path)
-    pattern_check <- "^(?:MB0001_)?[0-9]{4}"
-    year <- ifelse(
-      grepl(pattern_check, filename),
-      year <- as.integer(sub("^(?:MB0001_)?([0-9]{4}).*$", "\\1", filename)),
-      year <- NA
-    )
   }
 
   if (!grepl("\\.zip$|\\.001$", path, ignore.case = TRUE)) {
@@ -75,13 +67,14 @@ read_fude <- function(
   }
 
   exdir <- tempfile()
+  dir.create(exdir)
   on.exit(unlink(exdir, recursive = TRUE), add = TRUE)
 
-  if (grepl("zip$", path)) {
-    utils::unzip(path, exdir = exdir)
-  } else {
-    un7zip(path, exdir, quiet)
+  if (grepl("\\.001$", path)) {
+    path <- merge_split_zip(path, exdir, quiet)
   }
+
+  utils::unzip(path, exdir = exdir)
 
   geojson_files <- list.files(
     exdir,
@@ -234,7 +227,9 @@ get_fude <- function(
         if (!file.exists(current_path)) {
           res <- tryCatch(
             {
-              utils::download.file(current_url, current_path, mode = "wb", quiet = quiet)
+              suppressWarnings(
+                utils::download.file(current_url, current_path, mode = "wb", quiet = quiet)
+              )
             },
             error = function(e) {
               return(1)
@@ -252,36 +247,6 @@ get_fude <- function(
   }
 
   return(homepath)
-}
-
-un7zip <- function(
-  path,
-  exdir = ".",
-  quiet = FALSE
-) {
-  base_name <- sub("\\.001$", "", path)
-  file.create(base_name)
-
-  i <- 1
-  while (TRUE) {
-    target_file <- sprintf("%s.%03d", base_name, i)
-    if (!file.exists(target_file)) {
-      break
-    }
-
-    if (!quiet) {
-      message(target_file, " ...")
-    }
-    file.append(base_name, target_file)
-
-    i <- i + 1
-  }
-
-  if (!quiet) {
-    message("Merge complete.\n", base_name, " has been created.")
-  }
-
-  utils::unzip(base_name, exdir = exdir)
 }
 
 modulus11 <- function(data) {

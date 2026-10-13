@@ -26,6 +26,8 @@
   : Local government code/name correspondence table
 - [`ls_fude()`](https://takeshinishimura.github.io/fude/reference/ls_fude.md)
   : List the contents of Fude Polygon data
+- [`merge_split_zip()`](https://takeshinishimura.github.io/fude/reference/merge_split_zip.md)
+  : Merge Split ZIP Files of MAFF Fude Polygon Data
 - [`pref_code_table`](https://takeshinishimura.github.io/fude/reference/pref_code_table.md)
   : Prefecture code/name correspondence table
 - [`rcom_id_table`](https://takeshinishimura.github.io/fude/reference/rcom_id_table.md)

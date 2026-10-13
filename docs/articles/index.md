@@ -2,6 +2,8 @@
 
 ### Additional Information
 
+- [Motivation of this
+  package](https://takeshinishimura.github.io/fude/articles/motivation.md):
 - [Structure of combined Fude Polygon data with agricultural community
   boundary
   data](https://takeshinishimura.github.io/fude/articles/additional.md):

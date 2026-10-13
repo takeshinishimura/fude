@@ -30,11 +30,11 @@ bind_fude <- function(...) {
     relevant_dbs <- lapply(
       databases,
       \(d) {
-        ifelse(
-          nm %in% names(d),
-          d[[nm]],
+        if (nm %in% names(d)) {
+          d[[nm]]
+        } else {
           NULL
-        )
+        }
       }
     )
 

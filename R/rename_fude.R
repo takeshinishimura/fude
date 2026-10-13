@@ -51,7 +51,7 @@ rename_fude <- function(
 
   new_names <- get_lg_name(matching_codes, romaji)
 
-  if (isFALSE(suffix)) {
+  if (!suffix) {
     new_names <- remove_romaji_suffix(new_names)
     new_names <- sub("\u5e02(.*)(\u533a$)", "_\\1", new_names)
     new_names <- sub("(\u5e02|\u533a|\u753a|\u6751)$", "", new_names)
@@ -63,7 +63,7 @@ rename_fude <- function(
 
   names(data) <- new_names
 
-  if (isFALSE(quiet)) {
+  if (!quiet) {
     message(paste(paste0(old_names, " -> ", new_names), collapse = "\n"))
   }
 

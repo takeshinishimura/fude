@@ -40,8 +40,7 @@ install.packages("fude")
 
 Or the development version from GitHub with:
 ```{r eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("takeshinishimura/fude")
+pak::pak("takeshinishimura/fude")
 ```
 
 ## Usage
@@ -65,31 +64,23 @@ d <- read_fude("~/2022_38.zip", quiet = TRUE, supplementary = TRUE)
 This method is available only for FlatGeobuf data (from Obtaining Data #2). Provide the name of a prefecture (e.g., "愛媛") or its corresponding prefecture code (e.g., "38"), and the required FlatGeobuf format ZIP file will be automatically downloaded and loaded.
 ```{r eval = FALSE}
 d2 <- read_fude(pref = "愛媛")
+# d2 <- read_fude("~/MB0001_2026_2025_38.zip.001")
 ```
 ```{r echo = FALSE}
 d2 <- read_fude("~/MB0001_2026_2025_38.zip.001", quiet = TRUE)
 ```
 
-### List the contents of Fude Polygon datal
+### Merging ZIP Files
+
+Since the 2026 release, Fude Polygon data provided by the MAFF have been distributed as split ZIP archives (e.g., .zip.001, .zip.002, and .zip.003).
+
+After downloading all parts of the archive, you can merge them into a single ZIP file using the following function:
 
 ```{r}
-ls_fude(d)
+merge_split_zip("~/MB0001_2026_2025_38.zip.001", output_dir = "~")
 ```
-
-### Rename the local government code
-
-**Note:** This feature is available only for data obtained from GeoJSON (Obtaining Data #1).
-
-Convert local government codes into Japanese municipality names for easier management.
-```{r}
-dro <- rename_fude(d)
-names(dro)
-```
-
-You can also rename the columns to Romaji instead of Japanese.
-```{r}
-dro <- d |>
-  rename_fude(suffix = TRUE, romaji = "title", quiet = FALSE)
+```{r echo = FALSE}
+invisible(file.remove("~/MB0001_2026_2025_38.zip"))
 ```
 
 ### Get agricultural community boundary data
@@ -168,19 +159,3 @@ ggplot() +
 ```
 
 **資料**：`r cite_fude(m1)$ja`
-
-### Use the `mapview` package
-
-If you want to use `mapview()`, do the following.
-```{r eval = FALSE}
-db1 <- combine_fude(d, b, city = "伊方町")
-db2 <- combine_fude(d, b, city = "八幡浜市")
-db3 <- combine_fude(d, b, city = "西予市", kcity = "三瓶|二木生|三島|双岩")
-
-db <- bind_fude(db1, db2, db3)
-db$fude <- sf::st_transform(db$fude, crs = 3857)
-
-library(mapview)
-
-mapview(db$fude, zcol = "rcom_name", layer.name = "農業集落名")
-```

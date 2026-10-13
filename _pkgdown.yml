@@ -5,6 +5,7 @@ template:
 articles:
   - title: "Additional Information"
     contents:
+      - articles/motivation
       - articles/additional
 
   - title: "Example"

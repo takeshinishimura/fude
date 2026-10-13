@@ -1,0 +1,82 @@
+---
+title: "Motivation of this package"
+
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Motivation of this package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Old format of Fude Polygon data
+
+The Fude Polygon data published by MAFF on <https://open.fude.maff.go.jp> for the years 2021 and 2022 is in GeoJSON format. 
+These datasets include local government codes but lack the `key` column, which identifies geographical locations such as municipalities or communities. 
+Relying solely on the 6-digit local government codes (the `local_government_cd` column) can be confusing, as most users are not familiar with them. 
+Therefore, this package aims to enhance user-friendliness by converting these numeric codes into readable Japanese geographical names.
+
+```{r echo = TRUE, warning = FALSE, message = FALSE}
+library(fude)
+
+d0 <- read_fude("~/2022_38.zip", quiet = TRUE)
+names(d0)
+names(d0[[1]])
+```
+
+## List the contents of Fude Polygon data
+
+```{r}
+ls_fude(d0)
+```
+
+## Rename the local government code
+
+**Note:** This feature is available only for data obtained from GeoJSON.
+
+You can convert local government codes into Japanese municipality names for easier data management.
+```{r}
+d1 <- rename_fude(d0)
+names(d1)
+```
+
+You can also rename the columns to Romaji instead of Japanese.
+```{r}
+d2 <- d0 |>
+  rename_fude(suffix = TRUE, romaji = "title", quiet = FALSE)
+```
+
+# New format of Fude Polygon data
+
+Since 2024, the Fude Polygon data published by MAFF <https://www.maff.go.jp/j/tokei/census/shuraku_data/2025/mb/> is provided in FlatGeobuf format.
+This new format includes a `key` column that identifies municipalities and communities.
+However, it does not include the corresponding Japanese geographical names.
+Because the `key` is merely a 10-digit number, users cannot intuitively identify locations without mapping them to proper Japanese names.
+
+```{r echo = TRUE, warning = FALSE, message = FALSE}
+dn <- read_fude("~/MB0001_2026_2025_38.zip.001", quiet = TRUE)
+names(dn)
+names(dn[[1]])
+```
+
+## List the contents of Fude Polygon data
+
+```{r}
+ls_fude(dn)
+```
+
+## Combination with agricultural community boundaries
+
+Combining Fude Polygons with agricultural community boundary data provides deeper geographical insights and makes the data much easier to work with.
+
+```{r echo = TRUE, warning = FALSE, message = FALSE}
+b <- get_boundary(d0, path = "~", quiet = TRUE)
+b
+
+db <- d0 |>
+  lapply(sf::st_transform, crs = sf::st_crs(b[[1]])) |>
+  combine_fude(b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+db
+
+dbn <- combine_fude(dn, b, city = "松山市", rcom = "由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越")
+dbn
+```

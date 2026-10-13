@@ -70,8 +70,7 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"fude"</span><span class="op">)</span></span></code></pre></div>
 <p>Or the development version from GitHub with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"takeshinishimura/fude"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"takeshinishimura/fude"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -94,87 +93,35 @@ This method works for both GeoJSON (from Obtaining Data #1) and FlatGeobuf (from
 This method is available only for FlatGeobuf data (from Obtaining Data #2). Provide the name of a prefecture (e.g., “愛媛”) or its corresponding prefecture code (e.g., “38”), and the required FlatGeobuf format ZIP file will be automatically downloaded and loaded.</li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span>pref <span class="op">=</span> <span class="st">"愛媛"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fude.html">read_fude</a></span><span class="op">(</span>pref <span class="op">=</span> <span class="st">"愛媛"</span><span class="op">)</span></span>
+<span><span class="co"># d2 &lt;- read_fude("~/MB0001_2026_2025_38.zip.001")</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="list-the-contents-of-fude-polygon-datal">List the contents of Fude Polygon datal<a class="anchor" aria-label="anchor" href="#list-the-contents-of-fude-polygon-datal"></a>
+<h3 id="merging-zip-files">Merging ZIP Files<a class="anchor" aria-label="anchor" href="#merging-zip-files"></a>
 </h3>
+<p>Since the 2026 release, Fude Polygon data provided by the MAFF have been distributed as split ZIP archives (e.g., .zip.001, .zip.002, and .zip.003).</p>
+<p>After downloading all parts of the archive, you can merge them into a single ZIP file using the following function:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/ls_fude.html">ls_fude</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 20 × 7</span></span>
-<span><span class="co">#&gt;    name     issue_year local_government_cd     n pref_name city_name city_romaji</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;               &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;      </span></span>
-<span><span class="co">#&gt;  1 2022_38…       2022 382019              72045 愛媛県    松山市    Matsuyama-…</span></span>
-<span><span class="co">#&gt;  2 2022_38…       2022 382027              43396 愛媛県    今治市    Imabari-shi</span></span>
-<span><span class="co">#&gt;  3 2022_38…       2022 382035              61683 愛媛県    宇和島市  Uwajima-shi</span></span>
-<span><span class="co">#&gt;  4 2022_38…       2022 382043              37753 愛媛県    八幡浜市  Yawatahama…</span></span>
-<span><span class="co">#&gt;  5 2022_38…       2022 382051              15734 愛媛県    新居浜市  Niihama-shi</span></span>
-<span><span class="co">#&gt;  6 2022_38…       2022 382060              63244 愛媛県    西条市    Saijo-shi  </span></span>
-<span><span class="co">#&gt;  7 2022_38…       2022 382078              37570 愛媛県    大洲市    Ozu-shi    </span></span>
-<span><span class="co">#&gt;  8 2022_38…       2022 382108              33302 愛媛県    伊予市    Iyo-shi    </span></span>
-<span><span class="co">#&gt;  9 2022_38…       2022 382132              34781 愛媛県    四国中央市…… Shikokuchu…</span></span>
-<span><span class="co">#&gt; 10 2022_38…       2022 382141              73676 愛媛県    西予市    Seiyo-shi  </span></span>
-<span><span class="co">#&gt; 11 2022_38…       2022 382159              24235 愛媛県    東温市    Toon-shi   </span></span>
-<span><span class="co">#&gt; 12 2022_38…       2022 383562               2195 愛媛県    上島町    Kamijima-c…</span></span>
-<span><span class="co">#&gt; 13 2022_38…       2022 383864              22823 愛媛県    久万高原町…… Kumakogen-…</span></span>
-<span><span class="co">#&gt; 14 2022_38…       2022 384011               8634 愛媛県    松前町    Matsumae-c…</span></span>
-<span><span class="co">#&gt; 15 2022_38…       2022 384020               7042 愛媛県    砥部町    Tobe-cho   </span></span>
-<span><span class="co">#&gt; 16 2022_38…       2022 384224              27131 愛媛県    内子町    Uchiko-cho </span></span>
-<span><span class="co">#&gt; 17 2022_38…       2022 384429              23429 愛媛県    伊方町    Ikata-cho  </span></span>
-<span><span class="co">#&gt; 18 2022_38…       2022 384844               9089 愛媛県    松野町    Matsuno-cho</span></span>
-<span><span class="co">#&gt; 19 2022_38…       2022 384887              16550 愛媛県    鬼北町    Kihoku-cho </span></span>
-<span><span class="co">#&gt; 20 2022_38…       2022 385069              22931 愛媛県    愛南町    Ainan-cho</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="rename-the-local-government-code">Rename the local government code<a class="anchor" aria-label="anchor" href="#rename-the-local-government-code"></a>
-</h3>
-<p><strong>Note:</strong> This feature is available only for data obtained from GeoJSON (Obtaining Data #1).</p>
-<p>Convert local government codes into Japanese municipality names for easier management.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dro</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dro</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "2022_松山市"     "2022_今治市"     "2022_宇和島市"   "2022_八幡浜市"  </span></span>
-<span><span class="co">#&gt;  [5] "2022_新居浜市"   "2022_西条市"     "2022_大洲市"     "2022_伊予市"    </span></span>
-<span><span class="co">#&gt;  [9] "2022_四国中央市" "2022_西予市"     "2022_東温市"     "2022_上島町"    </span></span>
-<span><span class="co">#&gt; [13] "2022_久万高原町" "2022_松前町"     "2022_砥部町"     "2022_内子町"    </span></span>
-<span><span class="co">#&gt; [17] "2022_伊方町"     "2022_松野町"     "2022_鬼北町"     "2022_愛南町"</span></span></code></pre></div>
-<p>You can also rename the columns to Romaji instead of Japanese.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dro</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/rename_fude.html">rename_fude</a></span><span class="op">(</span>suffix <span class="op">=</span> <span class="cn">TRUE</span>, romaji <span class="op">=</span> <span class="st">"title"</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2022_382019 -&gt; 2022_Matsuyama-shi</span></span>
-<span><span class="co">#&gt; 2022_382027 -&gt; 2022_Imabari-shi</span></span>
-<span><span class="co">#&gt; 2022_382035 -&gt; 2022_Uwajima-shi</span></span>
-<span><span class="co">#&gt; 2022_382043 -&gt; 2022_Yawatahama-shi</span></span>
-<span><span class="co">#&gt; 2022_382051 -&gt; 2022_Niihama-shi</span></span>
-<span><span class="co">#&gt; 2022_382060 -&gt; 2022_Saijo-shi</span></span>
-<span><span class="co">#&gt; 2022_382078 -&gt; 2022_Ozu-shi</span></span>
-<span><span class="co">#&gt; 2022_382108 -&gt; 2022_Iyo-shi</span></span>
-<span><span class="co">#&gt; 2022_382132 -&gt; 2022_Shikokuchuo-shi</span></span>
-<span><span class="co">#&gt; 2022_382141 -&gt; 2022_Seiyo-shi</span></span>
-<span><span class="co">#&gt; 2022_382159 -&gt; 2022_Toon-shi</span></span>
-<span><span class="co">#&gt; 2022_383562 -&gt; 2022_Kamijima-cho</span></span>
-<span><span class="co">#&gt; 2022_383864 -&gt; 2022_Kumakogen-cho</span></span>
-<span><span class="co">#&gt; 2022_384011 -&gt; 2022_Matsumae-cho</span></span>
-<span><span class="co">#&gt; 2022_384020 -&gt; 2022_Tobe-cho</span></span>
-<span><span class="co">#&gt; 2022_384224 -&gt; 2022_Uchiko-cho</span></span>
-<span><span class="co">#&gt; 2022_384429 -&gt; 2022_Ikata-cho</span></span>
-<span><span class="co">#&gt; 2022_384844 -&gt; 2022_Matsuno-cho</span></span>
-<span><span class="co">#&gt; 2022_384887 -&gt; 2022_Kihoku-cho</span></span>
-<span><span class="co">#&gt; 2022_385069 -&gt; 2022_Ainan-cho</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/merge_split_zip.html">merge_split_zip</a></span><span class="op">(</span><span class="st">"~/MB0001_2026_2025_38.zip.001"</span>, output_dir <span class="op">=</span> <span class="st">"~"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Merging: MB0001_2026_2025_38.zip.001</span></span>
+<span><span class="co">#&gt; Merging: MB0001_2026_2025_38.zip.002</span></span>
+<span><span class="co">#&gt; Merging: MB0001_2026_2025_38.zip.003</span></span>
+<span><span class="co">#&gt; Merging: MB0001_2026_2025_38.zip.004</span></span>
+<span><span class="co">#&gt; Merging: MB0001_2026_2025_38.zip.005</span></span>
+<span><span class="co">#&gt; Merge complete: ~/MB0001_2026_2025_38.zip</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="get-agricultural-community-boundary-data">Get agricultural community boundary data<a class="anchor" aria-label="anchor" href="#get-agricultural-community-boundary-data"></a>
 </h3>
 <p>Download the agricultural community boundary data, which corresponds to the Fude Polygon data, from the MAFF website: <a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/2025/ma/" class="external-link uri">https://www.maff.go.jp/j/tokei/census/shuraku_data/2025/ma/</a> (available only in Japanese).</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="combine-fude-polygons-with-agricultural-community-boundaries">Combine Fude Polygons with agricultural community boundaries<a class="anchor" aria-label="anchor" href="#combine-fude-polygons-with-agricultural-community-boundaries"></a>
 </h3>
 <p>You can easily combine Fude Polygons with agricultural community boundaries to create enriched spatial analyses or maps.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d2</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"松山市"</span>, rcom <span class="op">=</span> <span class="st">"由良|北浦|鷲ケ巣|門田|馬磯|泊|御手洗|船越"</span><span class="op">)</span></span>
@@ -189,7 +136,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <p><strong>出典</strong>：農林水産省「筆ポリゴンデータ（2026年度公開）」および「農業集落境界データ（2025年度）」を加工して作成。</p>
 <p>Data enables extraction based on municipality names, former municipality names, and agricultural community names.</p>
 <p><strong>Note:</strong> This feature is available only for data obtained from FlatGeobuf (Obtaining Data #2).</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/extract_fude.html">extract_fude</a></span><span class="op">(</span><span class="va">d2</span>, city <span class="op">=</span> <span class="st">"松山市"</span>, kcity <span class="op">=</span> <span class="st">"興居島"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Simple feature collection with 1719 features and 6 fields</span></span>
 <span><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
@@ -216,7 +163,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <h3 id="explore-fude-polygon-data">Explore Fude Polygon data<a class="anchor" aria-label="anchor" href="#explore-fude-polygon-data"></a>
 </h3>
 <p>You can explore Fude Polygon data interactively.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/shiny_fude.html">shiny_fude</a></span><span class="op">(</span><span class="va">db</span>, rcom <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -226,7 +173,7 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <h3 id="read-data-from-the-maff-database">Read data from the MAFF database<a class="anchor" aria-label="anchor" href="#read-data-from-the-maff-database"></a>
 </h3>
 <p>You can read data from the MAFF database (<a href="https://www.maff.go.jp/j/tokei/census/shuraku_data/" class="external-link">地域の農業を見て・知って・活かすDB</a>).</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">b1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_boundary.html">get_boundary</a></span><span class="op">(</span><span class="va">d2</span>, path <span class="op">=</span> <span class="st">"~"</span>, boundary_type <span class="op">=</span> <span class="fl">1</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -250,22 +197,6 @@ This method is available only for FlatGeobuf data (from Obtaining Data #2). Prov
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Hiragino Sans"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-ikasu-1.png" alt="" width="100%"></p>
 <p><strong>資料</strong>：農林水産省「農業集落境界データ（2025年度）」を加工して作成。</p>
-</div>
-<div class="section level3">
-<h3 id="use-the-mapview-package">Use the <code>mapview</code> package<a class="anchor" aria-label="anchor" href="#use-the-mapview-package"></a>
-</h3>
-<p>If you want to use <code><a href="https://r-spatial.github.io/mapview/reference/mapView.html" class="external-link">mapview()</a></code>, do the following.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">db1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"伊方町"</span><span class="op">)</span></span>
-<span><span class="va">db2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"八幡浜市"</span><span class="op">)</span></span>
-<span><span class="va">db3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"西予市"</span>, kcity <span class="op">=</span> <span class="st">"三瓶|二木生|三島|双岩"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bind_fude.html">bind_fude</a></span><span class="op">(</span><span class="va">db1</span>, <span class="va">db2</span>, <span class="va">db3</span><span class="op">)</span></span>
-<span><span class="va">db</span><span class="op">$</span><span class="va">fude</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span>, crs <span class="op">=</span> <span class="fl">3857</span><span class="op">)</span></span>
-<span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/mapview" class="external-link">mapview</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://r-spatial.github.io/mapview/reference/mapView.html" class="external-link">mapview</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span>, zcol <span class="op">=</span> <span class="st">"rcom_name"</span>, layer.name <span class="op">=</span> <span class="st">"農業集落名"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>

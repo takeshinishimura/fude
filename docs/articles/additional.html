@@ -256,6 +256,22 @@ and <code>extract_boundary()</code><a class="anchor" aria-label="anchor" href="#
 <p><img src="additional_files/figure-html/kcity_in_data-1.png" class="r-plt" alt="" width="1093.75"></p>
 <p><strong>出典</strong>：農林水産省「農業集落境界データ（2025年度）」を加工して作成。</p>
 </div>
+<div class="section level2">
+<h2 id="use-the-mapview-package">Use the <code>mapview</code> package<a class="anchor" aria-label="anchor" href="#use-the-mapview-package"></a>
+</h2>
+<p>If you want to use <code><a href="https://r-spatial.github.io/mapview/reference/mapView.html" class="external-link">mapview()</a></code>, do the following.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">db1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"伊方町"</span><span class="op">)</span></span>
+<span><span class="va">db2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"八幡浜市"</span><span class="op">)</span></span>
+<span><span class="va">db3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/combine_fude.html">combine_fude</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">b</span>, city <span class="op">=</span> <span class="st">"西予市"</span>, kcity <span class="op">=</span> <span class="st">"三瓶|二木生|三島|双岩"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bind_fude.html">bind_fude</a></span><span class="op">(</span><span class="va">db1</span>, <span class="va">db2</span>, <span class="va">db3</span><span class="op">)</span></span>
+<span><span class="va">db</span><span class="op">$</span><span class="va">fude</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span>, crs <span class="op">=</span> <span class="fl">3857</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/mapview" class="external-link">mapview</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://r-spatial.github.io/mapview/reference/mapView.html" class="external-link">mapview</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">fude</span>, zcol <span class="op">=</span> <span class="st">"rcom_name"</span>, layer.name <span class="op">=</span> <span class="st">"農業集落名"</span><span class="op">)</span></span></code></pre></div>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>

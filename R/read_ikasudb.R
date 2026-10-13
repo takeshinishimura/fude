@@ -8,7 +8,7 @@
 #'   Agricultural community boundary data, typically returned by [get_boundary()].
 #'   This can be a single boundary object or a list of boundary objects.
 #' @param path
-#'   Path to an `.xlsx` file provided by MAFF or a `.csv` file
+#'   Path to an `.xlsx` file provided by MAFF or a `.csv` file.
 #' @param na
 #'   Character vector of strings to interpret as missing values. Defaults to
 #'   `c("-", "\u2026")`.
